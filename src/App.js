@@ -25,6 +25,7 @@ function App() {
                     <Route path='/login' element={<Login></Login>}></Route>
                     <Route path='/kakao-login' element={<KakaoLogin></KakaoLogin>}></Route>
                     <Route path='/google-login' element={<GoogleLogin></GoogleLogin>}></Route>
+                    <Route path='/mypage' element={<Mypage></Mypage>}></Route>
                     <Route path='/board' element={<BoardTemplate></BoardTemplate>}></Route>
                     <Route path="/listpage" element={<ListPage></ListPage>} />
                     <Route path="/detailpage" element={<DetailPage></DetailPage>} />
