@@ -13,6 +13,7 @@
         "@testing-library/react": "^13.4.0",
         "@testing-library/user-event": "^13.5.0",
         "@tosspayments/payment-widget-sdk": "^0.10.0",
+        "@trendyol-js/react-carousel": "^3.0.2",
         "axios": "^1.6.7",
         "body-parser": "^1.20.2",
         "classnames": "^2.5.1",

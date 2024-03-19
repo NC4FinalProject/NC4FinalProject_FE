@@ -45,7 +45,7 @@ const ErrorPage = () => {
       </Helmet>
 
       <BoxStyle>
-        <Typography variant="h3">Sorry, page not found! <br/> 주소가 잘못되었습니다.</Typography>
+        <Typography variant="h3">Sorry, page not found! <br/> 주소 빙시임</Typography>
 
         <Typography paragraph color="textSecondary">
           Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve
