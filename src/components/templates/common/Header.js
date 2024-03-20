@@ -113,6 +113,7 @@ const Header = () => {
           <>
             <Button onClick={handleLogout} style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>로그아웃</Button>
             <Button style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>마이페이지</Button>
+            <Button onClick={() => navi('/mypage')} style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>마이페이지</Button>
           </>
         ) : (
           <>
