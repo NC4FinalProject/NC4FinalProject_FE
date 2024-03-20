@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import ChatApp from './SideApp/ChatApp';
-import { ListApp } from './SideApp/ListApp';
-import ReplyApp from './SideApp/ReplyApp';
+import ChatApp from './sideApp/ChatApp';
+import { ListApp } from './sideApp/ListApp';
+import ReplyApp from './sideApp/ReplyApp';
 
 
 
