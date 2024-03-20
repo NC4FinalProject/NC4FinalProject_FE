@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Grid, Paper, Typography,Rating,Box } from '@mui/material';
+import { Button, Grid, Paper,Rating,Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Carousel } from '@trendyol-js/react-carousel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -12,6 +12,28 @@ import CoTypography from '../components/atoms/common/CoTypography';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [noticeText, setNoticeText] = useState('');
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleNoticeChange = (event) => {
+    setNoticeText(event.target.value);
+  };
+
+  const handleNoticeSubmit = () => {
+    // 여기서 공지사항을 서버에 제출하는 로직을 추가할 수 있습니다.
+    console.log('Submitted notice:', noticeText);
+    handleClose();
+  };
+
 
   const [slideIndex, setSlideIndex] = useState(0);
   const slidesToShow = 4;
@@ -51,7 +73,7 @@ const Home = () => {
                 <Paper elevation={3} style={{  height: '20.9375rem', width: '15.3125rem' , display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
                 <div style={{position: 'absolute', bottom: '0', left: '0', width: '100%', height: '50%', background: 'linear-gradient(transparent, black)'}}></div>
                     <img src='/images/teacher.jpg' alt='teacher' style={{width: '15.3125rem', height: '100%', objectFit: 'cover'}} />
-                    <Typography style={{position: 'absolute', bottom: '3.5rem', paddingLeft: '0.725rem', maxWidth: '14rem', color: 'white', fontFamily: 'Pretendard SemiBold'}}>&lt;비전공자였던 그가 최상단에 오르기까지&gt;</Typography>
+                    <CoTypography size="Title" style={{position: 'absolute', bottom: '3.5rem', paddingLeft: '0.725rem', maxWidth: '14rem', color: 'white', fontFamily: 'Pretendard SemiBold'}}>&lt;비전공자였던 그가 최상단에 오르기까지&gt;</CoTypography>
                     <Button  variant="outlined" 
                         color="error" 
                         sx={{
@@ -94,12 +116,12 @@ const Home = () => {
         ))}
 	      </Carousel>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'end', width: '100%'}}>
-          <Typography style={{fontSize:'1.5rem', marginTop:'1rem', fontFamily: 'Pretendard SemiBold', margintop:'1rem', marginBottom:'0.5rem'}}>실시간 인기 강의</Typography>
-          <Typography style={{fontSize:'1rem', display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
+          <CoTypography size="MainTitle" style={{fontSize:'1.5rem', marginTop:'1rem', margintop:'1rem', marginBottom:'0.5rem'}}>실시간 인기 강의👍</CoTypography>
+          <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
             <ArrowBackIosNewIcon style={{height:'1rem', width:'1rem', color: slideIndex === 0 ? 'gray' : 'black'}} onClick={handlePrev}/>
             <ArrowForwardIosIcon style={{height:'1rem', marginTop:'1px', color: slideIndex === totalSlides - slidesToShow ? 'gray' : 'black'}} onClick={handleNext}/>
             더보기+
-          </Typography>
+          </CoTypography>
         </div>
         <Grid item sx={{display:'-webkit-box', overflow: 'hidden'}}>
           {[{img: "images/google_login.png"}, {img: "images/google_login.png"}, {img: "images/google_login.png"}, {img: "images/google_login.png"}, 
@@ -113,11 +135,11 @@ const Home = () => {
                 <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
                 <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'27px'}} />
               </Paper>
-              <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-              <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
+              <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
+              <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-                <Typography style={{fontSize:'0.725rem', color:'#7d7d7d'}}>(300)</Typography>
+                <CoTypography size="Tag">(300)</CoTypography>
               </div>
             </div>
           
@@ -126,23 +148,23 @@ const Home = () => {
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
               </Paper>
-              <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-              <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
+              <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
+              <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-                <Typography style={{fontSize:'0.725rem', color:'#7d7d7d'}}>(300)</Typography>
+                <CoTypography size="Tag">(300)</CoTypography>
               </div>
             </div>
             
       })}
         </Grid>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'end', width: '100%'}}>
-          <Typography style={{fontSize:'1.5rem', marginTop:'1rem', fontFamily: 'Pretendard SemiBold', margintop:'1rem', marginBottom:'0.5rem'}}>최근 등록된 강의</Typography>
-          <Typography style={{fontSize:'1rem', display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
+          <CoTypography size="MainTitle" color="primary" style={{marginTop:'1rem', margintop:'1rem', marginBottom:'0.5rem'}}>최근 등록된 강의🖥️</CoTypography>
+          <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
             <ArrowBackIosNewIcon style={{height:'1rem', width:'1rem', color: slideIndex === 0 ? 'gray' : 'black'}} onClick={handlePrev}/>
             <ArrowForwardIosIcon style={{height:'1rem', marginTop:'1px', color: slideIndex === totalSlides - slidesToShow ? 'gray' : 'black'}} onClick={handleNext}/>
             더보기+
-          </Typography>
+          </CoTypography>
         </div>
         <Grid item sx={{display:'-webkit-box', overflow: 'hidden'}}>
           {[{img: "images/google_login.png"}, {img: "images/google_login.png"}, {img: "images/google_login.png"}, {img: "images/google_login.png"}, 
@@ -156,11 +178,11 @@ const Home = () => {
                 <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
                 <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'27px'}} />
               </Paper>
-              <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-              <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
+              <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
+              <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-                <Typography style={{fontSize:'0.725rem', color:'#7d7d7d'}}>(300)</Typography>
+                <CoTypography size="Tag">(300)</CoTypography>
               </div>
             </div>
           
@@ -169,11 +191,11 @@ const Home = () => {
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
               </Paper>
-              <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-              <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
+              <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
+              <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-                <Typography style={{fontSize:'0.725rem', color:'#7d7d7d'}}>(300)</Typography>
+                <CoTypography size="Tag">(300)</CoTypography>
               </div>
             </div>
             
@@ -181,9 +203,9 @@ const Home = () => {
         </Grid>
         <Grid container spacing={2} style={{marginTop:'0.725rem'}}>
   <Grid item xs={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '20rem' }}>
-    <Typography variant="h4">NC4 FINAL을 통해 연결되는 IT, 당신의 열정을 응원합니다.</Typography>
-    <Typography style={{fontSize:'1rem'}}>학교에서 배우기 어렵거나 큰 비용을 지불해야만 배울 수 있는 전문적인 지식들을 제공합니다.
-    오픈 플랫폼의 이점을 통해 다양성과 경제성을 모두 높입니다.</Typography>
+    <CoTypography style={{fontSize:'3rem'}}>NC4 FINAL을 통해 연결되는 IT, 당신의 열정을 응원합니다.</CoTypography>
+    <CoTypography>학교에서 배우기 어렵거나 큰 비용을 지불해야만 배울 수 있는 전문적인 지식들을 제공합니다.
+    오픈 플랫폼의 이점을 통해 다양성과 경제성을 모두 높입니다.</CoTypography>
   </Grid>
   <Grid item xs={6}>
     <Box sx={{ 
@@ -198,21 +220,21 @@ const Home = () => {
     }}>
       {[...Array(10)].map((_, index) => (
         <Paper elevation={3} style={{width: '40.0625rem', height: '6.25rem', margin: '0.5rem 0',marginBottom:'1rem'}}>
-          <Typography style={{fontSize:'0.725rem'}}>손우성 님 (강사)  7분전</Typography>
-          <Typography style={{fontSize:'1rem'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-          <Typography style={{fontSize:'0.725rem'}}>여러분들의 열정을 응원합니다!</Typography>
+          <CoTypography size="Tag">손우성 님 (강사)  7분전</CoTypography>
+          <CoTypography>프론트 리액트 1시간만에 마스터하기</CoTypography>
+          <CoTypography size="Tag">여러분들의 열정을 응원합니다!</CoTypography>
         </Paper>
       ))}
     </Box>
     </Grid>
     </Grid>
     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'end', width: '100%'}}>
-          <Typography style={{fontSize:'1.5rem', marginTop:'1rem', fontFamily: 'Pretendard SemiBold', margintop:'1rem', marginBottom:'0.5rem'}}>이런 강의는 어때요?</Typography>
-          <Typography style={{fontSize:'1rem', display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
+    <CoTypography size="MainTitle" style={{marginTop:'1rem', fontFamily: 'Pretendard SemiBold', margintop:'1rem', marginBottom:'0.5rem'}}>이런 강의는 어때요 ❓</CoTypography>
+          <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
             <ArrowBackIosNewIcon style={{height:'1rem', width:'1rem', color: slideIndex === 0 ? 'gray' : 'black'}} onClick={handlePrev}/>
             <ArrowForwardIosIcon style={{height:'1rem', color: slideIndex === totalSlides - slidesToShow ? 'gray' : 'black'}} onClick={handleNext}/>
             더보기+
-          </Typography>
+          </CoTypography>
         </div>
         <Grid item sx={{display:'-webkit-box', overflow: 'hidden'}}>
           {[{img: "images/google_login.png"}, {img: "images/google_login.png"}, {img: "images/google_login.png"}, {img: "images/google_login.png"}, 
@@ -226,11 +248,11 @@ const Home = () => {
                 <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
                 <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'27px'}} />
               </Paper>
-              <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-              <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
+              <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
+              <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-                <Typography style={{fontSize:'0.725rem', color:'#7d7d7d'}}>(300)</Typography>
+                <CoTypography size="Tag">(300)</CoTypography>
               </div>
             </div>
           
@@ -239,11 +261,11 @@ const Home = () => {
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
               </Paper>
-              <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
-              <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
+              <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
+              <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
               <div style={{display: 'flex', alignItems: 'center'}}>
                 <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-                <Typography style={{fontSize:'0.725rem', color:'#7d7d7d'}}>(300)</Typography>
+                <CoTypography size="Tag">(300)</CoTypography>
               </div>
             </div>
             
