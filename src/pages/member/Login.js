@@ -121,7 +121,7 @@ const Login = () => {
                         </Link>
                     </Grid>
                         <Grid item>
-                        <Link href="/join" variant="body2" style={{color:'#616568', fontSize:'17px'}}>
+                        <Link href="/src/pages/member/Join" variant="body2" style={{color:'#616568', fontSize:'17px'}}>
                             회원가입
                         </Link>
                     </Grid>

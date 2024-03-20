@@ -2,9 +2,8 @@ import styled from '@emotion/styled';
 import { Box, Button, Container, Pagination, Typography } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import FixedCartCounter from '../components/ListPage/FixedCartCount';
-import ContentsList from '../components/ListPage/ContentsList';
-import ContantsFilters from '../components/ListPage/ContentsFilters';
+import ContentsList from '../../components/organisms/contents/list/ContentsList';
+import ContantsFilters from '../../components/organisms/contents/list/ContentsFilters';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -20,7 +19,7 @@ const ContainerStyle = styled(Container)(({ theme }) => ({
 }));
 
 
-const ListPage = () => {
+const List = () => {
   return (
     <>
       {/* Helmet */}
@@ -46,4 +45,4 @@ const ListPage = () => {
   );
 }
 
-export default ListPage
+export default List
