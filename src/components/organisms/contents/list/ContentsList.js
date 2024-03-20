@@ -2,7 +2,7 @@
 import styled from "@emotion/styled";
 import { Grid } from "@mui/material";
 import ContantsListItem from "./ContentsListItem";
-import { contents } from "../api/contentsApi";
+import { contents } from "../../../api/contentsApi";
 
 
 // grid style

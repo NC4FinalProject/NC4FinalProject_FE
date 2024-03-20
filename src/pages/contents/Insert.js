@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { Button, Container, Grid, Input, TextField, Typography } from '@mui/material';
 import React from 'react'
-import SectionList from '../components/InsertPage/SectionList.';
-import LinearStepper from '../components/InsertPage/LinearStepper';
-import InsertCKEditor from '../components/InsertCKEditor';
-import ThumbnailUpload from '../components/InsertPage/ThumbnailUpload';
-import VideoUpload from '../components/InsertPage/VideoUpload';
+import SectionList from '../../components/organisms/contents/insert/SectionList.';
+import LinearStepper from '../../components/organisms/contents/insert/LinearStepper';
+import InsertCKEditor from '../../components/atoms/common/InsertCKEditor';
+import ThumbnailUpload from '../../components/organisms/contents/insert/ThumbnailUpload';
+import VideoUpload from '../../components/organisms/contents/insert/VideoUpload';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -22,7 +22,7 @@ const ContainerStyle = styled(Container)(({ theme }) => ({
 }));
 
 
-const InsertPage = () => {
+const Insert = () => {
   return (
     <>
 
@@ -94,4 +94,4 @@ const InsertPage = () => {
   )
 }
 
-export default InsertPage;
+export default Insert;
