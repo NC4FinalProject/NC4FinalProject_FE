@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import KakaoLogin from './pages/KakaoLogin';
 import GoogleLogin from './pages/GoogleLogin';
 import BoardTemplate from './pages/BoardTemplate';
+import Mypage from './pages/Mypage';
 import ListPage from './pages/ListPage';
 import DetailPage from './pages/DetailPage';
 import InsertPage from './pages/InsertPage';
@@ -25,6 +26,7 @@ function App() {
                     <Route path='/login' element={<Login></Login>}></Route>
                     <Route path='/kakao-login' element={<KakaoLogin></KakaoLogin>}></Route>
                     <Route path='/google-login' element={<GoogleLogin></GoogleLogin>}></Route>
+                    <Route path='/mypage' element={<Mypage></Mypage>}></Route>
                     <Route path='/board' element={<BoardTemplate></BoardTemplate>}></Route>
                     <Route path="/listpage" element={<ListPage></ListPage>} />
                     <Route path="/detailpage" element={<DetailPage></DetailPage>} />
