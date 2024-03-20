@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import KakaoLogin from './pages/KakaoLogin';
 import GoogleLogin from './pages/GoogleLogin';
 import BoardTemplate from './pages/BoardTemplate';
+import Mypage from './pages/Mypage';
 import ListPage from './pages/ListPage';
 import DetailPage from './pages/DetailPage';
 import InsertPage from './pages/InsertPage';

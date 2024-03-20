@@ -57,15 +57,38 @@ const Mypage = () => {
         <form>
             <Grid container spacing={2} sx={{width: '40%', marginLeft: '30%'}}>
                 <Grid item xs={12}>
-                    <Typography component="h1" variant="h5" style={{textAlign: 'center', marginTop: '5%'}}>
+                    <Typography component="h1" style={{textAlign: 'center', marginTop: '5%', fontSize:'3rem'}}>
                         계정 정보
                     </Typography>
+                </Grid>
+                <Grid container xs={12} style={{justifyContent: 'center', textAlign: 'center'}}>
+                    <Grid item xs={6}>
+                        <Typography component="h1" variant="h5" style={{textAlign: 'center', marginTop: '5%'}}>
+                            프로필
+                        </Typography>
+                        <Box item xs={10}>
+                            <img src="https://source.unsplash.com/random" alt="profile" style={{width: '80%', height: '200px', borderRadius: '40%'}}/>
+                        </Box>
+                        <Button type="submit" fullWidth variant="contained" color="primary" style={{height:'55px', width: '10rem', fontSize:'18px', marginBottom: '15%'}}>
+                            사진 변경
+                        </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Typography component="h1" variant="h5" style={{textAlign: 'center', marginTop: '5%'}}>
+                            뱃지
+                        </Typography>
+                        <Box item xs={10}>
+                            <img src="https://source.unsplash.com/random" alt="profile" style={{width: '80%', height: '200px', borderRadius: '40%'}}/>
+                        </Box>
+                        <Button type="submit" fullWidth variant="contained" color="primary" style={{height:'55px', width: '10rem', fontSize:'18px', marginBottom: '15%'}}>
+                            뱃지 변경
+                        </Button>
+                    </Grid>
                 </Grid>
                 <Grid item xs={12}>
                         <TextField
                             name="userNickname"
                             variant="outlined"
-                            required
                             fullWidth
                             id="userNickname"
                             label="닉네임"
@@ -83,7 +106,6 @@ const Mypage = () => {
                         <TextField
                             name="password"
                             variant="outlined"
-                            required
                             type={showPw ? 'text' : 'password'}
                             fullWidth
                             id="password"
@@ -99,7 +121,6 @@ const Mypage = () => {
                         <TextField
                             name="password-check"
                             variant="outlined"
-                            required
                             type={showPwCheck ? 'text' : 'password'}
                             fullWidth
                             id="password-check"
