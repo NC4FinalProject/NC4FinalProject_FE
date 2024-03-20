@@ -1,15 +1,10 @@
 import React from 'react'
-import VideoPlayer from "../components/DetailPage/VideoPlayer";
+import VideoPlayer from "../../components/organisms/contents/detail/VideoPlayer";
 import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
 import styled from '@emotion/styled';
-import SideApp from '../components/DetailPage/SideApp';
-import ContentsDetail from '../components/DetailPage/ContentsDetail';
-import ContentsInfo from '../components/DetailPage/ContentsInfo';
-import { ListApp } from '../components/DetailPage/SideApp/ListApp';
-import ReplyApp from '../components/DetailPage/SideApp/ReplyApp';
-import { Link } from 'react-router-dom';
-import { GrFormNext } from "react-icons/gr";
-import ChatApp from '../components/DetailPage/SideApp/ChatApp';
+import ContentsDetail from '../../components/organisms/contents/detail/ContentsDetail';
+import ContentsInfo from '../../components/organisms/contents/detail/ContentsInfo';
+import { ListApp } from '../../components/organisms/contents/detail/sideApp/ListApp';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -29,7 +24,7 @@ const GridStyle = styled(Grid)(({ theme }) => ({
     marginBottom: theme.spacing(2)
 }));
 
-const DetailPage = () => {
+const Detail = () => {
   return (
     <>
     <ContainerStyle maxWidth="lg">
@@ -86,4 +81,4 @@ const DetailPage = () => {
   );
 }
 
-export default DetailPage;
+export default Detail;

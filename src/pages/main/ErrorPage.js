@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import image from "../images/404.svg";
+import image from "../../images/404.svg";
 import { Helmet } from "react-helmet";
 
 import { Box, Button, Typography } from "@mui/material";
