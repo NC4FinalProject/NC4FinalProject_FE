@@ -252,7 +252,7 @@ const Join = () => {
                     </Grid>
                 <Grid container justifyContent="flex-end">
                     <Grid item>
-                        <Link href="/login" variant="body2">
+                        <Link href="/src/pages/member/Login" variant="body2">
                             로그인 페이지로 돌아가기
                         </Link>
                     </Grid>
