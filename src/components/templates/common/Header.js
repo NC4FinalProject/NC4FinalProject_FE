@@ -7,6 +7,7 @@ import { Button, TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Header = () => {
   const navi = useNavigate();  
@@ -14,6 +15,26 @@ const Header = () => {
 
   const [anchorEl1, setAnchorEl1] = useState(null);
   const [anchorEl2, setAnchorEl2] = useState(null);
+
+
+  const handleLogout = () => {
+        const response = axios.get(
+        `http://localhost:9090/member/logout`,
+        {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+            }
+        }
+    ).then(response => {
+         if (response.data.item && response.data.statusCode === 200) {
+              sessionStorage.removeItem("ACCESS_TOKEN");
+              window.alert('로그아웃 성공.');
+              navi("/login");
+              } else {
+                window.alert('로그아웃 실패.');  
+              };
+    });
+  }
 
   const handleClick1 = (event) => {
     setAnchorEl1(event.currentTarget);
@@ -90,7 +111,7 @@ const Header = () => {
         />
         {isLogin ? (
           <>
-            <Button style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>로그아웃</Button>
+            <Button onClick={handleLogout} style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>로그아웃</Button>
             <Button style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>마이페이지</Button>
           </>
         ) : (
