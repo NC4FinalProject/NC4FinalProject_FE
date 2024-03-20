@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import CoTypography from '../components/atoms/common/CoTypography';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -33,12 +34,12 @@ const Home = () => {
 
   return (
     <div>
-      <Typography style={{fontSize:'1.5rem', marginTop:'0.75rem', fontFamily: 'Pretendard SemiBold', marginBottom:'0.5rem'}}>현재 인기강사🔥</Typography>
+      <CoTypography size="MainTitle">현재 인기강사🔥</CoTypography>
       <Grid spacing={1.5}>
         <Carousel show={5} slide={1} swiping={true} style={{width:'100%'}}
         rightArrow={
           <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '10rem', right: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2}}>
-            <ArrowForwardIcon style={{ color: 'black', fontSize: '1.55rem'}}/>
+            <ArrowForwardIcon style={{ color: 'black', fontSize: '1.5rem'}}/>
           </IconButton>
         } 
         leftArrow={
@@ -107,9 +108,10 @@ const Home = () => {
             console.log(index, parseInt(index / 4) * 4, slideIndex, parseInt(index / 4) * 4=== slideIndex);
            return parseInt(index / 4) * 4 === slideIndex ?
             
-            <div style={{display: 'block'}}>
+            <div style={{display: 'block', position: 'relative'}}>
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
+                <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'27px'}} />
               </Paper>
               <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
               <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
@@ -120,7 +122,7 @@ const Home = () => {
             </div>
           
             :
-            <div style={{display: 'none'}}>
+            <div style={{display: 'none', transition: 'display 0.5s'}}>
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
               </Paper>
@@ -149,9 +151,10 @@ const Home = () => {
             console.log(index, parseInt(index / 4) * 4, slideIndex, parseInt(index / 4) * 4=== slideIndex);
            return parseInt(index / 4) * 4 === slideIndex ?
             
-            <div style={{display: 'block'}}>
+            <div style={{display: 'block', position: 'relative'}}>
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
+                <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'27px'}} />
               </Paper>
               <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
               <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
@@ -207,7 +210,7 @@ const Home = () => {
           <Typography style={{fontSize:'1.5rem', marginTop:'1rem', fontFamily: 'Pretendard SemiBold', margintop:'1rem', marginBottom:'0.5rem'}}>이런 강의는 어때요?</Typography>
           <Typography style={{fontSize:'1rem', display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
             <ArrowBackIosNewIcon style={{height:'1rem', width:'1rem', color: slideIndex === 0 ? 'gray' : 'black'}} onClick={handlePrev}/>
-            <ArrowForwardIosIcon style={{height:'1rem', marginTop:'1px', color: slideIndex === totalSlides - slidesToShow ? 'gray' : 'black'}} onClick={handleNext}/>
+            <ArrowForwardIosIcon style={{height:'1rem', color: slideIndex === totalSlides - slidesToShow ? 'gray' : 'black'}} onClick={handleNext}/>
             더보기+
           </Typography>
         </div>
@@ -218,9 +221,10 @@ const Home = () => {
             console.log(index, parseInt(index / 4) * 4, slideIndex, parseInt(index / 4) * 4=== slideIndex);
            return parseInt(index / 4) * 4 === slideIndex ?
             
-            <div style={{display: 'block'}}>
+            <div style={{display: 'block', position: 'relative'}}>
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
+                <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'27px'}} />
               </Paper>
               <Typography style={{fontSize:'1rem', marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</Typography>
               <Typography style={{fontSize:'0.825rem', color:'#7d7d7d'}}>프론트앤드 | 손우성</Typography>
@@ -231,7 +235,7 @@ const Home = () => {
             </div>
           
             :
-            <div style={{display: 'none'}}>
+            <div style={{display: 'none', position: 'relative'}}>
               <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
                 <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
               </Paper>
