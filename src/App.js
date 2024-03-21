@@ -14,7 +14,6 @@ import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
 
-
 function App() {
   return (
     <ThemeProvider theme={createTheme}>
