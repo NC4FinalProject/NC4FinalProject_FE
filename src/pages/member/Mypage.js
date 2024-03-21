@@ -14,9 +14,10 @@ function a11yProps(index) {
 
 const Mypage = () => {
 
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
     const [profileImage, setImage] = useState(null);
     const [userNickname, setUserNickname] = useState(null);
+    const [isTeacher, setIsTeacher] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const handleChange = (event, newValue) => {
@@ -53,6 +54,7 @@ const Mypage = () => {
             
                 setImage(response.data.item.profileFile);
                 setUserNickname(response.data.item.userNickname);
+                setIsTeacher(response.data.item.isTeacher);
                 setLoading(false);
         } catch (error) {
             console.warn("이미지 불러오기 실패", error);
@@ -96,37 +98,61 @@ const Mypage = () => {
     
     const updateUserNickname = async e => {
         try {
-        const formData = new FormData();
-        formData.append('user_nickname', userNickname);
+            const formData = new FormData();
+            formData.append('user_nickname', userNickname);
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        };
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                    'Content-Type': 'multipart/form-data'
+                }
+            };
 
-        try {
-            const response = await axios.post(
-                `http://localhost:9090/mypage/user-nickname`, 
-                formData, 
-                config
-            ); 
-        } catch (error) {
-            console.warn(error);
-            if (error.response.data.errorCode === 202) {
-                alert("이미 존재하는 닉네임 입니다.");
+            try {
+                const response = await axios.post(
+                    `http://localhost:9090/mypage/user-nickname`, 
+                    formData, 
+                    config
+                ); 
+            } catch (error) {
+                console.warn(error);
+                if (error.response.data.errorCode === 202) {
+                    alert("이미 존재하는 닉네임 입니다.");
+                    }
             }
-        }
-    } catch (error) {
-        console.warn("닉네임 변경 실패");
-    }
+            } catch (error) {
+                console.warn("닉네임 변경 실패");
+                }   
       };
+
+      const wannabeTeacher = async e => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                }
+            };
+
+            try {
+                const response = await axios.get(
+                    `http://localhost:9090/mypage/wannabe-teacher`, 
+                    config
+                ); 
+                alert("강사 신청 완료");
+            } catch (error) {
+                console.warn(error);
+                if (error.response.data.errorCode === 202) {
+                    alert("이미 강사 입니다.");
+                    }
+            }
+            } catch (error) {
+                console.warn("강사 신청 실패");
+                }   
+      };
+
 
   return (
     <Container component="main" maxWidth="xs" style={{ marginTop: '8%', maxWidth:'1300px' }}>
-    
-    
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -153,7 +179,7 @@ const Mypage = () => {
                     <Grid item xs={6}>
                         <Box item xs={10}>
                         {profileImage === null ? (
-                            <Avatar src="/broken-mage.jpg" style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
+                            <Avatar src="/broken-mage.jpg" style={{width: '200px', height: '200px', borderRadius: '70%', marginLeft: '15%'}}/> 
                             ) : (
                             <img src={`https://kr.object.ncloudstorage.com/envdev/`+profileImage} alt='thumbnail' style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
                             )}
@@ -187,12 +213,14 @@ const Mypage = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
-                        '강사 계정으로 전환하기' 신청을 합니다.
+                            {isTeacher === null ? ("아직 강사가 아닙니다."
+                                ) : ( 
+                                "이미 강사입니다.") }
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Button type="submit" fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
-                            신청하기
+                        <Button type="submit" onClick={wannabeTeacher} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
+                            강사 계정으로 전환 신청하기
                         </Button>
                     </Grid>
             </Grid>
