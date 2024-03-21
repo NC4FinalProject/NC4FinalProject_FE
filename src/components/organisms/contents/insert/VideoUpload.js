@@ -33,7 +33,7 @@ const FileStatusList = styled(List)({
 //   padding: theme.spacing(1),
 //   color: $error ? theme.palette.error.main : theme.palette.text.primary,
 // }));
-const FileListItem = styled(ListItem)(({ theme, $loading, $error }) => ({
+const FileListItem = styled(ListItem, { shouldForwardProp: (prop) => !['$loading', '$error'].includes(prop) })(({ theme, $loading, $error }) => ({
   padding: theme.spacing(1),
   color: $error ? theme.palette.error.main : theme.palette.text.primary,
   boxShadow: $error ? theme.shadows[6] : theme.shadows[3], // $error 상태에 따라 다른 그림자를 적용
@@ -42,7 +42,6 @@ const FileListItem = styled(ListItem)(({ theme, $loading, $error }) => ({
     boxShadow: theme.shadows[6], // 호버할 때 더 큰 그림자를 적용
   },
 }));
-
 
 const VideoUpload = () => {
   const [files, setFiles] = useState([

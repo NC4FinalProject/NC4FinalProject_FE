@@ -8,7 +8,8 @@ const InsertCKEditor = () => {
   return (
     <CKEditor
     editor={ ClassicEditor }
-    data="<p>Hello from CKEditor 5!</p>"
+    data="<p></p>"
+
 
     // config={{
     //   toolbar: [ 'uploadImage', ...ClassicEditor.defaultConfig.toolbar.items ],
@@ -33,7 +34,14 @@ const InsertCKEditor = () => {
     // }}
 
     onReady={ ( editor ) => {
-      console.log( "CKEditor5 React Component is ready to use!", editor );
+      // console.log( "CKEditor5 React Component is ready to use!", editor );
+      editor.editing.view.change((writer) => {
+        writer.setStyle(
+            "height",
+            "500px",
+            editor.editing.view.document.getRoot()
+        );
+        });
     } }
     onChange={ ( event, editor ) => {
       const data = editor.getData();
