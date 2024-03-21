@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Grid, Container, Typography, TextField, Button, Box, Avatar } from '@mui/material';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import axios from 'axios';
@@ -14,9 +13,6 @@ function a11yProps(index) {
 
 
 const Mypage = () => {
-    
-    let agreementCheckVal = false;
-    let passwordCheckVal = false;
 
     const [value, setValue] = React.useState(0);
     const [profileImage, setImage] = useState(null);
@@ -119,7 +115,6 @@ const Mypage = () => {
                 <Grid container xs={12} style={{justifyContent: 'center', textAlign: 'center'}}>
                     <Grid item xs={6}>
                         <Box item xs={10}>
-
                         {profileImage === null ? (
                             <Avatar src="/broken-mage.jpg" style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
                             ) : (
@@ -152,41 +147,6 @@ const Mypage = () => {
                         {/* <Button type="button" onClick={handleNicknameCheck} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px'}}> */}
                         <Button type="button"  fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
                             닉네임 변경하기
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            name="password"
-                            variant="outlined"
-                            type={showPw ? 'text' : 'password'}
-                            fullWidth
-                            id="password"
-                            label="비밀번호"
-                            onChange={(e) => {document.getElementById('password').value === document.getElementById('password-check').value ? passwordCheckVal = true : passwordCheckVal = false}}
-                            InputProps={{
-                                endAdornment: <RemoveRedEyeIcon onClick={toggleShowPw} sx={{cursor: 'pointer'}}/>,
-                                disableUnderline: true
-                                }}
-                        ></TextField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            name="password-check"
-                            variant="outlined"
-                            type={showPwCheck ? 'text' : 'password'}
-                            fullWidth
-                            id="password-check"
-                            label="비밀번호 확인"
-                            onChange={(e) => {document.getElementById('password').value === document.getElementById('password-check').value ? passwordCheckVal = true : passwordCheckVal = false}}
-                            InputProps={{
-                                endAdornment: <RemoveRedEyeIcon onClick={toggleShowPwCheck} sx={{cursor: 'pointer'}}/>,
-                                disableUnderline: true
-                                }}
-                        ></TextField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button type="submit" fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
-                            비밀번호 변경하기
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
