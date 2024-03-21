@@ -15,30 +15,26 @@ import {
   TextField,
 } from "@mui/material";
 
-const Codialog = ({ open, handleClickClose }) => {
+const Modifydalog = ({ open, handleClickClose }) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
 
-  const handleReviewChange = (event) => {
-    setReview(event.target.value);
+  const handleReviewChange = (newValue) => {
+    setReview(newValue);
   };
 
-  const handleRatingChange = (event) => {
-    setRating(event);
-    console.log(event);
+  const handleRatingChange = (newValue) => {
+    setRating(newValue);
+    console.log(rating);
   };
 
   const handleCancel = () => {
-    console.log(review);
-    console.log(rating);
     setReview("");
     setRating(0);
     handleClickClose();
   };
 
   const handleSubmit = () => {
-    console.log(review);
-    console.log(rating);
     setReview("");
     setRating(0);
     handleClickClose();
@@ -55,7 +51,7 @@ const Codialog = ({ open, handleClickClose }) => {
       disableEscapeKeyDown
     >
       <DialogTitle style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-        <CoTypography size="DialogTitle">후기 등록</CoTypography>
+        <CoTypography size="DialogTitle">후기 수정</CoTypography>
       </DialogTitle>
       <DialogContent
         style={{
@@ -118,7 +114,7 @@ const Codialog = ({ open, handleClickClose }) => {
                   multiline
                   rows={6}
                   value={review}
-                  onChange={handleReviewChange}
+                  onChange={(e) => handleReviewChange(e.target.value)}
                   fullWidth
                   variant="standard"
                   placeholder="후기를 작성해주세요."
@@ -158,4 +154,4 @@ const Codialog = ({ open, handleClickClose }) => {
   );
 };
 
-export default Codialog;
+export default Modifydalog;
