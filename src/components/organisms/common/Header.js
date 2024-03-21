@@ -10,6 +10,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import CoTypography from '../../atoms/common/CoTypography';
 import { Typography } from '@mui/material';
+import CoHoverButton from '../../atoms/common/CoHoverButton';
 
 const Header = () => {
   const navi = useNavigate();  
@@ -38,29 +39,11 @@ const Header = () => {
     });
   }
 
-  const handleClick1 = (event) => {
-    setAnchorEl1(event.currentTarget);
-  };
-
-  const handleClose1 = () => {
-    setAnchorEl1(null);
-  };
-
-  const handleClick2 = (event) => {
-    setAnchorEl2(event.currentTarget);
-  };
-
-  const handleClose2 = () => {
-    setAnchorEl2(null);
-  };
-
   return (
     <Box display="flex"  sx={{marginTop: '1rem'}}>
-      <img src='/images/team_logo.png' alt='team_logo' height='30rem' width='150rem' style={{paddingTop:'0.125rem'}}/>
-      <Typography sx={{cursor: 'pointer','&:hover': {color: 'primary.main' },}} onClick={() => console.log('텍스트 클릭됨!')}>강의</Typography>
-      <Button onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}} onClick={handleClick2} sx={{paddingTop: '3px', marginLeft: '1rem', maxHeight:'2.3rem', color: 'black', '&:hover': {color: 'primary'}}}>
-          커뮤니티
-      </Button>
+      <img src='/images/team_logo.png' alt='team_logo' height='30rem' width='150rem' style={{paddingTop:'0.125rem'}} onClick={() => navi('/')}/>
+      <CoHoverButton style={{marginLeft: '1rem'}} onClick={() => navi('/listpage')}>강의</CoHoverButton>
+      <CoHoverButton style={{marginLeft: '1rem'}}>커뮤니티</CoHoverButton>
       <TextField sx={{marginLeft: '2.5rem',
          width:'40rem', 
         '& .MuiInputBase-input': {
@@ -82,17 +65,17 @@ const Header = () => {
         />
         {isLogin ? (
           <>
-            <Button onClick={handleLogout} style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>로그아웃</Button>
-            <Button onClick={() => navi('/mypage')} style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>마이페이지</Button>
+            <CoHoverButton onClick={handleLogout} style={{marginLeft: '2rem', maxHeight:'2.3rem'}}>로그아웃</CoHoverButton>
+            <CoHoverButton onClick={() => navi('/mypage')} style={{marginLeft: '2rem', maxHeight:'2.3rem'}}>마이페이지</CoHoverButton>
           </>
         ) : (
           <>
-             <Button onClick={() => navi('/login')} style={{color: 'black'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}} >
+             <CoHoverButton onClick={() => navi('/login')} style={{marginLeft: '2rem', maxHeight:'2.3rem'}}>
               로그인
-             </Button>
-              <Button onClick={() => navi('/join')} style={{color: 'black', fontSize:'1rem'}} sx={{marginLeft: '2rem', maxHeight:'2.3rem'}}>
+             </CoHoverButton>
+              <CoHoverButton onClick={() => navi('/join')} style={{marginLeft: '2rem', maxHeight:'2.3rem'}}>
               회원가입
-             </Button>
+             </CoHoverButton>
           </>
         )}
     </Box>

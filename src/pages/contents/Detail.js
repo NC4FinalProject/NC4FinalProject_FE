@@ -6,18 +6,6 @@ import ContentsDetail from '../../components/organisms/contents/detail/ContentsD
 import ContentsInfo from '../../components/organisms/contents/detail/ContentsInfo';
 import { ListApp } from '../../components/organisms/contents/detail/sideApp/ListApp';
 
-// style
-const ContainerStyle = styled(Container)(({ theme }) => ({
-    padding: 0,
-    paddingTop: theme.spacing(2),
-  
-    // product header
-    // h3
-    "& .productHeader": {
-      fontSize: 30,
-      fontWeight: 500,
-    },
-  }));
 
 const GridStyle = styled(Grid)(({ theme }) => ({
     // marginTop: theme.spacing(0),
@@ -27,7 +15,7 @@ const GridStyle = styled(Grid)(({ theme }) => ({
 const Detail = () => {
   return (
     <>
-    <ContainerStyle maxWidth="lg">
+    <Container>
 
         <GridStyle container spacing={3.75} height={'524px'} overflow={'hidden'} alignItems="stretch">
             
@@ -76,7 +64,7 @@ const Detail = () => {
         </Grid>
 
         </GridStyle>
-    </ContainerStyle>
+    </Container>
     </>
   );
 }
