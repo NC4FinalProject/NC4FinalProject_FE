@@ -3,6 +3,7 @@ import { Grid, Container, Typography, TextField, Button, Box, Avatar } from '@mu
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import axios from 'axios';
+import { MoonLoader} from "react-spinners";
 
 function a11yProps(index) {
     return {
@@ -62,7 +63,14 @@ const Mypage = () => {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>; // 데이터를 가져오는 동안 로딩 메시지 표시
+        return (
+        <Grid Container marginBottom='30%' marginTop='10%'style={{ position: 'flex'}} >
+            <Grid item xs={12} style={{ position: 'absolute', left: '50%'}}>
+                <MoonLoader color="#558BCF" />
+            </Grid>
+            
+        </Grid> 
+        )
     }
 
     const saveFileImage = async e => {
