@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 
+function MyEditorComponent() {
+  useEffect(() => {
+    return () => {
+      // 컴포넌트가 언마운트될 때 CKEditor 인스턴스 해제
+      ClassicEditor.destroy().then(() => {
+        console.log('CKEditor 인스턴스가 성공적으로 해제되었습니다.');
+      }).catch(error => {
+        console.error('CKEditor 인스턴스 해제 중 오류 발생:', error);
+      });
+    };
+  }, []);
+}
 
 const InsertCKEditor = () => {
   return (
     <CKEditor
     editor={ ClassicEditor }
-    data="<p>Hello from CKEditor 5!</p>"
+    data="<p></p>"
+
 
     // config={{
     //   toolbar: [ 'uploadImage', ...ClassicEditor.defaultConfig.toolbar.items ],
@@ -33,7 +46,14 @@ const InsertCKEditor = () => {
     // }}
 
     onReady={ ( editor ) => {
-      console.log( "CKEditor5 React Component is ready to use!", editor );
+      // console.log( "CKEditor5 React Component is ready to use!", editor );
+      editor.editing.view.change((writer) => {
+        writer.setStyle(
+            "height",
+            "500px",
+            editor.editing.view.document.getRoot()
+        );
+        });
     } }
     onChange={ ( event, editor ) => {
       const data = editor.getData();

@@ -5,8 +5,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import CoTypography from "../../atoms/common/CoTypography";
-import ContentsStarRating from "../contents/list/ContentsStarRating";
+import CoTypography from "../atoms/common/CoTypography";
+import CoSelect from "../organisms/common/CoSelect";
 import {
   Table,
   TableBody,
@@ -15,32 +15,32 @@ import {
   TextField,
 } from "@mui/material";
 
-const Codialog = ({ open, handleClickClose }) => {
-  const [review, setReview] = useState("");
-  const [rating, setRating] = useState(0);
+const Reportdialog = ({ open, handleClickClose }) => {
+  const [report, setReport] = useState("");
+  const [reason, setReason] = useState("");
 
-  const handleReviewChange = (event) => {
-    setReview(event.target.value);
+  const handleReportChange = (newValue) => {
+    setReport(newValue);
   };
 
-  const handleRatingChange = (event) => {
-    setRating(event);
-    console.log(event);
+  const handleReasonChange = (event) => {
+    setReason(event.target.value);
+    console.log(event.target.value);
   };
 
   const handleCancel = () => {
-    console.log(review);
-    console.log(rating);
-    setReview("");
-    setRating(0);
+    console.log(reason);
+    console.log(report);
+    setReport("");
+    setReason("");
     handleClickClose();
   };
 
   const handleSubmit = () => {
-    console.log(review);
-    console.log(rating);
-    setReview("");
-    setRating(0);
+    console.log(reason);
+    console.log(report);
+    setReport("");
+    setReason("");
     handleClickClose();
   };
 
@@ -55,12 +55,12 @@ const Codialog = ({ open, handleClickClose }) => {
       disableEscapeKeyDown
     >
       <DialogTitle style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-        <CoTypography size="DialogTitle">후기 등록</CoTypography>
+        <CoTypography size="DialogTitle">신고하기</CoTypography>
       </DialogTitle>
       <DialogContent
         style={{
           width: "28.125rem",
-          height: "26rem",
+          height: "27rem",
           padding: "1rem",
           margin: "0 auto",
         }}
@@ -76,16 +76,17 @@ const Codialog = ({ open, handleClickClose }) => {
           }}
         >
           <CoTypography size="Content" style={{ marginBottom: "35px" }}>
-            1. 관련 없는 글은 규정에 따라 삭제될 수 있습니다.
-            <br />
-            2. 욕설, 비방, 광고성 글은 삭제 및 제재될 수 있습니다.
+            1. 허위신고는 처벌 대상입니다.
           </CoTypography>
+        </Box>
+        <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
+          <CoSelect value={reason} onChange={handleReasonChange}></CoSelect>
         </Box>
         <Table
           sx={{
             borderCollapse: "collapse",
             borderStyle: "hidden",
-            margin: "2rem auto 0",
+            margin: "0.5rem auto 0",
             width: "100%",
             maxWidth: "27rem",
             borderRadius: "0.25rem",
@@ -101,27 +102,17 @@ const Codialog = ({ open, handleClickClose }) => {
                   작성일 : 2021-10-10
                 </CoTypography>
               </TableCell>
-              <TableCell>
-                <ContentsStarRating
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: "1rem",
-                  }}
-                  onChange={handleRatingChange}
-                />
-              </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={2}>
+              <TableCell>
                 <TextField
                   multiline
                   rows={6}
-                  value={review}
-                  onChange={handleReviewChange}
+                  value={report}
+                  onChange={(e) => handleReportChange(e.target.value)}
                   fullWidth
                   variant="standard"
-                  placeholder="후기를 작성해주세요."
+                  placeholder="상세적인 내용을 작성해주세요."
                   required
                   sx={{
                     width: "100%",
@@ -158,4 +149,4 @@ const Codialog = ({ open, handleClickClose }) => {
   );
 };
 
-export default Codialog;
+export default Reportdialog;

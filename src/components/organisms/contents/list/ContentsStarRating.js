@@ -1,25 +1,29 @@
 import { Box, Rating } from "@mui/material";
 import { useState } from "react";
 
-const ContentsStarRating = () => {
-  const [value, setValue] = useState(5); // 초기 별점 값 설정
+const ContentsStarRating = ({ sx, onChange }) => {
+  const [value, setValue] = useState(1); // 초기 별점 값 설정
+
+  const handleRatingChange = (event, newValue) => {
+    // 별점 값은 최소 1점이상
+    const finalValue = newValue < 1 ? 1 : newValue;
+    setValue(finalValue);
+    if (onChange) {
+      onChange(finalValue);
+    }
+  };
 
   return (
     <Box
       sx={{
-        '& > legend': { mt: 2 },
+        ...sx,
       }}
     >
       <Rating
         name="simple-controlled"
         value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
-        sx={{
-          fontSize: '1rem', // 별의 크기를 조절합니다. 더 작게 만들고 싶다면 값을 줄이세요.
-        }}
-        precision={0.1} // 별점의 정밀도를 0.5로 설정 (반 별 허용)
+        onChange={handleRatingChange}
+        precision={0.5}
       />
     </Box>
   );
