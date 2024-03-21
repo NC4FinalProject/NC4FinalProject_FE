@@ -17,6 +17,7 @@ const Mypage = () => {
     const [value, setValue] = React.useState(0);
     const [profileImage, setImage] = useState(null);
     const [userNickname, setUserNickname] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -41,24 +42,26 @@ const Mypage = () => {
 
     const thumbnailInput = useRef();
 
-    const handleProfileImage = useEffect(async e => {
-        try { await axios.get(`http://localhost:9090/mypage`, 
+    useEffect(async e => {
+        try { 
+            const response = await axios.get(`http://localhost:9090/mypage`, 
                     {
                         headers: {
                             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
                         }
-                    })
-            .then((response) => {
+                    });
+            
                 setImage(response.data.item.profileFile);
                 setUserNickname(response.data.item.userNickname);
-            })
-            .catch((error) => {
-                console.error('Error fetching image', error);
-            });
+                setLoading(false);
         } catch (error) {
             console.warn("이미지 불러오기 실패", error);
         }
     }, []);
+
+    if (loading) {
+        return <div>Loading...</div>; // 데이터를 가져오는 동안 로딩 메시지 표시
+    }
 
     const saveFileImage = async e => {
         try {
@@ -84,6 +87,40 @@ const Mypage = () => {
         } catch (error) {
             console.warn("이미지 업로드 실패");
         }
+      };
+
+      const handleOnChange = (e) => {
+        setUserNickname(e.target.value);
+      }
+
+    
+    const updateUserNickname = async e => {
+        try {
+        const formData = new FormData();
+        formData.append('user_nickname', userNickname);
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+
+        try {
+            const response = await axios.post(
+                `http://localhost:9090/mypage/user-nickname`, 
+                formData, 
+                config
+            ); 
+        } catch (error) {
+            console.warn(error);
+            if (error.response.data.errorCode === 202) {
+                alert("이미 존재하는 닉네임 입니다.");
+            }
+        }
+    } catch (error) {
+        console.warn("닉네임 변경 실패");
+    }
       };
 
   return (
@@ -139,13 +176,12 @@ const Mypage = () => {
                             fullWidth
                             id="userNickname"
                             label="닉네임"
-                            autoFocus
-                            // onChange={(e) => {nicknameCheckVal = false}}
+                            defaultValue={ userNickname === null ? ("닉네임을 입력해주세요.") : (userNickname)}
+                            onChange={handleOnChange}
                         ></TextField>
                     </Grid>
                     <Grid item xs={12}>
-                        {/* <Button type="button" onClick={handleNicknameCheck} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px'}}> */}
-                        <Button type="button"  fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
+                        <Button type="button" onClick={updateUserNickname} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
                             닉네임 변경하기
                         </Button>
                     </Grid>
