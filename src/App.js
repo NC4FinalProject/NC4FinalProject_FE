@@ -14,7 +14,6 @@ import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
 
-
 function App() {
   return (
     <ThemeProvider theme={createTheme}>
@@ -33,10 +32,11 @@ function App() {
               element={<GoogleLogin></GoogleLogin>}
             ></Route>
             <Route path="/mypage" element={<Mypage></Mypage>}></Route>
-            <Route path="/listpage" element={<List></List>} />
-            <Route path="/detailpage" element={<Detail></Detail>} />
-            <Route path="/insertpage" element={<Insert></Insert>} />
-            <Route path="/errorpage" element={<ErrorPage></ErrorPage>} />
+
+            <Route path="/list" element={<List></List>} />
+            <Route path="/detail" element={<Detail></Detail>} />
+            <Route path="/insert" element={<Insert></Insert>} />
+            <Route path="/error" element={<ErrorPage></ErrorPage>} />
             <Route path="/*" element={<ErrorPage></ErrorPage>} />
           </Route>
         </Routes>
