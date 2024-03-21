@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import { SimpleUploadAdapter } from '@ckeditor/ckeditor5-upload';
 
+function MyEditorComponent() {
+  useEffect(() => {
+    return () => {
+      // 컴포넌트가 언마운트될 때 CKEditor 인스턴스 해제
+      ClassicEditor.destroy().then(() => {
+        console.log('CKEditor 인스턴스가 성공적으로 해제되었습니다.');
+      }).catch(error => {
+        console.error('CKEditor 인스턴스 해제 중 오류 발생:', error);
+      });
+    };
+  }, []);
+}
 
 const InsertCKEditor = () => {
   return (
