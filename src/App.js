@@ -13,6 +13,7 @@ import Detail from "./pages/contents/Detail";
 import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
+import JoinVerification from "./pages/member/JoinVerification";
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
             <Route path="/detailpage" element={<Detail></Detail>} />
             <Route path="/insertpage" element={<Insert></Insert>} />
             <Route path="/errorpage" element={<ErrorPage></ErrorPage>} />
+            <Route path="/join-verification" element={<JoinVerification></JoinVerification>} />
             <Route path="/*" element={<ErrorPage></ErrorPage>} />
           </Route>
         </Routes>
