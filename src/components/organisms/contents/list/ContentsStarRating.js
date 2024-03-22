@@ -18,6 +18,7 @@ const ContentsStarRating = ({
   return (
     <Box sx={{ ...sx }}>
       <Rating
+        defaultValue={5}
         name="simple-controlled"
         value={rating}
         onChange={handleRatingChange}
