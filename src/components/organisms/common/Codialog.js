@@ -17,7 +17,7 @@ import {
 
 const Codialog = ({ open, handleClickClose }) => {
   const [review, setReview] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState();
 
   const handleReviewChange = (event) => {
     setReview(event.target.value);
