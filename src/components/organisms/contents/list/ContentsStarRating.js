@@ -1,29 +1,29 @@
 import { Box, Rating } from "@mui/material";
-import { useState } from "react";
 
-const ContentsStarRating = ({ sx, onChange }) => {
-  const [value, setValue] = useState(1); // 초기 별점 값 설정
-
+const ContentsStarRating = ({
+  sx,
+  onChange,
+  size,
+  readOnly = false,
+  rating,
+}) => {
   const handleRatingChange = (event, newValue) => {
     // 별점 값은 최소 1점이상
     const finalValue = newValue < 1 ? 1 : newValue;
-    setValue(finalValue);
     if (onChange) {
       onChange(finalValue);
     }
   };
 
   return (
-    <Box
-      sx={{
-        ...sx,
-      }}
-    >
+    <Box sx={{ ...sx }}>
       <Rating
         name="simple-controlled"
-        value={value}
+        value={rating}
         onChange={handleRatingChange}
         precision={0.5}
+        size={size}
+        readOnly={readOnly}
       />
     </Box>
   );
