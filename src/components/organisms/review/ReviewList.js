@@ -96,32 +96,48 @@ const ReviewList = () => {
           alignItems: "center",
         }}
       >
-        <ButtonGroup variant="text">
+        <ButtonGroup variant="text" sx={{ mb: "1rem" }}>
           <Button
+            style={{ border: "none" }}
             onClick={() => handleChangeSort("latest")}
             color={sortBy === "latest" ? "primary" : "inherit"}
           >
-            최신순
+            <CoTypography size="Content">최신순</CoTypography>
           </Button>
+          <CoTypography
+            size="TableContent"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            |
+          </CoTypography>
           <Button
+            style={{ border: "none" }}
             onClick={() => handleChangeSort("highestRated")}
             color={sortBy === "highestRated" ? "primary" : "inherit"}
           >
-            별점높은순
+            <CoTypography size="Content">별점높은순</CoTypography>
           </Button>
+          <CoTypography
+            size="TableContent"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            |
+          </CoTypography>
           <Button
             onClick={() => handleChangeSort("lowestRated")}
             color={sortBy === "lowestRated" ? "primary" : "inherit"}
           >
-            별점낮은순
+            <CoTypography size="Content">별점낮은순</CoTypography>
           </Button>
         </ButtonGroup>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", mb: "1rem" }}>
           <CoTypography sx={{ marginRight: "0.75rem" }}>
             {/* toFixed(1) 소수점 1째자리까지 표현 */}
             평점 {averageRating.toFixed(1)} / 5
           </CoTypography>
-          <CoHoverButton onClick={handlePostOpen}>후기등록</CoHoverButton>
+          <CoHoverButton onClick={handlePostOpen} variant="outlined">
+            후기등록
+          </CoHoverButton>
           <Codialog open={reviewPostOpen} handleClickClose={handlePostClose} />
         </Box>
       </Box>
@@ -162,10 +178,10 @@ const ReviewList = () => {
                     rating={review.rating}
                     sx={{ ml: "-0.2rem" }}
                   />
-                  <CoTypography size="TableContent">
+                  <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
                     {review.userName}
                   </CoTypography>
-                  <CoTypography size="TableContent">
+                  <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
                     {review.reviewContent}
                   </CoTypography>
                   <CoTypography size="Tag">{review.date}</CoTypography>
