@@ -1,17 +1,18 @@
 import React from 'react'
-import { Box, Button, Divider } from '@mui/material'
+import { Box, Button, Divider, Grid } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 // icon & images
 import ReplyItem from "./ReplyItem";
-import coverImg_1 from "../../../images/ReplyList/cover_1.jpg";
-import coverImg_2 from "../../../images/ReplyList/cover_2.jpg";
-import coverImg_3 from "../../../images/ReplyList/cover_3.jpg";
-import coverImg_4 from "../../../images/ReplyList/cover_4.jpg";
-import coverImg_5 from "../../../images/ReplyList/cover_5.jpg";
+import coverImg_1 from "../../../../../images/ReplyList/cover_1.jpg";
+import coverImg_2 from "../../../../../images/ReplyList/cover_2.jpg";
+import coverImg_3 from "../../../../../images/ReplyList/cover_3.jpg";
+import coverImg_4 from "../../../../../images/ReplyList/cover_4.jpg";
+import coverImg_5 from "../../../../../images/ReplyList/cover_5.jpg";
+import CoTypography from '../../../../atoms/common/CoTypography';
 
 // Reply List
-const loremText = `Quisquam sunt ipsa nihil ratione. Dolorum earum occaecati et sequi et eius asperiore...`;
+const loremText = `역시 강의는 고기천 강사님! 역시 강의는 고기천 강사님!`;
 
 const ReplyList = [
   {
@@ -50,21 +51,22 @@ const ReplyApp = () => {
   return (
     <>
     {/* header */}
-    <Box sx={{ py: 1, px: 1, textAlign: "Left" }}>
-      <Button to="/" component={Link} size="small" color="inherit">
-      Reply
-      </Button>
-    </Box>
+    <Grid container sx={{ px: 2, py: 0.3, paddingTop: 1, display: 'flex', justifyContent: 'space-between',}}>
+      <Grid item={4}>
+        <CoTypography size="Content" sx={{':hover': {color: 'primary.main', cursor: 'pointer'}}}>Reply</CoTypography> 
+      </Grid>
+      <Grid item={4}>
+        <CoTypography size="Content" sx={{':hover': {color: 'primary.main', cursor: 'pointer'}}}>Chat</CoTypography>   
+      </Grid>    
+      <Grid item={4}>
+        <CoTypography size="Content" sx={{':hover': {color: 'primary.main', cursor: 'pointer'}}}>List</CoTypography>
+      </Grid>
+      
+    </Grid>
     <Divider />
-
+    
     {/* Main Content */}
-
-    <Box
-      overflow="auto"
-      sx={{
-        padding: { xs: 2, sm: 3 },
-      }}
-    >
+    <Box sx={{ padding: { xs: 1, sm: 1 }, }}>
       {ReplyList.map((reply) => (
         <ReplyItem
           key={reply.title}
@@ -73,7 +75,13 @@ const ReplyApp = () => {
           photo={reply.photo}
           postingTime={reply.postingTime}
         />
-      ))};
+      ))}
+    </Box>
+    <Divider />
+
+    {/* Input Content */}
+    <Box>
+      
     </Box>
     </>
   )

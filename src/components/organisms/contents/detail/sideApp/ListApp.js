@@ -15,7 +15,6 @@ export const ListApp = () => {
       </Button>
     </Box>
     <Divider />
-    <div style={{overflowY: 'auto'}}>
       <p>어오?</p>
       <p>어오?</p>
       <p>어오?</p>
@@ -44,7 +43,8 @@ export const ListApp = () => {
       <p>어오?</p>
       <p>어오?</p>
       <p>어오?</p>
-    </div>
     </>
   )
 }
+
+export default ListApp;

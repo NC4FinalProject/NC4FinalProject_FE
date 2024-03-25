@@ -9,7 +9,7 @@ const ChapterThree = () => {
     <Grid container justifyContent="center" >
       <Grid item xs={2} />
       <Grid item xs={8} >
-        {/* <CoTypography style={{ marginBottom: '24px' }}>강의소개</CoTypography> */}
+        <CoTypography size="Title" style={{ marginBottom: '24px' }}>강의소개</CoTypography>
         <InsertCKEditor />
       </Grid>
       <Grid item xs={2} />
