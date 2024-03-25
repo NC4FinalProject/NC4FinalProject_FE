@@ -4,8 +4,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Board from "./contentsElements/Board";
 import ReviewList from "../../review/ReviewList";
+import Inquriy from "../../inquiry/Inquriy";
+import { useState } from "react";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -42,6 +43,18 @@ function a11yProps(index) {
 
 export default function ContentsDetail() {
   const [value, setValue] = React.useState(0);
+
+  const [view, setView] = useState("list");
+  const [selectedInquiryId, setSelectedInquiryId] = useState(null);
+
+  const handleWriteClick = () => {
+    setView("write");
+  };
+
+  const handleInquiryClick = (id) => {
+    setSelectedInquiryId(id);
+    setView("detail");
+  };
 
   // props로 변수값(state 함수아님) 보내주기, 부모 컴포넌트에서 스테이트 만들어서 보내주기
   // const [reviewCount, setReviewCount] = useState(10); << 이런식으로 부모컴포넌트에 작성하기
@@ -83,7 +96,13 @@ export default function ContentsDetail() {
       </CustomTabPanel>
       {/* 게시판 */}
       <CustomTabPanel value={value} index={3}>
-        <Board></Board>
+        {view === "list" && (
+          <Inquriy
+            onInquiryClick={(id) => handleInquiryClick(id)} // 이벤트 핸들러 추가
+          />
+        )}
+        {/* {view === "detail" && <InquiryDetail id={selectedInquiryId} />} */}
+        {/* {view === "write" && <InquiryWrite />} */}
       </CustomTabPanel>
     </Box>
   );
