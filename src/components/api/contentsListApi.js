@@ -1,4 +1,4 @@
-export const contents = [
+export const contentsListApi = [
   {
     id: "p1",
     title: `프로그래밍 시작하기:웹 입문(Inflearn Original)`,

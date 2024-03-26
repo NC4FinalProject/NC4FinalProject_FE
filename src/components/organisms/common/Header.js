@@ -42,7 +42,7 @@ const Header = () => {
   return (
     <Box display="flex"  sx={{marginTop: '1rem'}}>
       <img src='/images/team_logo.png' alt='team_logo' height='30rem' width='150rem' style={{paddingTop:'0.125rem'}} onClick={() => navi('/')}/>
-      <CoHoverButton style={{marginLeft: '1rem'}} onClick={() => navi('/listpage')}>강의</CoHoverButton>
+      <CoHoverButton style={{marginLeft: '1rem'}} onClick={() => navi('/list')}>강의</CoHoverButton>
       <CoHoverButton style={{marginLeft: '1rem'}}>커뮤니티</CoHoverButton>
       <TextField sx={{marginLeft: '2.5rem',
          width:'40rem', 
