@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import "../../../scss/Header.scss";
-import { Button, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import CoTypography from "../../atoms/common/CoTypography";
-import { Typography } from "@mui/material";
-import CoHoverButton from "../../atoms/common/CoHoverButton";
+import React, { useState } from 'react';
+import Box from '@mui/material/Box';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import '../../../scss/Header.scss';
+import { Button, TextField } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import CoTypography from '../../atoms/common/CoTypography';
+import { Typography } from '@mui/material';
+import CoHoverButton from '../../atoms/common/CoHoverButton';
 
 const Header = () => {
   const navi = useNavigate();
@@ -38,6 +38,7 @@ const Header = () => {
   };
 
   return (
+
     <Box display="flex" sx={{ marginTop: "1rem" }}>
       <img
         src="/images/team_logo.png"
@@ -63,6 +64,7 @@ const Header = () => {
             padding: "10px",
             "&::placeholder": {
               textAlign: "center",
+
             },
           },
         }}

@@ -13,7 +13,7 @@ const JoinVerification = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <Typography component="span" variant='string'>
-                        user@mail.com 로 인증번호를 보내드렸습니다. 인증번호를 입력해주세요.
+                        이메일로 인증번호를 보내드렸습니다. 인증번호를 입력해주세요.
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
