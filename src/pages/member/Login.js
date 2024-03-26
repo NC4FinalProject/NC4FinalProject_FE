@@ -69,7 +69,7 @@ const Login = () => {
 
     
     return (
-        <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
+        <Container component="main" maxWidth="xs" style={{ marginTop: '6%', marginBottom:'10%' }}>
             <form onSubmit={handleSubmit}>
                 <Grid container style={{justifyContent:'center', marginBottom:'3%'}}>
                     <Grid item>
@@ -121,7 +121,7 @@ const Login = () => {
                         </Link>
                     </Grid>
                         <Grid item>
-                        <Link href="/src/pages/member/Join" variant="body2" style={{color:'#616568', fontSize:'17px'}}>
+                        <Link href="/Join" variant="body2" style={{color:'#616568', fontSize:'17px'}}>
                             회원가입
                         </Link>
                     </Grid>
