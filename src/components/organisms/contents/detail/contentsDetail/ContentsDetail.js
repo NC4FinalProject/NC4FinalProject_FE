@@ -5,8 +5,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ReviewList from "../../review/ReviewList";
-import Inquriy from "../../inquiry/Inquriy";
+import ReviewList from "../../../review/ReviewList";
+import Inquriy from "../../../inquiry/Inquriy";
 import { useState } from "react";
 
 
