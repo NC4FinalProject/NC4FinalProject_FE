@@ -114,7 +114,6 @@ export default function LinearStepper() {
               {activeStep === 2 && (<ChapterThree/>)}
             </Box>
             
-
           <Grid container justifyContent="center">
             <Grid item xs={12} md={9}>
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -141,8 +140,6 @@ export default function LinearStepper() {
               </Box>
             </Grid>
           </Grid>
-
-          
 
         </Fragment>
       )}

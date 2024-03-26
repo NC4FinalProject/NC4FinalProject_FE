@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MoonLoader } from "react-spinners";
+import { Grid } from '@mui/material';
 
 const GoogleLogin = () => {
     const navi = useNavigate();
@@ -78,9 +80,11 @@ const GoogleLogin = () => {
 }, [])
 
 return (
-    <div>
-       Loading...
-    </div>
+    <Grid Container marginBottom='30%' marginTop='10%'style={{ position: 'flex'}} >
+        <Grid item xs={12} style={{ position: 'absolute', left: '50%'}}>
+            <MoonLoader color="#558BCF" />
+        </Grid>
+    </Grid> 
 );
 
 }
