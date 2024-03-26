@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -7,6 +8,7 @@ import Box from "@mui/material/Box";
 import ReviewList from "../../review/ReviewList";
 import Inquriy from "../../inquiry/Inquriy";
 import { useState } from "react";
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;

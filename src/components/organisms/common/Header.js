@@ -38,6 +38,7 @@ const Header = () => {
   };
 
   return (
+
     <Box display="flex" sx={{ marginTop: "1rem" }}>
       <img
         src="/images/team_logo.png"
@@ -63,6 +64,7 @@ const Header = () => {
             padding: "10px",
             "&::placeholder": {
               textAlign: "center",
+
             },
           },
         }}

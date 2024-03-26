@@ -6,16 +6,6 @@ import { Link } from 'react-router-dom'
 export const ListApp = () => {
   return (
     <>
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', py: 1, px: 1 }}>
-      <Button to="/" component={Link} size="small" color="inherit" >
-        List
-      </Button>
-      <Button to="/" component={Link} size="small" color="inherit">
-        Reply
-      </Button>
-    </Box>
-    <Divider />
-    <div style={{overflowY: 'auto'}}>
       <p>어오?</p>
       <p>어오?</p>
       <p>어오?</p>
@@ -44,7 +34,8 @@ export const ListApp = () => {
       <p>어오?</p>
       <p>어오?</p>
       <p>어오?</p>
-    </div>
     </>
   )
 }
+
+export default ListApp;
