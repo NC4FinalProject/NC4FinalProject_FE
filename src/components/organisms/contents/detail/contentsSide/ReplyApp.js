@@ -45,7 +45,6 @@ const ReplyList = [
     photo: coverImg_5,
     postingTime: "about 10 hours",
   },
-
   {
     title: "무호",
     subtitle: loremText,
@@ -57,9 +56,12 @@ const ReplyList = [
     subtitle: loremText,
     photo: coverImg_5,
     postingTime: "about 10 hours",
+  },  {
+    title: "무호",
+    subtitle: loremText,
+    photo: coverImg_5,
+    postingTime: "about 10 hours",
   },
-
-
 
 
 

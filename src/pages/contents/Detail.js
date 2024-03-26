@@ -86,9 +86,9 @@ const Detail = () => {
 
             <Grid className="side-app" item xs={3} lg={3} sx={{paddingLeft: 3.75}}>
             {/* sx={{ bgcolor: 'grey.300', borderRadius: '5px', display: { xs: 'none', lg: 'block' }, }} */}
-                <Box sx={{borderLeft: `1px solid ${theme.palette.divider}`, height: '100%'}}> 
+                <Grid sx={{borderLeft: `1px solid ${theme.palette.divider}`, height: '100%'}}> 
                     <ContentsSide ></ContentsSide>
-                </Box>
+                </Grid>
             </Grid>
 
         </GridStyle>

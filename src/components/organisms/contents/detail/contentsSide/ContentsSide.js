@@ -29,13 +29,17 @@ const ContentsSide = () => {
 
     {/* body */}
 
-    <Grid style={{height: '100%'}} sx={{overflowY: 'auto'}}>
+    <Grid sx={{height: '80%', overflowY: 'auto'}}>
     {/* <Grid> */}
       {/* <ChatApp></ChatApp> */}
       {/* <ListApp></ListApp> */}
       <ReplyApp></ReplyApp>
+      
     </Grid>
-    <TextField fullWidth id="standard-basic" variant="standard" />
+      <TextField fullWidth id="standard-basic" variant="standard" />
+    
+    
+    
 
     </>
   )
