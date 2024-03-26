@@ -15,7 +15,7 @@ import {
   InputAdornment,
   TextField,
   Pagination,
-  Typography,
+  Container,
 } from "@mui/material";
 import CoTypography from "../../atoms/common/CoTypography";
 import styled from "styled-components";
@@ -62,7 +62,8 @@ const Inquriy = ({ onInquiryClick }) => {
     {
       inquiryTitle: "강의 관련 질문 있습니다.",
       userName: "User1",
-      inquiryContent: "모르게쑤요...",
+      inquiryContent:
+        "모르게쑤요...asdfasdfaasdfasdfasdfASDFASasdfasdfasdfasdfqwertawerawefasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaasdfqwetqasdfadfasdfasdfasdfsdfawetqwetasdfasfasfdDFsdfasdfasdff",
       date: "2022-01-01",
       tag: null,
       isPrivate: false,
@@ -128,15 +129,6 @@ const Inquriy = ({ onInquiryClick }) => {
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "1rem",
-        }}
-      >
-        <CoHoverButton variant="outlined">글 쓰기</CoHoverButton>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
@@ -192,7 +184,7 @@ const Inquriy = ({ onInquiryClick }) => {
           </Box>
           <TextField
             sx={{
-              width: "20rem",
+              width: "16rem",
               "& .MuiInputBase-input": {
                 height: "1rem",
                 padding: "10px",
@@ -210,18 +202,45 @@ const Inquriy = ({ onInquiryClick }) => {
               ),
             }}
           />
+          <CoHoverButton variant="outlined" style={{ height: "2.25rem" }}>
+            글 쓰기
+          </CoHoverButton>
         </Box>
       </Box>
+
+      {/* 상위 태그에 싹다 플렉스 width : 100% 줘야 된다 */}
       <Table
         sx={{
           borderTop: "1px solid black",
+          flexDirection: "column",
+          display: "flex",
+          width: "100%",
         }}
       >
-        <TableBody>
+        <TableBody
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
           {Inquiries.map((inquiry, index) => (
-            <TableRow key={index}>
-              <TableCell sx={{ display: "flex", flexDirection: "column" }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <TableRow key={index} style={{ display: "flex", width: "100%" }}>
+              <TableCell
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
                   <Box sx={{ display: "flex" }}>
                     <CoTypography size="Title" sx={{ mb: "1rem" }}>
                       {inquiry.inquiryTitle}
@@ -243,6 +262,7 @@ const Inquriy = ({ onInquiryClick }) => {
                           ? "primary.main"
                           : "primary",
                         color: inquiry.isSolved ? "white" : "primary",
+                        mt: "-1rem",
                       }}
                     />
                   </Box>
@@ -250,7 +270,14 @@ const Inquriy = ({ onInquiryClick }) => {
 
                 <CoTypography
                   size="Content"
-                  sx={{ mb: "1rem", color: "#7d7d7d" }}
+                  sx={{
+                    width: "70%",
+                    mb: "1rem",
+                    color: "#7d7d7d",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
                 >
                   {inquiry.inquiryContent}
                 </CoTypography>
@@ -326,6 +353,7 @@ const Inquriy = ({ onInquiryClick }) => {
           ))}
         </TableBody>
       </Table>
+
       <Pagination
         count={10}
         color="primary"
