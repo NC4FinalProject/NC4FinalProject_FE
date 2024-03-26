@@ -17,22 +17,22 @@ import {
 
 const Codialog = ({ open, handleClickClose }) => {
   const [review, setReview] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(5);
 
-  const handleReviewChange = (event) => {
-    setReview(event.target.value);
+  const handleReviewChange = (newValue) => {
+    setReview(newValue.target.value);
   };
 
-  const handleRatingChange = (event) => {
-    setRating(event);
-    console.log(event);
+  const handleRatingChange = (newValue) => {
+    setRating(newValue);
+    console.log(newValue);
   };
 
   const handleCancel = () => {
     console.log(review);
     console.log(rating);
     setReview("");
-    setRating(0);
+    setRating(5);
     handleClickClose();
   };
 
@@ -40,7 +40,7 @@ const Codialog = ({ open, handleClickClose }) => {
     console.log(review);
     console.log(rating);
     setReview("");
-    setRating(0);
+    setRating(5);
     handleClickClose();
   };
 
@@ -108,6 +108,7 @@ const Codialog = ({ open, handleClickClose }) => {
                     justifyContent: "flex-end",
                     marginTop: "1rem",
                   }}
+                  rating={rating}
                   onChange={handleRatingChange}
                 />
               </TableCell>

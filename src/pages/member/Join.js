@@ -53,7 +53,7 @@ const Join = () => {
                 });
 
                 if (response.data.item && response.data.statusCode === 200) {
-                    navi('/login');
+                    navi('/join-verification');
                 }
             } catch (e) {
                 if (e.response.data.errorCode === 100) {
@@ -157,7 +157,7 @@ const Join = () => {
     );
 
     return (
-        <Container component="main" maxWidth="xs" style={{ marginTop: '8%' }}>
+        <Container component="main" maxWidth="xs" style={{ marginTop: '6%', marginBottom:'10%' }}>
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} style={{textAlign: 'center'}}>
@@ -247,12 +247,12 @@ const Join = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px'}}>
-                            이메일로 인증번호 받기
+                            가입하고 이메일로 인증번호 받기
                         </Button>
                     </Grid>
                 <Grid container justifyContent="flex-end">
                     <Grid item>
-                        <Link href="/src/pages/member/Login" variant="body2">
+                        <Link href="/login" variant="body2">
                             로그인 페이지로 돌아가기
                         </Link>
                     </Grid>

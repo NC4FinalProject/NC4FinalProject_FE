@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import CoTypography from "../../atoms/common/CoTypography";
-import ContentsStarRating from "../contents/list/ContentsStarRating";
+import CoSelect from "../common/CoSelect";
 import {
   Table,
   TableBody,
@@ -15,48 +15,53 @@ import {
   TextField,
 } from "@mui/material";
 
-const Modifydalog = ({ open, handleClickClose }) => {
-  const [review, setReview] = useState("");
-  const [rating, setRating] = useState(0);
+const Reportdialog = ({ open, handleClickClose }) => {
+  const [reportReason, setReportReason] = useState("");
+  const [detailReason, setDetailReason] = useState("");
 
-  const handleReviewChange = (newValue) => {
-    setReview(newValue);
+  const handleReportChange = (e) => {
+    console.log(e);
+    setReportReason(e.target.value);
   };
 
-  const handleRatingChange = (newValue) => {
-    setRating(newValue);
-    console.log(rating);
+  const handleReasonChange = (event) => {
+    console.log(event.target.value);
+    setDetailReason(event.target.value);
   };
 
   const handleCancel = () => {
-    setReview("");
-    setRating(0);
+    console.log(reportReason);
+    console.log(detailReason);
+    setReportReason("");
+    setDetailReason("");
     handleClickClose();
   };
 
   const handleSubmit = () => {
-    setReview("");
-    setRating(0);
+    console.log(reportReason);
+    console.log(detailReason);
+    setReportReason();
+    setDetailReason("");
     handleClickClose();
   };
 
   return (
     <Dialog
       open={open}
-      onClose={(event, reason) => {
-        if (reason !== "backdropClick") {
+      onClose={(event, detailReason) => {
+        if (detailReason !== "backdropClick") {
           handleClickClose(event);
         }
       }}
       disableEscapeKeyDown
     >
       <DialogTitle style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-        <CoTypography size="DialogTitle">후기 수정</CoTypography>
+        <CoTypography size="DialogTitle">신고하기</CoTypography>
       </DialogTitle>
       <DialogContent
         style={{
           width: "28.125rem",
-          height: "26rem",
+          height: "27rem",
           padding: "1rem",
           margin: "0 auto",
         }}
@@ -72,16 +77,17 @@ const Modifydalog = ({ open, handleClickClose }) => {
           }}
         >
           <CoTypography size="Content" style={{ marginBottom: "35px" }}>
-            1. 관련 없는 글은 규정에 따라 삭제될 수 있습니다.
-            <br />
-            2. 욕설, 비방, 광고성 글은 삭제 및 제재될 수 있습니다.
+            1. 허위신고는 처벌 대상입니다.
           </CoTypography>
+        </Box>
+        <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
+          <CoSelect onChange={handleReportChange} />
         </Box>
         <Table
           sx={{
             borderCollapse: "collapse",
             borderStyle: "hidden",
-            margin: "2rem auto 0",
+            margin: "0.5rem auto 0",
             width: "100%",
             maxWidth: "27rem",
             borderRadius: "0.25rem",
@@ -97,27 +103,17 @@ const Modifydalog = ({ open, handleClickClose }) => {
                   작성일 : 2021-10-10
                 </CoTypography>
               </TableCell>
-              <TableCell>
-                <ContentsStarRating
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    marginTop: "1rem",
-                  }}
-                  onChange={handleRatingChange}
-                />
-              </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell colSpan={2}>
+              <TableCell>
                 <TextField
                   multiline
                   rows={6}
-                  value={review}
-                  onChange={(e) => handleReviewChange(e.target.value)}
+                  value={detailReason}
+                  onChange={handleReasonChange}
                   fullWidth
                   variant="standard"
-                  placeholder="후기를 작성해주세요."
+                  placeholder="상세적인 내용을 작성해주세요."
                   required
                   sx={{
                     width: "100%",
@@ -154,4 +150,4 @@ const Modifydalog = ({ open, handleClickClose }) => {
   );
 };
 
-export default Modifydalog;
+export default Reportdialog;

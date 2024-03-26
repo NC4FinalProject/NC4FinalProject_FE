@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import CoTypography from "../atoms/common/CoTypography";
-import CoSelect from "../organisms/common/CoSelect";
+import CoTypography from "../../atoms/common/CoTypography";
+import ContentsStarRating from "../contents/list/ContentsStarRating";
 import {
   Table,
   TableBody,
@@ -15,32 +15,37 @@ import {
   TextField,
 } from "@mui/material";
 
-const Reportdialog = ({ open, handleClickClose }) => {
-  const [report, setReport] = useState("");
-  const [reason, setReason] = useState("");
+const Modifydalog = ({ open, handleClickClose, review }) => {
+  const [reviewContent, setReviewContent] = useState("");
+  const [reviewRating, setReviewRating] = useState(0);
 
-  const handleReportChange = (newValue) => {
-    setReport(newValue);
+  useEffect(() => {
+    if (review) {
+      setReviewContent(review.reviewContent);
+      setReviewRating(review.rating);
+    }
+  }, [review]);
+
+  const handleReviewChange = (newValue) => {
+    setReviewContent(newValue);
   };
 
-  const handleReasonChange = (event) => {
-    setReason(event.target.value);
-    console.log(event.target.value);
+  const handleRatingChange = (newValue) => {
+    setReviewRating(newValue);
+    console.log(newValue);
   };
 
   const handleCancel = () => {
-    console.log(reason);
-    console.log(report);
-    setReport("");
-    setReason("");
+    console.log(reviewContent);
+    console.log(reviewRating);
+    setReviewContent("");
+    setReviewRating(0);
     handleClickClose();
   };
 
   const handleSubmit = () => {
-    console.log(reason);
-    console.log(report);
-    setReport("");
-    setReason("");
+    setReviewContent("");
+    setReviewRating(0);
     handleClickClose();
   };
 
@@ -55,12 +60,12 @@ const Reportdialog = ({ open, handleClickClose }) => {
       disableEscapeKeyDown
     >
       <DialogTitle style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-        <CoTypography size="DialogTitle">신고하기</CoTypography>
+        <CoTypography size="DialogTitle">후기 수정</CoTypography>
       </DialogTitle>
       <DialogContent
         style={{
           width: "28.125rem",
-          height: "27rem",
+          height: "26rem",
           padding: "1rem",
           margin: "0 auto",
         }}
@@ -76,17 +81,16 @@ const Reportdialog = ({ open, handleClickClose }) => {
           }}
         >
           <CoTypography size="Content" style={{ marginBottom: "35px" }}>
-            1. 허위신고는 처벌 대상입니다.
+            1. 관련 없는 글은 규정에 따라 삭제될 수 있습니다.
+            <br />
+            2. 욕설, 비방, 광고성 글은 삭제 및 제재될 수 있습니다.
           </CoTypography>
-        </Box>
-        <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
-          <CoSelect value={reason} onChange={handleReasonChange}></CoSelect>
         </Box>
         <Table
           sx={{
             borderCollapse: "collapse",
             borderStyle: "hidden",
-            margin: "0.5rem auto 0",
+            margin: "2rem auto 0",
             width: "100%",
             maxWidth: "27rem",
             borderRadius: "0.25rem",
@@ -102,17 +106,28 @@ const Reportdialog = ({ open, handleClickClose }) => {
                   작성일 : 2021-10-10
                 </CoTypography>
               </TableCell>
+              <TableCell>
+                <ContentsStarRating
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginTop: "1rem",
+                  }}
+                  rating={reviewRating}
+                  onChange={handleRatingChange}
+                />
+              </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>
+              <TableCell colSpan={2}>
                 <TextField
                   multiline
                   rows={6}
-                  value={report}
-                  onChange={(e) => handleReportChange(e.target.value)}
+                  value={reviewContent}
+                  onChange={(e) => handleReviewChange(e.target.value)}
                   fullWidth
                   variant="standard"
-                  placeholder="상세적인 내용을 작성해주세요."
+                  placeholder="후기를 작성해주세요."
                   required
                   sx={{
                     width: "100%",
@@ -141,7 +156,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
             취소하기
           </Button>
           <Button onClick={handleSubmit} color="primary" variant="contained">
-            등록하기
+            수정하기
           </Button>
         </Box>
       </DialogActions>
@@ -149,4 +164,4 @@ const Reportdialog = ({ open, handleClickClose }) => {
   );
 };
 
-export default Reportdialog;
+export default Modifydalog;

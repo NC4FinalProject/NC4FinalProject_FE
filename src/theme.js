@@ -7,13 +7,13 @@ const theme = createTheme({
 
   // 커스텀 breakpoints 정의
   breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1300, // 여기서 'lg' 브레이크포인트의 최대 너비를 설정
-      xl: 1536,
-    },
+    // values: {
+    //   xs: 0,
+    //   sm: 600,
+    //   md: 900,
+    //   lg: 1300, // 여기서 'lg' 브레이크포인트의 최대 너비를 설정
+    //   xl: 1536,
+    // },
   },
   palette: {
     primary: {
@@ -53,9 +53,9 @@ const theme = createTheme({
       main: "rgb(255, 72, 66)",
     },
     mixins: {
-      toolbar: {
-        minHeight: 64,
-      },
+      // toolbar: {
+      //   minHeight: 64,
+      // },
     },
   },
 });

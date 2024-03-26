@@ -13,6 +13,7 @@ import Detail from "./pages/contents/Detail";
 import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
+import JoinVerification from "./pages/member/JoinVerification";
 import NoticeList from "./pages/contents/NoticeList";
 
 function App() {
@@ -24,15 +25,10 @@ function App() {
             <Route path="/" element={<Home></Home>}></Route>
             <Route path="/join" element={<Join></Join>}></Route>
             <Route path="/login" element={<Login></Login>}></Route>
-            <Route
-              path="/kakao-login"
-              element={<KakaoLogin></KakaoLogin>}
-            ></Route>
-            <Route
-              path="/google-login"
-              element={<GoogleLogin></GoogleLogin>}
-            ></Route>
+            <Route path="/kakao-login"element={<KakaoLogin></KakaoLogin>}></Route>
+            <Route path="/google-login"element={<GoogleLogin></GoogleLogin>}></Route>
             <Route path="/mypage" element={<Mypage></Mypage>}></Route>
+            <Route path="/join-verification" element={<JoinVerification></JoinVerification>} />
 
             <Route path="/noticelist" element={<NoticeList></NoticeList>}></Route>
             <Route path="/list" element={<List></List>} />
