@@ -4,7 +4,7 @@ export const contentsInfoApi = [
     title:
       "Tesla Cybertruck-inspired camper trailer for Tesla fans who can’t just wait for the truck!",
     path: "#",
-    social: { comment: "76.46k", views: "90.58k", share: "77.89k" },
+    social: { comment: "37", views: "515", share: "9" },
   },
   {
     dateTime: "05 November 2020",

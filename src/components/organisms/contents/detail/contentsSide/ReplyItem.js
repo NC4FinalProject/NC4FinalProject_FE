@@ -2,12 +2,11 @@ import styled from '@emotion/styled';
 import { Avatar, Box, Grid, Typography } from '@mui/material';
 import React from 'react'
 import { Link } from "react-router-dom";
-import CoTypography from '../../../../atoms/common/CoTypography';
+
 
 
 const BoxContainerStyle = styled(Box)(({ theme }) => ({
   display: "flex",
-
   // "& .MuiAvatar-root": {
   //   borderRadius: theme.spacing(1),
   //   marginTop: theme.spacing(0.75),
@@ -33,7 +32,7 @@ const ReplyItem = (props) => {
   return (
     <BoxContainerStyle sx={{ my: 0.5 }}>
       <Grid container >
-        <Grid item xs={2}>
+        <Grid item>
           <Link to="/" component={Link} underline="hover" color="inherit">
             <Avatar 
               src={props.photo} 

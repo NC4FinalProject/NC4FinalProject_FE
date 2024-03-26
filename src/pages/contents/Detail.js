@@ -2,14 +2,12 @@ import React, { useEffect } from 'react'
 import VideoPlayer from "../../components/organisms/contents/detail/VideoPlayer";
 import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
 import styled from '@emotion/styled';
-
 import {contentsInfoApi} from '../../components/api/contentsInfoApi';
-
-import ContentsDetail from '../../components/organisms/contents/detail/contentsDetail/ContentsDetail';
 import { useTheme } from '@emotion/react';
+import ContentsDetail from '../../components/organisms/contents/detail/contentsDetail/ContentsDetail';
 import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
-import ContentsInfo from '../../components/organisms/contents/detail/contentInfo/ContentsInfo';
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
+import ContentsInfo from '../../components/organisms/contents/detail/contantsInfo/ContentsInfo';
 
 
 // style
@@ -101,7 +99,7 @@ const Detail = () => {
 
                 {/* ContentInfo */}
 
-                <ContentsInfo  
+                <ContentsInfo
                     comments={firstContentsInfoItem.social.comment}
                     views={firstContentsInfoItem.social.views}
                     shares={firstContentsInfoItem.social.share}
@@ -112,6 +110,7 @@ const Detail = () => {
                 
                 <ContentsDetail>
                 </ContentsDetail>
+
             </Grid>
 
             {/* ContentsPrice */}

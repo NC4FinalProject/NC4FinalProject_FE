@@ -36,7 +36,7 @@ const Section = ({ title, onAdd, onRemove, showRemove, onSubAdd, onSubRemove, is
             </IconButton>
           )}
           {showRemove && (
-            <IconButton sx={{ padding: 0 }} color="error" onClick={onRemove}>
+            <IconButton sx={{ padding: 0 }} color="error" onClick={() => onRemove(sectionId)}>
               <RemoveCircleOutlineIcon />
             </IconButton>
           )}
@@ -67,7 +67,7 @@ const Section = ({ title, onAdd, onRemove, showRemove, onSubAdd, onSubRemove, is
           )}
           {/* 서브섹션 삭제 버튼은 첫 번째를 제외한 나머지 서브섹션에 표시됩니다. */}
           {subs.length > 0 && index === subs.length - 1 && (
-          <IconButton sx={{ padding: 0 }} color="error" onClick={() => onSubRemove(sectionId, subs.id)}>
+          <IconButton sx={{ padding: 0 }} color="error" onClick={() => onSubRemove(sectionId, subs[index].id)}>
             <RemoveCircleOutlineIcon />
           </IconButton>
           )}
@@ -128,9 +128,9 @@ export default function Sections() {
           sectionId={section.id}
           title={`Section_${section.id}`}
           onAdd={addSection}
-          onRemove={() => removeSection(section.id)}
-          onSubAdd={() => addSubSection(section.id)} 
-          onSubRemove={(subId) => removeSubSection(section.id, subId)} 
+          onRemove={removeSection}
+          onSubAdd={addSubSection} 
+          onSubRemove={removeSubSection} 
           showRemove={sections.length > 1 && index === sections.length - 1}
           index={index}
           isLast={index === sections.length - 1}

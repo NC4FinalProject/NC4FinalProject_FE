@@ -8,7 +8,8 @@ import CoTypography from '../../../../atoms/common/CoTypography'
 // 다중 강의 list reply
 // 화상 강의 chat
 
-const ContentSide = () => {
+
+const ContentsSide = () => {
   return (
     <>
     {/* header */}
@@ -27,15 +28,18 @@ const ContentSide = () => {
     <Divider />
 
     {/* body */}
-    <Grid style={{height: '87%'}} sx={{overflowY: 'auto'}}>
+
+    <Grid style={{height: '100%'}} sx={{overflowY: 'auto'}}>
     {/* <Grid> */}
       {/* <ChatApp></ChatApp> */}
       {/* <ListApp></ListApp> */}
       <ReplyApp></ReplyApp>
     </Grid>
     <TextField fullWidth id="standard-basic" variant="standard" />
+
     </>
   )
 }
 
-export default ContentSide
+
+export default ContentsSide
