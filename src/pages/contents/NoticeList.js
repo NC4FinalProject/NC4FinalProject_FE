@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Pagination, MenuItem } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Pagination, MenuItem, Grid } from '@mui/material';
 import CoTypography from '../../components/atoms/common/CoTypography';
 import useStore from '../../stores/NoticeStore';
+import SearchIcon from '@mui/icons-material/Search';
+import { Link } from 'react-router-dom';
 
 const NoticeList = () => {
   const {
@@ -13,7 +15,6 @@ const NoticeList = () => {
     searchCondition,
     searchKeyword,
     page,
-    setNotices,
     setOpenDialog,
     setTitle,
     setContent,
@@ -31,7 +32,7 @@ const NoticeList = () => {
       await fetchUserNickname();
     };
     fetchData();
-  }, [page, searchCondition, searchKeyword]);
+  }, [fetchNotices,fetchUserNickname, page, searchCondition, searchKeyword]);
 
   const handleDialogOpen = () => {
     setOpenDialog(true);
@@ -71,31 +72,72 @@ const NoticeList = () => {
 
   return (
     <div>
-      <CoTypography size="MainTitle" style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>공지사항</CoTypography>
+    <Grid
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: 'center',
+        borderBottom: '1px solid #ccc'
+      }}
+    >
+      <CoTypography size="MainTitle" style={{ marginTop: '1rem', marginBottom: '0.5rem'}}>
+        공지사항
+      </CoTypography>
+
+      <Box sx={{ flex: 1}} />
+
       <TextField
+        size="small"
+        sx={{ width: '10rem', marginTop: '1rem'  }}
         select
         label="검색 조건"
-        value={searchCondition}
+        defaultValue={searchCondition}
+        inputProps={{
+          name: 'searchCondition',
+        }}
         onChange={handleSearchConditionChange}
         fullWidth
       >
-        {['제목', '내용', '작성자'].map((option) => (
-          <MenuItem key={option} value={option}>
-            {option}
-          </MenuItem>
-        ))}
+        <MenuItem value="all">전체</MenuItem>
+        <MenuItem value="title">제목</MenuItem>
+        <MenuItem value="content">내용</MenuItem>
+        <MenuItem value="writer">작성자</MenuItem>
       </TextField>
+
       <TextField
-        label="검색어"
+        size="small"
+        sx={{ width: '20rem', marginLeft: '1rem', marginTop: '1rem'  }}
+        id="searchKeyword"
+        name="searchKeyword"
+        label="검색어를 입력해주세요."
         value={searchKeyword}
         onChange={handleSearchKeywordChange}
         fullWidth
+        placeholder="검색어를 입력해주세요."
+        InputProps={{
+          endAdornment: (
+            <SearchIcon />
+          ),
+        }}
       />
-      <Button variant="contained" color="primary" onClick={handleDialogOpen}>글 등록하기</Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleDialogOpen}
+        style={{ color: 'white', marginLeft: '1rem',marginTop: '1rem'  }}
+      >
+        글 등록하기
+      </Button>
+    </Grid>
       <Box />
+      
       {notices.content && notices.content.map(notice => (
-        <Box key={notice.id} style={{ marginTop: '0.5rem', borderTop: '1px solid #ccc', paddingBottom: '0.25rem' }}>
-          <CoTypography size="NoticeTitle" sx={{ marginTop: '0.225rem' }}>{notice.noticeTitle}</CoTypography>
+        <Box key={notice.id} style={{ marginTop: '0.5rem', borderBottom: '1px solid #ccc', paddingBottom: '0.25rem' }}>
+           <CoTypography size="NoticeTitle" sx={{ marginTop: '0.225rem' }}>
+           <Link to={`/notice/${notice.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                 {notice.noticeTitle}
+              </Link>
+          </CoTypography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CoTypography size="Tag">작성일: {formatDate(notice.noticeDate)} |</CoTypography>
             <CoTypography size="Tag" sx={{ marginLeft: '0.125rem' }}>작성자: {notice.noticeWriter}</CoTypography>

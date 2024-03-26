@@ -10,6 +10,7 @@ const useStore = create((set, get) => ({
     searchCondition: 'all',
     searchKeyword: '',
     page: 0,
+    profileImage: null,
     setNotices: (notices) => set({ notices }),
     setOpenDialog: (openDialog) => set({ openDialog }),
     setTitle: (title) => set({ title }),
@@ -18,14 +19,17 @@ const useStore = create((set, get) => ({
     setSearchCondition: (searchCondition) => set({ searchCondition }),
     setSearchKeyword: (searchKeyword) => set({ searchKeyword }),
     setPage: (page) => set({ page }),
+    setPorfileImage: (profileImage) => set({ profileImage }),
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
         const response = await axios.get('http://localhost:9090/notice/notice-list', {
           params: {
-            searchCondition,
-            searchKeyword,
+            searchCondition: searchCondition,
+            searchKeyword: searchKeyword,
             page: page,
+          }, headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
         });
         console.log(response.data.pageItems);
@@ -70,9 +74,24 @@ const useStore = create((set, get) => ({
         console.error('Error adding notice:', error);
       }
     },
+    
+    getNotice: async (noticeId) => {
+      console.log(noticeId);
+      const { setNotices, userNickname ,setUserNickname, } = get();
+      try {
+        const response = await axios.get(`http://localhost:9090/notice/notice/${noticeId}`,{
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+          },
+        });
+        setNotices(response.data.item);
+        setUserNickname(userNickname);
+        console.log(response.data.item);
+        } catch (error) {
+          console.log("id 못찾음")
+        }
+      },
   }));
-
-
 
 
 export default useStore;
