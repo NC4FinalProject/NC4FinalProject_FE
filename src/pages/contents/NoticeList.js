@@ -13,6 +13,7 @@ const NoticeList = () => {
     searchCondition,
     searchKeyword,
     page,
+    setNotices,
     setOpenDialog,
     setTitle,
     setContent,
@@ -57,7 +58,7 @@ const NoticeList = () => {
   };
 
   const handlePageChange = (event, value) => {
-    setPage(value); // 페이지 번호는 1부터 시작하므로 수정하지 않습니다.
+    setPage(value - 1); 
   };
 
   const handleSearchConditionChange = (event) => {
@@ -92,7 +93,7 @@ const NoticeList = () => {
       />
       <Button variant="contained" color="primary" onClick={handleDialogOpen}>글 등록하기</Button>
       <Box />
-      {notices.map(notice => (
+      {notices.content && notices.content.map(notice => (
         <Box key={notice.id} style={{ marginTop: '0.5rem', borderTop: '1px solid #ccc', paddingBottom: '0.25rem' }}>
           <CoTypography size="NoticeTitle" sx={{ marginTop: '0.225rem' }}>{notice.noticeTitle}</CoTypography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -105,7 +106,7 @@ const NoticeList = () => {
       ))}
       <Box style={{ marginTop: '80px' }} />
       <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-        <Pagination color='primary' count={setPage} page={page} onChange={handlePageChange} />
+        <Pagination color='primary' count={notices.totalPages} page={page + 1} onChange={handlePageChange} />
       </Box>
       <Dialog open={openDialog} onClose={handleDialogClose} fullWidth maxWidth="lg">
         <DialogTitle>공지사항 등록하기</DialogTitle>

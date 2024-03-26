@@ -9,7 +9,7 @@ const useStore = create((set, get) => ({
     userNickname: '',
     searchCondition: 'all',
     searchKeyword: '',
-    page: 1,
+    page: 0,
     setNotices: (notices) => set({ notices }),
     setOpenDialog: (openDialog) => set({ openDialog }),
     setTitle: (title) => set({ title }),
@@ -19,16 +19,19 @@ const useStore = create((set, get) => ({
     setSearchKeyword: (searchKeyword) => set({ searchKeyword }),
     setPage: (page) => set({ page }),
     fetchNotices: async () => {
-      const { searchCondition, searchKeyword, page, setNotices } = get();
+      const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
         const response = await axios.get('http://localhost:9090/notice/notice-list', {
           params: {
             searchCondition,
             searchKeyword,
-            page: page - 1,
+            page: page,
           },
         });
-        setNotices(response.data.pageItems.content);
+        console.log(response.data.pageItems);
+
+        setNotices(response.data.pageItems);
+        setPage(response.data.pageItems.pageable.pageNumber);
       } catch (error) {
         console.error('Error fetching notices:', error);
       }
