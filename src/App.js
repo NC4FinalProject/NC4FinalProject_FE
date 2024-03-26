@@ -13,6 +13,7 @@ import Detail from "./pages/contents/Detail";
 import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
+import NoticeList from "./pages/contents/NoticeList";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             ></Route>
             <Route path="/mypage" element={<Mypage></Mypage>}></Route>
 
+            <Route path="/noticelist" element={<NoticeList></NoticeList>}></Route>
             <Route path="/list" element={<List></List>} />
             <Route path="/detail" element={<Detail></Detail>} />
             <Route path="/insert" element={<Insert></Insert>} />

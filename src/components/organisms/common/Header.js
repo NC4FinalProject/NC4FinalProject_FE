@@ -1,24 +1,16 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import '../../../scss/Header.scss';
-import { Button, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import CoTypography from '../../atoms/common/CoTypography';
-import { Typography } from '@mui/material';
 import CoHoverButton from '../../atoms/common/CoHoverButton';
 
 const Header = () => {
   const navi = useNavigate();  
   const isLogin = sessionStorage.getItem('ACCESS_TOKEN') ? true : false;
-
-  const [anchorEl1, setAnchorEl1] = useState(null);
-  const [anchorEl2, setAnchorEl2] = useState(null);
-
 
   const handleLogout = () => {
         const response = axios.get(
@@ -42,7 +34,7 @@ const Header = () => {
   return (
     <Box display="flex"  sx={{marginTop: '1rem'}}>
       <img src='/images/team_logo.png' alt='team_logo' height='30rem' width='150rem' style={{paddingTop:'0.125rem'}} onClick={() => navi('/')}/>
-      <CoHoverButton style={{marginLeft: '1rem'}} onClick={() => navi('/listpage')}>강의</CoHoverButton>
+      <CoHoverButton style={{marginLeft: '1rem'}} onClick={() => navi('/list')}>강의</CoHoverButton>
       <CoHoverButton style={{marginLeft: '1rem'}}>커뮤니티</CoHoverButton>
       <TextField sx={{marginLeft: '2.5rem',
          width:'40rem', 
