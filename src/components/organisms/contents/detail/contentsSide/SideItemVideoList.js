@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 
 
 ///Enable, Disable
-const BoxContainerStyle = styled(Box)(({ theme }) => ({
+const GridContainerStyle = styled(Grid)(({ theme }) => ({
   display: "flex",
-  
 }));
 
 const SideItemVideoList = (props) => {
@@ -16,15 +15,19 @@ const SideItemVideoList = (props) => {
   const theme = useTheme();
 
   return (
-    <BoxContainerStyle container 
+    <GridContainerStyle
+
       sx={{ paddingLeft: 0.1, paddingY: 0.7, 
+
       ':hover': {backgroundColor: props.isSelected ? "" :theme => theme.palette.action.hover, cursor: 'pointer'}, 
       backgroundColor: props.isSelected ? theme.palette.action.selected : "transparent",
+
       }} onClick={props.onItemSelect} >
         
       <Grid item sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography sx={{color:"#585858"}}variant='caption' paddingX={0.5}>{props.count +1}</Typography>
       </Grid>
+
       <Grid item >
         <Link to="/" component={Link} underline="hover" color="inherit">
           <CardMedia
@@ -42,7 +45,7 @@ const SideItemVideoList = (props) => {
         </Link>
       </Grid>
         
-      <Grid container item xs={10} direction="column" paddingX={0.5} >
+      <Grid item xs={9}  paddingX={0.5} >
         
         <Grid sx={{ 
             display: '-webkit-box',
@@ -67,7 +70,7 @@ const SideItemVideoList = (props) => {
         
       </Grid>
 
-    </BoxContainerStyle>
+    </GridContainerStyle>
   );
 };
 
