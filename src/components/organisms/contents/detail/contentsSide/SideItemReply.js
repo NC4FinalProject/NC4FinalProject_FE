@@ -37,7 +37,7 @@ const SideItemReply = (props) => {
           </Typography>
           {/* <Grid sx={{flexGrow: 1, overflowY: 'auto',  borderBottom: `1px solid ${theme.palette.divider}`}}></Grid> */}
           
-          <Typography style={{ color: "#2E2E2E" }} sx={{ fontSize: '0.85rem', lineHeight: '1.2' }} variant="caption" component="p">
+          <Typography style={{ color: "#2E2E2E" }} sx={{ fontSize: '0.85rem', lineHeight: '1.2' }} variant="caption" >
             {props.subtitle}
 
             {/* <Divider sx={{ width: '35%' }} /> */}

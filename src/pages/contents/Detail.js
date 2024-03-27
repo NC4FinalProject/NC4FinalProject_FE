@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 import ContentsDetail from '../../components/organisms/contents/detail/contentsDetail/ContentsDetail';
 import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
-import ContentsInfo from '../../components/organisms/contents/detail/contantsInfo/ContentsInfo';
+import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
 
 
 // style
