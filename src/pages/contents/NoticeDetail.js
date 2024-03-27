@@ -6,6 +6,8 @@ import { Box, Grid, Button } from '@mui/material';
 import CoTypography from '../../components/atoms/common/CoTypography';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
+import HtmlParser from 'react-html-parser';
+import Notice from '../../scss/Notice.scss';
 
 const NoticeDetail = () => {
   const { noticeId } = useParams();
@@ -76,7 +78,7 @@ const NoticeDetail = () => {
               <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + notices.profileImageUrl} alt='thumbnail' style={{width: '3rem', height: '3rem', borderRadius: '70%'}}/> 
             )}
      </Box>
-          <Typography variant="body1">{notices.noticeContent}</Typography>
+          <Typography variant="body1" className='Notice'>{HtmlParser(notices.noticeContent)}</Typography>
           <Typography variant="body2">작성자: {notices.noticeWriter}</Typography>
           <Typography variant="body2">작성일: {formatDate(notices.noticeDate)}</Typography>
         </div>

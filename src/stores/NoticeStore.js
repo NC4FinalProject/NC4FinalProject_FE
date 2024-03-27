@@ -1,6 +1,5 @@
 import create from 'zustand';
 import axios from 'axios';
-
 const useStore = create((set, get) => ({
     notices: [],
     openDialog: false,
@@ -11,6 +10,9 @@ const useStore = create((set, get) => ({
     searchKeyword: '',
     page: 0,
     profileImage: null,
+    files: [],
+    fileDTOList: [],
+    setFiles: (files) => set({ files }),
     setNotices: (notices) => set({ notices }),
     setOpenDialog: (openDialog) => set({ openDialog }),
     setTitle: (title) => set({ title }),
@@ -20,6 +22,7 @@ const useStore = create((set, get) => ({
     setSearchKeyword: (searchKeyword) => set({ searchKeyword }),
     setPage: (page) => set({ page }),
     setPorfileImage: (profileImage) => set({ profileImage }),
+    setFileDTOList: (fileDTOList) => set({ fileDTOList }),
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
@@ -53,16 +56,35 @@ const useStore = create((set, get) => ({
         console.warn('사용자 닉네임 가져오기 실패', error);
       }
     },
+
     handleNoticeSubmit: async () => {
-      const { title, content, userNickname, fetchNotices, setOpenDialog, setTitle, setContent } = get();
+      const { title, content, userNickname, fetchNotices, setOpenDialog, setTitle, setContent, fileDTOList } = get();
       try {
+        console.log(content);
+
         const noticeData = {
           noticeTitle: title,
           noticeContent: content,
-          noticeWriter: userNickname,
+          noticeWriter: userNickname
         };
+        
+        console.log(fileDTOList);
+
+        const formData = new FormData();
+
+        const noticeDTO = new Blob([JSON.stringify(noticeData)], {
+          type: 'application/json',
+        });
+
+        formData.append('noticeDTO', noticeDTO);
+
+        const fileDTOs = new Blob([JSON.stringify(fileDTOList)], {
+          type: 'application/json',
+        });
+
+        formData.append('fileDTOList', fileDTOs);
   
-        await axios.post('http://localhost:9090/notice/notice', noticeData);
+        await axios.post('http://localhost:9090/notice/notice', formData);
   
         fetchNotices();
   
@@ -74,6 +96,8 @@ const useStore = create((set, get) => ({
         console.error('Error adding notice:', error);
       }
     },
+
+
     
     getNotice: async (noticeId) => {
       console.log(noticeId);
