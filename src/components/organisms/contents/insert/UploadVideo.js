@@ -94,7 +94,7 @@ const UploadVideo = () => {
         onDrop={handleDrop}
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
       >
-        <CoTypography size="Content">Video Upload</CoTypography>
+        <Typography sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 영상을 올려주세요.</Typography>
       </UnderlinedButton>
 
       {/* <TextField

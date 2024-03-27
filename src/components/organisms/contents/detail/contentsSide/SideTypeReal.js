@@ -3,7 +3,7 @@ import { Box, TextField, Button, List, ListItem, ListItemText, Container, Typogr
 import { Link } from 'react-router-dom';
 import { GrFormNext } from 'react-icons/gr';
 
-const ChatApp = () => {
+const SideTypeReal = () => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
 
@@ -68,4 +68,4 @@ const ChatApp = () => {
   );
 };
 
-export default ChatApp;
+export default SideTypeReal;

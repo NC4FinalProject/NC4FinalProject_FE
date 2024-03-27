@@ -15,6 +15,7 @@ import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
 import JoinVerification from "./pages/member/JoinVerification";
 import NoticeList from "./pages/contents/NoticeList";
+import NoticeDetail from "./pages/contents/NoticeDetail";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/join-verification" element={<JoinVerification></JoinVerification>} />
 
             <Route path="/noticelist" element={<NoticeList></NoticeList>}></Route>
+            <Route path="/notice/:noticeId" element={<NoticeDetail></NoticeDetail>}></Route>
             <Route path="/list" element={<List></List>} />
             <Route path="/detail" element={<Detail></Detail>} />
             <Route path="/insert" element={<Insert></Insert>} />

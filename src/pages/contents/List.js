@@ -3,7 +3,7 @@ import { Box, Button, Container, Pagination, Typography } from '@mui/material'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import ContentsList from '../../components/organisms/contents/list/ContentsList';
-import ContantsFilters from '../../components/organisms/contents/list/ContentsFilters';
+import ContentsFilters from '../../components/organisms/contents/list/ContentsFilters';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -29,7 +29,7 @@ const List = () => {
 
       <ContainerStyle maxWidth="lg">
 
-        <ContantsFilters />
+        <ContentsFilters />
 
         {/* Contents List */}
         <ContentsList />

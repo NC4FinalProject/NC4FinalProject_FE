@@ -7,7 +7,7 @@ import { useTheme } from '@emotion/react';
 import ContentsDetail from '../../components/organisms/contents/detail/contentsDetail/ContentsDetail';
 import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
-import ContentsInfo from '../../components/organisms/contents/detail/contantsInfo/ContentsInfo';
+import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
 
 
 // style
@@ -71,7 +71,7 @@ const Detail = () => {
 
             {/* Video */}
 
-            <Grid item xs={9} lg={9}>
+            <Grid item xs={12} lg={9}>
 
                 {/* <Box sx={{ bgcolor: 'grey.300', height: '600px' }} /> */}
 
@@ -84,9 +84,9 @@ const Detail = () => {
 
             {/* SideApp */}
 
-            <Grid className="side-app" item xs={3} lg={3} sx={{paddingLeft: 3.75}}>
+            <Grid className="side-app" item xs={12} lg={3} sx={{paddingLeft: 3.75}}>
             {/* sx={{ bgcolor: 'grey.300', borderRadius: '5px', display: { xs: 'none', lg: 'block' }, }} */}
-                <Grid sx={{borderLeft: `1px solid ${theme.palette.divider}`, height: '100%'}}> 
+                <Grid sx={{ height: '100%'}}> 
                     <ContentsSide ></ContentsSide>
                 </Grid>
             </Grid>

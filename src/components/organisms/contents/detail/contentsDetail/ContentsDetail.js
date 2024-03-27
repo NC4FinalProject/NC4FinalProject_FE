@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import ReviewList from "../../../review/ReviewList";
 import Inquriy from "../../../inquiry/Inquriy";
 import { useState } from "react";
+import CurriculumCourse from "../CurriculumCourse";
 
 
 function CustomTabPanel(props) {
@@ -90,7 +91,7 @@ export default function ContentsDetail() {
       </CustomTabPanel>
       {/* 코스 */}
       <CustomTabPanel value={value} index={1}>
-        Item Two
+        <CurriculumCourse/>
       </CustomTabPanel>
       {/* 후기 */}
       <CustomTabPanel value={value} index={2}>
