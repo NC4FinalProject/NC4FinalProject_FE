@@ -3,7 +3,7 @@ import { Box, Button, Divider, Grid } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 // icon & images
-import SideMultiItemReply from "./SideMultiItemReply";
+import SideItemReply from "./SideItemReply";
 import { ReplyList } from '../../../../api/contentsReplyApi';
 
 
@@ -12,7 +12,7 @@ const SideTypeOne = () => {
     <>
       <Box sx={{ padding: { xs: 1, sm: 1 } }}>
         {ReplyList.map((reply) => (
-          <SideMultiItemReply
+          <SideItemReply
             key={reply.id}
             title={reply.title}
             subtitle={reply.subtitle}
