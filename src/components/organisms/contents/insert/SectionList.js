@@ -8,8 +8,21 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
 
 
+const CustomTextField = styled(TextField)({
+  '& .MuiInput-input::placeholder': {
+    fontSize: '0.9rem', // 원하는 글자 크기로 조정
+  },
+  '& .MuiInput-input': {
+    textAlign: 'center', // 입력 필드 텍스트를 수평 중앙 정렬
+    // 필요하다면 lineHeight도 조정할 수 있음
+  },
+})
+
 const Section = ({ title, onAdd, onRemove, showRemove, onSubAdd, onSubRemove, isLast, sectionId, subs }) => {
   const [showSubSections, setShowSubSections] = useState(false);
+
+  const [textFieldFocused, setTextFieldFocused] = useState(false);
+  const [textFieldFocusedSub, setTextFieldFocusedSub] = useState(false);
 
   return (
     <>
@@ -26,17 +39,29 @@ const Section = ({ title, onAdd, onRemove, showRemove, onSubAdd, onSubRemove, is
         </Grid>
 
         <Grid item xs={8}>
-          <TextField fullWidth variant="standard" />
+          <CustomTextField fullWidth variant="standard" placeholder='컨텐츠 커리큘럼을 입력하세요.'
+           onFocus={() => setTextFieldFocused(true)} 
+           onBlur={() => setTextFieldFocused(false)} 
+           />
         </Grid>
 
         <Grid item xs={2} display="flex" alignItems="flex-end">
-          {isLast && (
-            <IconButton sx={{ padding: 0, mx: 1 }} onClick={onAdd}>
+          {textFieldFocused && isLast && (
+            <IconButton sx={{ padding: 0, mx: 1 }} 
+              onMouseDown={(event) => {
+              event.preventDefault(); 
+              onAdd();
+            }}>
               <AddCircleOutlineIcon />
             </IconButton>
           )}
-          {showRemove && (
-            <IconButton sx={{ padding: 0 }} color="error" onClick={() => onRemove(sectionId)}>
+          {textFieldFocused && showRemove && (
+            <IconButton sx={{ padding: 0 }} color="error" 
+              onMouseDown={(event) => {
+              event.preventDefault();
+              onRemove(sectionId); 
+            }}
+          >
               <RemoveCircleOutlineIcon />
             </IconButton>
           )}
@@ -53,21 +78,32 @@ const Section = ({ title, onAdd, onRemove, showRemove, onSubAdd, onSubRemove, is
           </Grid>
 
           <Grid item xs={8}>
-            <TextField
+            <CustomTextField
               fullWidth
               variant="standard"
+              placeholder='컨텐츠 세부과정을 입력하세요.'
+              onFocus={() => setTextFieldFocusedSub(true)} 
+              onBlur={() => setTextFieldFocusedSub(false)} 
             />
           </Grid>
 
           <Grid item xs={2} display="flex" alignItems="flex-end">
-          {index === subs.length - 1 && (
-            <IconButton sx={{ padding: 0, mx: 1 }} onClick={() => onSubAdd(sectionId)}>
+          {textFieldFocusedSub && index === subs.length - 1 && (
+            <IconButton sx={{ padding: 0, mx: 1 }} 
+              onMouseDown={(event) => {
+              event.preventDefault(); 
+              onSubAdd(sectionId);}}
+            >
               <AddCircleOutlineIcon />
             </IconButton>
           )}
-          {/* 서브섹션 삭제 버튼은 첫 번째를 제외한 나머지 서브섹션에 표시됩니다. */}
-          {subs.length > 0 && index === subs.length - 1 && (
-          <IconButton sx={{ padding: 0 }} color="error" onClick={() => onSubRemove(sectionId, subs[index].id)}>
+          {/* 서브섹션 삭제 버튼은 첫 번째를 제외한 나머지 서브섹션에 표시 */}
+          {textFieldFocusedSub && subs.length > 0 && index === subs.length - 1 && (
+          <IconButton sx={{ padding: 0 }} color="error" 
+            onMouseDown={(event) => {
+            event.preventDefault();
+            onSubRemove(sectionId, subs[index].id);}}
+            >
             <RemoveCircleOutlineIcon />
           </IconButton>
           )}
@@ -81,6 +117,7 @@ const Section = ({ title, onAdd, onRemove, showRemove, onSubAdd, onSubRemove, is
 
 export default function Sections() {
   const [sections, setSections] = useState([{ id: '1', subs: [{ id: '1-1' }] }]);
+  
 
   const addSection = () => {
     console.log(sections)

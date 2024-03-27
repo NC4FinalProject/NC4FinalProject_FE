@@ -24,6 +24,11 @@ border-radius: 0;
 }
 `;
 
+const CustomTypography = styled(Typography)({
+
+});
+
+
 const Input = styled('input')({
   display: 'none',
 });
@@ -98,7 +103,7 @@ const UploadImage = () => {
         onDrop={handleDrop}
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
       >
-        <CoTypography size="Content">Image Upload</CoTypography>
+        <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 사진을 올려주세요.</Typography>
       </UnderlinedButton>
     </>
   );

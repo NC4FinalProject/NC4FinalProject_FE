@@ -36,7 +36,7 @@ const formatPrice = (price) => {
   );
 };
 
-const ProductPrice = ({ price, priceSale }) => {
+const ContentsPrice = ({ price, priceSale }) => {
   return (
     <TextStyle variant="subtitle2">
       {priceSale && (
@@ -47,4 +47,4 @@ const ProductPrice = ({ price, priceSale }) => {
   );
 };
 
-export default ProductPrice;
+export default ContentsPrice;
