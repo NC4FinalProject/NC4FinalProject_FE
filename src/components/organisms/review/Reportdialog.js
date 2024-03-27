@@ -40,7 +40,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
   const handleSubmit = () => {
     console.log(reportReason);
     console.log(detailReason);
-    setReportReason();
+    setReportReason("");
     setDetailReason("");
     handleClickClose();
   };
@@ -141,8 +141,8 @@ const Reportdialog = ({ open, handleClickClose }) => {
           >
             취소하기
           </Button>
-          <Button onClick={handleSubmit} color="primary" variant="contained">
-            등록하기
+          <Button onClick={handleSubmit} color="error" variant="contained">
+            신고하기
           </Button>
         </Box>
       </DialogActions>

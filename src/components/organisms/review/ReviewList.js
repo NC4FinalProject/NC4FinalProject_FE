@@ -45,14 +45,16 @@ const ReviewList = () => {
   const reviews = [
     {
       userName: "User1",
-      reviewContent: "명강의 추천드립니다.",
+      reviewContent:
+        "명강의 추천드립니다.aaawsdfqwetasedfqwefqwefasdfasqwe4tqawerasedfasdfasdfasdfdfasdfasdfasdfqwerq",
       date: "2022-01-01",
       rating: 3,
       profileImage: null,
     },
     {
       userName: "User2",
-      reviewContent: "정말 도움이 되었습니다.",
+      reviewContent:
+        "명강의 추천드립니다.aaawsdfqwetasedfqwefqwefasdfasqwe4tqawerasedfasdfasdfasdfdfasdfasdfasdfqwerq",
       date: "2022-01-02",
       rating: 4,
       profileImage: null,
@@ -143,19 +145,25 @@ const ReviewList = () => {
       </Box>
       <Table
         sx={{
+          display: "flex",
           borderTop: "1px solid black",
+          width: "100%",
+          flexDirection: "column",
         }}
       >
-        <TableBody>
+        <TableBody
+          sx={{ display: "flex", flexDirection: "column", width: "100%" }}
+        >
           {reviews.map((review, index) => (
-            <TableRow key={index}>
+            <TableRow
+              key={index}
+              sx={{ display: "flex", flexDirection: "row" }}
+            >
               <TableCell
-                style={{
+                sx={{
                   verticalAlign: "top",
-                  width: "0",
                   align: "left",
                   paddingRight: "0",
-                  paddingLeft: "0.5rem",
                 }}
               >
                 <Avatar
@@ -164,12 +172,12 @@ const ReviewList = () => {
                   sx={{ width: 40.4, height: 40.4 }}
                 />
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ width: "100%", overflow: "hidden" }}>
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
                   <ContentsStarRating
@@ -178,36 +186,46 @@ const ReviewList = () => {
                     rating={review.rating}
                     sx={{ ml: "-0.2rem" }}
                   />
+
+                  <ButtonGroup
+                    variant="text"
+                    sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
+                  >
+                    <Button
+                      style={{ border: "none" }}
+                      onClick={() => handleModifyOpen(review)}
+                    >
+                      <CoTypography size="TableContent">수정</CoTypography>
+                    </Button>
+                    <CoTypography
+                      size="TableContent"
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
+                      |
+                    </CoTypography>
+                    <Button>
+                      <CoTypography size="TableContent">삭제</CoTypography>
+                    </Button>
+                  </ButtonGroup>
+                </Box>
+                <Box>
                   <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
                     {review.userName}
                   </CoTypography>
-                  <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
+                  <CoTypography
+                    size="TableContent"
+                    sx={{
+                      width: "70%",
+                      mb: "1rem",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
                     {review.reviewContent}
                   </CoTypography>
                   <CoTypography size="Tag">{review.date}</CoTypography>
                 </Box>
-              </TableCell>
-              <TableCell align="right" sx={{ verticalAlign: "top" }}>
-                <ButtonGroup
-                  variant="text"
-                  sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
-                >
-                  <Button
-                    style={{ border: "none" }}
-                    onClick={() => handleModifyOpen(review)}
-                  >
-                    <CoTypography size="TableContent">수정</CoTypography>
-                  </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">삭제</CoTypography>
-                  </Button>
-                </ButtonGroup>
               </TableCell>
             </TableRow>
           ))}
