@@ -301,7 +301,7 @@ const Inquriy = ({ onInquiryClick }) => {
                       color="textSecondary"
                       sx={{
                         display: "flex",
-                        alignItems: "flex-end",
+                        alignItems: "center",
                         minWidth: "4rem",
                       }}
                     >
@@ -318,7 +318,7 @@ const Inquriy = ({ onInquiryClick }) => {
                       color="textSecondary"
                       sx={{
                         display: "flex",
-                        alignItems: "flex-end",
+                        alignItems: "center",
                         minWidth: "4rem",
                       }}
                     >
@@ -335,7 +335,7 @@ const Inquriy = ({ onInquiryClick }) => {
                       color="textSecondary"
                       sx={{
                         display: "flex",
-                        alignItems: "flex-end",
+                        alignItems: "center",
                         minWidth: "4rem",
                       }}
                     >
