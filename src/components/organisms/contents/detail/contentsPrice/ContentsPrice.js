@@ -1,7 +1,24 @@
 import { Box, Button, Divider, Grid, Rating, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
+
+
+// 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
+// 실시간 일 경우 음수를 받아와 국비지원 인 것을 알아야 할듯? -1 
+// 유료일 경우 컨텐츠로 부터 가격 데이터를 받아옴 가격 > 0
+
+
+// 컨텐츠 데이터 인포 관련
+export const contentsPriceApi = [
+  {
+    price: '59000',
+    edLevel: '1',
+  }
+]
+
 
 const ContentsPrice = () => {
+
+  const [priceState, setPriceState] = useState(0);
 
   const value = 4.5;
   return (
@@ -17,7 +34,7 @@ const ContentsPrice = () => {
           <Grid container paddingX={2}>
 
             <Grid item xs={6} sx={{ textAlign: 'left' }}>
-              <Typography variant='h5'>FREE</Typography>
+              <Typography variant='h5'>59,000</Typography>
             </Grid>
 
             <Grid item xs={6} sx={{ textAlign: 'right' }}>

@@ -1,13 +1,6 @@
 import styled from "@emotion/styled";
 import { Box, Card, Typography } from "@mui/material";
-
-import ProductColorPreview from "./ProductColorPreview";
 import ProductPrice from "./ProductPrice";
-
-import { Link } from "react-router-dom";
-
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ContentsStarRating from "./ContentsStarRating";
 
 // card style

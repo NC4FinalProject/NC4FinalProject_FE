@@ -1,16 +1,22 @@
-import { Avatar, Box, Grid, Typography } from '@mui/material';
-import React from 'react'
+import { Avatar, Box, Button, Grid, Typography } from '@mui/material';
+import React, { useState } from 'react'
 import { FaCommentDots, FaEye, FaShare, FaFlag, FaRegFlag, FaThumbsUp   } from "react-icons/fa";
 import burceMars from '../../../../../images/bruce-mars.jpg'
 
 
 const ContentsInfo = ({ comments, views, shares, color }) => {
+
+
+
   return (
     <>
     <Grid sx={{px:0.5}} container justifyContent={'space-between'}  >
       
       <Grid item>
-        <Typography variant="h5">비트캠프 데브옵스 4기 과정 React 기초 강의</Typography>
+        <Grid container alignItems="flex-start" style={{ height: '100%', flexDirection: 'column' }}>
+          <Typography variant="caption" sx={{lineHeight: '1.10'}}>비트캠프 데브옵스 4기 과정 React 기초 강의</Typography>
+          <Typography variant="h6" sx={{lineHeight: '1.30'}}>여기는 동영상의 강의명이올시다 이게 만약 길수도 있자나? 그럼 한줄 표시?</Typography>
+        </Grid>
       </Grid>
   
       <Grid item>
