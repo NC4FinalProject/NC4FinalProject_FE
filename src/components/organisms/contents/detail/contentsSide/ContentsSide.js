@@ -9,7 +9,14 @@ import SideTypeOne from './SideTypeOne'
 import SideTypeMulti from './SideTypeMulti'
 import SideTypeReal from './SideTypeReal'
 import SideMulti from './SideTypeMulti'
+import styled from 'styled-components'
 
+
+const CustomTextField = styled(TextField)({
+  '& .MuiInput-input::placeholder': {
+    fontSize: '0.9rem', // 원하는 글자 크기로 조정
+  },
+});
 
 const ContentsSide = () => {
   
@@ -147,7 +154,8 @@ const ContentsSide = () => {
           <Divider sx={{ width: '30%' }} />
         </Box>
         { activeComponent === 'reply' ? (
-          <TextField fullWidth id="standard-basic" variant="standard" placeholder='댓글을 입력하세요.'/>) : (<></>)
+          <CustomTextField fullWidth id="standard-basic" variant="standard" placeholder='댓글을 입력하세요.'/>
+          ) : (<></>)
         }
         
       </Grid>
