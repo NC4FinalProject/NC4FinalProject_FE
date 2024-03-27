@@ -40,7 +40,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
   const handleSubmit = () => {
     console.log(reportReason);
     console.log(detailReason);
-    setReportReason();
+    setReportReason("");
     setDetailReason("");
     handleClickClose();
   };
