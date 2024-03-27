@@ -17,7 +17,12 @@ const CoSelect = ({ onChange }) => {
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
         <InputLabel id="report-reasons">신고 사유</InputLabel>
-        <Select labelId="report-reasons" label="신고 사유" onChange={onChange}>
+        <Select
+          labelId="report-reasons"
+          value={reportReasons[0]} // 초기값설정
+          label="신고 사유"
+          onChange={onChange}
+        >
           {reportReasons.map((item, index) => (
             <MenuItem key={index} value={item}>
               {item}
