@@ -1,0 +1,35 @@
+import React from 'react'
+import { Box, Button, Divider, Grid } from '@mui/material'
+import { Link } from 'react-router-dom'
+
+// icon & images
+import SideMultiItemReply from "./SideMultiItemReply";
+import { ReplyList } from '../../../../api/contentsReplyApi';
+
+
+const SideTypeOne = () => {
+  return (
+    <>
+      <Box sx={{ padding: { xs: 1, sm: 1 } }}>
+        {ReplyList.map((reply) => (
+          <SideMultiItemReply
+            key={reply.id}
+            title={reply.title}
+            subtitle={reply.subtitle}
+            photo={reply.photo}
+            postingTime={reply.postingTime}
+          />
+        ))}
+      </Box>
+    
+    {/* <Divider /> */}
+
+    {/* Input Content */}
+    <Box>
+      
+    </Box>
+    </>
+  )
+}
+
+export default SideTypeOne

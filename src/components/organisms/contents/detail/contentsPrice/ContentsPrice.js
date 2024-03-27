@@ -30,7 +30,7 @@ const ContentsPrice = () => {
                   readOnly 
                 />
               </Box>
-              <Box sx={{ textAlign: 'right', marginTop: '-7%'}}>
+              <Box sx={{ textAlign: 'right', marginTop: '-7%', color: '#6E6E6E'}}>
                 <Typography variant='caption' >315</Typography>
               </Box>
             </Grid>
@@ -43,7 +43,7 @@ const ContentsPrice = () => {
           </Grid>
           
           {/* 세 번째 그리드 - 좌측 정렬 */}
-          <Grid paddingX={2} item xs={12} sx={{ textAlign: 'left' }}>
+          <Grid paddingX={2} item xs={12} sx={{ textAlign: 'left', color: "#6E6E6E"}}>
             <Typography>· 단일 강의</Typography>
             <Typography>· 챕터 1개 · 59:13</Typography>
             <Typography>· 난이도 : 입문</Typography>
