@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { Box, Card, Typography } from "@mui/material";
-import ContentsPrice from "./ContentsPrice";
 import ContentsStarRating from "./ContentsStarRating";
+import ContentsPriceCal from "../../../atoms/common/ContentsPriceCal";
+
 
 // card style
 const CardStyle = styled(Card)(({ theme }) => ({
@@ -79,7 +80,7 @@ const ContentsListItem = (props) => {
         >
           <ContentsStarRating />
           {/* <ProductColorPreview colors={colors} limit={3} /> */}
-          <ContentsPrice price={price} priceSale={priceSale} />
+          <ContentsPriceCal price={price} priceSale={priceSale} />
         </Box>
       </Box>
     </CardStyle>
