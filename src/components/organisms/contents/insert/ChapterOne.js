@@ -1,9 +1,28 @@
-import { Button, Grid, InputAdornment, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Button, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import UploadImage from './UploadImage'
 import UploadVideo from './UploadVideo'
 import CoTypography from '../../../atoms/common/CoTypography'
 import styled from 'styled-components'
+import {categoryItems} from '../../../api/categoryItemsApi'
+
+const UnderlinedButton = styled(Button)`
+
+border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+border-radius: 0;
+
+&:hover {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.87);
+}
+
+&.Mui-focused {
+  border-bottom: 2px solid #3f51b5;
+}
+
+&.Mui-disabled {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+}
+`;
 
 const CustomTextField = styled(TextField)({
   '& .MuiInput-input::placeholder': {
@@ -16,12 +35,53 @@ const CustomTextField = styled(TextField)({
 });
 
 const ChapterOne = () => {
+
+  const [categoryType, setCategoryType] = useState("");
+  const handleCategoryFilterTypeChange = (e) => setCategoryType(e.target.value);
+
   return (
   <>
-    <Grid container justifyContent="center"  sx={{ marginTop: 2, }}>
+    <Grid container justifyContent="center"  sx={{ marginTop: '2rem', }}>
+      <Grid item xs={2} />
+
+      <Grid item xs={1} style={{ display: 'flex', alignItems: 'center', justifyContent:'center' }}>
+          <CoTypography size="Title">분야</CoTypography>
+      </Grid>
+      <Grid item xs={6}>
+        
+        <CustomTextField 
+          select
+          variant="standard" 
+          onChange={handleCategoryFilterTypeChange}
+          fullWidth
+          defaultValue=""
+          
+          label="카테고리 유형을 선택하세요."
+          InputLabelProps={{
+            style: { textAlign: 'center', width: '100%' },
+            
+          }}
+        >
+
+          {/* <MenuItem disabled value="">
+            카테고리 유형을 선택하세요.
+          </MenuItem> */}
+          {categoryItems.map((el) => (
+            <MenuItem key={el.id} value={el.type} >
+              {el.type}
+            </MenuItem>
+          ))}
+          
+        </CustomTextField>
+
+      </Grid>
+      <Grid item xs={3} />
+    </Grid>
+
+    <Grid container justifyContent="center"  sx={{ marginTop: '2rem', }}>
         <Grid item xs={2} />
 
-        <Grid item xs={1} style={{ display: 'flex', alignItems: 'center' }}>
+        <Grid item xs={1} style={{ display: 'flex', alignItems: 'center', justifyContent:'center'  }}>
             <CoTypography size="Title">컨텐츠</CoTypography>
         </Grid>
         <Grid item xs={6}>
@@ -32,7 +92,7 @@ const ChapterOne = () => {
 
     <Grid container justifyContent="center" >
       <Grid item xs={2} />
-      <Grid item xs={1} style={{ display: 'flex', alignItems: 'center' }}>
+      <Grid item xs={1} style={{ display: 'flex', alignItems: 'center', justifyContent:'center'  }}>
         <CoTypography size="Title">썸네일</CoTypography>
       </Grid>
       <Grid item xs={6}>
@@ -41,9 +101,9 @@ const ChapterOne = () => {
       <Grid item xs={3} />
     </Grid>
 
-    <Grid container justifyContent="center" >
+    <Grid container justifyContent="center" sx={{ mb: '2rem', }} >
       <Grid item xs={2} />
-      <Grid item xs={1} style={{ display: 'flex', alignItems: 'center' }}>
+      <Grid item xs={1} style={{ display: 'flex', alignItems: 'center', justifyContent:'center'  }}>
         <CoTypography size="Title">동영상</CoTypography>
       </Grid>
       <Grid item xs={6} >
