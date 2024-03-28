@@ -146,7 +146,11 @@ const Codialog = ({ open, handleClickClose }) => {
           <Button
             onClick={handleCancel}
             variant="outlined"
-            style={{ marginRight: "1.25rem" }}
+            style={{
+              marginRight: "1.25rem",
+              color: "black",
+              borderColor: "#ced4da",
+            }}
           >
             취소하기
           </Button>

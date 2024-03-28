@@ -6,7 +6,7 @@ import CoTypography from '../../../atoms/common/CoTypography'
 const ChapterThree = () => {
   return (
     <>
-    <Grid container justifyContent="center" >
+    <Grid container justifyContent="center" sx={{ my: '2rem', }} >
       <Grid item xs={2} />
       <Grid item xs={8} >
         <CoTypography size="Title" style={{ marginBottom: '24px' }}>강의소개</CoTypography>

@@ -73,7 +73,7 @@ export default function LinearStepper() {
               const labelProps = {};
               // if (isStepOptional(index)) {
               //   labelProps.optional = (
-              //     <Typography variant="caption">Optional</Typography>
+              //    <Typography variant="caption">Optional</Typography>
               //   );
               // }
               if (isStepSkipped(index)) {
@@ -91,21 +91,28 @@ export default function LinearStepper() {
         
       </Grid>
       
+      {/* 마지막 리셋 버튼이유 */}
       {activeStep === steps.length ? (
-        <Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </Fragment>
+      <Grid container justifyContent="center"  sx={{ mb: '5rem', }}>
+        <Grid direction={'column'} py={'10rem'}>
+          <Fragment justifyItems="center">
+           <Typography sx={{ mt: 2, mb: 1 }}>
+              컨텐츠가 정상적으로 등록되었어요.&apos;&apos;&apos;굳잡
+            </Typography>
+            
+            <Grid sx={{ display: 'flex',  pt: 2, justifyContent:'center' }}>
+              {/* <Button onClick={handleReset}>마이페이지로 이동</Button> */}
+              <Button onClick={handleReset}>컨텐츠로 이동</Button>
+            </Grid>
+          </Fragment>
+        </Grid>
+        
+      </Grid>
 
       ) : (
 
         <Fragment>
-          {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
+          {/*<Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
 
             {/* 이것이 챕터 체인지 */}
             <Box sx={{py: 3.5}}>  
@@ -114,7 +121,7 @@ export default function LinearStepper() {
               {activeStep === 2 && (<ChapterThree/>)}
             </Box>
             
-          <Grid container justifyContent="center">
+          <Grid container justifyContent="center" sx={{ mb: '5rem', }}>
             <Grid item xs={12} md={9}>
               <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                 

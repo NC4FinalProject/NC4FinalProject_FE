@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const CoSelect = ({ onChange }) => {
+const CoSelect = ({ onChange, value }) => {
   const [reportReasons, setReportReasons] = useState([
     "욕설 및 혐오 발언",
     "스팸 및 불법 홍보",
@@ -19,7 +19,7 @@ const CoSelect = ({ onChange }) => {
         <InputLabel id="report-reasons">신고 사유</InputLabel>
         <Select
           labelId="report-reasons"
-          value={reportReasons[0]} // 초기값설정
+          value={value}
           label="신고 사유"
           onChange={onChange}
         >
