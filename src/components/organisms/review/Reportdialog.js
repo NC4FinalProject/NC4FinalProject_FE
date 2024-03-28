@@ -81,7 +81,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
           </CoTypography>
         </Box>
         <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
-          <CoSelect onChange={handleReportChange} />
+          <CoSelect onChange={handleReportChange} value={reportReason} />
         </Box>
         <Table
           sx={{
@@ -137,7 +137,11 @@ const Reportdialog = ({ open, handleClickClose }) => {
           <Button
             onClick={handleCancel}
             variant="outlined"
-            style={{ marginRight: "1.25rem" }}
+            style={{
+              marginRight: "1.25rem",
+              color: "black",
+              borderColor: "#ced4da",
+            }}
           >
             취소하기
           </Button>
