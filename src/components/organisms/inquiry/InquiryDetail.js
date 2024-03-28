@@ -6,17 +6,17 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
 import CoHoverButton from "../../atoms/common/CoHoverButton";
 import InsertCKEditor from "../../atoms/common/InsertCKEditor";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { useState } from "react";
 import Reportdialog from "../../organisms/review/Reportdialog";
+import InquriyComment from "./InquriyComment";
 
 const InquiryDetails = [
   {
     id: 1,
     userName: "홍길동",
     title: "질문이 있습니다.",
-    content: "모르겠숴요  ",
+    content:
+      "모르겠숴요겠겠숴요모르겠숴요모르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요",
     lectureName: "모르니까 자바다",
     viewCount: 3,
     regiDate: "2021-10-10",
@@ -25,6 +25,16 @@ const InquiryDetails = [
     tag1: "java",
     tag2: "javascript",
     tag3: "react",
+    comments: [
+      {
+        profileImage: process.env.PUBLIC_URL + "/images/teacher.jpg",
+        commenterName: "김댓글",
+        commentDate: "2021-10-11",
+        commentContent:
+          "메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱.",
+        commentLikeCount: 3,
+      },
+    ],
   },
 ];
 
@@ -127,24 +137,61 @@ const InquiryDetail = () => {
             </Grid>
           </Grid>
 
-          <Grid
-            borderBottom={"1px solid #ced4da"}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              paddingTop: "2rem",
-              paddingBottom: "2rem",
-            }}
-          >
-            <Grid>
-              <Grid sx={{ paddingBottom: "3rem", ml: "0.5rem" }}>
+          <Grid container direction="column" borderBottom={"1px solid #ced4da"}>
+            <Grid
+              item
+              container
+              justifyContent="space-between"
+              sx={{ paddingBottom: "1.25rem" }}
+            >
+              <Grid
+                item
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  flexGrow: 1,
+                }}
+              >
+                <ButtonGroup
+                  variant="text"
+                  sx={{ paddingTop: "1rem ", paddingRight: "1rem" }}
+                >
+                  <Button style={{ border: "none" }}>
+                    <CoTypography size="TableContent">수정</CoTypography>
+                  </Button>
+                  <CoTypography
+                    size="TableContent"
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    |
+                  </CoTypography>
+                  <Button>
+                    <CoTypography size="TableContent">삭제</CoTypography>
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+              <Grid
+                item
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "1rem",
+                }}
+              >
                 <CoTypography size="Title" style={{ color: "#868e96" }}>
                   {inquiryDetail.content}
                 </CoTypography>
               </Grid>
-
-              <Grid container mt="0.25rem" ml="0.5rem" alignItems={"center"}>
+            </Grid>
+            <Grid
+              item
+              container
+              justifyContent="space-between"
+              alignItems="center"
+              padding="1rem 1.5rem 2rem 1rem"
+            >
+              <Grid item>
                 {[
                   inquiryDetail.tag1,
                   inquiryDetail.tag2,
@@ -165,39 +212,7 @@ const InquiryDetail = () => {
                     )
                 )}
               </Grid>
-            </Grid>
-
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-end",
-                mr: "0.25rem",
-              }}
-            >
-              <Grid sx={{ paddingBottom: "3rem", mr: "0.25rem" }}>
-                <ButtonGroup
-                  variant="text"
-                  sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
-                >
-                  <Button style={{ border: "none" }}>
-                    <CoTypography size="TableContent">수정</CoTypography>
-                  </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">삭제</CoTypography>
-                  </Button>
-                </ButtonGroup>
-              </Grid>
-
-              <Grid
-                sx={{ display: "flex", alignItems: "center", mr: "0.25rem" }}
-              >
+              <Grid item sx={{ display: "flex", alignItems: "center" }}>
                 <Grid
                   sx={{
                     display: "flex",
@@ -221,11 +236,11 @@ const InquiryDetail = () => {
                   </CoTypography>
                 </Grid>
               </Grid>
-              <Reportdialog
-                open={openReportDialog}
-                handleClickClose={handleCloseReportDialog}
-              />
             </Grid>
+            <Reportdialog
+              open={openReportDialog}
+              handleClickClose={handleCloseReportDialog}
+            />
           </Grid>
 
           <Grid
@@ -303,83 +318,17 @@ const InquiryDetail = () => {
               </CoHoverButton>
             )}
           </Grid>
-          <Grid
-            border={"1px solid black"}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "top",
-              borderRadius: "4px",
-              marginTop: "2rem",
-              marginBottom: "1.5rem",
-              padding: "1.25rem",
-            }}
-          >
-            <Grid>
-              <Grid sx={{ paddingBottom: "3rem", ml: "0.5rem" }}>
-                <CoTypography size="Title" style={{ color: "#868e96" }}>
-                  {inquiryDetail.content}
-                </CoTypography>
-              </Grid>
+          {inquiryDetail.comments.map((comment, index) => (
+            <InquriyComment
+              key={id}
+              name={comment.commenterName}
+              regDate={comment.commentDate}
+              content={comment.commentContent}
+              likeCount={comment.commentLikeCount}
+              profileImage={comment.profileImage}
+            />
+          ))}
 
-              <Grid container ml="0.25rem" alignItems={"center"}>
-                <Button color="primary" variant="contained">
-                  <KeyboardArrowDownIcon sx={{ ml: "-0.5rem" }} />
-                  답글 {2}개
-                </Button>
-              </Grid>
-            </Grid>
-
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-end",
-                mr: "0.25rem",
-              }}
-            >
-              <Grid sx={{ paddingBottom: "3rem", mr: "0.25rem" }}>
-                <ButtonGroup
-                  variant="text"
-                  sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
-                >
-                  <Button style={{ border: "none" }}>
-                    <CoTypography size="TableContent">수정</CoTypography>
-                  </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">삭제</CoTypography>
-                  </Button>
-                </ButtonGroup>
-              </Grid>
-
-              <Grid
-                sx={{ display: "flex", alignItems: "center", mr: "0.25rem" }}
-              >
-                <Grid
-                  sx={{ display: "flex", alignItems: "center", mr: "0.5rem" }}
-                >
-                  <NotificationsOutlinedIcon
-                    sx={{ mr: "0.25rem", color: "#e65100" }}
-                  />
-                  <CoTypography size="TableContent" color="textSecondary">
-                    신고하기
-                  </CoTypography>
-                </Grid>
-                <Grid sx={{ display: "flex", alignItems: "center" }}>
-                  <FavoriteBorderOutlinedIcon sx={{ mr: "0.25rem" }} />
-                  <CoTypography size="TableContent" color="textSecondary">
-                    {3}
-                  </CoTypography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
           <Grid
             container
             justifyContent="flex-end"

@@ -10,6 +10,17 @@ import ContentsSide from '../../components/organisms/contents/detail/contentsSid
 import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
 
 
+// 컨텐츠
+// 컨텐츠 제목
+    // 컨텐츠 영상 제목
+// 생성일자
+// 코스
+    // 서브코스
+// 영상파일
+    // 영상 타임?
+// 강사
+// 
+
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
     padding: 0,
@@ -95,6 +106,8 @@ const Detail = () => {
 
         <GridStyle container >
 
+            {/* ContentsInfo */}
+            {/* ContentsDetail */}
             <Grid item xs={9} lg={9}>
 
                 {/* ContentInfo */}
@@ -114,11 +127,10 @@ const Detail = () => {
             </Grid>
 
             {/* ContentsPrice */}
-
             <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
-                <Box position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
+                <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
                     <ContentsPrice></ContentsPrice>
-                </Box>
+                </Grid>
             </Grid>
 
         </GridStyle>
