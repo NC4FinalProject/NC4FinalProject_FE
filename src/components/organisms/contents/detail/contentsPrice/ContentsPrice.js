@@ -96,9 +96,9 @@ const ContentsPrice = () => {
             </Grid>
             
             <Grid container item xs={4} justifyContent={'flex-end'}>
-              <IconButton onClick={navigate('/cart')}>
-                <FaCartPlus style={{ marginRight: '0.3em', color: '#6E6E6E', cursor: 'pointer', fontSize: '20px' }}/>
-              </IconButton>
+              
+              <FaCartPlus onClick = {() => { navigate('/cart')}} style={{ marginRight: '0.3em', color: '#6E6E6E', cursor: 'pointer', fontSize: '20px' }}/>
+              
             </Grid>
 
           </Grid>
