@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 const Footer = () => {
   return (
     <div className="footer">
-      <Grid container spacing={3} justifyContent="space-between">
+      <Grid container spacing={3} justifyContent="space-between" sx={{marginTop:'0'}}>
         <Grid item>
           <Typography style={{fontSize:'0.875rem', fontFamily: 'Pretendard SemiBold'}}>고객센터</Typography>
           <Typography style={{fontSize:'0.875rem', marginTop:'0.725rem'}}>오전 9시 ~ 오후 6시 (주말, 공휴일 제외)</Typography>

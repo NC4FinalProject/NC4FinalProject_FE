@@ -97,20 +97,64 @@ const useStore = create((set, get) => ({
       }
     },
 
+    handleNoticeModifySubmit: async (putNoticeId) => {
+      const { title, content, userNickname, fetchNotices, setOpenDialog, setNotices, fileDTOList,setUserNickname } = get();
+      try {
+        console.log(content);
+
+        const noticeData = {
+          id: putNoticeId,
+          noticeTitle: title,
+          noticeContent: content,
+          noticeWriter: userNickname
+        };
+
+        console.log(noticeData);
+        
+        console.log(fileDTOList);
+
+        const formData = new FormData();
+
+        const noticeDTO = new Blob([JSON.stringify(noticeData)], {
+          type: 'application/json',
+        });
+
+        formData.append('noticeDTO', noticeDTO);
+
+        const fileDTOs = new Blob([JSON.stringify(fileDTOList)], {
+          type: 'application/json',
+        });
+
+        formData.append('fileDTOList', fileDTOs);
+  
+       const response = await axios.put('http://localhost:9090/notice/update', formData);
+  
+        fetchNotices();
+  
+        setOpenDialog(false);
+        alert('공지사항이 수정되었습니다.');
+        setNotices(response.data.item);
+        setUserNickname(response.data.item.noticeWriter);
+      } catch (error) {
+        console.error('Error adding notice:', error);
+      }
+    },
+
+
 
     
     getNotice: async (noticeId) => {
       console.log(noticeId);
-      const { setNotices, userNickname ,setUserNickname, } = get();
+      const { setNotices, userNickname ,setUserNickname} = get();
       try {
         const response = await axios.get(`http://localhost:9090/notice/notice/${noticeId}`,{
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
         });
+        console.log(response.data.item);  
         setNotices(response.data.item);
         setUserNickname(userNickname);
-        console.log(response.data.item);
         } catch (error) {
           console.log("id 못찾음")
         }
