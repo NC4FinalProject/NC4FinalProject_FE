@@ -1,8 +1,9 @@
-import { Box, Button, Divider, Grid, Rating, Typography } from '@mui/material'
+import { Box, Button, Divider, Grid, IconButton, Rating, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import {contentsListApi} from '../../../../api/contentsListApi'
 import { FaCartPlus } from "react-icons/fa";
 import ContentsPriceCal from '../../../../atoms/common/ContentsPriceCal';
+import { useNavigate } from 'react-router-dom';
 
 
 // 컨텐츠 데이터 인포 관련
@@ -25,6 +26,8 @@ const ContentsPrice = () => {
   // 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
   // 실시간 일 경우 음수를 받아와 국비지원 인 것을 알아야 할듯? -1 
   // 유료일 경우 컨텐츠로 부터 가격 데이터를 받아옴 가격 > 0
+
+  const navigate = useNavigate();
   
   useEffect(() => {
     setContentsNumber(contentsIndexNumber);
@@ -93,7 +96,9 @@ const ContentsPrice = () => {
             </Grid>
             
             <Grid container item xs={4} justifyContent={'flex-end'}>
-              <FaCartPlus style={{ marginRight: '0.3em', color: '#6E6E6E', cursor: 'pointer', fontSize: '20px' }}/>
+              <IconButton onClick={navigate('/cart')}>
+                <FaCartPlus style={{ marginRight: '0.3em', color: '#6E6E6E', cursor: 'pointer', fontSize: '20px' }}/>
+              </IconButton>
             </Grid>
 
           </Grid>
