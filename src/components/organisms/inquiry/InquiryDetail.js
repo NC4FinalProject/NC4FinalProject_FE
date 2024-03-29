@@ -1,6 +1,6 @@
 import { ThumbUp, Visibility } from "@mui/icons-material";
 import { Button, ButtonGroup, Chip, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
@@ -10,37 +10,8 @@ import { useState } from "react";
 import Reportdialog from "../../organisms/review/Reportdialog";
 import InquriyComment from "./InquriyComment";
 
-const InquiryDetails = [
-  {
-    id: 1,
-    userName: "홍길동",
-    title: "질문이 있습니다.",
-    content:
-      "모르겠숴요겠겠숴요모르겠숴요모르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요르숴요모르겠모르겠숴요모르겠숴요",
-    lectureName: "모르니까 자바다",
-    viewCount: 3,
-    regiDate: "2021-10-10",
-    likeCount: 5,
-    isSolved: true,
-    tag1: "java",
-    tag2: "javascript",
-    tag3: "react",
-    comments: [
-      {
-        profileImage: process.env.PUBLIC_URL + "/images/teacher.jpg",
-        commenterName: "김댓글",
-        commentDate: "2021-10-11",
-        commentContent:
-          "메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱메롱.",
-        commentLikeCount: 3,
-      },
-    ],
-  },
-];
-
-const InquiryDetail = () => {
+const InquiryDetail = ({ inquiry }) => {
   const [showEditor, setShowEditor] = useState(false);
-
   const [openReportDialog, setOpenReportDialog] = useState(false);
 
   const handleEditorClick = () => {
@@ -57,10 +28,10 @@ const InquiryDetail = () => {
 
   return (
     <>
-      {InquiryDetails.map((inquiryDetail, id) => (
+      {inquiry && (
         <Grid
-          key={id}
-          value={inquiryDetail}
+          key={inquiry.inquiryId}
+          value={inquiry}
           container
           sx={{
             display: "flex",
@@ -84,13 +55,12 @@ const InquiryDetail = () => {
             <Grid>
               <Grid sx={{ paddingBottom: "1rem" }}>
                 <CoTypography size="WriteTitle">
-                  {inquiryDetail.title}
+                  {inquiry.inquiryTitle}
                 </CoTypography>
               </Grid>
               <Grid container ml="0.5rem" alignItems={"center"}>
                 <CoTypography size="TableContent">
-                  {inquiryDetail.userName} | {inquiryDetail.regiDate} |
-                  {inquiryDetail.lectureName} |
+                  {inquiry.userName} | {inquiry.date} | {inquiry.lectureName} |
                 </CoTypography>
                 <Visibility
                   sx={{
@@ -100,7 +70,7 @@ const InquiryDetail = () => {
                   }}
                 />
                 <CoTypography size="TableContent">
-                  {inquiryDetail.viewCount}
+                  {inquiry.viewCount}
                 </CoTypography>
               </Grid>
             </Grid>
@@ -114,24 +84,23 @@ const InquiryDetail = () => {
               <Grid container alignItems={"center"}>
                 <Chip
                   size="medium"
-                  label={inquiryDetail.isSolved ? "해결완료" : "미해결"}
+                  label={inquiry.isSolved ? "해결완료" : "미해결"}
                   sx={{
-                    backgroundColor: inquiryDetail.isSolved
+                    backgroundColor: inquiry.isSolved
                       ? "primary.main"
                       : "primary",
-                    color: inquiryDetail.isSolved ? "white" : "primary",
+                    color: inquiry.isSolved ? "white" : "primary",
                     mr: "1rem",
                   }}
                 />
+                <ThumbUp
+                  sx={{
+                    mr: "0.25rem",
+                    color: "#868e96",
+                  }}
+                />
                 <CoTypography size="TableContent" color="textSecondary">
-                  <Grid container direction="row" alignItems="center">
-                    <ThumbUp
-                      sx={{
-                        mr: "0.25rem",
-                      }}
-                    />
-                    <Grid>{inquiryDetail.viewCount}</Grid>
-                  </Grid>
+                  {inquiry.viewCount}
                 </CoTypography>
               </Grid>
             </Grid>
@@ -146,6 +115,7 @@ const InquiryDetail = () => {
             >
               <Grid
                 item
+                xs={12}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -173,14 +143,19 @@ const InquiryDetail = () => {
               </Grid>
               <Grid
                 item
+                xs={12}
                 sx={{
                   display: "flex",
                   alignItems: "center",
                   padding: "1rem",
                 }}
               >
-                <CoTypography size="Title" style={{ color: "#868e96" }}>
-                  {inquiryDetail.content}
+                <CoTypography
+                  size="Title"
+                  style={{ color: "#868e96" }}
+                  sx={{ width: "100%" }}
+                >
+                  {inquiry.inquiryContent}
                 </CoTypography>
               </Grid>
             </Grid>
@@ -192,11 +167,7 @@ const InquiryDetail = () => {
               padding="1rem 1.5rem 2rem 1rem"
             >
               <Grid item>
-                {[
-                  inquiryDetail.tag1,
-                  inquiryDetail.tag2,
-                  inquiryDetail.tag3,
-                ].map(
+                {[inquiry.tag1, inquiry.tag2, inquiry.tag3].map(
                   (tag, index) =>
                     tag && (
                       <Chip
@@ -318,22 +289,26 @@ const InquiryDetail = () => {
               </CoHoverButton>
             )}
           </Grid>
-          {inquiryDetail.comments.map((comment, index) => (
-            <InquriyComment
-              key={id}
-              name={comment.commenterName}
-              regDate={comment.commentDate}
-              content={comment.commentContent}
-              likeCount={comment.commentLikeCount}
-              profileImage={comment.profileImage}
-            />
-          ))}
+          {inquiry &&
+            inquiry.inquiryComments &&
+            inquiry.inquiryComments.length > 0 &&
+            inquiry.inquiryComments.map((comment, id) => (
+              <InquriyComment
+                key={id}
+                name={comment.commenterName}
+                regDate={comment.commentDate}
+                content={comment.commentContent}
+                likeCount={comment.commentLikeCount}
+                profileImage={comment.profileImage}
+              />
+            ))}
 
           <Grid
             container
             justifyContent="flex-end"
             alignItems="center"
             mb="0.5rem"
+            mt="1.5rem"
           >
             <Button
               variant="contained"
@@ -344,7 +319,7 @@ const InquiryDetail = () => {
             </Button>
           </Grid>
         </Grid>
-      ))}
+      )}
     </>
   );
 };
