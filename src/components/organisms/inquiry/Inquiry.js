@@ -41,9 +41,10 @@ const StyledInputLabel = styled(InputLabel)`
   height: 50%;
 `;
 
-const Inquriy = ({ onInquiryClick }) => {
+const Inquiry = ({ onInquiryClick }) => {
   const [sortBy, setSortBy] = useState("latest");
   const [Option, setOption] = useState("");
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
 
   const handleChangeSort = (newValue) => {
     setSortBy(newValue);
@@ -53,29 +54,52 @@ const Inquriy = ({ onInquiryClick }) => {
     setOption(event.target.value);
   };
 
-  const handleRowClick = (id) => {
-    // 선택된 inquiry ID를 부모 컴포넌트로 전달합니다.
-    onInquiryClick(id);
+  const handleRowClick = (inquiryId) => {
+    const selected = Inquiries.find(
+      (inquiry) => inquiry.inquriyId === inquiryId
+    );
+    setSelectedInquiry(selected);
+    onInquiryClick(selected);
   };
 
   const Inquiries = [
     {
+      inquriyId: 1,
       inquiryTitle: "강의 관련 질문 있습니다.",
       userName: "User1",
       inquiryContent:
-        "모르게쑤요...asdfasdfaasdfasdfasdfASDFASasdfasdfasdfasdfqwertawerawefasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfaasdfqwetqasdfadfasdfasdfasdfsdfawetqwetasdfasfasfdDFsdfasdfasdff",
+        "몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루",
       date: "2022-01-01",
       tag: null,
+      lectureName: "이것이 자바다", // leture 끌고오는거임
       isPrivate: false,
       isSolved: true,
       commentCount: 1,
       likeCount: 1,
       viewCount: 1,
+      inquiryComments: [
+        {
+          commenterName: "User2",
+          commentDate: "2022-01-02",
+          commentContent: "어려워요.",
+          commentLikeCount: 30,
+          profileImage: "user2.jpg",
+        },
+        {
+          commenterName: "User3",
+          commentDate: "2022-01-03",
+          commentContent: "정말 어려운 문제입니다.",
+          commentLikeCount: 20,
+          profileImage: "user3.jpg",
+        },
+      ],
     },
     {
+      inquriyId: 2,
       inquiryTitle: "강의 관련 질문 있습니다.",
       userName: "User2",
-      inquiryContent: "어려워요.",
+      inquiryContent:
+        "어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.",
       date: "2022-01-02",
       tag: null,
       isPrivate: false,
@@ -85,6 +109,7 @@ const Inquriy = ({ onInquiryClick }) => {
       viewCount: 5,
     },
     {
+      inquriyId: 3,
       inquiryTitle: "강의 관련 질문 있습니다.",
       userName: "User3",
       inquiryContent: "홀리.",
@@ -97,6 +122,7 @@ const Inquriy = ({ onInquiryClick }) => {
       viewCount: 2,
     },
     {
+      inquriyId: 4,
       inquiryTitle: "강의 관련 질문 있습니다.",
       userName: "User4",
       inquiryContent: "응애.",
@@ -109,6 +135,7 @@ const Inquriy = ({ onInquiryClick }) => {
       viewCount: 5,
     },
     {
+      inquriyId: 5,
       inquiryTitle: "강의 관련 질문 있습니다.",
       userName: "User5",
       inquiryContent: "리액트 졸잼.",
@@ -224,8 +251,13 @@ const Inquriy = ({ onInquiryClick }) => {
             width: "100%",
           }}
         >
-          {Inquiries.map((inquiry, index) => (
-            <TableRow key={index} style={{ display: "flex", width: "100%" }}>
+          {Inquiries.map((inquiry) => (
+            <TableRow
+              key={inquiry.inquriyId}
+              style={{ display: "flex", width: "100%" }}
+              onClick={() => handleRowClick(inquiry.inquriyId)}
+              inquiries={Inquiries}
+            >
               <TableCell
                 sx={{
                   display: "flex",
@@ -233,6 +265,7 @@ const Inquriy = ({ onInquiryClick }) => {
                   width: "100%",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
+                  cursor: "pointer",
                 }}
               >
                 <Box
@@ -362,4 +395,4 @@ const Inquriy = ({ onInquiryClick }) => {
     </>
   );
 };
-export default Inquriy;
+export default Inquiry;
