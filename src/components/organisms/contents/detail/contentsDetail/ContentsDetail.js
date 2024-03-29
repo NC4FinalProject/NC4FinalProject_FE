@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -6,10 +5,11 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ReviewList from "../../../review/ReviewList";
-import Inquriy from "../../../inquiry/Inquriy";
+import Inquiry from "../../../inquiry/Inquiry";
 import { useState } from "react";
 import CurriculumCourse from "../CurriculumCourse";
-
+import InquiryDetail from "../../../inquiry/InquiryDetail";
+import InquiryPost from "../../../inquiry/InquiryPost";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -24,7 +24,7 @@ function CustomTabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-         <Typography component={"div"}>{children}</Typography>
+          <Typography component={"div"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -48,14 +48,14 @@ export default function ContentsDetail() {
   const [value, setValue] = React.useState(0);
 
   const [view, setView] = useState("list");
-  const [selectedInquiryId, setSelectedInquiryId] = useState(null);
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
 
-  const handleWriteClick = () => {
+  const handlePostClick = () => {
     setView("write");
   };
 
-  const handleInquiryClick = (id) => {
-    setSelectedInquiryId(id);
+  const handleInquiryClick = (inquiry) => {
+    setSelectedInquiry(inquiry);
     setView("detail");
   };
 
@@ -91,7 +91,7 @@ export default function ContentsDetail() {
       </CustomTabPanel>
       {/* 코스 */}
       <CustomTabPanel value={value} index={1}>
-        <CurriculumCourse/>
+        <CurriculumCourse />
       </CustomTabPanel>
       {/* 후기 */}
       <CustomTabPanel value={value} index={2}>
@@ -99,13 +99,9 @@ export default function ContentsDetail() {
       </CustomTabPanel>
       {/* 게시판 */}
       <CustomTabPanel value={value} index={3}>
-        {view === "list" && (
-          <Inquriy
-            onInquiryClick={(id) => handleInquiryClick(id)} // 이벤트 핸들러 추가
-          />
-        )}
-        {/* {view === "detail" && <InquiryDetail id={selectedInquiryId} />} */}
-        {/* {view === "write" && <InquiryWrite />} */}
+        {view === "list" && <Inquiry onInquiryClick={handleInquiryClick} />}
+        {view === "detail" && <InquiryDetail inquiry={selectedInquiry} />}
+        {view === "write" && <InquiryPost />}
       </CustomTabPanel>
     </Box>
   );

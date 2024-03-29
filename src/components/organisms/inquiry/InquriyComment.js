@@ -34,16 +34,14 @@ const InquriyComment = ({
           alignItems: "top",
           borderRadius: "4px",
           marginTop: "2rem",
-          marginBottom: "1.5rem",
           padding: "1.25rem",
         }}
       >
-        <Grid>
+        <Grid item xs={12}>
           <Grid
-            Grid
-            item
             container
             justifyContent="space-between"
+            alignItems="center"
             sx={{ paddingBottom: "1.25rem" }}
           >
             <Grid
@@ -64,46 +62,36 @@ const InquriyComment = ({
               </CoTypography>
             </Grid>
             <Grid
+              item
               sx={{
                 display: "flex",
-
                 alignItems: "center",
                 mr: "0.25rem",
+                paddingBottom: "1.25rem",
               }}
             >
-              <Grid sx={{ mr: "0.25rem", paddingBottom: "1.25rem" }}>
-                <ButtonGroup variant="text" sx={{ mr: "-0.5rem" }}>
-                  <Button style={{ border: "none" }}>
-                    <CoTypography size="TableContent">수정</CoTypography>
-                  </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">삭제</CoTypography>
-                  </Button>
-                </ButtonGroup>
-              </Grid>
+              <ButtonGroup variant="text" sx={{ mr: "-0.5rem" }}>
+                <Button style={{ border: "none" }}>
+                  <CoTypography size="TableContent">수정</CoTypography>
+                </Button>
+                <CoTypography
+                  size="TableContent"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  |
+                </CoTypography>
+                <Button>
+                  <CoTypography size="TableContent">삭제</CoTypography>
+                </Button>
+              </ButtonGroup>
             </Grid>
-            <Grid>
-              <CoTypography size="TableContent" style={{ color: "#868e96" }}>
-                {content}
-              </CoTypography>
-            </Grid>
-
-            {/* <Grid container ml="0.25rem" alignItems={"center"}>
-            <Button color="primary" variant="contained">
-              <KeyboardArrowDownIcon sx={{ ml: "-0.5rem" }} />
-              답글 {2}개
-            </Button>
-          </Grid> */}
           </Grid>
-
+          <Grid item xs={12} pb="1.25rem">
+            <CoTypography size="TableContent" style={{ color: "#868e96" }}>
+              {content}
+            </CoTypography>
+          </Grid>
           <Grid
-            item
             container
             justifyContent="flex-end"
             sx={{ paddingTop: "1.25rem", cursor: "pointer" }}
@@ -131,8 +119,7 @@ const InquriyComment = ({
       <Reportdialog
         open={openCommentReportDialog}
         handleClickClose={handleCloseCommentReportDialog}
-      />{" "}
-      {/* 이 줄을 추가하세요 */}
+      />
     </>
   );
 };
