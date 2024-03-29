@@ -12,6 +12,11 @@ const useStore = create((set, get) => ({
     profileImage: null,
     files: [],
     fileDTOList: [],
+    modifyFileList: [],
+    likeCnt: 0,
+    liked: 0,
+    setLikeCheck: (liked) => set({ liked }),
+    setLikeCnt: (likeCnt) => set({ likeCnt }),
     setFiles: (files) => set({ files }),
     setNotices: (notices) => set({ notices }),
     setOpenDialog: (openDialog) => set({ openDialog }),
@@ -23,6 +28,7 @@ const useStore = create((set, get) => ({
     setPage: (page) => set({ page }),
     setPorfileImage: (profileImage) => set({ profileImage }),
     setFileDTOList: (fileDTOList) => set({ fileDTOList }),
+    setModifyFileList: (modifyFileList) => set({ modifyFileList }),
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
@@ -98,7 +104,7 @@ const useStore = create((set, get) => ({
     },
 
     handleNoticeModifySubmit: async (putNoticeId) => {
-      const { title, content, userNickname, fetchNotices, setOpenDialog, setNotices, fileDTOList,setUserNickname } = get();
+      const { title, content, userNickname, fileDTOList, setModifyFileList, noticeModifyProc } = get();
       try {
         console.log(content);
 
@@ -128,31 +134,65 @@ const useStore = create((set, get) => ({
         formData.append('fileDTOList', fileDTOs);
   
        const response = await axios.put('http://localhost:9090/notice/update', formData);
+        
+        setModifyFileList(response.data.item);
+        noticeModifyProc(putNoticeId);
+      } catch (error) {
+        console.error('Error adding notice:', error);
+      }
+    },
+    noticeModifyProc: async (putNoticeId) => {
+      const { title, content, userNickname, fetchNotices, setOpenDialog, fileDTOList,setUserNickname, modifyFileList } = get();
+      try {
+        const noticeData = {
+          id: putNoticeId,
+          noticeTitle: title,
+          noticeContent: content,
+          noticeWriter: userNickname
+        };
+
+        const formData = new FormData();
+
+        const noticeDTO = new Blob([JSON.stringify(noticeData)], {
+          type: 'application/json',
+        });
+
+        formData.append('noticeDTO', noticeDTO);
+
+        const modifyFiles = new Blob([JSON.stringify(modifyFileList)], {
+          type: 'application/json',
+        });
+
+        formData.append('modifyFiles', modifyFiles);
+
+        const fileDTOs = new Blob([JSON.stringify(fileDTOList)], {
+          type: 'application/json',
+        });
+
+        formData.append('fileDTOList', fileDTOs);
   
-        fetchNotices();
-  
+       const response = await axios.put('http://localhost:9090/notice/updateProc', formData);
+
         setOpenDialog(false);
         alert('공지사항이 수정되었습니다.');
-        setNotices(response.data.item);
+        window.location.reload();
         setUserNickname(response.data.item.noticeWriter);
       } catch (error) {
         console.error('Error adding notice:', error);
       }
     },
-
-
-
     
     getNotice: async (noticeId) => {
-      console.log(noticeId);
       const { setNotices, userNickname ,setUserNickname} = get();
       try {
         const response = await axios.get(`http://localhost:9090/notice/notice/${noticeId}`,{
+        withCredentials: true,
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
         });
-        console.log(response.data.item);  
+        console.log(response);
+      
         setNotices(response.data.item);
         setUserNickname(userNickname);
         } catch (error) {

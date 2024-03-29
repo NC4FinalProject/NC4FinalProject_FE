@@ -11,6 +11,9 @@ import { useState } from 'react';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
 const NoticeDetail = () => {
@@ -21,6 +24,9 @@ const NoticeDetail = () => {
   const [backNotice, setBackNotice] = useState(null);
   const [backNoticeData, setBackNoticeData] = useState(null);
   const [putNoticeId, setPutNoticeId] = useState(null);
+  const [liked, setliked] = useState(null);
+  const [likeCnt, setlikeCnt] = useState(null);
+
   const navi = useNavigate();
   const tempFileDTOList = [];
 
@@ -38,11 +44,10 @@ const NoticeDetail = () => {
     }
   }, [noticeId]);
 
-
   useEffect(() => {
   const getNextNotice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9090/notice/notice/${nextNotice}`);
+      const response = await axios.get(`http://localhost:9090/notice/${nextNotice}`);
       
       setNextNoticeData(response.data.item);
     } catch (error) {
@@ -50,7 +55,7 @@ const NoticeDetail = () => {
     }
   };
   
-  if (noticeId !== null) {
+  if (nextNotice  !== null) {
     getNextNotice();
   }
   }, [noticeId, nextNotice]); 
@@ -58,7 +63,7 @@ const NoticeDetail = () => {
   useEffect(() => {
     const getBackNotice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/notice/notice/${backNotice}`);
+        const response = await axios.get(`http://localhost:9090/notice/${backNotice}`);
         
         setBackNoticeData(response.data.item);
       } catch (error) {
@@ -69,12 +74,11 @@ const NoticeDetail = () => {
     if (noticeId !== null) {
       getBackNotice();
     }
-    }, [noticeId, nextNotice]); 
+    }, [noticeId, backNotice]); 
 
 
 const handleDelete = async () => {
    try {
-    console.log(noticeId);
 
     const response = await axios.delete(`http://localhost:9090/notice/delete/${noticeId}`);
     console.log(response);
@@ -85,6 +89,38 @@ const handleDelete = async () => {
         alert('게시글 삭제 중 오류가 발생했습니다.');
       }
     };
+  useEffect(() => {
+    const getlikedata = async () => {
+    try {
+      const response = await axios.get(`http://localhost:9090/notice/likeget/${noticeId}`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        }
+      });
+      console.log(response.data);
+      setlikeCnt(response.data.likeCnt);
+      setliked(response.data.check);
+    }catch (error) {
+      console.log('Error fetching like:', error);
+    }
+  };
+  getlikedata();
+  }, [noticeId]);
+
+    const getLikeNotice = async () => {
+      try {
+        const response = await axios.post(`http://localhost:9090/notice/like/${noticeId}`,null, {
+          headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          }
+         });
+        console.log(response.data);
+        setlikeCnt(response.data.likeCnt);
+        setliked(response.data.check);
+      } catch (error) {
+        console.error('Error fetching like:', error);
+      }
+    }; 
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -160,6 +196,7 @@ const handleDelete = async () => {
       };
     };
   }
+
 
   return (
     <div>
@@ -250,7 +287,15 @@ const handleDelete = async () => {
             <CoTypography size='Content' sx={{marginLeft:'0.725rem'}}>작성자: {notices.noticeWriter}</CoTypography>
      </Box>
           <CoTypography  className='Notice'>{HtmlParser(notices.noticeContent)}</CoTypography>
-          <CoTypography size='Tag'>작성일: {formatDate(notices.noticeDate)}</CoTypography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <CoTypography size="Tag">작성일: {formatDate(notices.noticeDate)}</CoTypography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CoTypography size="Tag">이 글이 도움이 되었나요? ({likeCnt})</CoTypography>
+            <IconButton  onClick={() => getLikeNotice()} color="inherit" sx={{padding: '0'}}>
+              {liked == 1 ?  <FavoriteIcon sx={{ color: '#558BCF', '& > *': { fill: '#none' },paddingLeft: '0.125rem'}} /> : <FavoriteBorderIcon sx={{paddingLeft: '0.125rem'}} />}
+            </IconButton>
+          </Box>
+        </Box>
           <CoTypography size='Content' sx={{ borderBottom: '1px solid #7d7d7d', borderTop: '1px solid #7d7d7d',paddingBottom:'0.225rem',paddingTop:'0.225rem' }}>
           {nextNoticeData ? (<>다음글 : <Link to={`/notice/${nextNotice}`} style={{ color: 'inherit' }}>{nextNoticeData.noticeTitle}</Link></>) : ("다음글이 없습니다.")}
           </CoTypography>
