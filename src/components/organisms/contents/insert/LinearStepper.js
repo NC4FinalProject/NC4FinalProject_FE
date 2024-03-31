@@ -9,10 +9,15 @@ import ChapterOne from './ChapterOne';
 import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
+import { useChapterOneStore } from '../../../../stores/ContentsStore';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
 export default function LinearStepper() {
+
+  const chapterOne = useChapterOneStore((state) => state.chapterOne);
+  const saveChapterOne = useChapterOneStore((state) => state.saveChapterOne);
+
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
 
@@ -60,6 +65,13 @@ export default function LinearStepper() {
     setActiveStep(0);
   };
 
+  const handleSave = () => {
+
+    saveChapterOne(chapterOne);
+    console.log(chapterOne);
+  };
+
+
   return (
     <Box sx={{ width: '100%' }}>
       
@@ -103,6 +115,7 @@ export default function LinearStepper() {
             <Grid sx={{ display: 'flex',  pt: 2, justifyContent:'center' }}>
               {/* <Button onClick={handleReset}>마이페이지로 이동</Button> */}
               <Button onClick={handleReset}>컨텐츠로 이동</Button>
+              <Button onClick={handleSave}>데이터를 저장</Button>
             </Grid>
           </Fragment>
         </Grid>
