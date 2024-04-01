@@ -11,7 +11,15 @@ const CoTypography = ({ children, size, style, sx }) => {
       fontFamily: "Pretendard Regular",
       color: "#7d7d7d",
     },
+    AdminTag: {
+      fontSize: "0.725rem",
+      fontFamily: "Pretendard Regular",
+      color: "#7d7d7d",
+      paddingLeft:'1rem'
+    },
     WriteTitle: { fontSize: "1.75rem" },
+    Admin: { fontSize: "0.725rem" },
+    AdminNotice: { fontSize: "0.9375rem", paddingLeft:'1rem', paddingTop:'0.725rem',  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'},
     MainTitle: { fontSize: "1.5rem", fontFamily: "Pretendard SemiBold" },
     NoticeTitle: { fontSize: "1.25rem", fontFamily: "Pretendard SemiBold" },
     HoverText: { fontSize: "1rem", fontFamily: "Pretendard SemiBold" },
