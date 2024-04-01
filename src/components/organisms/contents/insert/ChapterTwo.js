@@ -24,7 +24,7 @@ const ChapterTwo = () => {
 
   // 서브 섹션 추가 함수가 될 것이여
   const addSectionSubFunc = (sectionId) => {
-    const subID = chapterTwo[sectionId].sectionSubList.length
+    const subID = chapterTwo[sectionId].sectionSubList.length + 1
     addSectionSub(sectionId, {
       sectionSubId: `${sectionId}-${subID}`,
       sectionSubTitle: '',

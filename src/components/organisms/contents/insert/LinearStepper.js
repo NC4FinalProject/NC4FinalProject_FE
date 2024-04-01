@@ -9,14 +9,14 @@ import ChapterOne from './ChapterOne';
 import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
-import { useChapterOneStore } from '../../../../stores/ContentsStore';
+import { useChapterOneStore, useChapterTwoStore } from '../../../../stores/ContentsStore';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
 export default function LinearStepper() {
 
-  const chapterOne = useChapterOneStore((state) => state.chapterOne);
-  const saveChapterOne = useChapterOneStore((state) => state.saveChapterOne);
+  const { chapterOne, saveChapterOne } = useChapterOneStore();
+  const { chapterTwo, saveChapterTwo } = useChapterTwoStore();
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -66,8 +66,8 @@ export default function LinearStepper() {
   };
 
   const handleSave = () => {
-
-    saveChapterOne(chapterOne);
+    // saveChapterOne(chapterOne);
+    saveChapterTwo(chapterTwo);
     console.log(chapterOne);
   };
 
@@ -107,7 +107,9 @@ export default function LinearStepper() {
       {activeStep === steps.length ? (
       <Grid container justifyContent="center"  sx={{ mb: '5rem', }}>
         <Grid direction={'column'} py={'10rem'}>
-          <Fragment justifyItems="center">
+          <Fragment>
+            <Grid sx={{justifyItems: "center"}}>
+            </Grid>
            <Typography sx={{ mt: 2, mb: 1 }}>
               컨텐츠가 정상적으로 등록되었어요.&apos;&apos;&apos;굳잡
             </Typography>

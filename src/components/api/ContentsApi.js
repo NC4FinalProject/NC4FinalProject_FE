@@ -25,23 +25,44 @@ export async function fetchContentsApi() {
 }
 
 export const ChapterOneApiSave = async (chapterOne) => {
-    try {
-      const response = await axios.post('http://localhost:9090/contents/listAll', 
-      chapterOne,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-    //     },
-    //     params: {
-    //       searchCondition: search.searchCondition,
-    //       searchKeyword: search.searchKeyword,
-    //       page: search.page
-    //     }
-    //   }
-    );
-      return response.data;
-    } catch (error) {
-      throw error;
+  try {
+    const response = await axios.post('http://localhost:9090/contents/create', 
+    chapterOne,
+    {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      },
+      // params: {
+      //   searchCondition: search.searchCondition,
+      //   searchKeyword: search.searchKeyword,
+      //   page: search.page
+      // }
     }
-  };
+  );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const ChapterTwoApiSave = async (chapterTwo) => {
+  try {
+    const response = await axios.post('http://localhost:9090/contents/create', 
+    chapterTwo,
+    {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      },
+      // params: {
+      //   searchCondition: search.searchCondition,
+      //   searchKeyword: search.searchKeyword,
+      //   page: search.page
+      // }
+    }
+  );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
   

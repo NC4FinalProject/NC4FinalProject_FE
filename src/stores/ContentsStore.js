@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ChapterOneApiSave, fetchContentsApi } from '../components/api/ContentsApi';
+import { ChapterOneApiSave, ChapterTwoApiSave, fetchContentsApi } from '../components/api/ContentsApi';
 
 // test
 export const useContentsStore = create((set) => ({
@@ -46,8 +46,8 @@ export const useChapterOneStore = create(set => ({
   chapterOneInput: (newContents) => set(state => ({
     chapterOne: { ...state.chapterOne, ...newContents }
   })),
-  saveChapterOne: async (chapterOneDetails) => {
-    const data = await ChapterOneApiSave(chapterOneDetails);
+  saveChapterOne: async (chapterOne) => {
+    const data = await ChapterOneApiSave(chapterOne);
     set({ chapterOne: data });
   },
 }));
@@ -115,5 +115,10 @@ export const useChapterTwoStore = create((set) => ({
       return { ...section, sectionSubList: newSectionSubList };
     })
   })),
+
+  saveChapteTwo: async (chapterTwo) => {
+    const data = await ChapterTwoApiSave(chapterTwo);
+    set({ chapterTwo: data });
+  },
 
 }));
