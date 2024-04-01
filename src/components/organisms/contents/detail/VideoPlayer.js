@@ -3,42 +3,31 @@ import React from 'react'
 const VideoPlayer = () => {
   return (
     <>
-        <head>
-            <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+        <video
+            id="my-video"
+            className="video-js vjs-default-skin"
+            controls
+            // preload="auto"
+            // width="640"
+            // height="264"
+            // poster="MY_VIDEO_POSTER.jpg"
+            preload="auto"
+            poster="MY_VIDEO_POSTER.jpg"
 
-            {/* <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-            <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> --> */}
-        </head>
+            data-setup="{}"
+            style={{ width: '100%', height: '100%' }} // 스타일 추가
+        >
+            <source src="MY_VIDEO.mp4" type="video/mp4" />
+            <source src="MY_VIDEO.webm" type="video/webm" />
+            <p className="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading to a
+            web browser that
+            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            </p>
+        </video>
+        <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
-        <body>
-            <video
-                id="my-video"
-                class="video-js vjs-default-skin"
-                controls
-                // preload="auto"
-                // width="640"
-                // height="264"
-                // poster="MY_VIDEO_POSTER.jpg"
-                preload="auto"
-                poster="MY_VIDEO_POSTER.jpg"
-
-                data-setup="{}"
-                style={{ width: '100%', height: '100%' }} // 스타일 추가
-            >
-                <source src="MY_VIDEO.mp4" type="video/mp4" />
-                <source src="MY_VIDEO.webm" type="video/webm" />
-                <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a
-                web browser that
-                <a href="https://videojs.com/html5-video-support/" target="_blank"
-                    >supports HTML5 video</a
-                >
-                </p>
-            </video>
-            <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-        </body>
     </>
-    
   )
 }
 

@@ -1,17 +1,26 @@
 import {Grid, Button} from '@mui/material';
 import Typography from '@mui/material/Typography';
-
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 const Footer = () => {
+  const [hover, setHover] = useState(false);
   return (
     <div className="footer">
-      <Grid container spacing={3} justifyContent="space-between">
+      <Grid container spacing={3} justifyContent="space-between" sx={{marginTop:'0'}}>
         <Grid item>
           <Typography style={{fontSize:'0.875rem', fontFamily: 'Pretendard SemiBold'}}>고객센터</Typography>
           <Typography style={{fontSize:'0.875rem', marginTop:'0.725rem'}}>오전 9시 ~ 오후 6시 (주말, 공휴일 제외)</Typography>
           <Button variant="contained" style={{width: '70px', height: '30px',marginTop:'0.625rem', paddingLeft: 0, paddingRight: 0, backgroundColor: 'rgba(0,0,0,0.04)', color: 'black'}}>문의하기</Button>        </Grid>
         <Grid item>
+        <Link 
+          to="/noticelist" 
+          style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        >
           <Typography style={{fontSize:'0.875rem',  fontFamily: 'Pretendard SemiBold'}}>공지사항</Typography>
-          <Typography style={{fontSize:'0.725rem', marginTop:'0.725rem'}}>전체 카테고리</Typography>
+        </Link>         
+         <Typography style={{fontSize:'0.725rem', marginTop:'0.725rem'}}>전체 카테고리</Typography>
           <Typography style={{fontSize:'0.725rem', marginTop:'0.725rem'}}>자주 묻는 질문</Typography>
           <Typography style={{fontSize:'0.725rem', marginTop:'0.725rem'}}>지원기기 이용환경</Typography>
         </Grid>

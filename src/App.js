@@ -13,7 +13,10 @@ import Detail from "./pages/contents/Detail";
 import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
-
+import JoinVerification from "./pages/member/JoinVerification";
+import NoticeList from "./pages/contents/NoticeList";
+import NoticeDetail from "./pages/contents/NoticeDetail";
+import Cart from "./components/organisms/cart/Cart";
 
 function App() {
   return (
@@ -33,11 +36,25 @@ function App() {
               element={<GoogleLogin></GoogleLogin>}
             ></Route>
             <Route path="/mypage" element={<Mypage></Mypage>}></Route>
-            <Route path="/listpage" element={<List></List>} />
-            <Route path="/detailpage" element={<Detail></Detail>} />
-            <Route path="/insertpage" element={<Insert></Insert>} />
-            <Route path="/errorpage" element={<ErrorPage></ErrorPage>} />
+            <Route
+              path="/join-verification"
+              element={<JoinVerification></JoinVerification>}
+            />
+
+            <Route
+              path="/noticelist"
+              element={<NoticeList></NoticeList>}
+            ></Route>
+            <Route
+              path="/notice/:noticeId"
+              element={<NoticeDetail></NoticeDetail>}
+            ></Route>
+            <Route path="/list" element={<List></List>} />
+            <Route path="/detail" element={<Detail></Detail>} />
+            <Route path="/insert" element={<Insert></Insert>} />
+            <Route path="/error" element={<ErrorPage></ErrorPage>} />
             <Route path="/*" element={<ErrorPage></ErrorPage>} />
+            <Route path="/cart" element={<Cart></Cart>}></Route>
           </Route>
         </Routes>
       </Container>
