@@ -51,9 +51,14 @@ function App() {
               path="/notice/:noticeId"
               element={<NoticeDetail></NoticeDetail>}
             ></Route>
+            {/* /////////////////////////////////////////// */}
             <Route path="/list" element={<List></List>} />
-            <Route path="/detail" element={<Detail></Detail>} />
+
+            <Route path="/detail/:contentsId" element={<Detail></Detail>} />
+
             <Route path="/insert" element={<Insert></Insert>} />
+            {/* /////////////////////////////////////////// */}
+
             <Route path="/error" element={<ErrorPage></ErrorPage>} />
             <Route path="/*" element={<ErrorPage></ErrorPage>} />
             <Route path="/cart" element={<Cart></Cart>}></Route>
