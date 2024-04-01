@@ -191,7 +191,6 @@ const useStore = create((set, get) => ({
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
         });
-        console.log(response);
       
         setNotices(response.data.item);
         setUserNickname(userNickname);
