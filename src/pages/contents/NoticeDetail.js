@@ -49,6 +49,10 @@ const NoticeDetail = () => {
     try {
       const response = await axios.get(`http://localhost:9090/notice/${nextNotice}`);
       
+      if (response.data.item.noticeTitle === null) {
+        console.log('다음글이 없습니다.');
+        return;
+      }
       setNextNoticeData(response.data.item);
     } catch (error) {
       console.log('다음글이 없습니다.');

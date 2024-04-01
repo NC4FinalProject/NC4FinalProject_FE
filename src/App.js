@@ -17,12 +17,14 @@ import JoinVerification from "./pages/member/JoinVerification";
 import NoticeList from "./pages/contents/NoticeList";
 import NoticeDetail from "./pages/contents/NoticeDetail";
 import Cart from "./components/organisms/cart/Cart";
+import AdminPage from "./pages/admin/AdminPage";
 
 function App() {
   return (
     <ThemeProvider theme={createTheme}>
       <Container maxWidth="sm" style={{ maxWidth: "1300px", padding: 0 }}>
         <Routes>
+          <Route path="/admin/main" element={<AdminPage />}></Route>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home></Home>}></Route>
             <Route path="/join" element={<Join></Join>}></Route>
@@ -49,9 +51,14 @@ function App() {
               path="/notice/:noticeId"
               element={<NoticeDetail></NoticeDetail>}
             ></Route>
+            {/* /////////////////////////////////////////// */}
             <Route path="/list" element={<List></List>} />
-            <Route path="/detail" element={<Detail></Detail>} />
+
+            <Route path="/detail/:contentsId" element={<Detail></Detail>} />
+
             <Route path="/insert" element={<Insert></Insert>} />
+            {/* /////////////////////////////////////////// */}
+
             <Route path="/error" element={<ErrorPage></ErrorPage>} />
             <Route path="/*" element={<ErrorPage></ErrorPage>} />
             <Route path="/cart" element={<Cart></Cart>}></Route>
