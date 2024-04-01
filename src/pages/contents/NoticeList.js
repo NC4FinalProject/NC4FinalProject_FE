@@ -195,7 +195,6 @@ const NoticeList = () => {
             <CoTypography size="Tag">작성일: {formatDate(notice.noticeDate)} |</CoTypography>
             <CoTypography size="Tag" sx={{ marginLeft: '0.125rem' }}>작성자: {notice.noticeWriter}</CoTypography>
             <CoTypography size="Tag" sx={{ marginLeft: '0.625rem' }}>조회수: {notice.view}</CoTypography>
-            <CoTypography size="Tag" sx={{ marginLeft: '0.625rem' }}> 좋아요: {            notice.likeCnt}</CoTypography>
           </Box>
         </Box>
       ))}

@@ -3,7 +3,9 @@ import { Grid, Container, Typography, TextField, Button, Box, Avatar } from '@mu
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { MoonLoader} from "react-spinners";
+import { roles } from 'aria-query';
 
 function a11yProps(index) {
     return {
@@ -15,10 +17,12 @@ function a11yProps(index) {
 
 const Mypage = () => {
 
+    const navi = useNavigate();
+
     const [value, setValue] = useState(0);
     const [profileImage, setImage] = useState(null);
+    const [role, setRole] = useState(null);
     const [userNickname, setUserNickname] = useState(null);
-    const [isTeacher, setIsTeacher] = useState(null);
     const [loading, setLoading] = useState(true);
 
     const handleChange = (event, newValue) => {
@@ -55,10 +59,12 @@ const Mypage = () => {
             
                 setImage(response.data.item.profileFile);
                 setUserNickname(response.data.item.userNickname);
-                setIsTeacher(response.data.item.isTeacher);
                 setLoading(false);
+                setRole(response.data.item.role);
         } catch (error) {
             console.warn("이미지 불러오기 실패", error);
+            sessionStorage.removeItem("ACCESS_TOKEN");
+            navi('/');
         }
     }, []);
 
@@ -158,6 +164,22 @@ const Mypage = () => {
                 }   
       };
 
+      const resign = async e => {
+
+                try {
+                    const response = await axios.delete(
+                        `http://localhost:9090/member/resign`, 
+                        {
+                            headers: {
+                                Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                            }
+                        }
+                    )
+                } catch (error) {
+                        alert("회원탈퇴하실 수 없습니다.");
+                }
+      };
+
 
   return (
     <Container component="main" maxWidth="xs" style={{ marginTop: '8%', maxWidth:'1300px' }}>
@@ -221,14 +243,19 @@ const Mypage = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
-                            {isTeacher === null ? ("아직 강사가 아닙니다."
+                            { role === "ROLE_TEACHER" ? ("이미 강사입니다."
                                 ) : ( 
-                                "이미 강사입니다.") }
+                                    "아직 강사가 아닙니다.") }
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" onClick={wannabeTeacher} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
                             강사 계정으로 전환 신청하기
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button type="submit" onClick={resign} fullWidth variant="contained" color="gray" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
+                            회원탈퇴
                         </Button>
                     </Grid>
             </Grid>
