@@ -23,6 +23,7 @@ const CoTypography = ({ children, size, style, sx }) => {
     MainTitle: { fontSize: "1.5rem", fontFamily: "Pretendard SemiBold" },
     NoticeTitle: { fontSize: "1.25rem", fontFamily: "Pretendard SemiBold" },
     HoverText: { fontSize: "1rem", fontFamily: "Pretendard SemiBold" },
+    AdminUser: { fontSize: "1rem" },
     TableContent: {
       fontSize: "0.9375rem",
       fontFamily: "Pretendard Regular",
