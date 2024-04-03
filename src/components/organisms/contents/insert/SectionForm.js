@@ -40,11 +40,12 @@ const SectionForm = ({ title, showRemove,
     sectionSubTitleInput(sectionSubId, sectionId, newSubTitle);
   };
   
-  // 공백 배열의 최초 !!!!하위!!!! 섹션 인덱스 추가
-  const addSectionSubInit = (sectionId) => {
+  // 공백 배열의 최초 -------서브--------- 섹션 인덱스 추가
+  const addSectionSubInit = (sectionId, sectionSubId) => {
     if(sectionSubList.length === 0){
       addSectionSub(sectionId, {
-        sectionSubId: `${sectionId}-0`,
+        sectionId: sectionId,
+        sectionSubId: 1,
         sectionSubTitle: '',
       })
     }
@@ -96,7 +97,7 @@ const SectionForm = ({ title, showRemove,
             <IconButton sx={{ padding: 0, mx: 1 }} 
               onMouseDown={(event) => {
               event.preventDefault(); 
-              onAdd();
+              onAdd(sectionId);
               console.log("섹션 추가 버튼 쪽임")
               }}
               // onClick={addSectionFunc}
@@ -119,8 +120,8 @@ const SectionForm = ({ title, showRemove,
 
       {/* 서브 섹션 */}
       {/* {showSubSections && sectionSubList.map((subSection, indexSub) => ( */}
-      {showSubSections[sectionId] && sectionSubList.map((subSection, indexSub) => (
-        <Grid container key={subSection.sectionSubId} alignItems="center">
+      {showSubSections[sectionId] && sectionSubList.map((sectionSub, indexSub) => (
+        <Grid container key={sectionSub.sectionSubId} alignItems="center">
           {/* {console.log(sectionSubList.sectionSubId+"여긴 올까?")} */}
           <Grid item xs={1} />
 
@@ -135,9 +136,9 @@ const SectionForm = ({ title, showRemove,
               placeholder='컨텐츠 세부과정을 입력하세요.'
               onFocus={() => setTextFieldFocusedSub(true)} 
               onBlur={() => setTextFieldFocusedSub(false)} 
-              onChange={handleSectionSubTextFiledChange(subSection.sectionSubId, sectionId)}
+              onChange={handleSectionSubTextFiledChange(sectionSub.sectionSubId, sectionId)}
               // 이렇게 수정하면 각 서브 섹션의 고유 ID를 함수에 전달할 수 있음
-              value={subSection.sectionSubTitle || ''}
+              value={sectionSub.sectionSubTitle || ''}
               sx={{ 
                 '& .MuiInput-input': {
                   color: '#585858', 
@@ -153,7 +154,7 @@ const SectionForm = ({ title, showRemove,
             <IconButton sx={{ padding: 0, mx: 1 }} 
               onMouseDown={(event) => {
               event.preventDefault(); 
-              onSubAdd(sectionId);}}
+              onSubAdd(sectionId, sectionSub.sectionSubId);}}
             >
               <AddCircleOutlineIcon />
             </IconButton>
@@ -164,7 +165,7 @@ const SectionForm = ({ title, showRemove,
           <IconButton sx={{ padding: 0 }} color="error" 
             onMouseDown={(event) => {
             event.preventDefault();
-            onSubRemove(subSection.sectionSubId);}}
+            onSubRemove(sectionSub.sectionSubId);}}
             >
             <RemoveCircleOutlineIcon />
           </IconButton>

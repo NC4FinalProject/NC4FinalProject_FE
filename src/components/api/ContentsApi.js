@@ -1,54 +1,39 @@
 import axios from 'axios';
 
-export async function fetchContentsApi() {
+export const contentsIdApi = async (contentsId) => {
 
     const token = sessionStorage.getItem("ACCESS_TOKEN");
     console.log("Sending token: ", token);
 
     try {
-        const response = await axios.get(`http://localhost:9090/contents/listAll`, {
-            // headers: {
-            //     Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-            // }
-            // params: {
-            //     searchCondition: search.searchCondition,
-            //     searchKeyword: search.searchKeyword,
-            //     page: search.page
-            // }
+        const response = await axios.get(`http://localhost:9090/contents/detail/${contentsId}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        // params: {
+        //     searchCondition: search.searchCondition,
+        //     searchKeyword: search.searchKeyword,
+        //     page: search.page
+        // }
         });
-        // console.log(response.headers); // 모든 응답 헤더를 콘솔에 출력
-        // console.log(response.headers['content-type']); // 예를 들어, 특정 헤더 'Content-Type' 확인하기
         return response.data;
     } catch (error) {
         throw error;
     }
 }
 
-export const ChapterOneApiSave = async (chapterOne) => {
+export const insertApi = async (chapterOne, chapterTwo) => {
+  console.log("=============" + chapterOne, chapterTwo);
   try {
-    const response = await axios.post('http://localhost:9090/contents/create', 
-    chapterOne,
-    {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-      },
-      // params: {
-      //   searchCondition: search.searchCondition,
-      //   searchKeyword: search.searchKeyword,
-      //   page: search.page
-      // }
-    }
-  );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
 
-export const ChapterTwoApiSave = async (chapterTwo) => {
-  try {
-    const response = await axios.post('http://localhost:9090/contents/create', 
-    chapterTwo,
+    const requestBody = {
+      contentsDTO: chapterOne,
+      sectionDTO: chapterTwo,
+    };
+
+    const response = await axios.post('http://localhost:9090/contents/create',
+    requestBody,
+    
     {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -59,10 +44,10 @@ export const ChapterTwoApiSave = async (chapterTwo) => {
       //   page: search.page
       // }
     }
+
   );
     return response.data;
   } catch (error) {
     throw error;
   }
 };
-  

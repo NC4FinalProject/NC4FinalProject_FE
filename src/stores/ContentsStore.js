@@ -1,18 +1,6 @@
 import { create } from 'zustand';
-import { ChapterOneApiSave, ChapterTwoApiSave, fetchContentsApi } from '../components/api/ContentsApi';
-
-// test
-export const useContentsStore = create((set) => ({
-  contents: [],
-  fetchContents: async () => {
-      try {
-          const data = await fetchContentsApi();
-          set({ contents: data });
-      } catch (error) {
-          console.error(error);
-      }
-  }
-}));
+import { contentsIdApi } from '../components/api/ContentsApi';
+import { insertApi } from '../components/api/ContentsApi';
 
 // 가격타입
 export const contentsPriceTypeItems = [
@@ -47,7 +35,7 @@ export const useChapterOneStore = create(set => ({
     chapterOne: { ...state.chapterOne, ...newContents }
   })),
   saveChapterOne: async (chapterOne) => {
-    const data = await ChapterOneApiSave(chapterOne);
+    const data = await insertApi(chapterOne);
     set({ chapterOne: data });
   },
 }));
@@ -60,7 +48,7 @@ export const useChapterTwoStore = create((set) => ({
   sectionTitleInput: (index, newTitle) => set((state) => {
     const sectionTitleInput = state.chapterTwo.map((chapterTwoChange, idx) => {
       if (idx === index) {
-        return { ...chapterTwoChange, sectionTitle: newTitle, sectionId: index};
+        return { ...chapterTwoChange, sectionTitle: newTitle};
       }
       return chapterTwoChange;
     });
@@ -70,7 +58,7 @@ export const useChapterTwoStore = create((set) => ({
   sectionSubTitleInput: (sectionSubId, sectionId, newSubTitle) => set((state) => {
     const chapterTwoUpdated = state.chapterTwo.map((section) => {
       const sectionSubListUpdated = section.sectionSubList.map((subSection) => {
-        if (subSection.sectionSubId === sectionSubId) {
+        if (subSection.sectionId === sectionId && subSection.sectionSubId === sectionSubId) {
           return { ...subSection, sectionSubTitle: newSubTitle };
         }
         return subSection;
@@ -117,8 +105,20 @@ export const useChapterTwoStore = create((set) => ({
   })),
 
   saveChapteTwo: async (chapterTwo) => {
-    const data = await ChapterTwoApiSave(chapterTwo);
+    const data = await insertApi(chapterTwo);
     set({ chapterTwo: data });
   },
+}));
 
+// 상세 페이지 리스폰 데이터
+export const useContentsStore = create((set) => ({
+  contentsOne: [],
+  contentsOneOutput: async (contentId) => {
+      try {
+          const data = await contentsIdApi(contentId);
+          set({ contents: data });
+      } catch (error) {
+          console.error(error);
+      }
+  }
 }));
