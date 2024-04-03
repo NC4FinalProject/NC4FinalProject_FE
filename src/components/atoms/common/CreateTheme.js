@@ -12,6 +12,9 @@ const theme = createTheme({
     green: {
       main: "#8EC96D",
     },
+    gray: {
+      main: "#EBEBEB",
+    },
   },
 });
 

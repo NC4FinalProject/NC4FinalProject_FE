@@ -9,10 +9,15 @@ import ChapterOne from './ChapterOne';
 import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
+import { useChapterOneStore, useChapterTwoStore } from '../../../../stores/ContentsStore';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
 export default function LinearStepper() {
+
+  const { chapterOne, saveChapterOne } = useChapterOneStore();
+  const { chapterTwo, saveChapterTwo } = useChapterTwoStore();
+
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
 
@@ -60,6 +65,13 @@ export default function LinearStepper() {
     setActiveStep(0);
   };
 
+  const handleSave = () => {
+    // saveChapterOne(chapterOne);
+    saveChapterTwo(chapterTwo);
+    console.log(chapterOne);
+  };
+
+
   return (
     <Box sx={{ width: '100%' }}>
       
@@ -95,7 +107,9 @@ export default function LinearStepper() {
       {activeStep === steps.length ? (
       <Grid container justifyContent="center"  sx={{ mb: '5rem', }}>
         <Grid direction={'column'} py={'10rem'}>
-          <Fragment justifyItems="center">
+          <Fragment>
+            <Grid sx={{justifyItems: "center"}}>
+            </Grid>
            <Typography sx={{ mt: 2, mb: 1 }}>
               컨텐츠가 정상적으로 등록되었어요.&apos;&apos;&apos;굳잡
             </Typography>
@@ -103,6 +117,7 @@ export default function LinearStepper() {
             <Grid sx={{ display: 'flex',  pt: 2, justifyContent:'center' }}>
               {/* <Button onClick={handleReset}>마이페이지로 이동</Button> */}
               <Button onClick={handleReset}>컨텐츠로 이동</Button>
+              <Button onClick={handleSave}>데이터를 저장</Button>
             </Grid>
           </Fragment>
         </Grid>
