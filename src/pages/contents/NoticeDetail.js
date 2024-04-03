@@ -6,7 +6,6 @@ import CoTypography from '../../components/atoms/common/CoTypography';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import HtmlParser from 'react-html-parser';
-import Notice from '../../scss/Notice.scss';
 import { useState } from 'react';
 import axios from 'axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -14,11 +13,12 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import MemberStore from '../../stores/MemberStore';
 
 
 const NoticeDetail = () => {
   const { noticeId } = useParams();
-  const { notices, getNotice,files,setFiles,handleNoticeModifySubmit,userNickname,fileDTOList,setFileDTOList,openDialog,setOpenDialog,title,setTitle,content,setContent } = useStore();
+  const { notices, getNotice,setFiles,handleNoticeModifySubmit,userNickname,fileDTOList,setFileDTOList,openDialog,setOpenDialog,title,setTitle,content,setContent } = useStore();
   const [nextNotice, setNextNotice] = useState(null);
   const [nextNoticeData, setNextNoticeData] = useState(null);
   const [backNotice, setBackNotice] = useState(null);
@@ -26,6 +26,7 @@ const NoticeDetail = () => {
   const [putNoticeId, setPutNoticeId] = useState(null);
   const [liked, setliked] = useState(null);
   const [likeCnt, setlikeCnt] = useState(null);
+  const {userRole} = MemberStore();
 
   const navi = useNavigate();
   const tempFileDTOList = [];
@@ -157,10 +158,6 @@ const handleDelete = async () => {
     setContent(data);
   };
 
-  const handleSubmit = () => {
-    handleDialogClose();
-  };
-
   const handleEditButtonClick = () => {
     setTitle(notices.noticeTitle); 
     setContent(notices.noticeContent); 
@@ -219,6 +216,7 @@ const handleDelete = async () => {
       </CoTypography>
 
       <Box sx={{ flex: 1}} />
+      {userRole === 'ADMIN' && (
       <Button
       size="Content"
         variant="contained"
@@ -228,6 +226,7 @@ const handleDelete = async () => {
       >
         수정
       </Button>
+      )}
       <Dialog open={openDialog} onClose={handleDialogClose} fullWidth maxWidth="lg">
       <DialogTitle>공지사항 수정하기</DialogTitle>
       <DialogContent>
@@ -259,6 +258,7 @@ const handleDelete = async () => {
         </Button>
       </DialogActions>
     </Dialog>
+    {userRole === 'ADMIN' && (
       <Button
       size="Content"
          variant="contained"
@@ -272,6 +272,7 @@ const handleDelete = async () => {
       >
         삭제
       </Button>
+      )}
       <Link to="/noticelist" style={{ textDecoration: 'none' }}>
       <Button
         variant="outlined"
@@ -283,14 +284,14 @@ const handleDelete = async () => {
       </Link>
     </Grid>
     <Box item xs={10} sx={{display:'flex', alignItems:'center', marginTop: '1rem'}}>
-       {notices.profileImageUrl === null ? (
+       {notices.profileImageUrl == null ? (
         <Avatar src="/broken-mage.jpg" style={{width: '2rem', height: '2rem',marginLeft: '0'}}/> 
            ) : (
               <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + notices.profileImageUrl} alt='thumbnail' style={{width: '3rem', height: '3rem', borderRadius: '70%'}}/> 
             )}
             <CoTypography size='Content' sx={{marginLeft:'0.725rem'}}>작성자: {notices.noticeWriter}</CoTypography>
      </Box>
-          <CoTypography  className='Notice'>{HtmlParser(notices.noticeContent)}</CoTypography>
+          <CoTypography  className='Notice'>{HtmlParser(HtmlParser(notices.noticeContent))}</CoTypography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <CoTypography size="Tag">작성일: {formatDate(notices.noticeDate)}</CoTypography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

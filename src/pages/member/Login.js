@@ -3,10 +3,12 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { Button, TextField, Link, Grid, Container, Typography } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MemberStore from '../../stores/MemberStore';
 
 const Login = () => {
     const navi = useNavigate();
     const [showPw, setshowPw] = useState(false);
+    const { setUserRole } = MemberStore((state) => state);
 
     const toggleShowPw = () => {
         setshowPw(!showPw);
@@ -23,7 +25,14 @@ const Login = () => {
                 if (response.data.item && response.data.statusCode === 200) {
                     sessionStorage.setItem('ACCESS_TOKEN', response.data.item.token);
                     sessionStorage.getItem('ACCESS_TOKEN');
+                    console.log(response.data.item.role);
+                    if (response.data.item.role === 'ADMIN') {
+                    setUserRole(response.data.item.role);
+                    navi('/admin/main');
+                    } else {
+                    setUserRole(response.data.item.role);
                     navi('/');
+                    }
                 }
             } catch (e) {
                 if (e.response.data.errorCode === 200) {
