@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import ContentsListItem from "./ContentsListItem";
 import { contentsListApi } from "../../../api/contentsListApi";
 import { useNavigate } from "react-router-dom";
-import LectureCard from "../../common/LectureCard";
+import ContentsCard from "../../common/ContentsCard";
 
 
 // grid style
@@ -17,22 +17,30 @@ const ContentsList = () => {
 
   const navi = useNavigate();
 
-  const goDetail = () => {
-    navi('/detail')
-  }
+  // const goDetail = (contentsId) => {
+  //   // navi('/detail')
+  //   console.log(contentsId);
+  // }
+
+  const goDetail = (contentsId) => {
+    return () => {
+      navi(`/detail/${contentsId}`);
+      console.log(contentsId);
+    };
+  };
 
   return (
     <GridStyle container spacing={3.75}>
-      {/* {contentsListApi.map((contents) => (
-        <Grid key={contents.id} item xs={6} sm={6} md={4} lg={3}  onClick={goDetail}>
-          <ContentsListItem key={contents.id} contents={contents} />
+      {contentsListApi.map((contents) => (
+        <Grid key={contents.id} item xs={6} sm={6} md={4} lg={3} onClick={goDetail(contents.id)} style={{ cursor: 'pointer' }}>
+          <ContentsListItem contents={contents} />
         </Grid>
-      ))} */}
-      <LectureCard/>
+      ))}
+      <ContentsCard/>
 
-      <Grid key={contentsListApi[1].id} item xs={6} sm={6} md={4} lg={3} >
+      {/* <Grid key={contentsListApi[1].id} item xs={6} sm={6} md={4} lg={3} >
         <ContentsListItem contents={contentsListApi[1]} />
-      </Grid>
+      </Grid> */}
       
       ??
     </GridStyle>
