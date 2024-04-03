@@ -41,8 +41,6 @@ const useStore = create((set, get) => ({
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
         });
-        console.log(response.data.pageItems);
-
         setNotices(response.data.pageItems);
         setPage(response.data.pageItems.pageable.pageNumber);
       } catch (error) {
@@ -70,7 +68,7 @@ const useStore = create((set, get) => ({
 
         const noticeData = {
           noticeTitle: title,
-          noticeContent: content,
+          noticeContent: content.replaceAll('<', '&lt;').replace(/>/g, '&gt;'),
           noticeWriter: userNickname
         };
         
@@ -142,7 +140,7 @@ const useStore = create((set, get) => ({
       }
     },
     noticeModifyProc: async (putNoticeId) => {
-      const { title, content, userNickname, fetchNotices, setOpenDialog, fileDTOList,setUserNickname, modifyFileList } = get();
+      const { title, content, userNickname, setOpenDialog, fileDTOList,setUserNickname, modifyFileList } = get();
       try {
         const noticeData = {
           id: putNoticeId,

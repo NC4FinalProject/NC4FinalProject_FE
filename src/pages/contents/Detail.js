@@ -8,18 +8,7 @@ import ContentsDetail from '../../components/organisms/contents/detail/contentsD
 import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
 import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
-
-
-// 컨텐츠
-// 컨텐츠 제목
-    // 컨텐츠 영상 제목
-// 생성일자
-// 코스
-    // 서브코스
-// 영상파일
-    // 영상 타임?
-// 강사
-// 
+import { useContentsStore } from '../../stores/ContentsStore';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -57,6 +46,8 @@ const Detail = () => {
 
     const theme = useTheme();
 
+    const { contentsOne, contentsOneOutput } = useContentsStore();
+
     useEffect(() => {
         const adjustHeight = () => {
           const videoBox = document.querySelector('.video-box');
@@ -72,7 +63,11 @@ const Detail = () => {
         adjustHeight(); // 초기 설정을 위해 한 번 호출
     
         return () => window.removeEventListener('resize', adjustHeight); // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
-      }, []);
+    }, []);
+
+    useEffect(()=>{
+        contentsOneOutput()
+    },[]);
 
   return (
     <>

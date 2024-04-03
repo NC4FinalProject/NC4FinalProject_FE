@@ -1,6 +1,6 @@
 import { ThumbUp, Visibility } from "@mui/icons-material";
 import { Button, ButtonGroup, Chip, Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useHistory } from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
@@ -10,7 +10,7 @@ import { useState } from "react";
 import Reportdialog from "../../organisms/review/Reportdialog";
 import InquriyComment from "./InquriyComment";
 
-const InquiryDetail = ({ inquiry }) => {
+const InquiryDetail = ({ inquiry, onListClick }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [openReportDialog, setOpenReportDialog] = useState(false);
 
@@ -60,7 +60,7 @@ const InquiryDetail = ({ inquiry }) => {
               </Grid>
               <Grid container ml="0.5rem" alignItems={"center"}>
                 <CoTypography size="TableContent">
-                  {inquiry.userName} | {inquiry.date} | {inquiry.lectureName} |
+                  {inquiry.userName} | {inquiry.date} | {inquiry.contentsName} |
                 </CoTypography>
                 <Visibility
                   sx={{
@@ -314,6 +314,7 @@ const InquiryDetail = ({ inquiry }) => {
               variant="contained"
               style={{ color: "white" }}
               color="green"
+              onClick={onListClick}
             >
               목록
             </Button>

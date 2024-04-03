@@ -4,7 +4,7 @@ import Rating from '@mui/material/Rating'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import CoTypography from '../../atoms/common/CoTypography'
 
-function LectureCard({ img, title, author, rating, reviews,paperstyle }) {
+function ContentsCard({ img, title, author, rating, reviews,paperstyle }) {
   return (
     <Box>
       
@@ -25,4 +25,4 @@ function LectureCard({ img, title, author, rating, reviews,paperstyle }) {
   );
 }
 
-export default LectureCard;
+export default ContentsCard;

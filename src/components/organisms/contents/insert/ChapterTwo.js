@@ -8,10 +8,11 @@ const ChapterTwo = () => {
 
   const { chapterTwo, addSection, removeSection, addSectionSub, removeSectionSub } = useChapterTwoStore();
   
-  // 섹션 추가
-  const addSectionFunc = () => {
+  // !!!!!!!!!!!섹션!!!!!!!! 추가
+  const addSectionFunc = (sectionId) => {
+    console.log("이것이 받아온 섹션 아이디여 이거 눌리는데 왜 아이디가 0으로 바끼지" + sectionId)
     addSection({
-      sectionId: chapterTwo.length,
+      sectionId: sectionId + 1,
       sectionTitle: '',
       sectionSubList: []
     });
@@ -22,11 +23,12 @@ const ChapterTwo = () => {
     removeSection(sectionId);
   }
 
-  // 서브 섹션 추가 함수가 될 것이여
-  const addSectionSubFunc = (sectionId) => {
-    const subID = chapterTwo[sectionId].sectionSubList.length + 1
+  // -------------서브----------- 섹션 추가 함수가 될 것이여
+  const addSectionSubFunc = (sectionId, sectionSubId) => {
+    // const subID = indexSub +1
     addSectionSub(sectionId, {
-      sectionSubId: `${sectionId}-${subID}`,
+      sectionId: sectionId,
+      sectionSubId: sectionSubId + 1,
       sectionSubTitle: '',
     });
   }
@@ -35,11 +37,11 @@ const ChapterTwo = () => {
     removeSectionSub(sectionSubId);
   }
 
-  // 공백 배열의 최초 섹션 인덱스 추가
+  // 공백 배열의 !!!!!!!!!!최초!!!!!!! 섹션 인덱스 추가
   useEffect(()=>{
     if(chapterTwo.length === 0){
       addSection({
-        sectionId: 0,
+        sectionId: 1,
         sectionTitle: '',
         sectionSubList: []
       })
@@ -74,7 +76,7 @@ const ChapterTwo = () => {
         <Grid item xs={2}/>
 
         {/* 테스트여 */}
-        <Button onClick={() => {console.log(chapterTwo); console.log(chapterTwo[0].sectionId)}}>test</Button>
+        <Button onClick={() => {console.log(chapterTwo);}}>test</Button>
 
       </Grid>
     </>
