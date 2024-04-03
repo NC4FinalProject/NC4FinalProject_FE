@@ -14,15 +14,26 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import { format } from "date-fns";
+import useReviewStore from "../../../stores/ReviewStore";
 
-const Modifydalog = ({ open, handleClickClose, review }) => {
+const Modifydalog = ({
+  open,
+  handleClickClose,
+  review,
+  userNickname,
+  contentsId,
+}) => {
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
+
+  const paymentList = useReviewStore((state) => state.paymentList);
+  const modifyReview = useReviewStore((state) => state.modifyReview);
 
   useEffect(() => {
     if (review) {
       setReviewContent(review.reviewContent);
-      setReviewRating(review.rating);
+      setReviewRating(review.reviewRating);
     }
   }, [review]);
 
@@ -43,9 +54,20 @@ const Modifydalog = ({ open, handleClickClose, review }) => {
     handleClickClose();
   };
 
-  const handleSubmit = () => {
-    setReviewContent("");
-    setReviewRating(0);
+  const handleSubmit = async () => {
+    const matchingPayment = paymentList.find(
+      (payment) => payment.contentsId === Number(contentsId)
+    );
+
+    await modifyReview(
+      review.reviewId,
+      reviewContent,
+      reviewRating,
+      matchingPayment.paymentId,
+      matchingPayment.contentsId,
+      matchingPayment.cartId
+    );
+    alert("후기가 수정되었습니다.");
     handleClickClose();
   };
 
@@ -102,8 +124,8 @@ const Modifydalog = ({ open, handleClickClose, review }) => {
             <TableRow>
               <TableCell>
                 <CoTypography size="Content">
-                  작성자 : USER <br />
-                  작성일 : 2021-10-10
+                  작성자 : {userNickname} <br />
+                  작성일 : {format(new Date(), "yyyy-MM-dd")}
                 </CoTypography>
               </TableCell>
               <TableCell>

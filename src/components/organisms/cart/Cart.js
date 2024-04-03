@@ -7,7 +7,7 @@ import CartItem from "./CartItem";
 import CartPayment from "./CartPayment";
 import CartUserInformation from "./CartUserInformation";
 
-const lectureItems = [
+const contentsItems = [
   {
     itemId: 1,
     itemImg: "https://via.placeholder.com/150x80",
@@ -132,7 +132,7 @@ const Cart = () => {
               </Grid>
             </Grid>
           </Grid>
-          {lectureItems.map((item) => (
+          {contentsItems.map((item) => (
             <CartItem
               key={item.itemId}
               itemImg={item.itemImg}
