@@ -21,7 +21,7 @@ const CardStyle = styled(Card)(({ theme }) => ({
 }));
 
 const ContentsListItem = (props) => {
-  const { contentsTitle, price, priceSale, contentsImage, status, colors } = props.contents;
+  const { contentsTitle, price, priceSale, contentsImage, status, colors, id } = props.contents;
 
   // label style
   const LabelStyle = styled("label")(({ theme }) => ({

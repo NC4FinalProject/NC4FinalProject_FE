@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -14,10 +14,15 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
+import { format } from "date-fns";
+import useReviewStore from "../../../stores/ReviewStore";
 
-const Codialog = ({ open, handleClickClose }) => {
+const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(5);
+
+  const paymentList = useReviewStore((state) => state.paymentList);
+  const postReview = useReviewStore((state) => state.postReview);
 
   const handleReviewChange = (newValue) => {
     setReview(newValue.target.value);
@@ -25,7 +30,6 @@ const Codialog = ({ open, handleClickClose }) => {
 
   const handleRatingChange = (newValue) => {
     setRating(newValue);
-    console.log(newValue);
   };
 
   const handleCancel = () => {
@@ -36,9 +40,20 @@ const Codialog = ({ open, handleClickClose }) => {
     handleClickClose();
   };
 
-  const handleSubmit = () => {
-    console.log(review);
-    console.log(rating);
+  console.log(contentsId);
+  console.log(paymentList);
+  const handleSubmit = async () => {
+    const matchingPayment = paymentList.find(
+      (payment) => payment.contentsId === Number(contentsId)
+    );
+    await postReview(
+      review,
+      rating,
+      matchingPayment.paymentId,
+      matchingPayment.contentsId,
+      matchingPayment.cartId
+    );
+    alert("후기가 등록되었습니다.");
     setReview("");
     setRating(5);
     handleClickClose();
@@ -97,8 +112,8 @@ const Codialog = ({ open, handleClickClose }) => {
             <TableRow>
               <TableCell>
                 <CoTypography size="Content">
-                  작성자 : USER <br />
-                  작성일 : 2021-10-10
+                  작성자 : {userNickname} <br />
+                  작성일 : {format(new Date(), "yyyy-MM-dd")}
                 </CoTypography>
               </TableCell>
               <TableCell>

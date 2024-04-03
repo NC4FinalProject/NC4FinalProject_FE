@@ -18,13 +18,18 @@ import NoticeList from "./pages/contents/NoticeList";
 import NoticeDetail from "./pages/contents/NoticeDetail";
 import Cart from "./components/organisms/cart/Cart";
 import AdminPage from "./pages/admin/AdminPage";
+import AdminUser from "./pages/admin/AdminUser";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 function App() {
   return (
     <ThemeProvider theme={createTheme}>
       <Container maxWidth="sm" style={{ maxWidth: "1300px", padding: 0 }}>
         <Routes>
-          <Route path="/admin/main" element={<AdminPage />}></Route>
+          <Route element={<AdminPage />}>
+            <Route path="/admin/main" element={<AdminLayout></AdminLayout>}></Route>
+            <Route path="/admin/user" element={<AdminUser></AdminUser>}></Route>
+          </Route>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home></Home>}></Route>
             <Route path="/join" element={<Join></Join>}></Route>
