@@ -31,6 +31,8 @@ const Login = () => {
                 } else if (e.response.data.errorCode === 201) {
                     alert('잘못된 비밀번호입니다.');
                 } else if (e.response.data.errorCode === 202) {
+                    alert('탈퇴한 계정입니다.');
+                } else if (e.response.data.errorCode === 203) {
                     alert('알 수 없는 에러발생. 관리자에게 문의하세요.');
                 }
             }

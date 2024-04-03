@@ -175,6 +175,19 @@ const Mypage = () => {
                             }
                         }
                     )
+
+                    const response2 = await axios.get(
+                        `http://localhost:9090/member/logout`, 
+                        {
+                            headers: {
+                                Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                            }
+                        }
+                    )
+                    sessionStorage.removeItem("ACCESS_TOKEN");
+                    window.alert("회원탈퇴 성공.");
+                    navi("/");
+
                 } catch (error) {
                         alert("회원탈퇴하실 수 없습니다.");
                 }
