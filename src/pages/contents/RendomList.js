@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Box, Pagination,  } from '@mui/material'
 import CoTypography from '../../components/atoms/common/CoTypography'
-import LectureCard from '../../components/organisms/common/LectureCard'
+import ContentsCard from '../../components/organisms/common/ContentsCard'
 
 const BestList = () => {
   const lectures = [
@@ -32,7 +32,7 @@ const BestList = () => {
         <CoTypography size="MainTitle" style={{marginTop:'1rem', marginBottom:'0.5rem'}}>이런 강의는 어때요 ❓</CoTypography>
     <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
       {lectures.map((lecture, index) => (
-  <LectureCard key={index} {...lecture} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}}/>
+  <ContentsCard key={index} {...lecture} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}}/>
       ))}
     </Box>
     <Box sx={{ display: 'flex', justifyContent: 'center', p: 3}}>

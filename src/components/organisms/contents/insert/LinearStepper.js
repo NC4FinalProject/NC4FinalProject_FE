@@ -10,13 +10,16 @@ import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
 import { useChapterOneStore, useChapterTwoStore } from '../../../../stores/ContentsStore';
+import { insertApi } from '../../../api/ContentsApi';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
 export default function LinearStepper() {
 
-  const { chapterOne, saveChapterOne } = useChapterOneStore();
-  const { chapterTwo, saveChapterTwo } = useChapterTwoStore();
+  // const { chapterOne, saveChapterOne } = useChapterOneStore();
+  // const { chapterTwo, saveChapterTwo } = useChapterTwoStore();
+  const chapterOne = useChapterOneStore((state) => state.chapterOne);
+  const chapterTwo = useChapterTwoStore((state) => state.chapterTwo);
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -66,9 +69,8 @@ export default function LinearStepper() {
   };
 
   const handleSave = () => {
-    // saveChapterOne(chapterOne);
-    saveChapterTwo(chapterTwo);
-    console.log(chapterOne);
+    insertApi(chapterOne, chapterTwo);
+    console.log("일단 인서트 에이피아이를 잘 보내고 있거든여?" + chapterOne, chapterTwo)
   };
 
 
@@ -106,7 +108,7 @@ export default function LinearStepper() {
       {/* 마지막 리셋 버튼이유 */}
       {activeStep === steps.length ? (
       <Grid container justifyContent="center"  sx={{ mb: '5rem', }}>
-        <Grid direction={'column'} py={'10rem'}>
+        <Grid container direction={'column'} py={'10rem'}>
           <Fragment>
             <Grid sx={{justifyItems: "center"}}>
             </Grid>

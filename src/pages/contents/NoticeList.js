@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios';
+import Login from '../member/Login';
+import MemberStore from '../../stores/MemberStore';
 
 const NoticeList = () => {
   const {
@@ -32,12 +34,15 @@ const NoticeList = () => {
     files,
     setFiles,
     fileDTOList,
-    setFileDTOList
+    setFileDTOList,
   } = useStore();
+
+  const {userRole} = MemberStore();
 
   const tempFileDTOList = [];
 
   useEffect(() => {
+    console.log(111111111111)
     const fetchData = async () => { 
       await fetchNotices();
       await fetchUserNickname();
@@ -173,14 +178,16 @@ const NoticeList = () => {
             ),
           }}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleDialogOpen}
-          style={{ color: 'white', marginLeft: '1rem',marginTop: '1rem'  }}
-        >
-          글 등록하기
-        </Button>
+        {userRole === 'ADMIN' && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleDialogOpen}
+            style={{ color: 'white', marginLeft: '1rem', marginTop: '1rem' }}
+          >
+            글 등록하기
+          </Button>
+        )}
       </Grid>
       <Box />
       
