@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Box,
   Button,
@@ -9,17 +9,40 @@ import {
   TableRow,
   Avatar,
 } from "@mui/material";
+import { useParams } from "react-router-dom";
 import CoTypography from "../../atoms/common/CoTypography";
 import ContentsStarRating from "../contents/list/ContentsStarRating";
 import CoHoverButton from "../../atoms/common/CoHoverButton";
 import Codialog from "../common/Codialog";
 import ModifyDialog from "../review/Modifydialog";
+import useReviewStore from "../../../stores/ReviewStore";
 
 const ReviewList = () => {
   const [reviewPostOpen, setReviewPostOpen] = useState(false);
   const [reviewModifyOpen, setReviewModifyOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
   const [sortBy, setSortBy] = useState("latest");
+  const [reviewsToShow, setReviewsToShow] = useState(5);
+
+  const { contentsId } = useParams();
+
+  const reviews = useReviewStore((state) => state.reviews);
+  const loginMemberId = useReviewStore((state) => state.loginMemberId);
+  const loginMemberNickname = useReviewStore(
+    (state) => state.loginMemberNickname
+  );
+
+  const getReviews = useReviewStore((state) => state.getReviews);
+  useEffect(() => {
+    const fetchReviews = async () => {
+      await getReviews(contentsId);
+    };
+    fetchReviews();
+  }, []);
+
+  const handleViewMore = () => {
+    setReviewsToShow(reviewsToShow + 5);
+  };
 
   const handlePostOpen = () => {
     setReviewPostOpen(true);
@@ -42,50 +65,11 @@ const ReviewList = () => {
     setSortBy(newValue);
   };
 
-  const reviews = [
-    {
-      userName: "User1",
-      reviewContent:
-        "명강의 추천드립니다.aaawsdfqwetasedfqwefqwefasdfasqwe4tqawerasedfasdfasdfasdfdfasdfasdfasdfqwerq",
-      date: "2022-01-01",
-      rating: 3,
-      profileImage: null,
-    },
-    {
-      userName: "User2",
-      reviewContent:
-        "명강의 추천드립니다.aaawsdfqwetasedfqwefqwefasdfasqwe4tqawerasedfasdfasdfasdfdfasdfasdfasdfqwerq",
-      date: "2022-01-02",
-      rating: 4,
-      profileImage: null,
-    },
-    {
-      userName: "User3",
-      reviewContent: "명강의 추천드립니다.",
-      date: "2022-01-03",
-      rating: 1,
-      profileImage: null,
-    },
-    {
-      userName: "User4",
-      reviewContent: "정말 도움이 되었습니다.",
-      date: "2022-01-04",
-      rating: 2,
-      profileImage: null,
-    },
-    {
-      userName: "User5",
-      reviewContent: "정말 도움이 되었습니다.",
-      date: "2022-01-05",
-      rating: 2.5,
-      profileImage: process.env.PUBLIC_URL + "/images/teacher.jpg",
-    },
-  ];
   const averageRating = useMemo(() => {
     if (reviews.length === 0) return 0;
 
     // 배열의 각 요소에 대해 지정된 콜백 함수를 실행하여 하나의 결과값을 반환
-    const totalRating = reviews.reduce((acc, cur) => acc + cur.rating, 0);
+    const totalRating = reviews.reduce((acc, cur) => acc + cur.reviewRating, 0);
     return totalRating / reviews.length;
   }, [reviews]);
 
@@ -132,15 +116,34 @@ const ReviewList = () => {
             <CoTypography size="Content">별점낮은순</CoTypography>
           </Button>
         </ButtonGroup>
+
         <Box sx={{ display: "flex", alignItems: "center", mb: "1rem" }}>
-          <CoTypography sx={{ marginRight: "0.75rem" }}>
-            {/* toFixed(1) 소수점 1째자리까지 표현 */}
-            평점 {averageRating.toFixed(1)} / 5
-          </CoTypography>
+          {reviews &&
+            reviews.slice(0, reviewsToShow).map((review) => {
+              return (
+                <React.Fragment key={review.reviewId}>
+                  <CoTypography sx={{ marginRight: "0.75rem" }}>
+                    {/* toFixed(1) 소수점 1째자리까지 표현 */}
+                    평점 {averageRating.toFixed(1)} / 5
+                  </CoTypography>
+                </React.Fragment>
+              );
+            })}
+          {/* {(!loginMemberId ||
+            (loginMemberId &&
+              review.memberDTO &&
+            loginMember.member.id === review.memberDTO.id)) && ( */}
+
+          <Codialog
+            open={reviewPostOpen}
+            handleClickClose={handlePostClose}
+            userNickname={loginMemberNickname}
+            contentsId={contentsId}
+          />
           <CoHoverButton onClick={handlePostOpen} variant="outlined">
             후기등록
           </CoHoverButton>
-          <Codialog open={reviewPostOpen} handleClickClose={handlePostClose} />
+          {/* )} */}
         </Box>
       </Box>
       <Table
@@ -154,92 +157,114 @@ const ReviewList = () => {
         <TableBody
           sx={{ display: "flex", flexDirection: "column", width: "100%" }}
         >
-          {reviews.map((review, index) => (
-            <TableRow
-              key={index}
-              sx={{ display: "flex", flexDirection: "row" }}
-            >
-              <TableCell
-                sx={{
-                  verticalAlign: "top",
-                  align: "left",
-                  paddingRight: "0",
-                }}
-              >
-                <Avatar
-                  alt="profileImage"
-                  src={review.profileImage}
-                  sx={{ width: 40.4, height: 40.4 }}
-                />
-              </TableCell>
-              <TableCell sx={{ width: "100%", overflow: "hidden" }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
+          {reviews &&
+            reviews.slice(0, reviewsToShow).map((review) => {
+              return (
+                <TableRow
+                  key={review.reviewId}
+                  sx={{ display: "flex", flexDirection: "row" }}
                 >
-                  <ContentsStarRating
-                    size="small"
-                    readOnly={true}
-                    rating={review.rating}
-                    sx={{ ml: "-0.2rem" }}
-                  />
-
-                  <ButtonGroup
-                    variant="text"
-                    sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
-                  >
-                    <Button
-                      style={{ border: "none" }}
-                      onClick={() => handleModifyOpen(review)}
-                    >
-                      <CoTypography size="TableContent">수정</CoTypography>
-                    </Button>
-                    <CoTypography
-                      size="TableContent"
-                      sx={{ display: "flex", alignItems: "center" }}
-                    >
-                      |
-                    </CoTypography>
-                    <Button>
-                      <CoTypography size="TableContent">삭제</CoTypography>
-                    </Button>
-                  </ButtonGroup>
-                </Box>
-                <Box>
-                  <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
-                    {review.userName}
-                  </CoTypography>
-                  <CoTypography
-                    size="TableContent"
+                  <TableCell
                     sx={{
-                      width: "70%",
-                      mb: "1rem",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
+                      verticalAlign: "top",
+                      align: "left",
+                      paddingRight: "0",
                     }}
                   >
-                    {review.reviewContent}
-                  </CoTypography>
-                  <CoTypography size="Tag">{review.date}</CoTypography>
-                </Box>
-              </TableCell>
-            </TableRow>
-          ))}
+                    <Avatar
+                      alt="profileImage"
+                      src={
+                        review.memberDTO && review.memberDTO.profileFile
+                          ? review.memberDTO.profileFile
+                          : undefined
+                      }
+                      sx={{ width: 40.4, height: 40.4 }}
+                    />
+                  </TableCell>
+                  <TableCell sx={{ width: "100%", overflow: "hidden" }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <ContentsStarRating
+                        size="small"
+                        readOnly={true}
+                        rating={review.reviewRating}
+                        sx={{ ml: "-0.2rem" }}
+                      />
+
+                      {loginMemberId &&
+                        review.memberDTO &&
+                        loginMemberId === review.memberDTO.id && (
+                          <ButtonGroup
+                            variant="text"
+                            sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
+                          >
+                            <Button
+                              style={{ border: "none" }}
+                              onClick={() => handleModifyOpen(review)}
+                            >
+                              <CoTypography size="TableContent">
+                                수정
+                              </CoTypography>
+                            </Button>
+                            <CoTypography
+                              size="TableContent"
+                              sx={{ display: "flex", alignItems: "center" }}
+                            >
+                              |
+                            </CoTypography>
+                            <Button>
+                              <CoTypography size="TableContent">
+                                삭제
+                              </CoTypography>
+                            </Button>
+                          </ButtonGroup>
+                        )}
+                    </Box>
+                    <Box>
+                      <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
+                        {review.memberDTO && review.memberDTO.userNickname
+                          ? review.memberDTO.userNickname
+                          : "Unknown"}
+                      </CoTypography>
+                      <CoTypography
+                        size="TableContent"
+                        sx={{
+                          width: "70%",
+                          mb: "1rem",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {review.reviewContent}
+                      </CoTypography>
+                      <CoTypography size="Tag">
+                        {review.reviewUdtDate}
+                      </CoTypography>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
       <ModifyDialog
         open={reviewModifyOpen}
         handleClickClose={handleModifyClose}
         review={selectedReview}
+        userNickname={loginMemberNickname}
+        contentsId={contentsId}
       />
       <CoHoverButton
         variant="outlined"
         size="large"
         style={{ marginTop: "1rem", width: "100%" }}
+        onClick={handleViewMore}
       >
         수강평 더보기
       </CoHoverButton>

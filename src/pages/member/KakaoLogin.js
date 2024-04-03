@@ -65,10 +65,8 @@ const KakaoLogin = () => {
                     }
                 })
                 .catch((e) => {
-                    if (e.response && e.response.data.errorCode === 102) {
-                        alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
-                        return;
-                    }
+                    alert('회원탈퇴한 계정입니다.');
+                    navi('/');
                     console.error(e);
                 });
             });

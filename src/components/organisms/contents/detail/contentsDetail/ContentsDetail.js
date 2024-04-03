@@ -10,6 +10,7 @@ import { useState } from "react";
 import CurriculumCourse from "../CurriculumCourse";
 import InquiryDetail from "../../../inquiry/InquiryDetail";
 import InquiryPost from "../../../inquiry/InquiryPost";
+import { useEffect } from "react";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -59,6 +60,10 @@ export default function ContentsDetail() {
     setView("detail");
   };
 
+  const handleListClick = () => {
+    setView("list");
+  };
+
   // props로 변수값(state 함수아님) 보내주기, 부모 컴포넌트에서 스테이트 만들어서 보내주기
   // const [reviewCount, setReviewCount] = useState(10); << 이런식으로 부모컴포넌트에 작성하기
   // useEffect안에 exios로 강의 id가져와서 스테이트에 넣어주고 보내주면됨
@@ -100,7 +105,12 @@ export default function ContentsDetail() {
       {/* 게시판 */}
       <CustomTabPanel value={value} index={3}>
         {view === "list" && <Inquiry onInquiryClick={handleInquiryClick} />}
-        {view === "detail" && <InquiryDetail inquiry={selectedInquiry} />}
+        {view === "detail" && (
+          <InquiryDetail
+            inquiry={selectedInquiry}
+            onListClick={handleListClick}
+          />
+        )}
         {view === "write" && <InquiryPost />}
       </CustomTabPanel>
     </Box>
