@@ -6,32 +6,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import MemberInfo from '../../components/organisms/mypage/MemberInfo';
 
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography component={"div"}>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-
 function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
@@ -43,8 +17,7 @@ const Mypage = () => {
 
     
     const [value, setValue] = useState(0);
-
-
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -65,57 +38,18 @@ const Mypage = () => {
                 </Tabs>
             </Box>
 
-            {/* 계정정보 */}
-
-            <div
-                role="tabpanel"
-            >
-                
-                <Box sx={{ p: 3 }}>
-                    <Typography component={"div"}>
-                        <MemberInfo/>
-                    </Typography>
-                </Box>
-                
-            </div>
-            {/* <CustomTabPanel value={value} index={0}>
-                <MemberInfo/>
-            </CustomTabPanel> */}
-
-            {/* 수강목록 */}
-            <CustomTabPanel value={value} index={1}>
-                수강목록
-            </CustomTabPanel>
-
-            {/* 즐겨찾기 */}
-            <CustomTabPanel value={value} index={2}>
-                즐겨찾기
-            </CustomTabPanel>
-
-            {/* 구매목록 */}
-            <CustomTabPanel value={value} index={3}>
-                구매목록
-            </CustomTabPanel>
-
-            {/* 포인트 */}
-            <CustomTabPanel value={value} index={4}>
-                포인트
-            </CustomTabPanel>
-
-            {/* 수료증 */}
-            <CustomTabPanel value={value} index={5}>
-                수료증
-            </CustomTabPanel>
-
-            {/* 장바구니 */}
-            <CustomTabPanel value={value} index={6}>
-                장바구니
-            </CustomTabPanel>
-
-            {/* 알림설정 */}
-            <CustomTabPanel value={value} index={7}>
-                알림설정
-            </CustomTabPanel>
+            <Box sx={{ p: 3 }}>
+                <Typography component={"div"}>
+                    <div hidden={value !== 0} ><MemberInfo/></div>
+                    <div hidden={value !== 1} ><>수강목록</></div>
+                    <div hidden={value !== 2} ><>즐겨찾기</></div>
+                    <div hidden={value !== 3} ><>구매목록</></div>
+                    <div hidden={value !== 4} ><>포인트</></div>
+                    <div hidden={value !== 5} ><>수료증</></div>
+                    <div hidden={value !== 6} ><>장바구니</></div>
+                    <div hidden={value !== 7} ><>알림설정</></div>
+                </Typography>
+            </Box>
         </Box>
     </Container>
    )
