@@ -4,8 +4,10 @@ import axios from "axios";
 const useReviewStore = create((set) => ({
   loginMemberId: "",
   loginMemberNickname: "",
+  loginMemberRole: "",
   reviews: [],
   paymentList: [],
+  setReviews: (reviews) => set({ reviews }),
   getReviews: async (contentsId) => {
     try {
       const accessToken = sessionStorage.getItem("ACCESS_TOKEN");
@@ -19,6 +21,7 @@ const useReviewStore = create((set) => ({
       console.log("Response:", response.data.reviewList);
       set({
         reviews: response.data.reviewList,
+        loginMemberRole: response.data.loginMemberRole,
         loginMemberId: response.data.loginMemberId,
         loginMemberNickname: response.data.loginMemberNickname,
         paymentList: response.data.paymentList,
@@ -51,7 +54,7 @@ const useReviewStore = create((set) => ({
           },
         }
       );
-      return response.data;
+      return response.data.reviewList;
     } catch (error) {
       console.error("Error adding review:", error);
     }
@@ -83,24 +86,27 @@ const useReviewStore = create((set) => ({
         }
       );
       console.log(response);
-      set({ reviews: response.data.items });
+      return response.data.items;
     } catch (error) {
       console.error("Error changing review:", error);
     }
   },
 
-  deleteBoard: async (id) => {
+  deleteReview: async (reviewId, contentsId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:9090/review/review`,
+        `http://localhost:9090/review/review/${reviewId}`,
         {
+          params: {
+            contentsId: contentsId,
+          },
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
           },
-          params: { id: id },
         }
       );
-      set({ reviews: response.data.items });
+      console.log(response);
+      return response.data.items;
     } catch (error) {
       console.error("Error removing review:", error);
     }

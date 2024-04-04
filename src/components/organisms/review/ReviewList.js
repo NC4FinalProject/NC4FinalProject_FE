@@ -16,6 +16,7 @@ import CoHoverButton from "../../atoms/common/CoHoverButton";
 import Codialog from "../common/Codialog";
 import ModifyDialog from "../review/Modifydialog";
 import useReviewStore from "../../../stores/ReviewStore";
+import { format } from "date-fns";
 
 const ReviewList = () => {
   const [reviewPostOpen, setReviewPostOpen] = useState(false);
@@ -26,19 +27,47 @@ const ReviewList = () => {
 
   const { contentsId } = useParams();
 
+  const deleteReview = useReviewStore((state) => state.deleteReview);
   const reviews = useReviewStore((state) => state.reviews);
   const loginMemberId = useReviewStore((state) => state.loginMemberId);
+  const loginMemberRole = useReviewStore((state) => state.loginMemberRole);
+  const { setReviews } = useReviewStore();
   const loginMemberNickname = useReviewStore(
     (state) => state.loginMemberNickname
   );
 
+  console.log("loginMemberRole:", loginMemberRole);
+
   const getReviews = useReviewStore((state) => state.getReviews);
+
   useEffect(() => {
     const fetchReviews = async () => {
       await getReviews(contentsId);
     };
     fetchReviews();
   }, []);
+
+  useEffect(() => {
+    const sortedReviews = [...reviews];
+    if (sortBy === "latest") {
+      sortedReviews.sort((a, b) => {
+        const dateA = a.reviewUdtDate
+          ? new Date(a.reviewUdtDate)
+          : new Date(a.reviewCrtDate);
+        const dateB = b.reviewUdtDate
+          ? new Date(b.reviewUdtDate)
+          : new Date(b.reviewCrtDate);
+        return dateB - dateA;
+      });
+      console.log("sortedReviews:", sortedReviews);
+    } else if (sortBy === "highestRated") {
+      sortedReviews.sort((a, b) => b.reviewRating - a.reviewRating);
+    } else if (sortBy === "lowestRated") {
+      sortedReviews.sort((a, b) => a.reviewRating - b.reviewRating);
+    }
+
+    setReviews(sortedReviews);
+  }, [sortBy]);
 
   const handleViewMore = () => {
     setReviewsToShow(reviewsToShow + 5);
@@ -53,7 +82,11 @@ const ReviewList = () => {
   };
 
   const handleModifyOpen = (review) => {
-    setSelectedReview(review);
+    setSelectedReview({
+      ...review,
+      crtDate: review.reviewCrtDate,
+      udtDate: review.reviewUdtDate,
+    });
     setReviewModifyOpen(true);
   };
 
@@ -61,8 +94,12 @@ const ReviewList = () => {
     setReviewModifyOpen(false);
   };
 
-  const handleChangeSort = (newValue) => {
-    setSortBy(newValue);
+  const handleDeleteReview = async (reviewId) => {
+    const reviewList = await deleteReview(reviewId, contentsId);
+    console.log("reviewId:", reviewId);
+    console.log("contentsId:", contentsId);
+    setReviews(reviewList);
+    alert("삭제되었습니다.");
   };
 
   const averageRating = useMemo(() => {
@@ -72,6 +109,16 @@ const ReviewList = () => {
     const totalRating = reviews.reduce((acc, cur) => acc + cur.reviewRating, 0);
     return totalRating / reviews.length;
   }, [reviews]);
+
+  const review = reviews.find(
+    (review) =>
+      loginMemberId && review.memberDTO && loginMemberId === review.memberDTO.id
+  );
+
+  const hasUserReview = reviews.some(
+    (review) =>
+      loginMemberId && review.memberDTO && loginMemberId === review.memberDTO.id
+  );
 
   return (
     <>
@@ -85,7 +132,7 @@ const ReviewList = () => {
         <ButtonGroup variant="text" sx={{ mb: "1rem" }}>
           <Button
             style={{ border: "none" }}
-            onClick={() => handleChangeSort("latest")}
+            onClick={() => setSortBy("latest")}
             color={sortBy === "latest" ? "primary" : "inherit"}
           >
             <CoTypography size="Content">최신순</CoTypography>
@@ -98,7 +145,7 @@ const ReviewList = () => {
           </CoTypography>
           <Button
             style={{ border: "none" }}
-            onClick={() => handleChangeSort("highestRated")}
+            onClick={() => setSortBy("highestRated")}
             color={sortBy === "highestRated" ? "primary" : "inherit"}
           >
             <CoTypography size="Content">별점높은순</CoTypography>
@@ -110,7 +157,7 @@ const ReviewList = () => {
             |
           </CoTypography>
           <Button
-            onClick={() => handleChangeSort("lowestRated")}
+            onClick={() => setSortBy("lowestRated")}
             color={sortBy === "lowestRated" ? "primary" : "inherit"}
           >
             <CoTypography size="Content">별점낮은순</CoTypography>
@@ -118,32 +165,24 @@ const ReviewList = () => {
         </ButtonGroup>
 
         <Box sx={{ display: "flex", alignItems: "center", mb: "1rem" }}>
-          {reviews &&
-            reviews.slice(0, reviewsToShow).map((review) => {
-              return (
-                <React.Fragment key={review.reviewId}>
-                  <CoTypography sx={{ marginRight: "0.75rem" }}>
-                    {/* toFixed(1) 소수점 1째자리까지 표현 */}
-                    평점 {averageRating.toFixed(1)} / 5
-                  </CoTypography>
-                </React.Fragment>
-              );
-            })}
-          {/* {(!loginMemberId ||
-            (loginMemberId &&
-              review.memberDTO &&
-            loginMember.member.id === review.memberDTO.id)) && ( */}
+          <CoTypography sx={{ marginRight: "0.75rem" }}>
+            {/* toFixed(1) 소수점 1째자리까지 표현 */}
+            평점 {averageRating.toFixed(1)} / 5
+          </CoTypography>
 
-          <Codialog
-            open={reviewPostOpen}
-            handleClickClose={handlePostClose}
-            userNickname={loginMemberNickname}
-            contentsId={contentsId}
-          />
-          <CoHoverButton onClick={handlePostOpen} variant="outlined">
-            후기등록
-          </CoHoverButton>
-          {/* )} */}
+          {review && !hasUserReview && (
+            <React.Fragment>
+              <Codialog
+                open={reviewPostOpen}
+                handleClickClose={handlePostClose}
+                userNickname={loginMemberNickname}
+                contentsId={contentsId}
+              />
+              <CoHoverButton onClick={handlePostOpen} variant="outlined">
+                후기등록
+              </CoHoverButton>
+            </React.Fragment>
+          )}
         </Box>
       </Box>
       <Table
@@ -160,45 +199,43 @@ const ReviewList = () => {
           {reviews &&
             reviews.slice(0, reviewsToShow).map((review) => {
               return (
-                <TableRow
-                  key={review.reviewId}
-                  sx={{ display: "flex", flexDirection: "row" }}
-                >
-                  <TableCell
-                    sx={{
-                      verticalAlign: "top",
-                      align: "left",
-                      paddingRight: "0",
-                    }}
-                  >
-                    <Avatar
-                      alt="profileImage"
-                      src={
-                        review.memberDTO && review.memberDTO.profileFile
-                          ? review.memberDTO.profileFile
-                          : undefined
-                      }
-                      sx={{ width: 40.4, height: 40.4 }}
-                    />
-                  </TableCell>
-                  <TableCell sx={{ width: "100%", overflow: "hidden" }}>
-                    <Box
+                <React.Fragment key={review.reviewId}>
+                  <TableRow sx={{ display: "flex", flexDirection: "row" }}>
+                    <TableCell
                       sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        verticalAlign: "top",
+                        align: "left",
+                        paddingRight: "0",
                       }}
                     >
-                      <ContentsStarRating
-                        size="small"
-                        readOnly={true}
-                        rating={review.reviewRating}
-                        sx={{ ml: "-0.2rem" }}
+                      <Avatar
+                        alt="profileImage"
+                        src={
+                          review.memberDTO && review.memberDTO.profileFile
+                            ? review.memberDTO.profileFile
+                            : undefined
+                        }
+                        sx={{ width: 40.4, height: 40.4 }}
                       />
-
-                      {loginMemberId &&
-                        review.memberDTO &&
-                        loginMemberId === review.memberDTO.id && (
+                    </TableCell>
+                    <TableCell sx={{ width: "100%", overflow: "hidden" }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <ContentsStarRating
+                          size="small"
+                          readOnly={true}
+                          rating={review.reviewRating}
+                          sx={{ ml: "-0.2rem" }}
+                        />
+                        {(loginMemberId &&
+                          review.memberDTO &&
+                          loginMemberId === review.memberDTO.id) ||
+                        loginMemberRole === "ADMIN" ? (
                           <ButtonGroup
                             variant="text"
                             sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
@@ -217,49 +254,66 @@ const ReviewList = () => {
                             >
                               |
                             </CoTypography>
-                            <Button>
+                            <Button
+                              onClick={() => {
+                                if (window.confirm("삭제하시겠습니까?")) {
+                                  handleDeleteReview(review.reviewId);
+                                }
+                              }}
+                            >
                               <CoTypography size="TableContent">
                                 삭제
                               </CoTypography>
                             </Button>
                           </ButtonGroup>
-                        )}
-                    </Box>
-                    <Box>
-                      <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
-                        {review.memberDTO && review.memberDTO.userNickname
-                          ? review.memberDTO.userNickname
-                          : "Unknown"}
-                      </CoTypography>
-                      <CoTypography
-                        size="TableContent"
-                        sx={{
-                          width: "70%",
-                          mb: "1rem",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {review.reviewContent}
-                      </CoTypography>
-                      <CoTypography size="Tag">
-                        {review.reviewUdtDate}
-                      </CoTypography>
-                    </Box>
-                  </TableCell>
-                </TableRow>
+                        ) : null}
+                      </Box>
+                      <Box>
+                        <CoTypography size="TableContent" sx={{ mb: "1rem" }}>
+                          {review.memberDTO && review.memberDTO.userNickname
+                            ? review.memberDTO.userNickname
+                            : "Unknown"}
+                        </CoTypography>
+                        <CoTypography
+                          size="TableContent"
+                          sx={{
+                            width: "70%",
+                            mb: "1rem",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {review.reviewContent}
+                        </CoTypography>
+                        <CoTypography size="Tag">
+                          {review.reviewUdtDate
+                            ? format(
+                                new Date(review.reviewUdtDate),
+                                "yyyy-MM-dd"
+                              )
+                            : format(
+                                new Date(review.reviewCrtDate),
+                                "yyyy-MM-dd"
+                              )}
+                        </CoTypography>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                </React.Fragment>
               );
             })}
+          <ModifyDialog
+            open={reviewModifyOpen}
+            handleClickClose={handleModifyClose}
+            review={selectedReview}
+            userNickname={loginMemberNickname}
+            contentsId={contentsId}
+            crtDate={selectedReview ? selectedReview.reviewCrtDate : null}
+            udtDate={selectedReview ? selectedReview.reviewUdtDate : null}
+          />
         </TableBody>
       </Table>
-      <ModifyDialog
-        open={reviewModifyOpen}
-        handleClickClose={handleModifyClose}
-        review={selectedReview}
-        userNickname={loginMemberNickname}
-        contentsId={contentsId}
-      />
       <CoHoverButton
         variant="outlined"
         size="large"
