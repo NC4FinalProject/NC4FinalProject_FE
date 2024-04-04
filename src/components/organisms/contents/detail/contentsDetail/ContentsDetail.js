@@ -11,6 +11,8 @@ import CurriculumCourse from "../CurriculumCourse";
 import InquiryDetail from "../../../inquiry/InquiryDetail";
 import InquiryPost from "../../../inquiry/InquiryPost";
 import { useEffect } from "react";
+import useReviewStore from "../../../../../stores/ReviewStore";
+import { useParams } from "react-router-dom";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +53,23 @@ export default function ContentsDetail() {
   const [view, setView] = useState("list");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
 
+  const { contentsId } = useParams();
+
+  const reviews = useReviewStore((state) => state.reviews);
+
+  const getReviews = useReviewStore((state) => state.getReviews);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      await getReviews(contentsId);
+    };
+    fetchReviews();
+  }, []);
+
+  useEffect(() => {
+    console.log(reviews);
+  }, [reviews]);
+
   const handlePostClick = () => {
     setView("write");
   };
@@ -71,10 +90,6 @@ export default function ContentsDetail() {
     setValue(newValue);
   };
 
-  const getReviewCount = () => {
-    return 10;
-  };
-
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -85,7 +100,10 @@ export default function ContentsDetail() {
         >
           <Tab label="소개" {...a11yProps(0)} />
           <Tab label="코스" {...a11yProps(1)} />
-          <Tab label={`후기 (${getReviewCount()})`} {...a11yProps(2)} />
+          <Tab
+            label={`후기 (${reviews ? reviews.length : 0})`}
+            {...a11yProps(2)}
+          />
           <Tab label="게시판" {...a11yProps(3)} />
         </Tabs>
       </Box>
