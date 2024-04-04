@@ -1,21 +1,24 @@
 import React, { useState } from 'react'
-import PropTypes from "prop-types";
 import { Container, Box } from '@mui/material';
-import Typography from "@mui/material/Typography";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import MemberInfo from '../../components/organisms/mypage/MemberInfo';
+import MyLecture from '../../components/organisms/mypage/MyLecture';
+import Bookmark from '../../components/organisms/mypage/Bookmark';
+import Certificate from '../../components/organisms/mypage/Certificate';
+import PurchaseHistory from '../../components/organisms/mypage/PurchaseHistory';
+import Point from '../../components/organisms/mypage/Point';
+import Cart from '../../components/organisms/cart/Cart';
 
 function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`
     };
   }
 
 const Mypage = () => {
 
-    
     const [value, setValue] = useState(0);
     
     const handleChange = (event, newValue) => {
@@ -38,17 +41,15 @@ const Mypage = () => {
                 </Tabs>
             </Box>
 
-            <Box sx={{ p: 3 }}>
-                <Typography component={"div"}>
-                    <div hidden={value !== 0} ><MemberInfo/></div>
-                    <div hidden={value !== 1} ><>수강목록</></div>
-                    <div hidden={value !== 2} ><>즐겨찾기</></div>
-                    <div hidden={value !== 3} ><>구매목록</></div>
-                    <div hidden={value !== 4} ><>포인트</></div>
-                    <div hidden={value !== 5} ><>수료증</></div>
-                    <div hidden={value !== 6} ><>장바구니</></div>
-                    <div hidden={value !== 7} ><>알림설정</></div>
-                </Typography>
+            <Box>
+                <div hidden={value !== 0} ><MemberInfo></MemberInfo></div>
+                <div hidden={value !== 1} ><MyLecture></MyLecture></div>
+                <div hidden={value !== 2} ><Bookmark></Bookmark></div>
+                <div hidden={value !== 3} ><PurchaseHistory></PurchaseHistory></div>
+                <div hidden={value !== 4} ><Point></Point></div>
+                <div hidden={value !== 5} ><Certificate></Certificate></div>
+                <div hidden={value !== 6} ><Cart></Cart></div>
+                <div hidden={value !== 7} ><>알림설정</></div>
             </Box>
         </Box>
     </Container>

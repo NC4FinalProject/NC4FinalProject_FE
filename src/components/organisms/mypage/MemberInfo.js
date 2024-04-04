@@ -34,7 +34,8 @@ const MemberInfo = () => {
 
     const thumbnailInput = useRef();
 
-    useEffect(async e => {
+    const initialize = async e => {
+
         try { 
             const response = await axios.get(`http://localhost:9090/mypage`, 
                     {
@@ -52,7 +53,11 @@ const MemberInfo = () => {
             sessionStorage.removeItem("ACCESS_TOKEN");
             navi('/');
         }
-    }, []);
+    }
+
+    useEffect( () => {
+        initialize();
+    }, [navi]);
 
     if (loading) {
         return (
