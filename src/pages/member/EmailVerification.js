@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Grid, Container, Typography, TextField, Button, Link } from '@mui/material';
+import axios from 'axios';
 
-const JoinVerification = () => {
+const EmailVerification = () => {
+
+    const initialize = async e => {
+        try { 
+            const response = await axios.get(`http://localhost:9090/member/email-verification`, 
+                    {
+                        headers: {
+                            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                        }
+                    });
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect( () => {
+        initialize();
+    }, []);
+    
+
   return (
     <Container component="main" maxWidth="xs" style={{ marginTop: '5%', marginBottom: '10%' }}>
         <form>
@@ -35,8 +55,8 @@ const JoinVerification = () => {
                 </Grid>
             </Grid>
             <Grid container justifyContent="flex-end">
-                <Grid item>
-                    <Link href="/login" variant="body2">
+                <Grid item onClink={initialize()}>
+                    <Link disabled href="/login" variant="body2">
                         다시 보내기
                     </Link>
                 </Grid>
@@ -46,4 +66,4 @@ const JoinVerification = () => {
   )
 }
 
-export default JoinVerification
+export default EmailVerification
