@@ -1,27 +1,65 @@
 import React from 'react'
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { MenuContext } from './MenuContext';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import CoTypography from '../../components/atoms/common/CoTypography';
-import { Box, Select, MenuItem, FormControl, InputLabel, Paper , TextField, Hidden } from '@mui/material';
+import { Box, Select, MenuItem, FormControl, InputLabel, Paper , TextField, Table, DialogActions,TableBody, TableCell, TableHead, TableRow, Hidden, Dialog,DialogTitle,DialogContent,Button} from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import Check from '@mui/icons-material/Check';
 import Pagination from '@mui/material/Pagination';
-import { useEffect } from 'react';
 import AdminStore from '../../stores/AdminStore';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import axios from 'axios';
 
 const AdminUser = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('all');
+  const [selectedMemberId, setSelectedMemberId] = useState(null);
   const { userInfo, MemberInfo,setSearchCondition,setSearchKeyword,setPage,page ,searchKeyword,searchCondition} = AdminStore();
 
+  const [memo, setMemo] = useState('');
+  const [open, setOpen] = useState(false);
+  
+  const handleOpen = (id, memo) => {
+    setSelectedMemberId(id);
+    setMemo(memo);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSaveMemo = async () => {
+    try {
+      const memoData = {
+        memo: memo, 
+        id: selectedMemberId
+      };
+      await axios.post('http://localhost:9090/admin/user/memo',
+        memoData, 
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+          },
+        }
+      );
+    setOpen(false);
+  } catch (error) {
+    console.log('에러:', error);
+  }
+};
   const menuItems = [
     { key: 'all', value: '전체' },
-    { key: 'admin', value: '관리자' },
-    { key: 'teacher', value: '강사' },
-    { key: 'student', value: '수강생' },
+    { key: 'ADMIN', value: '관리자' },
+    { key: 'TEACHER', value: '강사' },
+    { key: 'USER', value: '수강생' },
+    { key: 'RESIGNED', value: '탈퇴' },
+    { key: 'BLACKLIST', value: '블랙' },
+    { key: 'PRETEACHER', value: '강사 신청' },
   ];
 
   useEffect(() => {
@@ -29,7 +67,8 @@ const AdminUser = () => {
       await userInfo();
     };
     fetchData();
-  }, [searchKeyword, userInfo, page, searchCondition]);
+  }, [searchKeyword, page, searchCondition, userInfo]);
+
 
   const handlePageChange = (event, value) => {
     setPage(value - 1); 
@@ -44,6 +83,14 @@ const AdminUser = () => {
     setSearchKeyword(event.target.value);
   };
   const { toggleMenu } = useContext(MenuContext);
+
+  const formtDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   return (
     <>
@@ -66,7 +113,7 @@ const AdminUser = () => {
           }}
           sx={{
             '& .MuiSelect-select': {
-              color: selectedMenuItem === '전체' || '관리자' || '강사' || '수강생' ? '#558BCF' : 'inherit',
+              color: selectedMenuItem === '전체' || '관리자' || '강사' || '수강생' || '블랙' || '강사 신청' || '탈퇴' ? '#558BCF' : 'inherit',
             },
           }}
         >
@@ -106,33 +153,97 @@ const AdminUser = () => {
       </Paper>
       </Box>
       <Paper sx={{ width: '100%', height: 'auto', marginTop:'1rem' }}>
-        <Box sx={{display:'flex' , justifyContent:'space-between', height:'2.75rem', alignItems:'center', borderBottom:'solid 1px #7d7d7d7d'}}>
-          <CoTypography size="AdminUser" sx={{marginLeft:'1rem', display:'flex', alignItems:'center'}}>차단
-          <CheckBoxOutlineBlankIcon sx={{marginLeft:'0.425rem', color:'#558BCF'}}/></CoTypography>
-          <CoTypography size="AdminUser">닉네임</CoTypography>
-          <CoTypography size="AdminUser">이메일</CoTypography>
-          <CoTypography size="AdminUser">회원 유형</CoTypography>
-          <Hidden >
-            <CoTypography size="AdminUser">가입일</CoTypography>
-            <CoTypography size="AdminUser">포인트</CoTypography>
-            <CoTypography size="AdminUser">댓글 / 문의</CoTypography>
-          </Hidden>
-          <CoTypography size="AdminUser" sx={{marginRight:'1rem'}}>메모</CoTypography>
-        </Box>
-        {MemberInfo.content && MemberInfo.content.map((member) => (
-        <Box sx={{display:'flex' , justifyContent:'space-between', height:'2.75rem', alignItems:'center'}}>
-          <CheckBoxIcon sx={{marginLeft:'3.125rem', color:'#558BCF'}}/>
-          <CoTypography size="AdminUser">{member.userNickname}</CoTypography>
-          <CoTypography size="AdminUser">{member.username}</CoTypography>
-          <CoTypography size="AdminUser">{member.role}</CoTypography>
-          <Hidden smDown>
-            <CoTypography size="AdminUser">{member.createdAt}</CoTypography>
-            <CoTypography size="AdminUser">포인트</CoTypography>
-            <CoTypography size="AdminUser">댓글 / 문의</CoTypography>
-          </Hidden>
-          <CoTypography size="AdminUser" sx={{marginRight:'1rem'}}>메모</CoTypography>
-        </Box>
-        ))}
+      <Table>
+        <TableHead >
+          <TableRow>
+            <TableCell sx={{display:'flex', alignItems:'center', paddingRight:'0'}}>
+              <CoTypography variant="AdminUser" sx={{paddingLeft:'0'}}>블랙 여부</CoTypography>
+              <Check sx={{ color: '#558BCF', paddingBottom:'0.2rem', paddingLeft: '0.2rem' }} />
+            </TableCell>
+            <TableCell><CoTypography variant="AdminUser">닉네임</CoTypography></TableCell>
+            <Hidden smDown>
+            <TableCell><CoTypography variant="AdminUser">아이디</CoTypography></TableCell>
+            <TableCell><CoTypography variant="AdminUser">권한</CoTypography></TableCell>
+              <TableCell><CoTypography variant="AdminUser">계정 생성일</CoTypography></TableCell>
+              <TableCell><CoTypography variant="AdminUser">포인트</CoTypography></TableCell>
+              <TableCell><CoTypography variant="AdminUser">댓글 / 문의</CoTypography></TableCell>
+            </Hidden>
+            <TableCell><CoTypography variant="AdminUser" sx={{paddingLeft:'0'}}>메모</CoTypography></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {MemberInfo.content && MemberInfo.content.map((member) => (
+            <TableRow key={member.id}>
+              <TableCell>
+              {member.role === 'BLACKLIST' ? (
+                <CheckBoxIcon
+                  sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}
+                />) : (
+                  <CheckBoxOutlineBlankIcon
+                  sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}
+                />)}
+              </TableCell>
+              <TableCell>
+                <CoTypography variant="AdminUser">{member.userNickname}</CoTypography>
+              </TableCell>
+              <Hidden smDown>
+              <TableCell>
+                <CoTypography variant="AdminUser">{member.username}</CoTypography>
+              </TableCell>
+              <TableCell>
+                <CoTypography sx={{ color: member.role === 'RESIGNED' ? 'red' : 'inherit' }}>
+                                                   {member.role === 'ADMIN' ? '관리자' :
+                                                    member.role === 'TEACHER' ? '강사' :
+                                                    member.role === 'RESIGNED' ? '탈퇴 회원' :
+                                                    member.role === 'USER' ? '수강생' :
+                                                    member.role === 'BLACKLIST' ? '블랙' :
+                                                    member.role === 'PRETEACHER' ? '강사 신청' : 'null'}
+                </CoTypography>
+              </TableCell>
+                <TableCell>
+                  <CoTypography variant="AdminUser">{formtDate(member.createdAt)}</CoTypography>
+                </TableCell>
+                <TableCell>
+                  <CoTypography variant="AdminUser">포인트</CoTypography>
+                </TableCell>
+                <TableCell>
+                  <CoTypography variant="AdminUser">댓글 / 문의</CoTypography>
+                </TableCell>
+              </Hidden>
+              <TableCell>
+              {member.memo ? (
+                <NoteAltIcon
+                  sx={{ marginLeft: '0.175rem', cursor: 'pointer', color: '#558BCF' }}
+                  onClick={() => handleOpen(member.id, member.memo)}
+                />
+              ) : (
+                <NoteAltIcon
+                  sx={{ marginLeft: '0.175rem', cursor: 'pointer' }}
+                  onClick={() => handleOpen(member.id, member.memo)}
+                />
+              )}
+              </TableCell>
+            </TableRow>
+          ))}
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>메모 입력</DialogTitle>
+          <DialogContent style={{ minWidth: '18.5rem', overflow: 'hidden' }}>
+            <textarea
+              rows={3}
+              maxLength={300}
+              placeholder="최대 300자까지 가능합니다."
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              style={{ width: '100%', resize: 'none', height:'15rem'}}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>취소</Button>
+            <Button onClick={handleSaveMemo} variant="contained" color="primary">저장</Button>
+          </DialogActions>
+        </Dialog>
+        </TableBody>
+      </Table>
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
         <Pagination color='primary' count={MemberInfo.totalPages} page={page + 1} onChange={handlePageChange} />
       </Box>

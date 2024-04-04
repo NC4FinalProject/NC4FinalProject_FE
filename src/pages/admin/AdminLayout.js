@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, Grid, Paper,Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import IconButton from '@mui/material/IconButton';
 import CoTypography from "../../components/atoms/common/CoTypography";
@@ -10,20 +10,15 @@ import { Link } from "react-router-dom";
 import AdminStore from '../../stores/AdminStore';
 import Avatar from '@mui/material/Avatar';
 import { MenuContext } from '../admin/MenuContext';
-import MemberStore from "../../stores/MemberStore";
 
 
 const AdminLayout = ({ children }) => {
   const [hover, setHover] = useState(false);
-  const { userNotice, Notices, Users, NewUser, DailytotalUserCount, MonthlytotalUserCount,MonthlyCounts } = AdminStore();
+  const { userNotice, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount } = AdminStore();
   const { toggleMenu } = useContext(MenuContext);
-  const { userRole } = MemberStore();
   const [disable, setDisable] = useState([]);
   const [graphMode, setGraphMode] = useState('daily'); 
-
-  useEffect(() => {
-   userNotice();
-  }, [userNotice]);
+  const [data, setData] = useState([]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -44,41 +39,63 @@ const AdminLayout = ({ children }) => {
   const toggleGraphMode = () => {
     setGraphMode(prevMode => (prevMode === 'daily' ? 'monthly' : 'daily'));
   };
-  useEffect(() => {
+ useEffect(() => {
+    userNotice();
+  }, [userNotice]);
+
+ useEffect(() => {
   const updateDataByMode = () => {
-    let cumulativeCount = 0;
+    let cumulativeCreate = 0;
+    let cumulativeDelete = 0;
+    let newData = [];
     if (graphMode === 'daily') {
-      const dailyData = DailytotalUserCount.map(total => {
+      newData = NewUser.map(total => {
+        const outUser = daliyOutUserCount.find(user => grapghformatDate(user.registration_date) === grapghformatDate(total.registration_date));
         const newUser = NewUser.find(user => grapghformatDate(user.registration_date) === grapghformatDate(total.registration_date));
+        const createUserCount = newUser ? newUser.user_count : 0;
+        const deleteUserCount = outUser ? outUser.user_count : 0;
+        
+        cumulativeCreate += createUserCount;
+        cumulativeDelete += deleteUserCount;
+
+        const clientTotal = cumulativeCreate - deleteUserCount;
+        
         return {
           date: grapghformatDate(total.registration_date),
           create: newUser ? newUser.user_count : 0, 
-          delete: 0, 
-          clientTotal: total.user_count,
+          delete: deleteUserCount,
+          clientTotal: clientTotal,
         };
       });
-      setData(dailyData);
     } else {
-      const monthlyData = MonthlyCounts.map(total => {
-        const totalUser = MonthlytotalUserCount.find(user => grapghformatDate(user.registration_date) === grapghformatDate(total.registration_date));
-        cumulativeCount += totalUser ? totalUser.user_count : 0;
-        return {
-          date: grapghformatDate(total.registration_date),
-          create: totalUser ? totalUser.user_count : 0,
-          delete: 2, 
-          clientTotal: cumulativeCount,
-        };
-      });
-        setData(monthlyData);
-      }
+        newData = MonthlyCounts.map(total => {
+          const totalUser = MonthlyCounts.find(user => grapghformatDate(user.registration_date) === grapghformatDate(total.registration_date));
+          const outUser = monthlyOutUserCount.find(user => grapghformatDate(user.registration_date).slice(0, 7) === grapghformatDate(total.registration_date).slice(0, 7));  const createUserCount = totalUser ? totalUser.user_count : 0;
+          const deleteUserCount = outUser ? outUser.user_count : 0;
+
+          cumulativeCreate += createUserCount;
+          cumulativeDelete += deleteUserCount;
+
+          const clientTotal = cumulativeCreate - cumulativeDelete;
+
+          return {
+            date: grapghformatDate(total.registration_date),
+            create: createUserCount, 
+            delete: deleteUserCount,
+            clientTotal: clientTotal,
+          };
+        });
+            }
+    if (JSON.stringify(data) !== JSON.stringify(newData)) {
+      setData(newData);
+    }
   };
   updateDataByMode();
-}, [graphMode, DailytotalUserCount]);
-
-  const [data, setData] = useState([]);
+}, [graphMode,NewUser,MonthlytotalUserCount,MonthlyCounts,daliyOutUserCount]);
 
 
   return (
+    console.log(preTeacherCount),
     <>
       <Box sx={{display:'flex'}}>
         <Paper sx={{height:'4.25rem', display:'flex', width:'100%'}}>
@@ -91,7 +108,7 @@ const AdminLayout = ({ children }) => {
         </CoTypography>
         <Box sx={{display:'flex', paddingTop:'0.3rem'}}>
         <CoTypography size="Admin" >신규 가입 : </CoTypography>
-        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>강사 가입 승인 대기 : </CoTypography>
+        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',  display:'flex'}}>강사 가입 승인 대기 :<CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{preTeacherCount}</CoTypography></CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>답변 대기 문의 : </CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>신고 내역 : </CoTypography>
         </Box>
@@ -261,7 +278,12 @@ const AdminLayout = ({ children }) => {
                     )}
                 <Box sx={{ width: '100%' }}>
                   <CoTypography size="AdminNotice">{user.userNickname}&nbsp;</CoTypography>
-                  <CoTypography size="AdminTag">({user.role === "ADMIN" ? "관리자" : user.role === "ROLE_USER" ? "유저" : user.role === "ROLE_TEACHER" ? "강사" : ""})&nbsp;|&nbsp;{formatDate(user.createdAt)}</CoTypography>
+                  <CoTypography size="AdminTag">({user.role === "ADMIN" ? "관리자" : 
+                                                  user.role === "USER" ? "수강생" : 
+                                                  user.role === "TEACHER" ? "강사" : 
+                                                  user.role === "RESIGNED" ? "탈퇴 회원 " :
+                                                  user.role === "BALCKLIST" ? "블랙" :
+                                                  user.role === "PRETEACHER" ? "강사 신청" : "null"})&nbsp;|&nbsp;{formatDate(user.createdAt)}</CoTypography>
                 </Box>
               </Box>))}
             </Paper>
@@ -282,8 +304,44 @@ const AdminLayout = ({ children }) => {
                 </Link>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">최근 공지사항 :ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11&nbsp;&nbsp;조회수 : 0</CoTypography>
+              {preTeachers.map((user, index) => (
+                    user.role === 'PRETEACHER' && (
+                <Box key={index} sx={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                    {user.profileFile === null ? (
+                      <Avatar src="/broken-mage.jpg" style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem' }} />
+                    ) : (
+                      <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + user.profileFile} alt='thumbnail' style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem', borderRadius: '70%' }} />
+                    )}
+                    <Box sx={{ width: '100%' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Box sx={{ display: 'block', alignItems: 'center' }}>
+                          <CoTypography size="AdminNotice">{user.userNickname}&nbsp;</CoTypography>
+                          <CoTypography size="AdminTag">
+                            ({user.role === "ADMIN" ? "관리자" :
+                            user.role === "USER" ? "수강생" :
+                            user.role === "TEACHER" ? "강사" :
+                            user.role === "RESIGNED" ? "탈퇴 회원" :
+                            user.role === "BLACKLIST" ? "블랙" :
+                            user.role === "PRETEACHER" ? "강사 신청" : "null"})&nbsp;|&nbsp;{formatDate(user.createdAt)}
+                          </CoTypography>
+                        </Box>
+                        {user.role === "PRETEACHER" && (
+                          <Button
+                            size="small"
+                            component={Link}
+                            to={`/admin/user/${user.id}`}
+                            variant="outlined"
+                            color="primary"
+                            sx={{marginTop:'0.625rem', marginRight:'1rem'}}
+                          >
+                            상세보기
+                          </Button>
+                        )}
+                      </Box>
+                    </Box>
+                  </Box>
+                  )
+                ))}
               </Box>
             </Paper>
           </Box>
