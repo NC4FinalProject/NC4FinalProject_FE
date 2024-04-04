@@ -199,7 +199,7 @@ const MemberInfo = () => {
                         {profileImage === null ? (
                             <Avatar src="/broken-mage.jpg" style={{width: '200px', height: '200px', borderRadius: '70%', marginLeft: '15%'}}/> 
                             ) : (
-                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/`+profileImage} alt='thumbnail' style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
+                            <img src={`https://kr.object.ncloudstorage.com/envdev/`+profileImage} alt='thumbnail' style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
                             )}
                         </Box>
                     </Grid>
