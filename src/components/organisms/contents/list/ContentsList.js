@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 import ContentsCard from "../../common/ContentsCard";
 
-
 const ContentsList = () => {
+
 
   const lectures = [
     { id: 1, title: '국민 내일 배움카드', category: '프론트앤드', author: '손우성', rating: 4, reviews: 300, booked: true, img: 'https://greenart.co.kr/upimage/comm/20240227134333.webp' },

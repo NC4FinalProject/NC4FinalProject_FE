@@ -2,7 +2,7 @@ import { Box, Button, ButtonGroup, Grid, IconButton, Table, TextField, Typograph
 import React, { Fragment, useState } from 'react'
 import CoTypography from '../../../atoms/common/CoTypography'
 import styled from 'styled-components'
-import {CategoryList} from '../../../api/curriculumCourseApi'
+import {CategoryList} from '../../../../api/curriculumCourseApi'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
 import CoHoverButton from '../../../atoms/common/CoHoverButton'
