@@ -54,7 +54,8 @@ const useReviewStore = create((set) => ({
           },
         }
       );
-      return response.data.reviewList;
+
+      return response.data.items;
     } catch (error) {
       console.error("Error adding review:", error);
     }
@@ -86,6 +87,7 @@ const useReviewStore = create((set) => ({
         }
       );
       console.log(response);
+
       return response.data.items;
     } catch (error) {
       console.error("Error changing review:", error);
@@ -106,6 +108,7 @@ const useReviewStore = create((set) => ({
         }
       );
       console.log(response);
+
       return response.data.items;
     } catch (error) {
       console.error("Error removing review:", error);

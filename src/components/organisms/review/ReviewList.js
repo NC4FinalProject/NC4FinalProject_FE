@@ -24,6 +24,7 @@ const ReviewList = () => {
   const [selectedReview, setSelectedReview] = useState(null);
   const [sortBy, setSortBy] = useState("latest");
   const [reviewsToShow, setReviewsToShow] = useState(5);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const { contentsId } = useParams();
 
@@ -32,6 +33,7 @@ const ReviewList = () => {
   const loginMemberId = useReviewStore((state) => state.loginMemberId);
   const loginMemberRole = useReviewStore((state) => state.loginMemberRole);
   const { setReviews } = useReviewStore();
+  const paymentList = useReviewStore((state) => state.paymentList);
   const loginMemberNickname = useReviewStore(
     (state) => state.loginMemberNickname
   );
@@ -69,6 +71,8 @@ const ReviewList = () => {
     setReviews(sortedReviews);
   }, [sortBy]);
 
+  console.log("paymentList:", paymentList);
+
   const handleViewMore = () => {
     setReviewsToShow(reviewsToShow + 5);
   };
@@ -102,6 +106,14 @@ const ReviewList = () => {
     alert("삭제되었습니다.");
   };
 
+  const hasPaid = paymentList.some(
+    (payment) => payment.contentsId === parseInt(contentsId)
+  );
+
+  const hasWritten = reviews.some(
+    (review) => review.memberDTO && review.memberDTO.id === loginMemberId
+  );
+
   const averageRating = useMemo(() => {
     if (reviews.length === 0) return 0;
 
@@ -109,16 +121,6 @@ const ReviewList = () => {
     const totalRating = reviews.reduce((acc, cur) => acc + cur.reviewRating, 0);
     return totalRating / reviews.length;
   }, [reviews]);
-
-  const review = reviews.find(
-    (review) =>
-      loginMemberId && review.memberDTO && loginMemberId === review.memberDTO.id
-  );
-
-  const hasUserReview = reviews.some(
-    (review) =>
-      loginMemberId && review.memberDTO && loginMemberId === review.memberDTO.id
-  );
 
   return (
     <>
@@ -167,10 +169,10 @@ const ReviewList = () => {
         <Box sx={{ display: "flex", alignItems: "center", mb: "1rem" }}>
           <CoTypography sx={{ marginRight: "0.75rem" }}>
             {/* toFixed(1) 소수점 1째자리까지 표현 */}
-            평점 {averageRating.toFixed(1)} / 5
+            평점 {averageRating.toFixed(1)} / 5.0
           </CoTypography>
 
-          {review && !hasUserReview && (
+          {loginMemberId && hasPaid && !hasWritten && (
             <React.Fragment>
               <Codialog
                 open={reviewPostOpen}
@@ -277,26 +279,46 @@ const ReviewList = () => {
                         <CoTypography
                           size="TableContent"
                           sx={{
-                            width: "70%",
+                            width: "100%",
                             mb: "1rem",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
+                            whiteSpace: isExpanded ? "normal" : "nowrap",
                           }}
                         >
                           {review.reviewContent}
                         </CoTypography>
-                        <CoTypography size="Tag">
-                          {review.reviewUdtDate
-                            ? format(
-                                new Date(review.reviewUdtDate),
-                                "yyyy-MM-dd"
-                              )
-                            : format(
-                                new Date(review.reviewCrtDate),
-                                "yyyy-MM-dd"
-                              )}
-                        </CoTypography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                          onClick={() => {
+                            setIsExpanded(!isExpanded);
+                          }}
+                        >
+                          <CoTypography size="Tag">
+                            {review.reviewUdtDate
+                              ? format(
+                                  new Date(review.reviewUdtDate),
+                                  "yyyy-MM-dd"
+                                )
+                              : format(
+                                  new Date(review.reviewCrtDate),
+                                  "yyyy-MM-dd"
+                                )}
+                          </CoTypography>
+                          <CoTypography
+                            size="Tag"
+                            sx={{
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {isExpanded ? "접기" : "더보기"}
+                          </CoTypography>
+                        </Box>
                       </Box>
                     </TableCell>
                   </TableRow>
