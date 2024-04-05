@@ -32,7 +32,7 @@ const SideItemVideoList = (props) => {
         <Link to="/" component={Link} underline="hover" color="inherit">
           <CardMedia
             component="img"
-            image={props.thumbnail} 
+            image={props.thumbnailPath} 
             alt={props.title}
             sx={{
               // width: '100%', 
@@ -57,7 +57,7 @@ const SideItemVideoList = (props) => {
           
           {/* 내용 @행간 줄임이요 */}
           <Typography sx={{ fontSize: '0.85rem', lineHeight: '1.15' }} component="p">
-            {props.title}
+            {props.videoTitle}
           </Typography>
         </Grid>
         

@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Grid, IconButton, Rating, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import {contentsListApi} from '../../../../api/contentsListApi'
+import {contentsListApi} from '../../../../../api/contentsListApi'
 import { FaCartPlus } from "react-icons/fa";
 import ContentsPriceCal from '../../../../atoms/common/ContentsPriceCal';
 import { useNavigate } from 'react-router-dom';

@@ -48,7 +48,7 @@ function a11yProps(index) {
 }
 
 export default function ContentsDetail() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const [view, setView] = useState("list");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
