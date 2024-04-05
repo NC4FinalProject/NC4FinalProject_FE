@@ -1,50 +1,26 @@
 import React, { useState } from 'react'
-import PropTypes from "prop-types";
 import { Container, Box } from '@mui/material';
-import Typography from "@mui/material/Typography";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import MemberInfo from '../../components/organisms/mypage/MemberInfo';
-
-function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography component={"div"}>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
-
-  CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
+import MyLecture from '../../components/organisms/mypage/MyLecture';
+import Bookmark from '../../components/organisms/mypage/Bookmark';
+import Certificate from '../../components/organisms/mypage/Certificate';
+import PurchaseHistory from '../../components/organisms/mypage/PurchaseHistory';
+import Point from '../../components/organisms/mypage/Point';
+import Cart from '../../components/organisms/cart/Cart';
 
 function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`
     };
   }
 
 const Mypage = () => {
 
-    
     const [value, setValue] = useState(0);
-
-
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -65,57 +41,16 @@ const Mypage = () => {
                 </Tabs>
             </Box>
 
-            {/* 계정정보 */}
-
-            <div
-                role="tabpanel"
-            >
-                
-                <Box sx={{ p: 3 }}>
-                    <Typography component={"div"}>
-                        <MemberInfo/>
-                    </Typography>
-                </Box>
-                
-            </div>
-            {/* <CustomTabPanel value={value} index={0}>
-                <MemberInfo/>
-            </CustomTabPanel> */}
-
-            {/* 수강목록 */}
-            <CustomTabPanel value={value} index={1}>
-                수강목록
-            </CustomTabPanel>
-
-            {/* 즐겨찾기 */}
-            <CustomTabPanel value={value} index={2}>
-                즐겨찾기
-            </CustomTabPanel>
-
-            {/* 구매목록 */}
-            <CustomTabPanel value={value} index={3}>
-                구매목록
-            </CustomTabPanel>
-
-            {/* 포인트 */}
-            <CustomTabPanel value={value} index={4}>
-                포인트
-            </CustomTabPanel>
-
-            {/* 수료증 */}
-            <CustomTabPanel value={value} index={5}>
-                수료증
-            </CustomTabPanel>
-
-            {/* 장바구니 */}
-            <CustomTabPanel value={value} index={6}>
-                장바구니
-            </CustomTabPanel>
-
-            {/* 알림설정 */}
-            <CustomTabPanel value={value} index={7}>
-                알림설정
-            </CustomTabPanel>
+            <Box>
+                <div hidden={value !== 0} ><MemberInfo></MemberInfo></div>
+                <div hidden={value !== 1} ><MyLecture></MyLecture></div>
+                <div hidden={value !== 2} ><Bookmark></Bookmark></div>
+                <div hidden={value !== 3} ><PurchaseHistory></PurchaseHistory></div>
+                <div hidden={value !== 4} ><Point></Point></div>
+                <div hidden={value !== 5} ><Certificate></Certificate></div>
+                <div hidden={value !== 6} ><Cart></Cart></div>
+                <div hidden={value !== 7} ><>알림설정</></div>
+            </Box>
         </Box>
     </Container>
    )

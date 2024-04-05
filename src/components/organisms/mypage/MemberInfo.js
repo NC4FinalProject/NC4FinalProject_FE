@@ -11,30 +11,25 @@ const MemberInfo = () => {
     const navi = useNavigate();
     const [role, setRole] = useState(null);
     const [userNickname, setUserNickname] = useState(null);
+    const [isEmailVerification, setIsEmailVerification] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    
-   
-    const [showPw, setshowPw] = useState(false);
-
-    const toggleShowPw = () => {
-        setshowPw(!showPw);
-      };
-
-    const [showPwCheck, setshowPwCheck] = useState(false);
-
-    const toggleShowPwCheck = () => {
-        setshowPwCheck(!showPwCheck);
-    };
 
     const handleClick = () => {
         thumbnailInput.current.click();
       };
     
+      const handleOnChangeUserNickname = (e) => {
+        setUserNickname(e.target.value);
+      }
+
+      const emailVerification = (e) => {
+        navi('/member/email-verification');
+      }
 
     const thumbnailInput = useRef();
 
-    useEffect(async e => {
+    const initialize = async e => {
+
         try { 
             const response = await axios.get(`http://localhost:9090/mypage`, 
                     {
@@ -45,14 +40,19 @@ const MemberInfo = () => {
             
                 setImage(response.data.item.profileFile);
                 setUserNickname(response.data.item.userNickname);
-                setLoading(false);
                 setRole(response.data.item.role);
+                setIsEmailVerification(response.data.item.isEmailVerification);
+                setLoading(false);
         } catch (error) {
             console.warn("이미지 불러오기 실패", error);
             sessionStorage.removeItem("ACCESS_TOKEN");
             navi('/');
         }
-    }, []);
+    }
+
+    useEffect( () => {
+        initialize();
+    }, [navi]);
 
     if (loading) {
         return (
@@ -91,11 +91,6 @@ const MemberInfo = () => {
         }
       };
 
-      const handleOnChange = (e) => {
-        setUserNickname(e.target.value);
-      }
-
-    
     const updateUserNickname = async e => {
         try {
             const formData = new FormData();
@@ -151,7 +146,6 @@ const MemberInfo = () => {
       };
 
       const resign = async e => {
-
                 try {
                     const response = await axios.delete(
                         `http://localhost:9090/member/resign`, 
@@ -161,7 +155,6 @@ const MemberInfo = () => {
                             }
                         }
                     )
-
                     const response2 = await axios.get(
                         `http://localhost:9090/member/logout`, 
                         {
@@ -194,7 +187,7 @@ const MemberInfo = () => {
                         {profileImage === null ? (
                             <Avatar src="/broken-mage.jpg" style={{width: '200px', height: '200px', borderRadius: '70%', marginLeft: '15%'}}/> 
                             ) : (
-                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/`+profileImage} alt='thumbnail' style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
+                            <img src={`https://kr.object.ncloudstorage.com/envdev/`+profileImage} alt='thumbnail' style={{width: '200px', height: '200px', borderRadius: '70%'}}/> 
                             )}
                         </Box>
                     </Grid>
@@ -209,38 +202,55 @@ const MemberInfo = () => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                        <TextField
-                            name="userNickname"
-                            variant="outlined"
-                            fullWidth
-                            id="userNickname"
-                            label="닉네임"
-                            defaultValue={ userNickname === null ? ("닉네임을 입력해주세요.") : (userNickname)}
-                            onChange={handleOnChange}
-                        ></TextField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button type="button" onClick={updateUserNickname} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
-                            닉네임 변경하기
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
-                            { role === "ROLE_TEACHER" ? ("이미 강사입니다."
-                                ) : ( 
-                                    "아직 강사가 아닙니다.") }
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button type="submit" onClick={wannabeTeacher} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
-                            강사 계정으로 전환 신청하기
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button type="submit" onClick={resign} fullWidth variant="contained" color="gray" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
-                            회원탈퇴
-                        </Button>
-                    </Grid>
+                    <TextField
+                        name="userNickname"
+                        variant="outlined"
+                        fullWidth
+                        id="userNickname"
+                        label="닉네임"
+                        defaultValue={ userNickname === null ? ("닉네임을 입력해주세요.") : (userNickname)}
+                        onChange={handleOnChangeUserNickname}
+                    ></TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button type="button" onClick={updateUserNickname} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
+                        닉네임 변경하기
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
+                        { isEmailVerification === true ? ("이메일 인증을 완료하였습니다."
+                            ) : ( 
+                                "이메일 인증을 완료해주시기 바랍니다.") }
+                    </Typography>
+                </Grid>
+                { isEmailVerification === true ? (
+                    <></>
+                ) : (
+                <Grid item xs={12}>
+                    <Button type="button" onClick={emailVerification} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
+                        이메일 인증하러 가기
+                    </Button>
+                </Grid>
+                ) }
+
+                <Grid item xs={12}>
+                    <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
+                        { role === "ROLE_TEACHER" ? ("이미 강사입니다."
+                            ) : ( 
+                                "아직 강사가 아닙니다.") }
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button type="submit" onClick={wannabeTeacher} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
+                        강사 계정으로 전환 신청하기
+                    </Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button type="submit" onClick={resign} fullWidth variant="contained" color="gray" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
+                        회원탈퇴
+                    </Button>
+                </Grid>
             </Grid>
         </form>
     </div>
