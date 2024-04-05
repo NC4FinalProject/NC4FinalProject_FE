@@ -1,10 +1,12 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import CoTypography from '../../../atoms/common/CoTypography';
-import { Button, InputAdornment, TextField } from '@mui/material';
+import { Button, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
 const UnderlinedButton = styled(Button)`
 
@@ -24,62 +26,49 @@ border-radius: 0;
 }
 `;
 
-const UploadVideo = () => {
-  const [dragOver, setDragOver] = useState(false);
-  const [videoFile, setVideoFile] = useState(null);
+const CustomTextField = styled(TextField)({
+  '& .MuiInput-input::placeholder': {
+    fontSize: '0.9rem', // 원하는 글자 크기로 조정
+  },
+  '& .MuiInput-input': {
+    textAlign: 'center', // 입력 필드 텍스트를 수평 중앙 정렬
+    // 필요하다면 lineHeight도 조정할 수 있음
+  },
+});
+
+const VideoFileState = ({ onFileSelect, selectedFile }) => {
+
   const fileInputRef = useRef(null);
 
   const HiddenInput = styled('input')({
     display: 'none'
   });
 
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    setDragOver(true);
-  };
-
-  const handleDragLeave = (event) => {
-    event.preventDefault();
-    setDragOver(false);
-  };
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setDragOver(false);
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      const file = event.dataTransfer.files[0];
-      console.log(file); // 드랍된 비디오 파일 객체를 콘솔에 로깅
-    }
-  };
-
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      console.log(file); // 선택된 비디오 파일 객체를 콘솔에 로깅
-      setVideoFile(file); 
+      console.log(file.name);
+      onFileSelect(file);
     }
   };
 
+  const removeContentsFile = () => {
+    onFileSelect(null)
+  }
+  
 
   return (
     <>
       <HiddenInput
-        accept="video/*" // 비디오 파일만 선택하도록 변경
+        accept="video/*"
         ref={fileInputRef}
         type="file"
         onChange={handleFileChange}
-        multiple // 여러 파일을 선택할 수 있게 하는 것은 선택 사항이에요.
+        multiple
       />
 
-      <UnderlinedButton
-        // variant="outlined"
-        fullWidth
-        
-        sx={{
-          // backgroundColor: dragOver ? 'action.hover' : undefined,
+      <UnderlinedButton fullWidth sx={{
           cursor: 'pointer',
-          // paddingBottom: '0.12rem',
           paddingBottom: '4px',
           paddingTop: '4px',
           color: 'black', // Default text color
@@ -89,47 +78,55 @@ const UploadVideo = () => {
             backgroundColor: 'transparent', // Optional: Transparent background on hover
           },
         }}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
       >
-        <Typography sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 영상을 올려주세요.</Typography>
+        {selectedFile === null ? (
+          <Typography sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 영상을 등록하세요.</Typography>
+        ):(
+          <Grid container justifyContent={'space-between'} alignItems="center">
+            <Typography sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.85)'}}>
+              {selectedFile.name.length > 9 ? `${selectedFile.name.substring(0, 9)}...` : selectedFile.name}
+            </Typography>
+            <IconButton sx={{ p: 0, '& .MuiSvgIcon-root': {  fontSize: '1.25rem', }}} onClick={(event) => {
+              event.stopPropagation();
+              removeContentsFile();
+              }}>
+              <RemoveCircleOutlineIcon />
+            </IconButton>
+          </Grid>
+        )}
       </UnderlinedButton>
+    </>
+  )
+}
 
-      {/* <TextField
-        
-        fullWidth
-        id="standard-basic"
-        variant="standard"
-        InputProps={{
-          readOnly: true, // 이 부분이 필드를 읽기 전용으로 만듦
-          startAdornment: (
-            <InputAdornment>
-              <Button
-                sx={{
-                  cursor: 'pointer',
-                  borderStyle: 'dashed',
-                  padding: 0,
-                  color: 'black',
-                  ':hover': {
-                    borderColor: 'primary.main',
-                    color: 'primary.main',
-                    backgroundColor: 'transparent',
-                  },
-                }}
-              ><CoTypography size="Content">Video Upload</CoTypography>
-              </Button>
-            </InputAdornment>
-          ),
-        }}
-      /> */}
+
+const UploadVideo = () => {
+
+  const [selectedFile, setSelectedFile] = useState(null); 
+
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
+  };
+
+  return (
+    <>
+    {selectedFile === null ? (
+      <VideoFileState onFileSelect={handleFileSelect} selectedFile={selectedFile}/>
+      ) : (
+      <Grid container>
+        <Grid item xs={3} sx={{ alignContent: 'flex-end'}}>
+          <VideoFileState onFileSelect={handleFileSelect} selectedFile={selectedFile}/>
+        </Grid>
+        <Grid item xs={9} >
+          <CustomTextField fullWidth id="standard-basic" variant="standard" 
+            placeholder='영상 제목을 입력하세요.'/>
+        </Grid>
+      </Grid>
+      )
+    }
     </>
   );
 };
 
 export default UploadVideo;
-
-// {videoFile && (
-//   <p>Uploaded video: {videoFile.name}</p> // 업로드된 비디오 파일명 표시
-// )}

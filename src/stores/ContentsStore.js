@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { contentsIdApi } from '../components/api/ContentsApi';
-import { insertApi } from '../components/api/ContentsApi';
+import { getContentsIdApi } from '../api/ContentsApi'
+import { insertApi } from '../api/ContentsApi';
 
 // 가격타입
 export const contentsPriceTypeItems = [
@@ -23,7 +23,21 @@ export const contentsCategoryItems = [
   { id: "el10", type: "웹 디자인" },
 ];
 
-// 챕터 1에 대한 입력 정보 상태 및 액션
+// 챕터 필수 컨텐츠 파일 정보 상태 및 액션//////////////////////////////
+export const contentsFileStore = create(set => ({
+  contentsFile: [],
+  addContentsFile: (newContentFile) => set((state) => ({
+    contentsFile: [...state.contentsFile, newContentFile]
+  })),
+  contentsFileTitleInput: (newcontentsFileTitleInput) => set(state => ({
+    contentsFile: { ...state.contentsFile, ...newcontentsFileTitleInput }
+  })),
+  removeContentsFile: () => set((state) => ({
+    contentsFile: state.contentsFile.slice(0, -1),
+  })),
+}));
+
+// 챕터 1에 대한 입력 정보 상태 및 액션//////////////////////////////
 export const useChapterOneStore = create(set => ({
   chapterOne: {
     category: '',
@@ -40,11 +54,11 @@ export const useChapterOneStore = create(set => ({
   },
 }));
 
-// 챕터 2에 대한 입력 정보 상태 및 액션
+// 챕터 2에 대한 입력 정보 상태 및 액션//////////////////////////////
 export const useChapterTwoStore = create((set) => ({
   chapterTwo: [],
 
-  // 독립적인 메인 섹션 입력 단 & 아이디 값 부여
+  // 독립적인 메인 섹션 입력 단 & 아이디 값 부여되서 옴
   sectionTitleInput: (index, newTitle) => set((state) => {
     const sectionTitleInput = state.chapterTwo.map((chapterTwoChange, idx) => {
       if (idx === index) {
@@ -54,7 +68,7 @@ export const useChapterTwoStore = create((set) => ({
     });
     return { chapterTwo: sectionTitleInput };
   }),
-  // 독립적인 서브 섹션 입력 단 & 아이디 값 부여
+  // 독립적인 서브 섹션 입력 단 & 아이디 값 부여되서 옴
   sectionSubTitleInput: (sectionSubId, sectionId, newSubTitle) => set((state) => {
     const chapterTwoUpdated = state.chapterTwo.map((section) => {
       const sectionSubListUpdated = section.sectionSubList.map((subSection) => {
@@ -112,13 +126,27 @@ export const useChapterTwoStore = create((set) => ({
 
 // 상세 페이지 리스폰 데이터
 export const useContentsStore = create((set) => ({
-  contentsOne: [],
-  contentsOneOutput: async (contentId) => {
+  getContentsOne: [],
+  getContentsOneOutput: async (contentId) => {
       try {
-          const data = await contentsIdApi(contentId);
-          set({ contents: data });
+          const data = await getContentsIdApi(contentId);
+          set({ getContentsOne: data.item });
       } catch (error) {
           console.error(error);
       }
   }
+}));
+
+// 영상 별 입력 정보 상태 및 액션
+export const useVideoReplyStore = create(set => ({
+  videoReply: {
+    videoReplyId: '',
+    content: '',
+    username: '',
+    userProfile: '',
+  },
+  commitVideoReply: async (videoReply) => {
+    const data = await insertApi(videoReply);
+    set({ chapterOne: data });
+  },
 }));
