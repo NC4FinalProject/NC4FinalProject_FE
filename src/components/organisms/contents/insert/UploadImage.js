@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -24,55 +24,32 @@ border-radius: 0;
 }
 `;
 
-const CustomTypography = styled(Typography)({
-
-});
-
-
-const Input = styled('input')({
-  display: 'none',
-});
-
 const UploadImage = () => {
-  const [dragOver, setDragOver] = useState(false);
+
+  
   const [imageFile, setImageFile] = useState(null);
+
+  const [imageFileName, setImageFileName] = useState("");
+
   const fileInputRef = useRef(null);
 
   const HiddenInput = styled('input')({
     display: 'none',
   });
 
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    setDragOver(true);
-  };
-
-  const handleDragLeave = (event) => {
-    event.preventDefault();
-    setDragOver(false);
-  };
-
-  const handleDrop = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setDragOver(false);
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      // 파일 처리 로직
-      const file = event.dataTransfer.files[0];
-      console.log(file);
-      // 파일을 처리하는 함수에 file을 인자로 전달한다
-    }
-  };
-
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      // 파일 처리 로직
       const file = event.target.files[0];
-      console.log(file);
       setImageFile(file); 
-      // 파일을 처리하는 함수에 file을 인자로 전달한다
+      setImageFileName(file.name);
     }
   };
+
+  useEffect(()=>{
+    if(imageFile !== null){
+      console.log("파일에 뭔가 들어옴"+imageFile.name)
+    }
+  })
 
   return (
     <>
@@ -98,12 +75,14 @@ const UploadImage = () => {
             backgroundColor: 'transparent', // Optional: Transparent background on hover
           },
         }}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
       >
-        <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 사진을 올려주세요.</Typography>
+        {imageFile === null ? (
+          <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 사진을 등록하세요.</Typography>
+        ):(
+          <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.85)'}}>{imageFileName}</Typography>
+        )}
+        
       </UnderlinedButton>
     </>
   );

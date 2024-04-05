@@ -5,7 +5,9 @@ import burceMars from '../../../../../images/bruce-mars.jpg'
 import CoTypography from '../../../../atoms/common/CoTypography';
 
 
-const ContentsInfo = ({ comments, views, shares, color }) => {
+const ContentsInfo = ({ comments, views, shares, color, contentsTitle }) => {
+
+  // const { id, contentsId, ContentsTitle, nickName } = props;
 
   return (
     <>
@@ -13,7 +15,7 @@ const ContentsInfo = ({ comments, views, shares, color }) => {
       
       <Grid item>
         <Grid container alignItems="flex-start" style={{ height: '100%', flexDirection: 'column' }}>
-         <Typography sx={{lineHeight: '1.10', fontSize:'0.80rem', color:'#2E2E2E'}}>비트캠프 데브옵스 4기 과정 React 기초 강의</Typography>
+         <Typography sx={{lineHeight: '1.10', fontSize:'0.80rem', color:'#2E2E2E'}}>{contentsTitle}</Typography>
          <Typography variant="h6" sx={{lineHeight: '1.40', marginBottom: '0.4rem', color:'#1C1C1C'}}>여기는 동영상의 강의명이올시다 이게 만약 길수도 있자나? 그럼 한줄 표시?</Typography>
         </Grid>
       </Grid>
@@ -75,7 +77,8 @@ const ContentsInfo = ({ comments, views, shares, color }) => {
       
       <Grid alignItems='start'>
        <Typography sx={{ fontSize: '0.95rem' }}>
-          Gogichen12
+          {/* {id} */}
+          고기천 강자님
         </Typography>
        <Typography sx={{ fontSize: '0.75rem' }}>
           Bitcamp | 웹개발

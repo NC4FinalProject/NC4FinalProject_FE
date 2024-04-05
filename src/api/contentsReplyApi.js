@@ -1,8 +1,8 @@
-import coverImg_1 from "../../images/ReplyList/cover_1.jpg"
-import coverImg_2 from "../../images/ReplyList/cover_2.jpg"
-import coverImg_3 from "../../images/ReplyList/cover_3.jpg"
-import coverImg_4 from "../../images/ReplyList/cover_4.jpg"
-import coverImg_5 from "../../images/ReplyList/cover_5.jpg"
+import coverImg_1 from "../images/ReplyList/cover_1.jpg"
+import coverImg_2 from "../images/ReplyList/cover_2.jpg"
+import coverImg_3 from "../images/ReplyList/cover_3.jpg"
+import coverImg_4 from "../images/ReplyList/cover_4.jpg"
+import coverImg_5 from "../images/ReplyList/cover_5.jpg"
 
 // Reply List
 const loremText = `역시 강의는 고기천 강사님!ㅋㅋㅋㅋㅋㅋ역시 강의는 고기천 강사님!`;

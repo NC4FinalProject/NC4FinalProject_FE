@@ -21,6 +21,7 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(5);
 
+  const { setReviews } = useReviewStore();
   const paymentList = useReviewStore((state) => state.paymentList);
   const postReview = useReviewStore((state) => state.postReview);
 
@@ -46,7 +47,7 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
     const matchingPayment = paymentList.find(
       (payment) => payment.contentsId === Number(contentsId)
     );
-    await postReview(
+    const reviewList = await postReview(
       review,
       rating,
       matchingPayment.paymentId,
@@ -56,6 +57,7 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
     alert("후기가 등록되었습니다.");
     setReview("");
     setRating(5);
+    setReviews(reviewList);
     handleClickClose();
   };
 
