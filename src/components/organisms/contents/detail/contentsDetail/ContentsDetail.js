@@ -10,7 +10,6 @@ import { useState } from "react";
 import CurriculumCourse from "../CurriculumCourse";
 import InquiryDetail from "../../../inquiry/InquiryDetail";
 import InquiryPost from "../../../inquiry/InquiryPost";
-import { useEffect } from "react";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,7 +45,7 @@ function a11yProps(index) {
 }
 
 export default function ContentsDetail() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const [view, setView] = useState("list");
   const [selectedInquiry, setSelectedInquiry] = useState(null);

@@ -10,7 +10,7 @@ import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
 import { useChapterOneStore, useChapterTwoStore } from '../../../../stores/ContentsStore';
-import { insertApi } from '../../../api/ContentsApi';
+import { insertApi } from '../../../../api/ContentsApi';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
