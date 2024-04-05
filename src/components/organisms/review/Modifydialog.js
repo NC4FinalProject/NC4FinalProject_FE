@@ -23,12 +23,15 @@ const Modifydalog = ({
   review,
   userNickname,
   contentsId,
+  crtDate,
+  udtDate,
 }) => {
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
 
   const paymentList = useReviewStore((state) => state.paymentList);
   const modifyReview = useReviewStore((state) => state.modifyReview);
+  const { setReviews } = useReviewStore();
 
   useEffect(() => {
     if (review) {
@@ -47,8 +50,6 @@ const Modifydalog = ({
   };
 
   const handleCancel = () => {
-    console.log(reviewContent);
-    console.log(reviewRating);
     setReviewContent("");
     setReviewRating(0);
     handleClickClose();
@@ -59,7 +60,7 @@ const Modifydalog = ({
       (payment) => payment.contentsId === Number(contentsId)
     );
 
-    await modifyReview(
+    const reviewList = await modifyReview(
       review.reviewId,
       reviewContent,
       reviewRating,
@@ -67,7 +68,10 @@ const Modifydalog = ({
       matchingPayment.contentsId,
       matchingPayment.cartId
     );
+
+    console.log(reviewList);
     alert("후기가 수정되었습니다.");
+    setReviews(reviewList);
     handleClickClose();
   };
 
@@ -125,7 +129,12 @@ const Modifydalog = ({
               <TableCell>
                 <CoTypography size="Content">
                   작성자 : {userNickname} <br />
-                  작성일 : {format(new Date(), "yyyy-MM-dd")}
+                  작성일 :{" "}
+                  {udtDate
+                    ? format(new Date(udtDate), "yyyy-MM-dd")
+                    : crtDate
+                    ? format(new Date(crtDate), "yyyy-MM-dd")
+                    : "Unknown"}
                 </CoTypography>
               </TableCell>
               <TableCell>
