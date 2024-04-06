@@ -23,19 +23,6 @@ export const contentsCategoryItems = [
   { id: "el10", type: "웹 디자인" },
 ];
 
-// 챕터 필수 컨텐츠 파일 정보 상태 및 액션//////////////////////////////
-export const contentsFileStore = create(set => ({
-  contentsFile: [],
-  addContentsFile: (newContentFile) => set((state) => ({
-    contentsFile: [...state.contentsFile, newContentFile]
-  })),
-  contentsFileTitleInput: (newcontentsFileTitleInput) => set(state => ({
-    contentsFile: { ...state.contentsFile, ...newcontentsFileTitleInput }
-  })),
-  removeContentsFile: () => set((state) => ({
-    contentsFile: state.contentsFile.slice(0, -1),
-  })),
-}));
 
 // 챕터 1에 대한 입력 정보 상태 및 액션//////////////////////////////
 export const useChapterOneStore = create(set => ({
@@ -44,20 +31,48 @@ export const useChapterOneStore = create(set => ({
     priceType: '',
     price: '',
     contentsTitle: '',
-  },
+},
+  videoInfo: [],
+  videoFile: '',
+  thumbnail: {},
+  //////////////////////////////////////////////////////////////////
   chapterOneInput: (newContents) => set(state => ({
     chapterOne: { ...state.chapterOne, ...newContents }
   })),
+  // 이 함수의 정체를 모르겠다?
   saveChapterOne: async (chapterOne) => {
     const data = await insertApi(chapterOne);
     set({ chapterOne: data });
   },
+  //////////////////////////////////////////////////////////////////
+  videoInfoTitleInput: (index, newVideoInfoTitleInput) => set((state) => {
+    const videoInfoTitleInput = state.videoInfo.map((videoInfoTitleChange, idx) => {
+      if (idx === index) {
+        console.log("전역 상태에 업데이트가 되었구만유!")
+        return { ...videoInfoTitleChange, videoTitle: newVideoInfoTitleInput};
+      }
+      return videoInfoTitleChange;
+    });
+    return { videoInfo: videoInfoTitleInput };
+  }),
+  addVideoInfo: (newVideoInfo) => set((state) => ({
+    videoInfo: [...state.videoInfo, newVideoInfo]
+  })),
+  addVideoFile: (newVideoFile) => set((state) => ({
+    videoFile: [...state.VideoFile, newVideoFile]
+  })),
+  removeVideoInfo: () => set((state) => ({
+    videoInfo: state.videoInfo.slice(0, -1),
+  })),
+  removeVideoFile: (videoId) => set((state) => ({
+    chapterTwo: state.videoFile.filter(videoFileByOne => videoFileByOne.videoId !== videoId)
+  })),
+
 }));
 
 // 챕터 2에 대한 입력 정보 상태 및 액션//////////////////////////////
 export const useChapterTwoStore = create((set) => ({
   chapterTwo: [],
-
   // 독립적인 메인 섹션 입력 단 & 아이디 값 부여되서 옴
   sectionTitleInput: (index, newTitle) => set((state) => {
     const sectionTitleInput = state.chapterTwo.map((chapterTwoChange, idx) => {
@@ -123,6 +138,9 @@ export const useChapterTwoStore = create((set) => ({
     set({ chapterTwo: data });
   },
 }));
+
+// 폼데이터 보내야함 사진, 동영상을 함께 보내야 돼? 
+// export const useFile
 
 // 상세 페이지 리스폰 데이터
 export const useContentsStore = create((set) => ({

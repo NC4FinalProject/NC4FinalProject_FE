@@ -7,6 +7,7 @@ import CoTypography from '../../../atoms/common/CoTypography';
 import { Button, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { useChapterOneStore } from '../../../../stores/ContentsStore';
 
 const UnderlinedButton = styled(Button)`
 
@@ -36,7 +37,11 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const VideoFileState = ({ onFileSelect, selectedFile }) => {
+const VideoFileState = ({ index }) => {
+
+  const { videoInfo, videoFile, addVideoFile, removeVideoFile } = useChapterOneStore();
+
+  const [files, setFiles] = useState();
 
   const fileInputRef = useRef(null);
 
@@ -47,15 +52,20 @@ const VideoFileState = ({ onFileSelect, selectedFile }) => {
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      console.log(file.name);
-      onFileSelect(file);
+      
+      setFiles(file);
+      console.log(typeof(file))
+      console.log(files);
+      // addVideoFile(files);
+      console.log(files);
+      console.log(videoFile);
+      // addVideoFile(file);
     }
   };
 
-  const removeContentsFile = () => {
-    onFileSelect(null)
-  }
-  
+  const removeVideoFileFunc = () => {
+    // removeVideoFile()
+  };
 
   return (
     <>
@@ -80,19 +90,20 @@ const VideoFileState = ({ onFileSelect, selectedFile }) => {
         }}
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
       >
-        {selectedFile === null ? (
+
+        {/* && videoFile.length === 0  */}
+        {/* 기본적으로 처음 상태에서 컨텐츠 영상을 입력 받는 폼만 있는 상태이고 여기 파일이 등록되었을 경우 두번째를 보여줌 videoInfo[0].videoTitle === '' */}
+        {false ? (
           <Typography sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 영상을 등록하세요.</Typography>
         ):(
           <Grid container justifyContent={'space-between'} alignItems="center">
             <Typography sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.85)'}}>
-              {selectedFile.name.length > 9 ? `${selectedFile.name.substring(0, 9)}...` : selectedFile.name}
+              {/* {index+1}. {videoFile.name.length > 8 ? `${videoFile.name.substring(0, 8)}...` : videoFile.name} */}
             </Typography>
-            <IconButton sx={{ p: 0, '& .MuiSvgIcon-root': {  fontSize: '1.25rem', }}} onClick={(event) => {
+            <RemoveCircleOutlineIcon sx={{ fontSize:'1.25rem'}} onClick={(event) => {
               event.stopPropagation();
-              removeContentsFile();
-              }}>
-              <RemoveCircleOutlineIcon />
-            </IconButton>
+              removeVideoFileFunc();
+              }} />
           </Grid>
         )}
       </UnderlinedButton>
@@ -101,25 +112,38 @@ const VideoFileState = ({ onFileSelect, selectedFile }) => {
 }
 
 
-const UploadVideo = () => {
+const UploadVideo = ({index}) => {
 
-  const [selectedFile, setSelectedFile] = useState(null); 
+  const { videoInfo, videoInfoTitleInput, videoFile, addVideoFile } = useChapterOneStore();
 
-  const handleFileSelect = (file) => {
-    setSelectedFile(file);
-  };
+  const handleVideoTitleInput = (e) => {
+    const text = e.target.value;
+    console.log(text +"무어아?"+ index);
+    videoInfoTitleInput(index, text);
+  }
+
+  // useEffect(()=>{
+  //   if(selectedFile !== null) {
+  //     setSelectedFile("");
+  //   }
+  // },[])
+
+  // && videoFile.length === 0 // videoInfo[0].videoTitle === ''
 
   return (
     <>
-    {selectedFile === null ? (
-      <VideoFileState onFileSelect={handleFileSelect} selectedFile={selectedFile}/>
+    {false ? (
+      <VideoFileState index={index} />
       ) : (
-      <Grid container>
+      <Grid container >
         <Grid item xs={3} sx={{ alignContent: 'flex-end'}}>
-          <VideoFileState onFileSelect={handleFileSelect} selectedFile={selectedFile}/>
+          <VideoFileState index={index} />
         </Grid>
         <Grid item xs={9} >
-          <CustomTextField fullWidth id="standard-basic" variant="standard" 
+          <CustomTextField 
+          onChange={handleVideoTitleInput} 
+          value={videoInfo.length > index ? videoInfo[index].videoTitle : ''} 
+          fullWidth id="standard-basic" variant="standard" 
             placeholder='영상 제목을 입력하세요.'/>
         </Grid>
       </Grid>

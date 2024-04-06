@@ -73,7 +73,6 @@ export default function LinearStepper() {
     console.log("일단 인서트 에이피아이를 잘 보내고 있거든여?" + chapterOne, chapterTwo)
   };
 
-
   return (
     <Box sx={{ width: '100%' }}>
       
