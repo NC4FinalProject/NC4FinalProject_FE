@@ -23,7 +23,8 @@ const CustomTextField = styled(TextField)({
 const ChapterOne = () => {
 
   const { chapterOne, chapterOneInput,
-          videoInfo, addVideoInfo, removeVideoInfo } = useChapterOneStore();
+          videoInfo, addVideoInfo, removeVideoInfo,
+          videoFile, thumbnail } = useChapterOneStore();
 
   // 가격 정보 상태 저장
   const handleTitleChange = (e) => {
@@ -37,6 +38,19 @@ const ChapterOne = () => {
     // console.log("가격유형  : "+chapterOne.priceType)
     // console.log("분야유형  : "+chapterOne.category)
     console.log(videoInfo)
+    console.log(videoFile)
+    console.log(chapterOne)
+    console.log("=============섬네일 있나?")
+    console.log(thumbnail)
+    
+    
+    // videoFile.forEach((formData, index) => {
+    //   for (let [key, value] of formData.entries()) {
+    //     if (value instanceof File) {
+    //       console.log(`File ${key} ${index + 1}: ${value.name}`);
+    //     }
+    //   }
+    // });
   };
 
   useEffect(()=>{

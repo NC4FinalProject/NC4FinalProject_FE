@@ -33,8 +33,8 @@ export const useChapterOneStore = create(set => ({
     contentsTitle: '',
 },
   videoInfo: [],
-  videoFile: '',
-  thumbnail: {},
+  videoFile: [],
+  thumbnail: '',
   //////////////////////////////////////////////////////////////////
   chapterOneInput: (newContents) => set(state => ({
     chapterOne: { ...state.chapterOne, ...newContents }
@@ -59,7 +59,7 @@ export const useChapterOneStore = create(set => ({
     videoInfo: [...state.videoInfo, newVideoInfo]
   })),
   addVideoFile: (newVideoFile) => set((state) => ({
-    videoFile: [...state.VideoFile, newVideoFile]
+    videoFile: [...state.videoFile, newVideoFile]
   })),
   removeVideoInfo: () => set((state) => ({
     videoInfo: state.videoInfo.slice(0, -1),
@@ -67,6 +67,9 @@ export const useChapterOneStore = create(set => ({
   removeVideoFile: (videoId) => set((state) => ({
     chapterTwo: state.videoFile.filter(videoFileByOne => videoFileByOne.videoId !== videoId)
   })),
+  uploadThumbnail: (newThumbnail) => set(() => ({
+    thumbnail: newThumbnail
+  }))
 
 }));
 
@@ -133,6 +136,7 @@ export const useChapterTwoStore = create((set) => ({
     })
   })),
 
+  // 정체를 모르겠다;;
   saveChapteTwo: async (chapterTwo) => {
     const data = await insertApi(chapterTwo);
     set({ chapterTwo: data });
