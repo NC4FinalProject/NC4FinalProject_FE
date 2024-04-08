@@ -110,8 +110,7 @@ const SectionForm = ({ title, showRemove,
               onMouseDown={(event) => {
               event.preventDefault();
               onRemove(sectionId); 
-            }}
-          >
+            }}>
               <RemoveCircleOutlineIcon />
             </IconButton>
           )}

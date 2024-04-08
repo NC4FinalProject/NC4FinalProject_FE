@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import CoTypography from '../../../atoms/common/CoTypography';
 import { Button } from '@mui/material';
+import { useChapterOneStore } from '../../../../stores/ContentsStore';
 
 const UnderlinedButton = styled(Button)`
 
@@ -26,10 +27,7 @@ border-radius: 0;
 
 const UploadImage = () => {
 
-  
-  const [imageFile, setImageFile] = useState(null);
-
-  const [imageFileName, setImageFileName] = useState("");
+  const { thumbnail, uploadThumbnail } = useChapterOneStore();
 
   const fileInputRef = useRef(null);
 
@@ -39,15 +37,16 @@ const UploadImage = () => {
 
   const handleFileChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setImageFile(file); 
-      setImageFileName(file.name);
+      const thumbnailInput = event.target.files[0];
+
+      uploadThumbnail(thumbnailInput)
+
     }
   };
 
   useEffect(()=>{
-    if(imageFile !== null){
-      console.log("파일에 뭔가 들어옴"+imageFile.name)
+    if(thumbnail !== null){
+      console.log("파일에 뭔가 들어옴" + thumbnail)
     }
   })
 
@@ -77,10 +76,10 @@ const UploadImage = () => {
         }}
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
       >
-        {imageFile === null ? (
+        {thumbnail.length === 0 ? (
           <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.4)'}}>컨텐츠 사진을 등록하세요.</Typography>
         ):(
-          <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.85)'}}>{imageFileName}</Typography>
+          <Typography  sx={{fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.85)'}}>{thumbnail.name}</Typography>
         )}
         
       </UnderlinedButton>
