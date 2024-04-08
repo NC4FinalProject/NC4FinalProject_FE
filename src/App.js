@@ -13,13 +13,14 @@ import Detail from "./pages/contents/Detail";
 import Insert from "./pages/contents/Insert";
 import ErrorPage from "./pages/main/ErrorPage";
 import MainLayout from "./components/organisms/common/MainLayout";
-import JoinVerification from "./pages/member/JoinVerification";
 import NoticeList from "./pages/contents/NoticeList";
 import NoticeDetail from "./pages/contents/NoticeDetail";
 import Cart from "./components/organisms/cart/Cart";
 import AdminPage from "./pages/admin/AdminPage";
 import AdminUser from "./pages/admin/AdminUser";
 import AdminLayout from "./pages/admin/AdminLayout";
+import EmailVerification from "./pages/member/EmailVerification";
+import AdminUserDetail from "./pages/admin/AdminUserDetail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route element={<AdminPage />}>
             <Route path="/admin/main" element={<AdminLayout></AdminLayout>}></Route>
             <Route path="/admin/user" element={<AdminUser></AdminUser>}></Route>
+            <Route path="/admin/user/:userId" element={<AdminUserDetail></AdminUserDetail>}></Route>
           </Route>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home></Home>}></Route>
@@ -44,8 +46,8 @@ function App() {
             ></Route>
             <Route path="/mypage" element={<Mypage></Mypage>}></Route>
             <Route
-              path="/join-verification"
-              element={<JoinVerification></JoinVerification>}
+              path="/member/email-verification"
+              element={<EmailVerification></EmailVerification>}
             />
 
             <Route

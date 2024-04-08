@@ -17,8 +17,8 @@ const VideoPlayer = () => {
             data-setup="{}"
             style={{ width: '100%', height: '100%' }} // 스타일 추가
         >
-            <source src="MY_VIDEO.mp4" type="video/mp4" />
-            <source src="MY_VIDEO.webm" type="video/webm" />
+            <source src="./3690629351_3Tgc5UGE_yQqBuArVaX7H9jR4.mp4" type="video/mp4" />
+            {/* <source src="MY_VIDEO.webm" type="video/webm" /> */}
             <p className="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a
             web browser that

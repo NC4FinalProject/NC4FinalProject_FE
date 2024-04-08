@@ -72,7 +72,7 @@ const SectionForm = ({ title, showRemove,
           <CoTypography size="Title">{title}</CoTypography>
           <IconButton
             sx={{ padding: 0 }}
-            color="gray"
+            color="black"
             onClick={() => {
               // setShowSubSections(!showSubSections);
               handleToggleSubSections(sectionId)
@@ -110,8 +110,7 @@ const SectionForm = ({ title, showRemove,
               onMouseDown={(event) => {
               event.preventDefault();
               onRemove(sectionId); 
-            }}
-          >
+            }}>
               <RemoveCircleOutlineIcon />
             </IconButton>
           )}

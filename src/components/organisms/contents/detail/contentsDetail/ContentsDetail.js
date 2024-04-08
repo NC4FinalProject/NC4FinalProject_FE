@@ -11,6 +11,10 @@ import CurriculumCourse from "../CurriculumCourse";
 import InquiryDetail from "../../../inquiry/InquiryDetail";
 import InquiryPost from "../../../inquiry/InquiryPost";
 import { useEffect } from "react";
+import useReviewStore from "../../../../../stores/ReviewStore";
+import { useParams } from "react-router-dom";
+import { useCallback } from "react";
+import { useRef } from "react";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -46,37 +50,100 @@ function a11yProps(index) {
 }
 
 export default function ContentsDetail() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const [view, setView] = useState("list");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+  const { contentsId } = useParams();
 
-  const handlePostClick = () => {
+  const reviews = useReviewStore((state) => state.reviews);
+  const getReviews = useReviewStore((state) => state.getReviews);
+  const contentDetailRef = useRef(null);
+  const [previousPageUrl, setPreviousPageUrl] = useState("");
+
+  const scrollToTop = useCallback(() => {
+    if (contentDetailRef.current) {
+      contentDetailRef.current.scrollIntoView();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (contentDetailRef.current) {
+      contentDetailRef.current.scrollIntoView();
+    }
+  }, [contentDetailRef]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      await getReviews(contentsId);
+    };
+    fetchReviews();
+  }, []);
+
+  useEffect(() => {
+    console.log(reviews);
+  }, [reviews]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = false;
+    };
+
+    if (view === "list" || view === "write") {
+      window.onbeforeunload = handleBeforeUnload;
+    }
+
+    return () => {
+      window.onbeforeunload = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleBackButtonClick = () => {
+      if (view === "detail" || view === "write") {
+        window.history.pushState(null, "", previousPageUrl);
+        setView("list");
+      } else {
+        window.history.back();
+      }
+    };
+
+    window.onpopstate = handleBackButtonClick;
+    window.history.pushState(null, ",");
+
+    return () => {
+      window.onpopstate = null;
+    };
+  }, [view, previousPageUrl]);
+
+  const handlePostClick = useCallback(() => {
+    setPreviousPageUrl(window.location.href);
     setView("write");
-  };
+  }, []);
 
-  const handleInquiryClick = (inquiry) => {
+  const handleInquiryClick = useCallback((inquiry) => {
     setSelectedInquiry(inquiry);
     setView("detail");
-  };
+  }, []);
 
-  const handleListClick = () => {
+  const handleListClick = useCallback(() => {
     setView("list");
-  };
+  }, []);
+
+  const handleCancelClick = useCallback(() => {
+    setView("list");
+  }, []);
 
   // props로 변수값(state 함수아님) 보내주기, 부모 컴포넌트에서 스테이트 만들어서 보내주기
   // const [reviewCount, setReviewCount] = useState(10); << 이런식으로 부모컴포넌트에 작성하기
   // useEffect안에 exios로 강의 id가져와서 스테이트에 넣어주고 보내주면됨
-  const handleChange = (event, newValue) => {
+  const handleChange = useCallback((event, newValue) => {
     setValue(newValue);
-  };
-
-  const getReviewCount = () => {
-    return 10;
-  };
+  }, []);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%" }} ref={contentDetailRef}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -85,8 +152,11 @@ export default function ContentsDetail() {
         >
           <Tab label="소개" {...a11yProps(0)} />
           <Tab label="코스" {...a11yProps(1)} />
-          <Tab label={`후기 (${getReviewCount()})`} {...a11yProps(2)} />
-          <Tab label="게시판" {...a11yProps(3)} />
+          <Tab
+            label={`후기 (${reviews ? reviews.length : 0})`}
+            {...a11yProps(2)}
+          />
+          <Tab label="질의응답" {...a11yProps(3)} />
         </Tabs>
       </Box>
 
@@ -104,14 +174,25 @@ export default function ContentsDetail() {
       </CustomTabPanel>
       {/* 게시판 */}
       <CustomTabPanel value={value} index={3}>
-        {view === "list" && <Inquiry onInquiryClick={handleInquiryClick} />}
+        {view === "list" && (
+          <Inquiry
+            onInquiryClick={handleInquiryClick}
+            inquiryPostClick={handlePostClick}
+          />
+        )}
         {view === "detail" && (
           <InquiryDetail
             inquiry={selectedInquiry}
             onListClick={handleListClick}
+            scrollToTop={scrollToTop}
           />
         )}
-        {view === "write" && <InquiryPost />}
+        {view === "write" && (
+          <InquiryPost
+            onCancelClick={handleCancelClick}
+            scrollToTop={scrollToTop}
+          />
+        )}
       </CustomTabPanel>
     </Box>
   );

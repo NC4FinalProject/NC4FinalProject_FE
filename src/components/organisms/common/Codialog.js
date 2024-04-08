@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -21,12 +21,16 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(5);
 
+  const { setReviews } = useReviewStore();
   const paymentList = useReviewStore((state) => state.paymentList);
   const postReview = useReviewStore((state) => state.postReview);
 
-  const handleReviewChange = (newValue) => {
-    setReview(newValue.target.value);
-  };
+  const handleReviewChange = useCallback(
+    (newValue) => {
+      setReview(newValue.target.value);
+    },
+    [setReview]
+  );
 
   const handleRatingChange = (newValue) => {
     setRating(newValue);
@@ -46,7 +50,7 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
     const matchingPayment = paymentList.find(
       (payment) => payment.contentsId === Number(contentsId)
     );
-    await postReview(
+    const reviewList = await postReview(
       review,
       rating,
       matchingPayment.paymentId,
@@ -56,6 +60,7 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
     alert("후기가 등록되었습니다.");
     setReview("");
     setRating(5);
+    setReviews(reviewList);
     handleClickClose();
   };
 

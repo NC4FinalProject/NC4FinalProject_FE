@@ -15,7 +15,7 @@ import {
   InputAdornment,
   TextField,
   Pagination,
-  Container,
+  Grid,
 } from "@mui/material";
 import CoTypography from "../../atoms/common/CoTypography";
 import styled from "styled-components";
@@ -41,7 +41,7 @@ const StyledInputLabel = styled(InputLabel)`
   height: 50%;
 `;
 
-const Inquiry = ({ onInquiryClick }) => {
+const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
   const [sortBy, setSortBy] = useState("latest");
   const [Option, setOption] = useState("");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
@@ -60,6 +60,10 @@ const Inquiry = ({ onInquiryClick }) => {
     );
     setSelectedInquiry(selected);
     onInquiryClick(selected);
+  };
+
+  const handlePostClick = () => {
+    inquiryPostClick();
   };
 
   const Inquiries = [
@@ -88,7 +92,8 @@ const Inquiry = ({ onInquiryClick }) => {
         {
           commenterName: "User3",
           commentDate: "2022-01-03",
-          commentContent: "정말 어려운 문제입니다.",
+          commentContent:
+            "정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. ",
           commentLikeCount: 20,
           profileImage: "user3.jpg",
         },
@@ -117,7 +122,7 @@ const Inquiry = ({ onInquiryClick }) => {
       tag: null,
       isPrivate: false,
       isSolved: false,
-      commentCount: 15,
+      commentCount: 150000,
       likeCount: 1300,
       viewCount: 2,
     },
@@ -149,7 +154,7 @@ const Inquiry = ({ onInquiryClick }) => {
     },
   ];
 
-  const selectSearch = ["전체", "조회순", "좋아요순", "댓글많은순"];
+  const selectSearch = ["전체", "작성자", "내용", "주제"];
 
   return (
     <>
@@ -191,45 +196,11 @@ const Inquiry = ({ onInquiryClick }) => {
             justifyContent: "flex-end",
           }}
         >
-          <Box sx={{ minWidth: "7.5rem", mb: "0rem" }}>
-            <StyledFormControl fullWidth size="small">
-              <StyledInputLabel id="search-label">search</StyledInputLabel>
-              <Select
-                labelId="search-label"
-                id="search"
-                value={Option}
-                label="search"
-                onChange={handleChange}
-              >
-                {selectSearch.map((item, index) => (
-                  <MenuItem key={index} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </StyledFormControl>
-          </Box>
-          <TextField
-            sx={{
-              width: "16rem",
-              "& .MuiInputBase-input": {
-                height: "1rem",
-                padding: "10px",
-                "&::placeholder": {
-                  textAlign: "center",
-                },
-              },
-            }}
-            placeholder="검색어를 입력해주세요."
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon sx={{ cursor: "pointer" }} />
-                </InputAdornment>
-              ),
-            }}
-          />
-          <CoHoverButton variant="outlined" style={{ height: "2.25rem" }}>
+          <CoHoverButton
+            variant="outlined"
+            style={{ height: "2.25rem" }}
+            onClick={() => handlePostClick()}
+          >
             글 쓰기
           </CoHoverButton>
         </Box>
@@ -300,97 +271,157 @@ const Inquiry = ({ onInquiryClick }) => {
                     />
                   </Box>
                 </Box>
+                <Box>
+                  <CoTypography
+                    size="Content"
+                    sx={{
+                      width: "100%",
+                      mb: "1rem",
+                      color: "#7d7d7d",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {inquiry.inquiryContent}
+                  </CoTypography>
+                </Box>
 
-                <CoTypography
-                  size="Content"
-                  sx={{
-                    width: "70%",
-                    mb: "1rem",
-                    color: "#7d7d7d",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
+                <Grid
+                  container
+                  item
+                  sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  {inquiry.inquiryContent}
-                </CoTypography>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Grid
+                    item
+                    xs={5.5}
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
                     <CoTypography size="Tag">
                       {inquiry.userName} | {inquiry.date}
                     </CoTypography>
-                  </Box>
+                  </Grid>
 
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      flex: 1,
-                      ml: "1rem",
-                    }}
+                  <Grid
+                    item
+                    xs={6.5}
+                    sx={{ display: "flex", justifyContent: "flex-end" }}
                   >
-                    <CoTypography
-                      size="Tag"
-                      color="textSecondary"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        minWidth: "4rem",
-                      }}
-                    >
-                      <ThumbUp
-                        sx={{
-                          mr: "0.25rem",
-                        }}
-                      />
-                      {inquiry.likeCount}
-                    </CoTypography>
-
-                    <CoTypography
-                      size="Tag"
-                      color="textSecondary"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        minWidth: "4rem",
-                      }}
-                    >
-                      <Visibility
-                        sx={{
-                          mr: "0.25rem",
-                        }}
-                      />
-                      {inquiry.viewCount}
-                    </CoTypography>
-
-                    <CoTypography
-                      size="Tag"
-                      color="textSecondary"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        minWidth: "4rem",
-                      }}
-                    >
-                      <ChatBubbleOutline
-                        sx={{
-                          mr: "0.25rem",
-                        }}
-                      />
-                      {inquiry.commentCount}
-                    </CoTypography>
-                  </Box>
-                </Box>
+                    <Grid container item sx={{ justifyContent: "flex-end" }}>
+                      <Grid item>
+                        <CoTypography
+                          size="Tag"
+                          color="textSecondary"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mr: "0.5rem",
+                          }}
+                        >
+                          <ThumbUp
+                            sx={{
+                              mr: "0.25rem",
+                              fontSize: "1rem",
+                            }}
+                          />
+                          {inquiry.likeCount}
+                        </CoTypography>
+                      </Grid>
+                      <Grid item>
+                        <CoTypography
+                          size="Tag"
+                          color="textSecondary"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mr: "0.5rem",
+                          }}
+                        >
+                          <Visibility
+                            sx={{
+                              mr: "0.25rem",
+                              fontSize: "1rem",
+                            }}
+                          />
+                          {inquiry.viewCount}
+                        </CoTypography>
+                      </Grid>
+                      <Grid item>
+                        <CoTypography
+                          size="Tag"
+                          color="textSecondary"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <ChatBubbleOutline
+                            sx={{
+                              mr: "0.25rem",
+                              fontSize: "1rem",
+                            }}
+                          />
+                          {inquiry.commentCount}
+                        </CoTypography>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-
+      <Box
+        sx={{
+          mt: "2rem",
+          display: "flex",
+          justifyContent: "flex-start",
+        }}
+      >
+        <Box sx={{ width: "8rem", mb: "0rem" }}>
+          <StyledFormControl fullWidth size="small">
+            <StyledInputLabel id="search-label">search</StyledInputLabel>
+            <Select
+              labelId="search-label"
+              id="search"
+              value={Option}
+              label="search"
+              onChange={handleChange}
+            >
+              {selectSearch.map((item, index) => (
+                <MenuItem key={index} value={item}>
+                  {item}
+                </MenuItem>
+              ))}
+            </Select>
+          </StyledFormControl>
+        </Box>
+        <TextField
+          sx={{
+            width: "16rem",
+            "& .MuiInputBase-input": {
+              height: "1rem",
+              padding: "10px",
+              "&::placeholder": {
+                textAlign: "center",
+              },
+            },
+          }}
+          placeholder="검색어를 입력해주세요. "
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon sx={{ cursor: "pointer" }} />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
       <Pagination
         count={10}
         color="primary"
-        sx={{ mt: "3.5rem", display: "flex", justifyContent: "center" }}
+        sx={{ mt: "2rem", display: "flex", justifyContent: "center" }}
       />
     </>
   );

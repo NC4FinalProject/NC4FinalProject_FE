@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import VideoPlayer from "../../components/organisms/contents/detail/VideoPlayer";
 import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
 import styled from '@emotion/styled';
-import {contentsInfoApi} from '../../components/api/contentsInfoApi';
+import {contentsInfoApi} from '../../api/contentsInfoApi';
 import { useTheme } from '@emotion/react';
 import ContentsDetail from '../../components/organisms/contents/detail/contentsDetail/ContentsDetail';
 import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
@@ -46,7 +46,7 @@ const Detail = () => {
 
     const theme = useTheme();
 
-    const { contentsOne, contentsOneOutput } = useContentsStore();
+    const { getContentsOne, getContentsOneOutput } = useContentsStore();
 
     useEffect(() => {
         const adjustHeight = () => {
@@ -66,7 +66,9 @@ const Detail = () => {
     }, []);
 
     useEffect(()=>{
-        contentsOneOutput()
+        // getContentsOne()
+        getContentsOneOutput(1)
+        console.log(getContentsOne)
     },[]);
 
   return (
@@ -111,20 +113,20 @@ const Detail = () => {
                     comments={firstContentsInfoItem.social.comment}
                     views={firstContentsInfoItem.social.views}
                     shares={firstContentsInfoItem.social.share}
-                    color="rgb(145, 158, 171)">
-                </ContentsInfo>
+                    contentsTitle={getContentsOne.contentsTitle}
+                    color="rgb(145, 158, 171)"
+                />
 
                 {/* ContentsDetail */}
                 
-                <ContentsDetail>
-                </ContentsDetail>
+                <ContentsDetail/>
 
             </Grid>
 
             {/* ContentsPrice */}
             <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
                 <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
-                    <ContentsPrice></ContentsPrice>
+                    <ContentsPrice/>
                 </Grid>
             </Grid>
 

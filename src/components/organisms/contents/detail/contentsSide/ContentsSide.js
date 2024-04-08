@@ -8,6 +8,9 @@ import SideTypeMulti from './SideTypeMulti'
 
 import styled from 'styled-components'
 
+import { Video } from '../../../../../api/contentsVideoApi';
+
+
 
 const CustomTextField = styled(TextField)({
   '& .MuiInput-input::placeholder': {
@@ -29,9 +32,12 @@ const ContentsSide = () => {
   // list, reply, chat
   const [activeComponent, setActiveComponent] = useState('list');
 
+  const [videoId, setVideoId] = useState('');
+
   ///////////////////////////////
   /////////상당 테스트////////////
   const [testButton, setTestButton] = useState(false);
+
   const changeButton =() => {
     if (testButton){
       setContentsType('sideTypeOne')
@@ -71,6 +77,17 @@ const ContentsSide = () => {
   const handleVideoListClick = () => {
     console.log('리스트 클릭');
     setActiveComponent('list');
+  };
+
+  const handleReplyContent = (e) => {
+    const inputText = e.target.value;
+    console.log(inputText)
+    // Video[videoId].videoReplyList
+  }
+
+  const selectVideo = (newSelect) => {
+    setVideoId(newSelect)
+    console.log("================이것이 콜백함수의 힘이여 여기 부모컴포넌트임"+newSelect)
   };
 
   return (
@@ -170,8 +187,8 @@ const ContentsSide = () => {
       {/* 본문 영역 */}
       <Grid ref={scrollRef} item xs sx={{ flexGrow: 1, overflowY: 'auto',  borderLeft: `1px solid ${theme.palette.divider}` }}>
 
-        <SideTypeMulti bodyCkeck={activeComponent}/>
-        {console.log(activeComponent)}
+        <SideTypeMulti bodyCkeck={activeComponent} videoCheck={selectVideo}/>
+        {/* {console.log(activeComponent)} */}
 
       </Grid>
       
@@ -182,7 +199,7 @@ const ContentsSide = () => {
           <Divider sx={{ width: '30%' }} />
         </Box>
         { activeComponent === 'reply' ? (
-          <CustomTextField fullWidth id="standard-basic" variant="standard" placeholder='댓글을 입력하세요.'/>
+          <CustomTextField onChange={handleReplyContent} fullWidth id="standard-basic" variant="standard" placeholder='댓글을 입력하세요.'/>
           ) : (<></>)
         }
       </Grid>
