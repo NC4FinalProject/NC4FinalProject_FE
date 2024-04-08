@@ -259,7 +259,7 @@ const AdminUserDetail = () => {
         />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Button><CoTypography size="HoverText">등록하기</CoTypography></Button>
-            <CoTypography size="AdminUser">{`${Memo.length}/${maxChars}`}</CoTypography>
+            <CoTypography size="AdminUser">{`${Memo ? Memo.length : '0'}/${maxChars}`}</CoTypography>
         </Box>
       </Box>
         </Paper>
