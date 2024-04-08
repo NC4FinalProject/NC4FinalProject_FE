@@ -24,7 +24,7 @@ const ReviewList = () => {
   const [selectedReview, setSelectedReview] = useState(null);
   const [sortBy, setSortBy] = useState("latest");
   const [reviewsToShow, setReviewsToShow] = useState(5);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState({});
 
   const { contentsId } = useParams();
 
@@ -106,13 +106,15 @@ const ReviewList = () => {
     alert("삭제되었습니다.");
   };
 
-  const hasPaid = paymentList.some(
-    (payment) => payment.contentsId === parseInt(contentsId)
-  );
+  const hasPaid =
+    paymentList &&
+    paymentList.some((payment) => payment.contentsId === parseInt(contentsId));
 
-  const hasWritten = reviews.some(
-    (review) => review.memberDTO && review.memberDTO.id === loginMemberId
-  );
+  const hasWritten =
+    reviews &&
+    reviews.some(
+      (review) => review.memberDTO && review.memberDTO.id === loginMemberId
+    );
 
   const averageRating = useMemo(() => {
     if (reviews.length === 0) return 0;
@@ -169,10 +171,10 @@ const ReviewList = () => {
         <Box sx={{ display: "flex", alignItems: "center", mb: "1rem" }}>
           <CoTypography sx={{ marginRight: "0.75rem" }}>
             {/* toFixed(1) 소수점 1째자리까지 표현 */}
-            평점 {averageRating.toFixed(1)} / 5.0
+            평점 {averageRating === 0 ? "0" : averageRating.toFixed(1)} / 5.0
           </CoTypography>
 
-          {loginMemberId && hasPaid && !hasWritten && (
+          {loginMemberId && hasPaid && !hasWritten ? (
             <React.Fragment>
               <Codialog
                 open={reviewPostOpen}
@@ -184,7 +186,7 @@ const ReviewList = () => {
                 후기등록
               </CoHoverButton>
             </React.Fragment>
-          )}
+          ) : null}
         </Box>
       </Box>
       <Table
@@ -283,7 +285,9 @@ const ReviewList = () => {
                             mb: "1rem",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            whiteSpace: isExpanded ? "normal" : "nowrap",
+                            whiteSpace: isExpanded[review.reviewId]
+                              ? "normal"
+                              : "nowrap",
                           }}
                         >
                           {review.reviewContent}
@@ -295,7 +299,10 @@ const ReviewList = () => {
                             alignItems: "center",
                           }}
                           onClick={() => {
-                            setIsExpanded(!isExpanded);
+                            setIsExpanded((prevState) => ({
+                              ...prevState,
+                              [review.reviewId]: !prevState[review.reviewId],
+                            }));
                           }}
                         >
                           <CoTypography size="Tag">
@@ -316,7 +323,7 @@ const ReviewList = () => {
                               cursor: "pointer",
                             }}
                           >
-                            {isExpanded ? "접기" : "더보기"}
+                            {isExpanded[review.reviewId] ? "접기" : "더보기"}
                           </CoTypography>
                         </Box>
                       </Box>
