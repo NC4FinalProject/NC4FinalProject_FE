@@ -10,6 +10,17 @@ const AdminStore = create((set, get) => ({
   userRole: 'null',
   MemberInfo: [],
   page: 0,
+  Memo: '',
+  form: {
+    userPw: '',
+    userPwChk: ''
+  },
+  pwValidation: false,
+  pwChk: false,
+  setForm: (newForm) => set({ form: newForm }),
+  setPwValidation: (isValid) => set({ pwValidation: isValid }),
+  setPwChk: (isMatch) => set({ pwChk: isMatch }),
+  setMemo: (Memo) => set({ Memo }),
   searchCondition: 'all',
   searchKeyword: '',
   preTeacherCount: 0,
@@ -74,6 +85,21 @@ const AdminStore = create((set, get) => ({
         console.log(response.data.content);
         setPage(response.data.pageable.pageNumber);
        setMemberInfo(response.data);
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+
+userDetail: async (userId) => {
+    const { setMemberInfo, setMemo } = get();
+    try {
+        const response = await axios.get(`http://localhost:9090/admin/user/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        });
+        setMemberInfo(response.data);
+        setMemo(response.data.memo);
     } catch (error) {
         console.log('에러:', error);
     }
