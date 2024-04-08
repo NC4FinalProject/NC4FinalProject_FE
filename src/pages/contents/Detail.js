@@ -65,9 +65,11 @@ const Detail = () => {
         return () => window.removeEventListener('resize', adjustHeight); // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     }, []);
 
-    // useEffect(()=>{
-    //     getContentsOne()
-    // });
+    useEffect(()=>{
+        // getContentsOne()
+        getContentsOneOutput(1)
+        console.log(getContentsOne)
+    },[]);
 
   return (
     <>
