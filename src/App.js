@@ -20,6 +20,7 @@ import AdminPage from "./pages/admin/AdminPage";
 import AdminUser from "./pages/admin/AdminUser";
 import AdminLayout from "./pages/admin/AdminLayout";
 import EmailVerification from "./pages/member/EmailVerification";
+import AdminUserDetail from "./pages/admin/AdminUserDetail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route element={<AdminPage />}>
             <Route path="/admin/main" element={<AdminLayout></AdminLayout>}></Route>
             <Route path="/admin/user" element={<AdminUser></AdminUser>}></Route>
+            <Route path="/admin/user/:userId" element={<AdminUserDetail></AdminUserDetail>}></Route>
           </Route>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home></Home>}></Route>
