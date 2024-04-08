@@ -4,15 +4,15 @@ import coverImg_3 from "../images/ReplyList/cover_3.jpg"
 import coverImg_4 from "../images/ReplyList/cover_4.jpg"
 import coverImg_5 from "../images/ReplyList/cover_5.jpg"
 
-// Reply List
+// thumbnailPath: {}, // 객체를 폼데이터에 담아 보내야함.
 
 export const Video = [
   {
     videoId : "1",
     videoTitle: "1강 강의 개요",
     videoTime: "05:30",
-    videoPath: "23werwe2we3r4wer2we3r4wer234",
-    thumbnailPath: "23werwe2we3r4wer2we3r4wer234",
+    videoPath: "",
+    videoStorageId: "",
     videoReplyList: [
       {
         videoReplyId : "1",
@@ -75,8 +75,8 @@ export const Video = [
     videoId : "2",
     videoTitle: "2강 환경 셋팅",
     videoTime: "15:30",
-    videoPath: "23werwe2we3r4wer2we3r4wer234",
-    thumbnailPath: "23werwe2we3r4wer2we3r4wer234",
+    videoPath: "",
+    videoStorageId: "",
     videoReplyList: [
       {
         videoReplyId : "1",
@@ -90,8 +90,8 @@ export const Video = [
     videoId : "3",
     videoTitle: "3강 당신은 이제 마스터 당신은 이제 마스터 당신은 이제 마스터 당신은 이제 마스터",
     videoTime: "07:30",
-    videoPath: "23werwe2we3r4wer2we3r4wer234",
-    thumbnailPath: "23werwe2we3r4wer2we3r4wer234",
+    videoPath: "",
+    videoStorageId: "",
     videoReplyList: [
       {
         videoReplyId : "1",

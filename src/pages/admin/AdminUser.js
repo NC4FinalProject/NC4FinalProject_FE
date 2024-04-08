@@ -14,6 +14,7 @@ import Pagination from '@mui/material/Pagination';
 import AdminStore from '../../stores/AdminStore';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AdminUser = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('all');
@@ -61,6 +62,12 @@ const AdminUser = () => {
     { key: 'BLACKLIST', value: '블랙' },
     { key: 'PRETEACHER', value: '강사 신청' },
   ];
+  const navi = useNavigate();
+
+  const handleUser = (id) => {
+    navi(`/admin/user/${id}`);
+  };
+
 
   useEffect(() => {
     const fetchData = async () => { 
@@ -173,7 +180,7 @@ const AdminUser = () => {
         </TableHead>
         <TableBody>
           {MemberInfo.content && MemberInfo.content.map((member) => (
-            <TableRow key={member.id}>
+            <TableRow key={member.id} onClick={() => handleUser(member.id)} sx={{cursor: 'pointer'}}>
               <TableCell>
               {member.role === 'BLACKLIST' ? (
                 <CheckBoxIcon
