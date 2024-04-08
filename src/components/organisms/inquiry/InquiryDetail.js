@@ -1,6 +1,6 @@
 import { ThumbUp, Visibility } from "@mui/icons-material";
 import { Button, ButtonGroup, Chip, Grid } from "@mui/material";
-import React, { useEffect, useHistory } from "react";
+import React from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
@@ -10,7 +10,7 @@ import { useState } from "react";
 import Reportdialog from "../../organisms/review/Reportdialog";
 import InquriyComment from "./InquriyComment";
 
-const InquiryDetail = ({ inquiry, onListClick }) => {
+const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [openReportDialog, setOpenReportDialog] = useState(false);
 
@@ -24,6 +24,12 @@ const InquiryDetail = ({ inquiry, onListClick }) => {
 
   const handleCloseReportDialog = () => {
     setOpenReportDialog(false);
+  };
+
+  const handleListClick = () => {
+    onListClick();
+    scrollToTop();
+    // window.scrollTo(0, 0);
   };
 
   return (
@@ -314,7 +320,7 @@ const InquiryDetail = ({ inquiry, onListClick }) => {
               variant="contained"
               style={{ color: "white" }}
               color="green"
-              onClick={onListClick}
+              onClick={handleListClick}
             >
               목록
             </Button>
