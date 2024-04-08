@@ -42,7 +42,7 @@ const InquriyComment = ({
             container
             justifyContent="space-between"
             alignItems="center"
-            sx={{ paddingBottom: "1.25rem" }}
+            sx={{}}
           >
             <Grid
               item
@@ -94,7 +94,7 @@ const InquriyComment = ({
           <Grid
             container
             justifyContent="flex-end"
-            sx={{ paddingTop: "1.25rem", cursor: "pointer" }}
+            sx={{ cursor: "pointer" }}
             onClick={handleOpenCommentReportDialog}
           >
             <Grid sx={{ display: "flex", alignItems: "center", mr: "0.5rem" }}>

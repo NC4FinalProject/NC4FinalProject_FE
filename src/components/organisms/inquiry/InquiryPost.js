@@ -7,10 +7,41 @@ import {
   FormControlLabel,
   FormGroup,
   TextField,
+  Chip,
 } from "@mui/material";
 import InsertCkEditor from "../../atoms/common/InsertCKEditor";
+import { useState } from "react";
 
-const InquiryPost = () => {
+const InquiryPost = ({ onCancelClick, scrollToTop }) => {
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
+
+  const handleTagChange = (event) => {
+    setTagInput(event.target.value.trim());
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (tagInput && !tags.includes(tagInput) && tags.length < 3) {
+        setTags([...tags, tagInput]);
+        setTagInput("");
+      }
+    }
+  };
+
+  const handleDeleteTag = (tagToDelete) => () => {
+    setTags((prevTags) => prevTags.filter((tag) => tag !== tagToDelete));
+  };
+
+  const handleCancelClick = () => {
+    if (window.confirm("작성중인 글은 저장되지 않습니다. 취소하시겠습니까? ")) {
+      alert("취소되었습니다.");
+      onCancelClick();
+      scrollToTop();
+    }
+  };
+
   return (
     <>
       <Box
@@ -34,6 +65,7 @@ const InquiryPost = () => {
               color: "black",
               borderColor: "#ced4da",
             }}
+            onClick={() => handleCancelClick()}
           >
             취소
           </Button>
@@ -69,7 +101,7 @@ const InquiryPost = () => {
         />
         <FormGroup>
           <FormControlLabel
-            control={<Checkbox defaultChecked />}
+            control={<Checkbox />}
             label={
               <CoTypography size="NoticeTitle" sx={{ ml: "-0.25rem" }}>
                 비밀글여부
@@ -106,9 +138,10 @@ const InquiryPost = () => {
           }}
           InputProps={{ disableUnderline: true }}
         ></TextField>
+
         <TextField
           variant="standard"
-          placeholder="관련 태그 설정 (최대 3개)"
+          placeholder="#관련 태그 설정 (최대 3개) "
           sx={{
             "& .MuiInputBase-input::placeholder": {
               fontSize: "1rem",
@@ -116,10 +149,30 @@ const InquiryPost = () => {
             "& .MuiInputBase-input.Mui-disabled": {
               WebkitTextFillColor: "#212529",
             },
-            padding: "1rem 2rem 2rem 2rem",
+            padding: "1rem 2rem 1rem 2rem",
           }}
+          value={tagInput}
+          onChange={handleTagChange}
+          onKeyDown={handleKeyDown}
           InputProps={{ disableUnderline: true }}
         ></TextField>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            padding: "0rem 1rem 1rem 1rem",
+          }}
+        >
+          {tags.map((tag, index) => (
+            <Chip
+              color="primary"
+              key={index}
+              label={tag}
+              onDelete={handleDeleteTag(tag)}
+              style={{ margin: "0.5rem" }}
+            />
+          ))}
+        </Box>
       </Box>
       <Box sx={{ width: "90%", margin: "2rem auto" }}>
         <InsertCkEditor />

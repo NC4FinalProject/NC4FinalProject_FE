@@ -41,7 +41,7 @@ const StyledInputLabel = styled(InputLabel)`
   height: 50%;
 `;
 
-const Inquiry = ({ onInquiryClick }) => {
+const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
   const [sortBy, setSortBy] = useState("latest");
   const [Option, setOption] = useState("");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
@@ -60,6 +60,10 @@ const Inquiry = ({ onInquiryClick }) => {
     );
     setSelectedInquiry(selected);
     onInquiryClick(selected);
+  };
+
+  const handlePostClick = () => {
+    inquiryPostClick();
   };
 
   const Inquiries = [
@@ -88,7 +92,8 @@ const Inquiry = ({ onInquiryClick }) => {
         {
           commenterName: "User3",
           commentDate: "2022-01-03",
-          commentContent: "정말 어려운 문제입니다.",
+          commentContent:
+            "정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. ",
           commentLikeCount: 20,
           profileImage: "user3.jpg",
         },
@@ -149,7 +154,7 @@ const Inquiry = ({ onInquiryClick }) => {
     },
   ];
 
-  const selectSearch = ["전체", "조회순", "좋아요순", "댓글많은순"];
+  const selectSearch = ["전체", "작성자", "내용", "주제"];
 
   return (
     <>
@@ -191,7 +196,11 @@ const Inquiry = ({ onInquiryClick }) => {
             justifyContent: "flex-end",
           }}
         >
-          <CoHoverButton variant="outlined" style={{ height: "2.25rem" }}>
+          <CoHoverButton
+            variant="outlined"
+            style={{ height: "2.25rem" }}
+            onClick={() => handlePostClick()}
+          >
             글 쓰기
           </CoHoverButton>
         </Box>

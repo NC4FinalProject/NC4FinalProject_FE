@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useCallback } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -25,9 +25,12 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
   const paymentList = useReviewStore((state) => state.paymentList);
   const postReview = useReviewStore((state) => state.postReview);
 
-  const handleReviewChange = (newValue) => {
-    setReview(newValue.target.value);
-  };
+  const handleReviewChange = useCallback(
+    (newValue) => {
+      setReview(newValue.target.value);
+    },
+    [setReview]
+  );
 
   const handleRatingChange = (newValue) => {
     setRating(newValue);
