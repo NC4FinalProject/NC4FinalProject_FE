@@ -29,7 +29,6 @@ const MemberInfo = () => {
     const thumbnailInput = useRef();
 
     const initialize = async e => {
-
         try { 
             const response = await axios.get(`http://localhost:9090/mypage`, 
                     {
@@ -41,8 +40,12 @@ const MemberInfo = () => {
                 setImage(response.data.item.profileFile);
                 setUserNickname(response.data.item.userNickname);
                 setRole(response.data.item.role);
-                setIsEmailVerification(response.data.item.isEmailVerification);
+                setIsEmailVerification(response.data.item.emailVerification);
+                console.log("response.data.item");
+                console.log(response.data.item);
+                console.log(isEmailVerification);
                 setLoading(false);
+            
         } catch (error) {
             console.warn("이미지 불러오기 실패", error);
             sessionStorage.removeItem("ACCESS_TOKEN");
@@ -219,13 +222,17 @@ const MemberInfo = () => {
                 </Grid>
                 <Grid item xs={12}>
                 <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
-                        { isEmailVerification === true ? ("이메일 인증을 완료하였습니다."
+                        { isEmailVerification === "verified" ? ("이메일 인증을 완료하였습니다."
                             ) : ( 
                                 "이메일 인증을 완료해주시기 바랍니다.") }
                     </Typography>
                 </Grid>
-                { isEmailVerification === true ? (
-                    <></>
+                { isEmailVerification === "verified" ? (
+                <Grid item xs={12}>
+                <Button type="button" disabled fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
+                    이메일 인증 완료
+                </Button>
+                </Grid>
                 ) : (
                 <Grid item xs={12}>
                     <Button type="button" onClick={emailVerification} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
@@ -236,15 +243,26 @@ const MemberInfo = () => {
 
                 <Grid item xs={12}>
                     <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
-                        { role === "ROLE_TEACHER" ? ("이미 강사입니다."
+                        { role === "TEACHER"|| role === "PRETEACHER" ? (
+                            "이미 강사 계정이거나 신청되었습니다."
                             ) : ( 
-                                "아직 강사가 아닙니다.") }
+                            "아직 강사가 아닙니다."
+                            ) 
+                        }
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button type="submit" onClick={wannabeTeacher} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
-                        강사 계정으로 전환 신청하기
-                    </Button>
+                { role === "TEACHER"|| role === "PRETEACHER" ? (
+                        <Button type="submit" disabled fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
+                            이미 강사 계정이거나 신청되었습니다.
+                        </Button>
+                            ) : ( 
+                        <Button type="submit" onClick={wannabeTeacher} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>
+                            강사 계정으로 전환 신청하기
+                        </Button>
+                            ) 
+                        }
+                    
                 </Grid>
                 <Grid item xs={12}>
                     <Button type="submit" onClick={resign} fullWidth variant="contained" color="gray" style={{height:'55px', fontSize:'18px', marginBottom: '15%'}}>

@@ -53,7 +53,7 @@ const Join = () => {
                 });
 
                 if (response.data.item && response.data.statusCode === 200) {
-                    navi('/join-verification');
+                    navi('/member/email-verification');
                 }
             } catch (e) {
                 if (e.response.data.errorCode === 100) {
