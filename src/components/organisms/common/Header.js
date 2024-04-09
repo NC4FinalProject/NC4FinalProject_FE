@@ -43,7 +43,7 @@ const Header = () => {
       />
       <CoHoverButton
         style={{ marginLeft: "1rem" }}
-        onClick={() => navi("/detail")}
+        onClick={() => navi("/list")}
       >
         강의
       </CoHoverButton>

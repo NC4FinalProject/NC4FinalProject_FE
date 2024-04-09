@@ -36,7 +36,7 @@ const Login = () => {
                     console.log(response.data.item.role);
                     if (response.data.item.role === 'ADMIN') {
                         setUserRole(response.data.item.role);
-                        // navi('/admin/main');
+                        navi('/admin/main');
                     } else {
                         setUserRole(response.data.item.role);
                         navi('/');
