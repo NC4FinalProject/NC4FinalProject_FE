@@ -8,6 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import CoHoverButton from '../../atoms/common/CoHoverButton';
 import MemberStore from "../../../stores/MemberStore";
+import Hidden from '@mui/material/Hidden';
 
 const Header = () => {
     const navi = useNavigate();
@@ -34,78 +35,85 @@ const Header = () => {
 
     return (
 
-        <Box display="flex" sx={{marginTop: "1rem"}}>
-            <img
-                src="/images/team_logo.png"
-                alt="team_logo"
-                height="30rem"
-                width="150rem"
-                style={{paddingTop: "0.125rem", cursor: "pointer"}}
-                onClick={() => navi("/")}
-            />
-            <CoHoverButton
-                style={{marginLeft: "1rem"}}
-                onClick={() => navi("/list")}
-            >
-                강의
-            </CoHoverButton>
-            <CoHoverButton style={{marginLeft: "1rem"}}>커뮤니티</CoHoverButton>
-            <TextField
-                sx={{
-                    marginLeft: "2.5rem",
-                    width: "40rem",
-                    "& .MuiInputBase-input": {
-                        height: "1rem",
-                        padding: "10px",
-                        "&::placeholder": {
-                            textAlign: "center",
+    <Box display="flex" sx={{ marginTop: "1rem", width:'100%'  }}>
+      <img
+        src="/images/team_logo.png"
+        alt="team_logo"
+        height="30rem"
+        width="150rem"
+        style={{ paddingTop: "0.125rem", cursor: "pointer" }}
+        onClick={() => navi("/")}
+      />
+      <Box sx={{width:'10%', textAlign:'-webkit-center'}}>
+      <CoHoverButton
+        style={{ marginLeft: "1rem" }}
+        onClick={() => navi("/detail")}
+      >
+        강의
+      </CoHoverButton>
+      </Box>
+      <Box sx={{width:'100%', display:'flex'}}>
+      <TextField
+        sx={{
+          marginLeft: "2.5rem",
+          width: "100%",
+          "& .MuiInputBase-input": {
+            height: "1rem",
+            padding: "10px",
+            "&::placeholder": {
+              textAlign: "center",
 
-                        },
-                    },
-                }}
-                placeholder="검색어를 입력해주세요."
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchIcon/>
-                        </InputAdornment>
-                    ),
-                }}
-            />
-            {isLogin ? (
-                <>
-                    <CoHoverButton
-                        onClick={handleLogout}
-                        style={{marginLeft: "2rem", maxHeight: "2.3rem"}}
-                    >
-                        로그아웃
-                    </CoHoverButton>
-                    <CoHoverButton
-                        onClick={() => navi("/mypage")}
-                        style={{marginLeft: "2rem", maxHeight: "2.3rem"}}
-                    >
-                        마이페이지
-                    </CoHoverButton>
-                </>
-            ) : (
-                <>
-                    <CoHoverButton
-                        onClick={() => navi("/login")}
-                        style={{marginLeft: "2rem", maxHeight: "2.3rem"}}
-                    >
-                        로그인
-                    </CoHoverButton>
-                    <CoHoverButton
-                        onClick={() => navi("/join")}
-                        style={{marginLeft: "2rem", maxHeight: "2.3rem"}}
-                    >
-                        회원가입
-                    </CoHoverButton>
-                </>
-            )}
-        </Box>
-    );
+            },
+          },
+        }}
+        placeholder="검색어를 입력해주세요."
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+      <Box sx={{width:'25%', display:'flex'}}>
+      {isLogin ? (
+        <>
+          <CoHoverButton
+            onClick={handleLogout}
+            style={{ marginLeft: "2rem", maxHeight: "2.3rem" }}
+          >
+            로그아웃
+          </CoHoverButton>
+          <CoHoverButton
+            onClick={() => navi("/mypage")}
+            style={{ marginLeft: "2rem", maxHeight: "2.3rem" }}
+          >
+            마이페이지
+          </CoHoverButton>
+        </>
+      ) : (
+        <>
+          <CoHoverButton
+            onClick={() => navi("/login")}
+            style={{ marginLeft: "2rem", maxHeight: "2.3rem" }}
+          >
+            로그인
+          </CoHoverButton>
+          <Hidden lgDown>
+          <CoHoverButton
+            onClick={() => navi("/join")}
+            style={{ marginLeft: "2rem", maxHeight: "2.3rem"}}
+          >
+            회원가입
+          </CoHoverButton>
+          </Hidden>
+        </>
+      )}
 
+      </Box>
+    </Box>
+    </Box>
+  );
 };
 
 export default Header;

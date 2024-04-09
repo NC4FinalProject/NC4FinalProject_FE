@@ -11,7 +11,6 @@ import AdminStore from '../../stores/AdminStore';
 import Avatar from '@mui/material/Avatar';
 import { MenuContext } from '../admin/MenuContext';
 
-
 const AdminLayout = ({ children }) => {
   const [hover, setHover] = useState(false);
   const { userNotice, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
@@ -94,9 +93,7 @@ const AdminLayout = ({ children }) => {
   updateDataByMode();
 }, [graphMode,NewUser,MonthlytotalUserCount,MonthlyCounts,daliyOutUserCount]);
 
-
   return (
-    console.log(preTeacherCount),
     <>
       <Box sx={{display:'flex'}}>
         <Paper sx={{height:'4.25rem', display:'flex', width:'100%'}}>

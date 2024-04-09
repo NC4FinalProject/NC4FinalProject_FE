@@ -8,6 +8,7 @@ const MemberStore = create(persist((set, get) => ({
         memberId: "",
         username: "",
         userNickname: "",
+        profileFile: null,
     },
     setMemberInfo: (memberInfo) => set({memberInfo}),
 }), {

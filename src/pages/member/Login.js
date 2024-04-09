@@ -25,7 +25,8 @@ const Login = () => {
                     const info = {
                         memberId: response.data.item.memberId,
                         userNickname: response.data.item.userNickname,
-                        username: response.data.item.username
+                        username: response.data.item.username,
+                        profileFile: response.data.item.profileFile
                     };
                     setMemberInfo(info);
                     sessionStorage.setItem('ACCESS_TOKEN', response.data.item.token);

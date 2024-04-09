@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import CoTypography from '../../atoms/common/CoTypography'
 import { useContentsListStore } from '../../../stores/ContentsStore'
 
-function ContentsCard({ 
+function ContentsCard({
   category, contentsId, contentsTitle, memberId, price, thumbnail, index,
-  rating, reviews, paperstyle, booked 
+  rating, reviews, paperstyle, booked ,sx
 }) {
 
   const { getContentsList, selectPage, selectPageChange } = useContentsListStore();
@@ -17,6 +17,7 @@ function ContentsCard({
 
 
 
+function ContentsCard({ img, title, author, rating, reviews, paperstyle, id, booked, category, sx }) {
 
   const navi = useNavigate();
   const [Localbooked, setBooked] = useState(booked);
@@ -27,7 +28,7 @@ function ContentsCard({
       navi(`/detail/${contentsId}`);
     };
   };
-  
+
   const changeBooked = (Localbooked) => {
       Localbooked = !Localbooked;
       setBooked(Localbooked);
@@ -38,7 +39,7 @@ function ContentsCard({
   },[thumbnail])
 
   return (
-    <Box >
+    <Box sx={sx}>
       <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem',marginTop:'1.5rem' , marginRight:'1.5rem', position:'relative',...paperstyle}}>
         <Box onClick={goDetail(contentsId)} sx={{ cursor: 'pointer' }} >
           <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-121/`+thumbnail}
