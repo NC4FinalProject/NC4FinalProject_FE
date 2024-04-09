@@ -148,16 +148,27 @@ export const useChapterTwoStore = create((set) => ({
 
 // 상세 페이지 리스폰 데이터
 export const useContentsStore = create((set) => ({
-  getContentsOne: [],
-  getContentsOneOutput: async (contentId) => {
+  getContents: [],
+  getVideo: [],
+  getSection: [],
+  stateNum: 1,
+  getContentsOutput: async (contentId) => {
       try {
           const data = await getContentsIdApi(contentId);
-          set({ getContentsOne: data.item });
+          set({ getContents: data.item,
+                getVideo: data.item.videoList,
+                getSection: data.item.sectionList,
+          });
       } catch (error) {
           console.error(error);
       }
-  }
+  },
+  stateNumChange: (newSelect) => set((state) => ({
+    stateNum: newSelect
+  })),
 }));
+
+
 
 // 영상 별 입력 정보 상태 및 액션
 export const useVideoReplyStore = create(set => ({

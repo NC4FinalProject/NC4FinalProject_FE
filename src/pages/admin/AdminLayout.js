@@ -6,7 +6,7 @@ import CoTypography from "../../components/atoms/common/CoTypography";
 import AdminChart from "../admin/AdminChart";
 import { useEffect } from "react";
 import { Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AdminStore from '../../stores/AdminStore';
 import Avatar from '@mui/material/Avatar';
 import { MenuContext } from '../admin/MenuContext';
@@ -19,7 +19,7 @@ const AdminLayout = ({ children }) => {
   const [disable, setDisable] = useState([]);
   const [graphMode, setGraphMode] = useState('daily'); 
   const [data, setData] = useState([]);
-  const [userId] = useParams();
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

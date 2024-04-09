@@ -14,6 +14,7 @@ export const getContentsIdApi = async (contentsId) => {
         },
         // params: { contentsId } // 여기서 contentsId를 query parameter로 넘겨주고 있음
       });
+      console.log(response.data)
       return response.data;
   } catch (error) {
       throw error;
