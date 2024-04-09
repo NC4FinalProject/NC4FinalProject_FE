@@ -1,13 +1,13 @@
 import { Avatar, Box, Button, ButtonGroup, Grid, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaCommentDots, FaEye, FaShare, FaFlag, FaRegFlag, FaThumbsUp   } from "react-icons/fa";
 import burceMars from '../../../../../images/bruce-mars.jpg'
-import CoTypography from '../../../../atoms/common/CoTypography';
+import { useContentsStore } from '../../../../../stores/ContentsStore';
 
 
-const ContentsInfo = ({ comments, views, shares, color, contentsTitle }) => {
+const ContentsInfo = ({ comments, views, shares, contents, video } ) => {
 
-  // const { id, contentsId, ContentsTitle, nickName } = props;
+  const {getContents, stateNum} = useContentsStore();
 
   return (
     <>
@@ -15,12 +15,12 @@ const ContentsInfo = ({ comments, views, shares, color, contentsTitle }) => {
       
       <Grid item>
         <Grid container alignItems="flex-start" style={{ height: '100%', flexDirection: 'column' }}>
-         <Typography sx={{lineHeight: '1.10', fontSize:'0.80rem', color:'#2E2E2E'}}>{contentsTitle}</Typography>
-         <Typography variant="h6" sx={{lineHeight: '1.40', marginBottom: '0.4rem', color:'#1C1C1C'}}>여기는 동영상의 강의명이올시다 이게 만약 길수도 있자나? 그럼 한줄 표시?</Typography>
+         <Typography sx={{lineHeight: '1.10', fontSize:'0.80rem', color:'#2E2E2E'}}>{contents.contentsTitle}</Typography>
+         <Typography variant="h6" sx={{lineHeight: '1.40', marginBottom: '0.4rem', color:'#1C1C1C'}}>{video[stateNum-1]?.videoTitle}</Typography>
         </Grid>
       </Grid>
   
-
+      
       <Grid item>
       
       <Typography component={"div"} variant="body2" style={{ color: "#A4A4A4" }}>
@@ -77,11 +77,12 @@ const ContentsInfo = ({ comments, views, shares, color, contentsTitle }) => {
       
       <Grid alignItems='start'>
        <Typography sx={{ fontSize: '0.95rem' }}>
-          {/* {id} */}
-          고기천 강자님
+          {getContents.memberId}
+          {/* 고기천 강자님 */}
         </Typography>
        <Typography sx={{ fontSize: '0.75rem' }}>
-          Bitcamp | 웹개발
+          {getContents.category}
+          {/* Bitcamp | 웹개발 */}
         </Typography>
       </Grid>
 

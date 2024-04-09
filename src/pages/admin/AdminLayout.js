@@ -20,6 +20,7 @@ const AdminLayout = ({ children }) => {
   const [graphMode, setGraphMode] = useState('daily'); 
   const [data, setData] = useState([]);
 
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
