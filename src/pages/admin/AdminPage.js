@@ -52,6 +52,9 @@ const AdminPage = ({ children }) => {
     if(submenu === '사용자 관리'){
       navi('/admin/user');
     }
+    if(submenu === '신고 관리'){
+      navi('/admin/report');
+    }
     setSelectedSubmenu1(submenu === selectedSubmenu1 ? null : submenu);
   };
 
@@ -140,12 +143,12 @@ const AdminPage = ({ children }) => {
           </ListItem>
           {submenuOpen["메뉴 1"] && (
             <List>
-              {['사용자 관리', '하위 메뉴 2', '하위 메뉴 3'].map((submenu, index) => (
+              {['사용자 관리', '1 대 1 문의', '신고 관리'].map((submenu, index) => (
                   <ListItem
                   button
                   key={index}
                   onClick={() => changePage(submenu)}
-                  sx={{ color: selectedSubmenu1 === submenu ? '#558BCF' : '' }}
+                  sx={{ textAlign: '-webkit-center', color: selectedSubmenu1 === submenu ? '#558BCF' : '' }}
                 >
                   <ListItemText primary={submenu} />
                 </ListItem>
