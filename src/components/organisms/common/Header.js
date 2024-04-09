@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import '../../../scss/Header.scss';
 import { TextField } from '@mui/material';
@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import CoHoverButton from '../../atoms/common/CoHoverButton';
+import Hidden from '@mui/material/Hidden';
 
 const Header = () => {
   const navi = useNavigate();
@@ -32,7 +33,7 @@ const Header = () => {
 
   return (
 
-    <Box display="flex" sx={{ marginTop: "1rem" }}>
+    <Box display="flex" sx={{ marginTop: "1rem", width:'100%'  }}>
       <img
         src="/images/team_logo.png"
         alt="team_logo"
@@ -41,17 +42,19 @@ const Header = () => {
         style={{ paddingTop: "0.125rem", cursor: "pointer" }}
         onClick={() => navi("/")}
       />
+      <Box sx={{width:'10%', textAlign:'-webkit-center'}}>
       <CoHoverButton
         style={{ marginLeft: "1rem" }}
         onClick={() => navi("/detail")}
       >
         강의
       </CoHoverButton>
-      <CoHoverButton style={{ marginLeft: "1rem" }}>커뮤니티</CoHoverButton>
+      </Box>
+      <Box sx={{width:'100%', display:'flex'}}>
       <TextField
         sx={{
           marginLeft: "2.5rem",
-          width: "40rem",
+          width: "100%",
           "& .MuiInputBase-input": {
             height: "1rem",
             padding: "10px",
@@ -70,6 +73,7 @@ const Header = () => {
           ),
         }}
       />
+      <Box sx={{width:'25%', display:'flex'}}>
       {isLogin ? (
         <>
           <CoHoverButton
@@ -93,14 +97,19 @@ const Header = () => {
           >
             로그인
           </CoHoverButton>
+          <Hidden lgDown>
           <CoHoverButton
             onClick={() => navi("/join")}
-            style={{ marginLeft: "2rem", maxHeight: "2.3rem" }}
+            style={{ marginLeft: "2rem", maxHeight: "2.3rem"}}
           >
             회원가입
           </CoHoverButton>
+          </Hidden>
         </>
       )}
+
+      </Box>
+    </Box>
     </Box>
   );
 };

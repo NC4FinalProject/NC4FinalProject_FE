@@ -6,7 +6,7 @@ import BookmarkIcon from '@mui/icons-material/Bookmark'
 import { useNavigate } from "react-router-dom";
 import CoTypography from '../../atoms/common/CoTypography'
 
-function ContentsCard({ img, title, author, rating, reviews, paperstyle, id, booked, category }) {
+function ContentsCard({ img, title, author, rating, reviews, paperstyle, id, booked, category, sx }) {
 
   const navi = useNavigate();
   const [Localbooked, setBooked] = useState(booked);
@@ -23,7 +23,7 @@ function ContentsCard({ img, title, author, rating, reviews, paperstyle, id, boo
   };
 
   return (
-    <Box >
+    <Box sx={sx}>
       <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem',marginTop:'1.5rem' , marginRight:'1.5rem', position:'relative',...paperstyle}}>
         <Box onClick={goDetail(id)} sx={{ cursor: 'pointer' }} >
           <img src={img} alt='teacher' style={{width: '19.1875rem', height: '11.875rem', objectFit: 'cover',  borderRadius: '0.25rem'}} />
