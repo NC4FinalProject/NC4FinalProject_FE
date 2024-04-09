@@ -15,6 +15,7 @@ import useReviewStore from "../../../../../stores/ReviewStore";
 import { useParams } from "react-router-dom";
 import { useCallback } from "react";
 import { useRef } from "react";
+import { useContentsStore } from "../../../../../stores/ContentsStore";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,6 +61,8 @@ export default function ContentsDetail() {
   const getReviews = useReviewStore((state) => state.getReviews);
   const contentDetailRef = useRef(null);
   const [previousPageUrl, setPreviousPageUrl] = useState("");
+
+  const {getSection} = useContentsStore();
 
   const scrollToTop = useCallback(() => {
     if (contentDetailRef.current) {
@@ -142,6 +145,11 @@ export default function ContentsDetail() {
     setValue(newValue);
   }, []);
 
+  const courseTabIndex = getSection.length > 1 ? 1 : null; // "코스" 탭의 인덱스. 코스가 없으면 null
+  const reviewTabIndex = getSection.length > 1 ? 2 : 1; // "코스" 탭이 있으면 후기는 인덱스 2, 없으면 1
+  const inquiryTabIndex = getSection.length > 1 ? 3 : 2; // "코스" 탭이 있으면 질의응답은 인덱스 3, 없으면 2
+
+
   return (
     <Box sx={{ width: "100%" }} ref={contentDetailRef}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -151,12 +159,15 @@ export default function ContentsDetail() {
           aria-label="basic tabs example"
         >
           <Tab label="소개" {...a11yProps(0)} />
-          <Tab label="코스" {...a11yProps(1)} />
-          <Tab
-            label={`후기 (${reviews ? reviews.length : 0})`}
-            {...a11yProps(2)}
-          />
-          <Tab label="질의응답" {...a11yProps(3)} />
+
+          {getSection.length > 1 && (
+            <Tab label="코스" {...a11yProps(courseTabIndex)} />
+          )}
+          
+          <Tab label={`후기 (${reviews ? reviews.length : 0})`} {...a11yProps(reviewTabIndex)} />
+
+          <Tab label="질의응답" {...a11yProps(inquiryTabIndex)} />
+
         </Tabs>
       </Box>
 
@@ -164,16 +175,21 @@ export default function ContentsDetail() {
       <CustomTabPanel value={value} index={0}>
         Item One
       </CustomTabPanel>
+      
       {/* 코스 */}
-      <CustomTabPanel value={value} index={1}>
-        <CurriculumCourse />
-      </CustomTabPanel>
+      {getSection.length > 1 && (
+        <CustomTabPanel value={value} index={courseTabIndex}>
+          <CurriculumCourse />
+        </CustomTabPanel>
+      )}
+
       {/* 후기 */}
-      <CustomTabPanel value={value} index={2}>
+      <CustomTabPanel value={value} index={reviewTabIndex}>
         <ReviewList></ReviewList>
       </CustomTabPanel>
+
       {/* 게시판 */}
-      <CustomTabPanel value={value} index={3}>
+      <CustomTabPanel value={value} index={inquiryTabIndex}>
         {view === "list" && (
           <Inquiry
             onInquiryClick={handleInquiryClick}

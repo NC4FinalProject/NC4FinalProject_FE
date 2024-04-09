@@ -64,8 +64,8 @@ const AdminUser = () => {
   ];
   const navi = useNavigate();
 
-  const handleUser = (id) => {
-    navi(`/admin/user/${id}`);
+  const handleUser = (userId) => {
+    navi(`/admin/user/${userId}`);
   };
 
 
@@ -180,7 +180,7 @@ const AdminUser = () => {
         </TableHead>
         <TableBody>
           {MemberInfo.content && MemberInfo.content.map((member) => (
-            <TableRow key={member.id} onClick={() => handleUser(member.id)} sx={{cursor: 'pointer'}}>
+            <TableRow key={member.id} onClick={() => handleUser(member.memberId)} sx={{cursor: 'pointer'}}>
               <TableCell>
               {member.role === 'BLACKLIST' ? (
                 <CheckBoxIcon

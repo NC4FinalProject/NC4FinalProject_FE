@@ -7,10 +7,7 @@ import { useTheme } from '@emotion/react'
 import SideTypeMulti from './SideTypeMulti'
 
 import styled from 'styled-components'
-
-import { Video } from '../../../../../api/contentsVideoApi';
-
-
+import { useContentsStore } from '../../../../../stores/ContentsStore'
 
 const CustomTextField = styled(TextField)({
   '& .MuiInput-input::placeholder': {
@@ -22,20 +19,23 @@ const ContentsSide = () => {
   
   const theme = useTheme();
 
+  const { getVideo } = useContentsStore();
+
+
   // contentsType
   // 단일 강의 일 경우 sideTypeOne - reply
   // 다중 강의 일 경우 sideTypeMulti - list reply
   // 화상 강의 일 경우 sideTypeReal - chat
-  const [contentsType, setContentsType] = useState('sideTypeMulti');
+  const [contentsType, setContentsType] = useState();
 
   // contentsTypeBody
   // list, reply, chat
-  const [activeComponent, setActiveComponent] = useState('list');
+  const [activeComponent, setActiveComponent] = useState();
 
   const [videoId, setVideoId] = useState('');
 
   ///////////////////////////////
-  /////////상당 테스트////////////
+  /////////상단 테스트////////////
   const [testButton, setTestButton] = useState(false);
 
   const changeButton =() => {
@@ -50,7 +50,6 @@ const ContentsSide = () => {
     changeButton();
   };
   ///////////////////////////////
-
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -59,13 +58,20 @@ const ContentsSide = () => {
     }
   }, [activeComponent]); 
 
-  useEffect(() => {
-    if (contentsType === 'sideTypeOne') {
+  useEffect(()=>{
+    if(getVideo.length === 0){
+      setContentsType('sideTypeOne')
       setActiveComponent('reply');
-    } else if (contentsType === 'sideTypeMulti') {
+      console.log("1")
+    } else if(getVideo.length < 0){
+      setContentsType('sideTypeMulti')
       setActiveComponent('list');
+      console.log("2")
+    } else if(getVideo.length < null){
+      setContentsType('sideTypeChat')
+      console.log("3")
     }
-  }, [contentsType]); 
+  },[getVideo.length])
 
   const [isReplyHover, setIsReplyHover] = useState(false);
 
@@ -108,6 +114,7 @@ const ContentsSide = () => {
               </Grid>
             </>
           )}
+
           {/* sideTypeMulti일때 상단에서 reply&list 전환 로직 */}
           {contentsType === 'sideTypeMulti' && (
             <>
@@ -127,9 +134,7 @@ const ContentsSide = () => {
                 >Reply
                 </CoTypography>
               </Grid>
-              <Grid 
-                item xs={9} 
-                onClick={handleVideoListClick} 
+              <Grid item xs={9} onClick={handleVideoListClick} 
                 onMouseEnter={() => setIsReplyHover(true)} 
                 onMouseLeave={() => setIsReplyHover(false)}
                 sx={{ 

@@ -38,6 +38,17 @@ const formatPrice = (price) => {
 };
 
 const ContentsPriceCal = ({ price, priceSale }) => {
+
+  // if (typeof price !== 'number') {
+  //   price = parseInt(price, 10);
+  
+  //   // parseInt() 결과가 NaN인 경우, 즉 변환할 수 없는 값이었다면
+  //   if (isNaN(price)) {
+  //     console.error('price 값을 정수로 변환할 수 없습니다.');
+  //     // 여기서는 에러를 출력하고 있지만, 실제로는 적절한 처리가 필요할 거야
+  //   }
+  // }
+
   return (
     // <TextStyle variant="subtitle2">
     <>
