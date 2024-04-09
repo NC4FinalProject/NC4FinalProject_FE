@@ -9,7 +9,7 @@ const EmailVerification = () => {
 
     const initialize = async e => {
         try { 
-            const response = await axios.get(`http://localhost:9090/member/email-verification`, 
+            const response = await axios.get(`http://175.45.203.117:9090/member/email-verification`, 
                     {
                         headers: {
                             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -44,7 +44,7 @@ const EmailVerification = () => {
     const sendCode = useCallback(
         async (code) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/code-check', {
+                const response = await axios.post('http://175.45.203.117:9090/member/code-check', {
                     code: code
                 },
                 {

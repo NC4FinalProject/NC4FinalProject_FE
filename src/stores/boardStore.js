@@ -13,7 +13,7 @@ const useBoardStore = create((set) => ({
                 return;
             }
 
-            const response = await axios.get(`http://localhost:9090/board/board`, {
+            const response = await axios.get(`http://175.45.203.117:9090/board/board`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
@@ -28,7 +28,7 @@ const useBoardStore = create((set) => ({
     addBoard: async (text) => {
         try {
             const response = await axios.post(
-                `http://localhost:9090/board/board`,
+                `http://175.45.203.117:9090/board/board`,
                 {
                     boardTitle: text,
                     checked: false,
@@ -48,7 +48,7 @@ const useBoardStore = create((set) => ({
     changeBoard: async (board) => {
         try {
             const response = await axios.put(
-                `http://localhost:9090/board/board`,
+                `http://175.45.203.117:9090/board/board`,
                 { ...board, checked: !board.checked },
                 {
                     headers: {
@@ -65,7 +65,7 @@ const useBoardStore = create((set) => ({
 
     removeBoard: async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:9090/board/board`, {
+            const response = await axios.delete(`http://175.45.203.117:9090/board/board`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
                 },

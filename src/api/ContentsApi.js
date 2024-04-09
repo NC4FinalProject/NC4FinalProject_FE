@@ -8,7 +8,7 @@ export const getContentsIdApi = async (contentsId) => {
   // console.log("Sending token: ", token);
 
   try {
-      const response = await axios.get(`http://localhost:9090/contents/detail/${contentsId}`, {
+      const response = await axios.get(`http://175.45.203.117:9090/contents/detail/${contentsId}`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
         },
@@ -31,7 +31,7 @@ export const getContentsIdApi = async (contentsId) => {
 //       formThumbnail: thumbnail
 //     };
 
-//     const response = await axios.post('http://localhost:9090/contents/create',
+//     const response = await axios.post('http://175.45.203.117:9090/contents/create',
 //     requestBody,
     
 //     {
@@ -69,7 +69,7 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
   videoFile.forEach(videoFileData => formData.append("videoFile", videoFileData));
 
   try {
-    const response = await axios.post('http://localhost:9090/contents/create', formData, {
+    const response = await axios.post('http://175.45.203.117:9090/contents/create', formData, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         // 'Content-Type': 'multipart/form-data' 

@@ -79,7 +79,7 @@ const AdminUserDetail = () => {
         return;
       }
   
-      axios.post(`http://localhost:9090/admin/user/${userId}`, form, {
+      axios.post(`http://175.45.203.117:9090/admin/user/${userId}`, form, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
         },

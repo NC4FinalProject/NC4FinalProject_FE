@@ -56,7 +56,7 @@ const NoticeList = () => {
 
   const handleDialogClose = async () => {
     try {
-      await axios.put('http://localhost:9090/notice/remove');
+      await axios.put('http://175.45.203.117:9090/notice/remove');
       console.log("이미지가 삭제되었습니다.");
       setOpenDialog(false);
     } catch (error) {
@@ -97,7 +97,7 @@ const NoticeList = () => {
     try {
         const formData = new FormData();
         formData.append('upload', file);
-        const response = await axios.post('http://localhost:9090/notice/upload', formData, {
+        const response = await axios.post('http://175.45.203.117:9090/notice/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

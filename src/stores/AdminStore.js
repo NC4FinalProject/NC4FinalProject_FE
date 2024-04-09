@@ -47,7 +47,7 @@ const AdminStore = create((set, get) => ({
     const { setNotices, setUsers, setNewUser,setMonthlytotalUserCount,setMonthlyCounts,setPreTeacherCount
             ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers } = get();
     try {
-        const response = await axios.get('http://localhost:9090/admin/main', {
+        const response = await axios.get('http://175.45.203.117:9090/admin/main', {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
@@ -72,7 +72,7 @@ const AdminStore = create((set, get) => ({
  userInfo: async () => {
     const { setMemberInfo, searchCondition, searchKeyword,page,setPage } = get();
     try {
-        const response = await axios.get('http://localhost:9090/admin/user', {
+        const response = await axios.get('http://175.45.203.117:9090/admin/user', {
             params: {
                 searchCondition: searchCondition,
                 searchKeyword: searchKeyword,
@@ -93,7 +93,7 @@ const AdminStore = create((set, get) => ({
 userDetail: async (userId) => {
     const { setMemberInfo, setMemo } = get();
     try {
-        const response = await axios.get(`http://localhost:9090/admin/user/${userId}`, {
+        const response = await axios.get(`http://175.45.203.117:9090/admin/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },

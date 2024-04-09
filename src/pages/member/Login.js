@@ -17,7 +17,7 @@ const Login = () => {
     const login = useCallback(
         async (username, password) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/login', {
+                const response = await axios.post('http://175.45.203.117:9090/member/login', {
                     username: username,
                     password: password
                 });

@@ -9,7 +9,7 @@ const usePaymentStore = create((set) => ({
       const accessToken = sessionStorage.getItem("ACCESS_TOKEN");
 
       const response = await axios.get(
-        `http://localhost:9090/payment/payment`,
+        `http://175.45.203.117:9090/payment/payment`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,

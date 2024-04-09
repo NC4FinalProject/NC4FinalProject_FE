@@ -34,12 +34,12 @@ const KakaoLogin = () => {
             }
         )
         .then((res) => {
-            axios.post('http://localhost:9090/member/join', {
+            axios.post('http://175.45.203.117:9090/member/join', {
                 username: res.data.kakao_account.email,
                 password: res.data.id
             })
             .then(() => {
-                axios.post('http://localhost:9090/member/login', {
+                axios.post('http://175.45.203.117:9090/member/login', {
                     username: res.data.kakao_account.email,
                     password: res.data.id
                 })
@@ -53,7 +53,7 @@ const KakaoLogin = () => {
                 })
             })
             .catch((e) => {
-                axios.post('http://localhost:9090/member/login', {
+                axios.post('http://175.45.203.117:9090/member/login', {
                     username: res.data.kakao_account.email,
                     password: res.data.id
                 })

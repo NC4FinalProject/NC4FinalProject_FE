@@ -12,7 +12,7 @@ const useReviewStore = create((set) => ({
     try {
       const accessToken = sessionStorage.getItem("ACCESS_TOKEN");
 
-      const response = await axios.get(`http://localhost:9090/review/review`, {
+      const response = await axios.get(`http://175.45.203.117:9090/review/review`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -40,7 +40,7 @@ const useReviewStore = create((set) => ({
   ) => {
     try {
       const response = await axios.post(
-        `http://localhost:9090/review/review`,
+        `http://175.45.203.117:9090/review/review`,
         {
           paymentId,
           reviewContent,
@@ -71,7 +71,7 @@ const useReviewStore = create((set) => ({
   ) => {
     try {
       const response = await axios.put(
-        `http://localhost:9090/review/review`,
+        `http://175.45.203.117:9090/review/review`,
         {
           reviewId,
           reviewContent,
@@ -97,7 +97,7 @@ const useReviewStore = create((set) => ({
   deleteReview: async (reviewId, contentsId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:9090/review/review/${reviewId}`,
+        `http://175.45.203.117:9090/review/review/${reviewId}`,
         {
           params: {
             contentsId: contentsId,

@@ -14,7 +14,7 @@ const Header = () => {
 
   const handleLogout = () => {
     const response = axios
-      .get(`http://localhost:9090/member/logout`, {
+      .get(`http://175.45.203.117:9090/member/logout`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },

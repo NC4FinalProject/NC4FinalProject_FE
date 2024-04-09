@@ -46,7 +46,7 @@ const Join = () => {
     const join = useCallback(
         async (username, password, userNickname) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/join', {
+                const response = await axios.post('http://175.45.203.117:9090/member/join', {
                     username: username,
                     password: password,
                     userNickname: userNickname
@@ -93,7 +93,7 @@ const Join = () => {
     const emailCheck = useCallback(
         async (username) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/email-check', {
+                const response = await axios.post('http://175.45.203.117:9090/member/email-check', {
                     username: username
                 });
 
@@ -126,7 +126,7 @@ const Join = () => {
     const nicknameCheck = useCallback(
         async (userNickname) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/nickname-check', {
+                const response = await axios.post('http://175.45.203.117:9090/member/nickname-check', {
                     userNickname: userNickname
                 });
 
