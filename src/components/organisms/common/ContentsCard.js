@@ -1,32 +1,48 @@
-import React, { useState }  from 'react'
+import React, { useEffect, useState }  from 'react'
 import { Box, Paper } from '@mui/material'
 import Rating from '@mui/material/Rating'
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder'
 import BookmarkIcon from '@mui/icons-material/Bookmark'
 import { useNavigate } from "react-router-dom";
 import CoTypography from '../../atoms/common/CoTypography'
+import { useContentsListStore } from '../../../stores/ContentsStore'
 
-function ContentsCard({ img, title, author, rating, reviews, paperstyle, id, booked, category }) {
+function ContentsCard({ 
+  category, contentsId, contentsTitle, memberId, price, thumbnail, index,
+  rating, reviews, paperstyle, booked 
+}) {
+
+  const { getContentsList, selectPage, selectPageChange } = useContentsListStore();
+
+
+
+
 
   const navi = useNavigate();
   const [Localbooked, setBooked] = useState(booked);
 
-  const goDetail = (id) => {
+  const goDetail = (contentsId) => {
     return () => {
-      navi(`/detail/${id}`);
+      selectPageChange(contentsId);
+      navi(`/detail/${contentsId}`);
     };
   };
-
+  
   const changeBooked = (Localbooked) => {
       Localbooked = !Localbooked;
       setBooked(Localbooked);
   };
 
+  useEffect(()=>{
+    console.log(thumbnail)
+  },[thumbnail])
+
   return (
     <Box >
       <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem',marginTop:'1.5rem' , marginRight:'1.5rem', position:'relative',...paperstyle}}>
-        <Box onClick={goDetail(id)} sx={{ cursor: 'pointer' }} >
-          <img src={img} alt='teacher' style={{width: '19.1875rem', height: '11.875rem', objectFit: 'cover',  borderRadius: '0.25rem'}} />
+        <Box onClick={goDetail(contentsId)} sx={{ cursor: 'pointer' }} >
+          <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-121/`+thumbnail}
+           alt='thumbnail' style={{width: '19.1875rem', height: '11.875rem', objectFit: 'cover',  borderRadius: '0.25rem'}} />
         </Box>
         { Localbooked === true ? (
           <Box onClick={() => changeBooked(Localbooked)}>
@@ -40,10 +56,10 @@ function ContentsCard({ img, title, author, rating, reviews, paperstyle, id, boo
         
       </Paper>
 
-      <Box onClick={goDetail(id)}>
-      <CoTypography sx={{ cursor: 'pointer' }} style={{marginTop:'5px',width:'19.1875rem'}}>{title}</CoTypography>
+      <Box onClick={goDetail(contentsId)}>
+      <CoTypography sx={{ cursor: 'pointer' }} style={{marginTop:'5px',width:'19.1875rem'}}>{contentsTitle}</CoTypography>
       </Box>
-      <CoTypography size="Content" style={{color:'#7d7d7d',width:'19.1875rem'}}>{category} | {author}</CoTypography>
+      <CoTypography size="Content" style={{color:'#7d7d7d',width:'19.1875rem'}}>{category} | {memberId}</CoTypography>
 
       <div style={{display: 'flex', alignItems: 'center',width:'19.1875rem'}}>
         <Rating name="read-only" value={rating} readOnly style={{fontSize: '1rem'}} />

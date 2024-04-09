@@ -39,6 +39,7 @@ const ChapterOne = () => {
     // console.log("분야유형  : "+chapterOne.category)
     console.log(videoInfo)
     console.log(videoFile)
+    console.log(chapterOne+"이거 뭔데?")
     console.log(chapterOne)
     console.log("=============섬네일 있나?")
     console.log(thumbnail)
