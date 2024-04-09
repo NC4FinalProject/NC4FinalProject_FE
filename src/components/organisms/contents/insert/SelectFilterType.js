@@ -15,12 +15,12 @@ const CustomTextField = styled(TextField)({
 });
 
 // 분야 유형 또는 가격 유형에 따른 컴포넌트 표출
-const FilterMap = ({isType, placeholder, handleTypeSelector, payType}) => {
+const FilterMap = ({isType, placeholder, handleTypeSelector }) => {
 
   const { chapterOne, chapterOneInput } = useChapterOneStore();
 
   const valueType = isType ? chapterOne.category : chapterOne.priceType;
-  // const getValueType = () => isType ? chapterOne.category : chapterOne.priceType;
+  
   
   return(
     <CustomTextField
