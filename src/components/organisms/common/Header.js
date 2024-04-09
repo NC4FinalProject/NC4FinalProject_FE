@@ -47,7 +47,7 @@ const Header = () => {
       <Box sx={{width:'10%', textAlign:'-webkit-center'}}>
       <CoHoverButton
         style={{ marginLeft: "1rem" }}
-        onClick={() => navi("/detail")}
+        onClick={() => navi("/list")}
       >
         강의
       </CoHoverButton>
