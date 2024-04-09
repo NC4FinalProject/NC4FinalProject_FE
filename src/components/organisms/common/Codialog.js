@@ -44,18 +44,30 @@ const Codialog = ({ open, handleClickClose, userNickname, contentsId }) => {
     handleClickClose();
   };
 
-  console.log(contentsId);
-  console.log(paymentList);
   const handleSubmit = async () => {
-    const matchingPayment = paymentList.find(
-      (payment) => payment.contentsId === Number(contentsId)
-    );
+    let matchingPayment;
+    let matchingContent;
+
+    for (let payment of paymentList) {
+      const contentsList = payment.contentsList || [];
+      matchingContent = contentsList.find(
+        (content) => content.contentsId === Number(contentsId)
+      );
+      if (matchingContent) {
+        matchingPayment = payment;
+        break;
+      }
+    }
+
+    if (!matchingPayment || !matchingContent) {
+      alert("결제 정보 또는 콘텐츠를 찾을 수 없습니다.");
+      return;
+    }
     const reviewList = await postReview(
       review,
       rating,
       matchingPayment.paymentId,
-      matchingPayment.contentsId,
-      matchingPayment.cartId
+      matchingContent.contentsId
     );
     alert("후기가 등록되었습니다.");
     setReview("");

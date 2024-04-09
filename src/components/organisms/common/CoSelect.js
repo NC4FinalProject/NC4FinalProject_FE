@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const CoSelect = ({ onChange, value }) => {
+const CoSelect = ({ onChange,value, options }) => {
   const [reportReasons, setReportReasons] = useState([
     "욕설 및 혐오 발언",
     "스팸 및 불법 홍보",
@@ -23,7 +23,7 @@ const CoSelect = ({ onChange, value }) => {
           label="신고 사유"
           onChange={onChange}
         >
-          {reportReasons.map((item, index) => (
+          {options.map((item, index) => (
             <MenuItem key={index} value={item}>
               {item}
             </MenuItem>
