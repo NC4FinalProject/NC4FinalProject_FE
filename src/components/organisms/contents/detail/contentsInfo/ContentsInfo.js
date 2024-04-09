@@ -9,6 +9,18 @@ const ContentsInfo = ({ comments, views, shares, contents, video } ) => {
 
   const {getContents, stateNum} = useContentsStore();
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\. /g, '.').replace(/\.$/, ''); // 'yyyy.mm.dd' 형식으로 변환
+  };
+  
+  // 사용 예:
+  const formattedDate = formatDate(getContents.regDate);
+
   return (
     <>
     <Grid sx={{px:0.5}} container justifyContent={'space-between'} >
@@ -53,7 +65,7 @@ const ContentsInfo = ({ comments, views, shares, contents, video } ) => {
 
         <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
          <Typography variant="caption" style={{ color: "#A4A4A4" }}>
-            · 2024.03.25
+            · {formattedDate}
           </Typography>
         </Grid>
         

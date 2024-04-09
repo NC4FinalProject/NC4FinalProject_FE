@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Grid, Paper,Rating,Box, colors } from '@mui/material';
-import { useNavigate, Link } from 'react-router-dom';
+import { Grid, Paper,Box } from '@mui/material';
+import {  Link } from 'react-router-dom';
 import { Carousel } from '@trendyol-js/react-carousel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import CoTypography from '../../components/atoms/common/CoTypography';
-import CoHoverButton from '../../components/atoms/common/CoHoverButton';
 import ContentsCard from '../../components/organisms/common/ContentsCard';
 
 const Home = () => {
-  const navigate = useNavigate();
 
   
   const [slideIndex, setSlideIndex] = useState(0);
@@ -56,65 +53,7 @@ const Home = () => {
 
   return (
     <div>
-      <CoTypography size="MainTitle" style={{marginTop:'1rem', margintop:'1rem', marginBottom:'0.5rem'}}>현재 인기강사🔥</CoTypography>
-      <Grid container spacing={0}>
-       <Carousel show={5} slide={1} swiping={true} style={{width:'100%'}}
-        rightArrow={
-          <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '10rem', right: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2, color:'black'}} onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}}>
-            <ArrowForwardIcon style={{fontSize: '1.5rem'}}/>
-          </IconButton>
-        } 
-        leftArrow={
-          <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '10rem', left: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2, color:'black'}} onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}}>
-            <ArrowBackIcon style={{fontSize: '1.5rem'}}  />
-          </IconButton>}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-            <Grid key={item}>
-                <Paper elevation={3} style={{  height: '20.9375rem', width: '15.3125rem' , display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
-                <div style={{position: 'absolute', bottom: '0', left: '0', width: '100%', height: '50%', background: 'linear-gradient(transparent, black)'}}></div>
-                    <img src='/images/teacher.jpg' alt='teacher' style={{width: '15.3125rem', height: '100%', objectFit: 'cover'}} />
-                    <CoTypography size="Title" style={{position: 'absolute', bottom: '3.5rem', paddingLeft: '0.725rem', maxWidth: '14rem', color: 'white'}}>&lt;비전공자였던 그가 최상단에 오르기까지&gt;</CoTypography>
-                    <Button  variant="outlined" 
-                        color="error" 
-                        sx={{
-                            color: 'white', 
-                            borderColor: 'white',
-                            '&:hover': {
-                                color: 'black',
-                                backgroundColor: 'white',
-                                borderColor: 'black',
-                                fontWeight: 'bold'
-                            },
-                            position: 'absolute', 
-                            bottom: '0.1rem', 
-                            marginTop: '0rem', 
-                            maxHeight:'2.3rem', 
-                            marginLeft:'0.725rem', 
-                            marginBottom:'0.725rem'
-                        }}>강의 들으러 가기</Button>
-                </Paper>
-            </Grid>
-          ))}
-          </Carousel>
-      </Grid>
-        
-        <Carousel show={1} slide={1} swiping={true} style={{width:'100%'}}
-        rightArrow={
-          <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '7.5rem', right: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2, color:'black'}} onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}}>
-            <ArrowForwardIcon style={{fontSize: '1.55rem'}}/>
-          </IconButton>
-        } 
-        leftArrow={
-          <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '7.5rem', left: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2, color:'black'}} onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}}>
-            <ArrowBackIcon style={{fontSize: '1.5rem'}}/>
-          </IconButton>}>
-        {images.map((image, index) => (
-          <Paper key={index} elevation={3} style={{marginTop: '1.25rem', height: 200, width: 1300, overflow: 'hidden' }}>
-            <img src={image} alt={`slide-${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </Paper>
-        ))}
-	      </Carousel>
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'end', width: '100%'}}>
+       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'end', width: '100%'}}>
           <CoTypography size="MainTitle" style={{ marginTop:'1rem', marginBottom:'0.5rem'}}>실시간 인기 강의👍</CoTypography>
           <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', marginTop:'2rem'}}>
           <ArrowBackIosNewIcon style={iconStyle} onClick={handlePrev} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}/>
@@ -131,21 +70,8 @@ const Home = () => {
             
            <ContentsCard key={index} {...item} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
 
-            // <div style={{display: 'block'}}>
-            //   <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem',position: 'relative'}}>
-            //     <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
-            //     <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'5px'}} />
-            //   </Paper>
-            //   <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
-            //   <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
-            //   <div style={{display: 'flex', alignItems: 'center'}}>
-            //     <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-            //     <CoTypography size="Tag">(300)</CoTypography>
-            //   </div>
-            // </div>
-          
             :
-            <ContentsCard key={index} {...item} paperstyle={{display: 'none'}} />
+            <ContentsCard key={index} {...item} sx={{display:'none'}} />
 
             // <div style={{display: 'none', transition: 'display 0.5s'}}>
             //   <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
@@ -161,6 +87,22 @@ const Home = () => {
             
       })}
         </Grid>
+        <Carousel show={1} slide={1} swiping={true} style={{width:'100%'}}
+        rightArrow={
+          <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '7.5rem', right: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2, color:'black'}} onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}}>
+            <ArrowForwardIcon style={{fontSize: '1.55rem'}}/>
+          </IconButton>
+        } 
+        leftArrow={
+          <IconButton style={{backgroundColor: 'white', width: '30px', height: '30px' , position: 'absolute', top: '7.5rem', left: '-0.9rem', transform: 'translateY(-50%)', zIndex: 2, color:'black'}} onMouseOver={(e) => {e.target.style.color='#558BCF';}} onMouseOut={(e) => {e.target.style.color='black';}}>
+            <ArrowBackIcon style={{fontSize: '1.5rem'}}/>
+          </IconButton>}>
+        {images.map((image, index) => (
+          <Paper key={index} elevation={3} style={{marginTop: '1.25rem', height: 200, width: 1300, overflow: 'hidden' }}>
+            <img src={image} alt={`slide-${index}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </Paper>
+        ))}
+	      </Carousel>
         <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'end', width: '100%'}}>
           <CoTypography size="MainTitle" style={{marginTop:'1rem', marginBottom:'0.5rem'}}>최근 등록된 강의🖥️</CoTypography>
           <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>

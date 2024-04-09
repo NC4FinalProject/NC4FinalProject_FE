@@ -1,19 +1,17 @@
-import React, {useCallback, useContext, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import {Button, Container, Grid, Link, TextField, Typography} from '@mui/material';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import MemberStore from '../../stores/MemberStore';
-import {MemberInfoContext} from "./MemberInfoContext";
 
 const Login = () => {
     const navi = useNavigate();
     const [showPw, setshowPw] = useState(false);
-    const {setUserRole} = MemberStore((state) => state);
+    const {setMemberInfo, setUserRole} = MemberStore((state) => state);
     const toggleShowPw = () => {
         setshowPw(!showPw);
     };
-    // const {setUserInfo} = useContext(MemberInfoContext);
 
     const login = useCallback(
         async (username, password) => {
@@ -27,16 +25,16 @@ const Login = () => {
                     const info = {
                         memberId: response.data.item.memberId,
                         userNickname: response.data.item.userNickname,
+                        username: response.data.item.username,
                         profileFile: response.data.item.profileFile
                     };
-                    console.log(info);
-                    // setUserInfo(info);
+                    setMemberInfo(info);
                     sessionStorage.setItem('ACCESS_TOKEN', response.data.item.token);
                     sessionStorage.getItem('ACCESS_TOKEN');
                     console.log(response.data.item.role);
                     if (response.data.item.role === 'ADMIN') {
                         setUserRole(response.data.item.role);
-                        // navi('/admin/main');
+                        navi('/admin/main');
                     } else {
                         setUserRole(response.data.item.role);
                         navi('/');

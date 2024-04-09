@@ -20,6 +20,10 @@ const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
     videoCheck(videoId);
   };
 
+  useEffect(()=>{
+    
+  },[getVideo.length])
+
 
   return (
     <>

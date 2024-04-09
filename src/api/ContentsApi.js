@@ -20,6 +20,20 @@ export const getContentsIdApi = async (contentsId) => {
       throw error;
   }
 }
+// 전체 목록 가져오기
+export const getContentsListApi = async()=>{
+  try {
+    const response = await axios.get(`http://localhost:9090/contents/list`, {
+      // headers: {
+      //   Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      // },
+      // params: { contentsId } // 여기서 contentsId를 query parameter로 넘겨주고 있음
+    });
+    console.log(response.data)
+    return response.data;
+} catch (error) {
+    throw error;
+}}
 
 // export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail) => {
 //   console.log("=============" + chapterOne, chapterTwo, videoInfo, videoFile, thumbnail);
@@ -82,6 +96,26 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
     console.log(formData);
     if (error.response) {
       // 서버에서 반환된 응답 본문에 접근
+      console.log(error.response.data);
+    }
+  }
+
+};
+
+export const saveVideoReplyApi = async (videoReplyId, videoReplyContent) => {
+  console.log(videoReplyId, videoReplyContent);
+  try {
+    const response = await axios.post('http://localhost:9090/contents/detail/saveVideoReply', {
+      videoReplyId, videoReplyContent
+    },{
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+      },
+    });
+    console.log('서버 응답:', response.data);
+  } catch (error) {
+    console.error('데이터 전송 중 에러 발생:', error);
+    if (error.response) {
       console.log(error.response.data);
     }
   }
