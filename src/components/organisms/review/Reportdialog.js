@@ -15,7 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 
-const Reportdialog = ({ open, handleClickClose, children, selectComponent, author, date, Title, onSubmit }) => {
+const Reportdialog = ({ open, handleClickClose, children, selectComponent, author, Title, onSubmit }) => {
   const [reportReason, setReportReason] = useState("");
   const [detailReason, setDetailReason] = useState("");
 
@@ -101,7 +101,7 @@ const Reportdialog = ({ open, handleClickClose, children, selectComponent, autho
               <TableCell>
                 <CoTypography size="Content">
                   작성자 : {author} <br />
-                  작성일 : {date}
+                  작성일 : {new Date().toLocaleDateString()}
                 </CoTypography>
               </TableCell>
             </TableRow>

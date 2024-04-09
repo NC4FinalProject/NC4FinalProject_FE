@@ -15,7 +15,6 @@ import AdminStore from '../../stores/AdminStore';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 
 const AdminUser = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('all');
@@ -24,7 +23,6 @@ const AdminUser = () => {
 
   const [memo, setMemo] = useState('');
   const [open, setOpen] = useState(false);
-  const { userId } = useParams();
   
   const handleOpen = (id, memo) => {
     setSelectedMemberId(id);
