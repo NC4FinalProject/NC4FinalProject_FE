@@ -7,9 +7,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
 import CoHoverButton from '../../../atoms/common/CoHoverButton'
 import Codialog from '../../common/Codialog'
+import { useContentsStore } from '../../../../stores/ContentsStore'
 
 
-const SubSection = ({ subSectionTitle, subIndex }) => (
+const SubSection = ({ sectionSub, subIndex }) => (
   <Grid container alignItems="center" key={subIndex} pb={'0.10rem'}>
     <Grid item xs={1}/>
     <Grid container item xs={10} alignItems="center">
@@ -17,7 +18,7 @@ const SubSection = ({ subSectionTitle, subIndex }) => (
        <Typography variant='subtitle1' sx={{color:'#585858'}}>Sub_{subIndex + 1}</Typography>
       </Grid>
       <Grid item xs={9} pl={'0.7rem'}>
-        <SubTextField fullWidth variant="standard" value={subSectionTitle} />
+        <SubTextField fullWidth variant="standard" value={sectionSub.sectionSubTitle} />
       </Grid>
     </Grid>
     <Grid item xs={1}/>
@@ -44,6 +45,8 @@ const CurriculumCourse = () => {
 
   const [openSubSections, setOpenSubSections] = useState({});
 
+  const {getSection} = useContentsStore();
+
   const toggleSubSection = (id) => {
     setOpenSubSections(prevState => ({
       ...prevState,
@@ -62,9 +65,9 @@ const CurriculumCourse = () => {
 
       <Grid item xs={8} justifyContent={'center'}>
 
-        {CategoryList.map((category, index) => (
-        <Fragment key={category.id}>
-          <Grid container alignItems="center" key={category.id} pt={'0.55rem'}>
+        {getSection.map((category, index) => (
+        <Fragment key={category.sectionId}>
+          <Grid container alignItems="center" key={category.sectionId} pt={'0.55rem'}>
             <Grid item xs={1}/>
 
             <Grid container item xs={10} alignItems="center">
@@ -73,8 +76,8 @@ const CurriculumCourse = () => {
                 <CoTypography size="Title">Section_{index + 1}</CoTypography>
                 <IconButton
                   sx={{ padding: 0 }}
-                  color="gray"
-                  onClick={() => toggleSubSection(category.id)}
+                  color="dark"
+                  onClick={() => toggleSubSection(category.sectionId)}
                 >
                   {showHideSubSections ? <RemoveSharpIcon /> : <KeyboardArrowDownIcon />}
                 </IconButton>
@@ -88,12 +91,12 @@ const CurriculumCourse = () => {
             <Grid item xs={1}/>
           </Grid>
 
-          {showHideSubSections && category.subSectionTitle.map((subCategory, subIndex) =>(
-            <SubSection subSectionTitle={subCategory} subIndex={subIndex} />
+          {showHideSubSections && getSection[index].sectionSubList.map((sectionSub, subIndex) =>(
+            <SubSection sectionSub={sectionSub} subIndex={subIndex} />
           ))}
 
-          {openSubSections[category.id] && category.subSectionTitle.map((subCategory, subIndex) => (
-            <SubSection subSectionTitle={subCategory} subIndex={subIndex} />
+          {openSubSections[category.sectionId] && getSection[index].sectionSubList.map((sectionSub, subIndex) => (
+            <SubSection sectionSub={sectionSub} subIndex={subIndex} />
           ))}
 
         </Fragment>
@@ -105,7 +108,8 @@ const CurriculumCourse = () => {
           <CoHoverButton  variant="outlined" onClick={handleShowHide}>전체닫기</CoHoverButton>
         ):(
           <CoHoverButton  variant="outlined" onClick={handleShowHide}>펼쳐보기</CoHoverButton>
-        )}
+        )
+        }
         
       </Grid>
 

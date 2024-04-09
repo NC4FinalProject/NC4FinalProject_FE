@@ -106,14 +106,25 @@ const ReviewList = () => {
     alert("삭제되었습니다.");
   };
 
-  const hasPaid =
-    paymentList &&
-    paymentList.some((payment) => payment.contentsId === parseInt(contentsId));
+  let hasPaid = false;
+  let matchingContent;
+
+  for (let payment of paymentList) {
+    const contentsList = payment.contentsList || [];
+    matchingContent = contentsList.find(
+      (content) => content.contentsId === Number(contentsId)
+    );
+    if (matchingContent) {
+      hasPaid = true;
+      break;
+    }
+  }
 
   const hasWritten =
     reviews &&
     reviews.some(
-      (review) => review.memberDTO && review.memberDTO.id === loginMemberId
+      (review) =>
+        review.memberDTO && review.memberDTO.memberId === loginMemberId
     );
 
   const averageRating = useMemo(() => {
@@ -238,7 +249,7 @@ const ReviewList = () => {
                         />
                         {(loginMemberId &&
                           review.memberDTO &&
-                          loginMemberId === review.memberDTO.id) ||
+                          loginMemberId === review.memberDTO.memberId) ||
                         loginMemberRole === "ADMIN" ? (
                           <ButtonGroup
                             variant="text"
