@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Box } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -9,6 +9,8 @@ import Certificate from '../../components/organisms/mypage/Certificate';
 import PurchaseHistory from '../../components/organisms/mypage/PurchaseHistory';
 import Point from '../../components/organisms/mypage/Point';
 import Cart from '../../components/organisms/cart/Cart';
+import MyContents from '../../components/organisms/mypage/MyContents';
+import axios from 'axios';
 
 function a11yProps(index) {
     return {
@@ -20,7 +22,30 @@ function a11yProps(index) {
 const Mypage = () => {
 
     const [value, setValue] = useState(0);
+    const [role, setRole] = useState(null);
+
+    const initialize = async e => {
+      try { 
+          const response = await axios.get(`http://localhost:9090/mypage`, 
+                  {
+                      headers: {
+                          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+                      }
+                  });
+              setRole(response.data.item.role);
+              console.log("response.data.item");
+              console.log(response.data.item);
+        
+      } catch (error) {
+      }
+  }
+
+  useEffect( () => {
+      initialize();
+  }, []);
+
     
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -38,6 +63,11 @@ const Mypage = () => {
                 <Tab label="수료증" {...a11yProps(5)} />
                 <Tab label="장바구니" {...a11yProps(6)} />
                 <Tab label="알림설정" {...a11yProps(7)} />
+
+                { role === 'TEACHER' ? ( 
+                  <Tab label="내 강의" {...a11yProps(8)} />
+                ) : ( <></>
+                )}
                 </Tabs>
             </Box>
 
@@ -50,6 +80,12 @@ const Mypage = () => {
                 <div hidden={value !== 5} ><Certificate></Certificate></div>
                 <div hidden={value !== 6} ><Cart></Cart></div>
                 <div hidden={value !== 7} ><>알림설정</></div>
+                { role === 'TEACHER' ? ( 
+                  <div hidden={value !== 8} ><MyContents></MyContents></div>
+                ) : ( <></>
+                )}
+
+
             </Box>
         </Box>
     </Container>
