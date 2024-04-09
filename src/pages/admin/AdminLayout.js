@@ -6,7 +6,7 @@ import CoTypography from "../../components/atoms/common/CoTypography";
 import AdminChart from "../admin/AdminChart";
 import { useEffect } from "react";
 import { Typography } from "@mui/material";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AdminStore from '../../stores/AdminStore';
 import Avatar from '@mui/material/Avatar';
 import { MenuContext } from '../admin/MenuContext';
@@ -14,12 +14,11 @@ import { MenuContext } from '../admin/MenuContext';
 
 const AdminLayout = ({ children }) => {
   const [hover, setHover] = useState(false);
-  const { userNotice, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount } = AdminStore();
+  const { userNotice, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
   const { toggleMenu } = useContext(MenuContext);
   const [disable, setDisable] = useState([]);
   const [graphMode, setGraphMode] = useState('daily'); 
   const [data, setData] = useState([]);
-  const [userId] = useParams();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -108,7 +107,7 @@ const AdminLayout = ({ children }) => {
           오늘의 정보
         </CoTypography>
         <Box sx={{display:'flex', paddingTop:'0.3rem'}}>
-        <CoTypography size="Admin" >신규 가입 : </CoTypography>
+        <CoTypography size="Admin" sx={{display:'flex'}} >신규 가입 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{todayUserCount}</CoTypography> </CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',  display:'flex'}}>강사 가입 승인 대기 :<CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{preTeacherCount}</CoTypography></CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>답변 대기 문의 : </CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>신고 내역 : </CoTypography>

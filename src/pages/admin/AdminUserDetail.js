@@ -7,7 +7,8 @@ import AdminStore from '../../stores/AdminStore';
 import { useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 import axios from 'axios';
-
+import Reportdialog from '../../components/organisms/review/Reportdialog';
+import CoSelect from '../../components/organisms/common/CoSelect';
 
 const AdminUserDetail = () => {
 
@@ -15,10 +16,35 @@ const AdminUserDetail = () => {
     const maxChars = 150;
     const {userId} = useParams();
     const [open, setOpen] = useState(false);
+    const [openReport, setOpenReport] = useState(false);
 
+    const [selectedValue, setSelectedValue] = useState("");
+
+    const handleSelectChange = (event) => {
+      setSelectedValue(event.target.value);
+    };
+
+    const reportReasons = [
+      "1일",
+      "3일",
+      "5일",
+      "기타",
+      "해지하기"
+    ];
+
+    const sendReport = (userId, selectedValue) => {
+      console.log(userId, selectedValue);
+    };
+
+    
     useEffect(() => {
       userDetail(userId);
     }, [userDetail, userId]);
+
+
+    const OpenBlacklist = () => {
+      setOpenReport(true);
+    };
   
     const handleDialogOpen = () => {
       setOpen(true);
@@ -99,7 +125,12 @@ const AdminUserDetail = () => {
       }
     };
   
-
+    const onSubmit = ( detailReason, selectedValue) => {
+      console.log("detailReason: ", detailReason);
+      console.log("selectedValue: ", selectedValue);
+      console.log("User ID: ", userId);
+    };
+      
   const { toggleMenu } = useContext(MenuContext);
 
   return (
@@ -174,8 +205,23 @@ const AdminUserDetail = () => {
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">블랙리스트</CoTypography></TableCell>
-            <TableCell><Button sx={{padding:'0'}}><CoTypography size="HoverText">블랙리스트 추가 / 변경</CoTypography></Button></TableCell>
-            </TableRow>
+            <TableCell>
+            <Button sx={{padding:'0'}} onClick={OpenBlacklist}>
+               <CoTypography size="HoverText">블랙리스트 추가 / 변경</CoTypography>
+                </Button>
+              </TableCell>
+              <Reportdialog open={openReport} handleClickClose={() => setOpenReport(false)}
+                author={MemberInfo.userNickname} date={new Date().toLocaleDateString()}
+                Title="블랙리스트 추가 / 변경"
+                onSubmit={(detailReason) => onSubmit(detailReason, selectedValue)}                
+                selectComponent={
+                  <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
+                  <CoSelect onChange={handleSelectChange} value={selectedValue} options={reportReasons} />
+                  </Box>
+                }>  
+                1. 정지 사유도 함께 적어주세요.
+              </Reportdialog>
+             </TableRow>
          </TableBody>
         </Table>
       </Paper>

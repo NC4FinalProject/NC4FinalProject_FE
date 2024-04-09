@@ -15,6 +15,7 @@ import AdminStore from '../../stores/AdminStore';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const AdminUser = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('all');
@@ -23,6 +24,7 @@ const AdminUser = () => {
 
   const [memo, setMemo] = useState('');
   const [open, setOpen] = useState(false);
+  const { userId } = useParams();
   
   const handleOpen = (id, memo) => {
     setSelectedMemberId(id);
@@ -64,8 +66,8 @@ const AdminUser = () => {
   ];
   const navi = useNavigate();
 
-  const handleUser = (id) => {
-    navi(`/admin/user/${id}`);
+  const handleUser = (userId) => {
+    navi(`/admin/user/${userId}`);
   };
 
 
@@ -180,7 +182,7 @@ const AdminUser = () => {
         </TableHead>
         <TableBody>
           {MemberInfo.content && MemberInfo.content.map((member) => (
-            <TableRow key={member.id} onClick={() => handleUser(member.id)} sx={{cursor: 'pointer'}}>
+            <TableRow key={member.id} onClick={() => handleUser(member.memberId)} sx={{cursor: 'pointer'}}>
               <TableCell>
               {member.role === 'BLACKLIST' ? (
                 <CheckBoxIcon

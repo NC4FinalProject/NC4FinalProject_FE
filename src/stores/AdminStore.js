@@ -17,16 +17,18 @@ const AdminStore = create((set, get) => ({
   },
   pwValidation: false,
   pwChk: false,
-  setForm: (newForm) => set({ form: newForm }),
-  setPwValidation: (isValid) => set({ pwValidation: isValid }),
-  setPwChk: (isMatch) => set({ pwChk: isMatch }),
-  setMemo: (Memo) => set({ Memo }),
   searchCondition: 'all',
   searchKeyword: '',
   preTeacherCount: 0,
   daliyOutUserCount: [],
   monthlyOutUserCount: [],
   preTeachers: [],
+  todayUserCount: 0,
+  setTodayUserCount: (todayUserCount) => set({ todayUserCount }),
+  setForm: (newForm) => set({ form: newForm }),
+  setPwValidation: (isValid) => set({ pwValidation: isValid }),
+  setPwChk: (isMatch) => set({ pwChk: isMatch }),
+  setMemo: (Memo) => set({ Memo }),
   setPreTeachers: (preTeachers) => set({ preTeachers }),
   setMonthlyOutUserCount: (monthlyOutUserCount) => set({ monthlyOutUserCount }),
   setDailyOutUserCount: (daliyOutUserCount) => set({ daliyOutUserCount }),
@@ -45,7 +47,7 @@ const AdminStore = create((set, get) => ({
   
   userNotice: async () => {
     const { setNotices, setUsers, setNewUser,setMonthlytotalUserCount,setMonthlyCounts,setPreTeacherCount
-            ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers } = get();
+            ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount } = get();
     try {
         const response = await axios.get('http://localhost:9090/admin/main', {
             headers: {
@@ -53,7 +55,7 @@ const AdminStore = create((set, get) => ({
             },
         });
         const { notices, recentUsers, registrationCounts,
-                monthlytotalUserCount,monthlyCounts,preTeacherCount,daliyOutUserCount, monthlyOutUserCount,preTeachers } = response.data;
+                monthlytotalUserCount,monthlyCounts,preTeacherCount,daliyOutUserCount, monthlyOutUserCount,preTeachers,todayUserCount } = response.data;
         console.log(response.data);
         setNotices(notices);
         setUsers(recentUsers);
@@ -64,6 +66,7 @@ const AdminStore = create((set, get) => ({
         setDailyOutUserCount(daliyOutUserCount);
         setMonthlyOutUserCount(monthlyOutUserCount);
         setPreTeachers(preTeachers);
+        setTodayUserCount(todayUserCount);
     } catch (error) {
         console.log('에러:', error);
     }

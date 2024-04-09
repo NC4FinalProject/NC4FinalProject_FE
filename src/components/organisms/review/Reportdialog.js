@@ -15,7 +15,7 @@ import {
   TextField,
 } from "@mui/material";
 
-const Reportdialog = ({ open, handleClickClose }) => {
+const Reportdialog = ({ open, handleClickClose, children, selectComponent, author, date, Title, onSubmit }) => {
   const [reportReason, setReportReason] = useState("");
   const [detailReason, setDetailReason] = useState("");
 
@@ -38,6 +38,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
   };
 
   const handleSubmit = () => {
+    onSubmit(detailReason);
     console.log(reportReason);
     console.log(detailReason);
     setReportReason("");
@@ -56,7 +57,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
       disableEscapeKeyDown
     >
       <DialogTitle style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}>
-        <CoTypography size="DialogTitle">신고하기</CoTypography>
+        <CoTypography size="DialogTitle">{Title}</CoTypography>
       </DialogTitle>
       <DialogContent
         style={{
@@ -77,11 +78,11 @@ const Reportdialog = ({ open, handleClickClose }) => {
           }}
         >
           <CoTypography size="Content" style={{ marginBottom: "35px" }}>
-            1. 허위신고는 처벌 대상입니다.
+          {children || '1. 허위신고는 처벌 대상입니다.'}
           </CoTypography>
         </Box>
         <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
-          <CoSelect onChange={handleReportChange} value={reportReason} />
+        {selectComponent}
         </Box>
         <Table
           sx={{
@@ -99,8 +100,8 @@ const Reportdialog = ({ open, handleClickClose }) => {
             <TableRow>
               <TableCell>
                 <CoTypography size="Content">
-                  작성자 : USER <br />
-                  작성일 : 2021-10-10
+                  작성자 : {author} <br />
+                  작성일 : {date}
                 </CoTypography>
               </TableCell>
             </TableRow>
@@ -146,7 +147,7 @@ const Reportdialog = ({ open, handleClickClose }) => {
             취소하기
           </Button>
           <Button onClick={handleSubmit} color="error" variant="contained">
-            신고하기
+            {Title === "블랙리스트 추가 / 변경" ? "변경하기" : "삭제하기"}
           </Button>
         </Box>
       </DialogActions>
