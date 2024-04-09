@@ -9,6 +9,7 @@ import ContentsPrice from '../../components/organisms/contents/detail/contentsPr
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
 import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
 import { useContentsStore } from '../../stores/ContentsStore';
+import { useParams } from "react-router-dom";
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -43,6 +44,7 @@ const BoxLineStyle = styled(Box)(({ theme }) => ({
 const firstContentsInfoItem = contentsInfoApi[0];
 
 const Detail = () => {
+    const {contentsId} = useParams();
 
     const theme = useTheme();
 
@@ -131,7 +133,7 @@ const Detail = () => {
             {/* ContentsPrice */}
             <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
                 <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
-                    <ContentsPrice/>
+                    <ContentsPrice contentsId={contentsId}/>
                 </Grid>
             </Grid>
 
