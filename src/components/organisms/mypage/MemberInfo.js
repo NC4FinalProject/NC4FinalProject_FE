@@ -30,7 +30,7 @@ const MemberInfo = () => {
 
     const initialize = async e => {
         try { 
-            const response = await axios.get(`http://175.45.203.117:9090/mypage`, 
+            const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/mypage`,
                     {
                         headers: {
                             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -81,7 +81,7 @@ const MemberInfo = () => {
             };
             try {
             const response = await axios.post(
-            `http://175.45.203.117:9090/mypage/profile-file`, 
+            `http://${process.env.REACT_APP_BACK_URL}/mypage/profile-file`,
             formData, 
             config
             ); 
@@ -108,7 +108,7 @@ const MemberInfo = () => {
 
             try {
                 const response = await axios.post(
-                    `http://175.45.203.117:9090/mypage/user-nickname`, 
+                    `http://${process.env.REACT_APP_BACK_URL}/mypage/user-nickname`,
                     formData, 
                     config
                 ); 
@@ -133,7 +133,7 @@ const MemberInfo = () => {
 
             try {
                 const response = await axios.get(
-                    `http://175.45.203.117:9090/mypage/wannabe-teacher`, 
+                    `http://${process.env.REACT_APP_BACK_URL}/mypage/wannabe-teacher`,
                     config
                 ); 
                 alert("강사 신청 완료");
@@ -151,7 +151,7 @@ const MemberInfo = () => {
       const resign = async e => {
                 try {
                     const response = await axios.delete(
-                        `http://175.45.203.117:9090/member/resign`, 
+                        `http://${process.env.REACT_APP_BACK_URL}/member/resign`,
                         {
                             headers: {
                                 Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -159,7 +159,7 @@ const MemberInfo = () => {
                         }
                     )
                     const response2 = await axios.get(
-                        `http://175.45.203.117:9090/member/logout`, 
+                        `http://${process.env.REACT_APP_BACK_URL}/member/logout`,
                         {
                             headers: {
                                 Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
