@@ -102,7 +102,7 @@ userDetail: async (userId) => {
             },
         });
         setMemberInfo(response.data);
-        setMemo(response.data.memo);
+        setMemo(response.data.memo || '');
     } catch (error) {
         console.log('에러:', error);
     }

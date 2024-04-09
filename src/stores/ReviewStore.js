@@ -19,6 +19,7 @@ const useReviewStore = create((set) => ({
         params: { contentsId: contentsId },
       });
       console.log("Response:", response.data.reviewList);
+
       set({
         reviews: response.data.reviewList,
         loginMemberRole: response.data.loginMemberRole,
@@ -31,13 +32,7 @@ const useReviewStore = create((set) => ({
     }
   },
 
-  postReview: async (
-    reviewContent,
-    reviewRating,
-    paymentId,
-    contentsId,
-    cartId
-  ) => {
+  postReview: async (reviewContent, reviewRating, paymentId, contentsId) => {
     try {
       const response = await axios.post(
         `http://localhost:9090/review/review`,
@@ -46,7 +41,6 @@ const useReviewStore = create((set) => ({
           reviewContent,
           reviewRating,
           contentsId,
-          cartId,
         },
         {
           headers: {
@@ -66,8 +60,7 @@ const useReviewStore = create((set) => ({
     reviewContent,
     reviewRating,
     paymentId,
-    contentsId,
-    cartId
+    contentsId
   ) => {
     try {
       const response = await axios.put(
@@ -78,7 +71,6 @@ const useReviewStore = create((set) => ({
           reviewRating,
           paymentId,
           contentsId,
-          cartId,
         },
         {
           headers: {

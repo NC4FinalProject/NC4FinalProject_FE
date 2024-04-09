@@ -1,5 +1,5 @@
 import { React, useContext, useEffect, useState} from 'react'
-import { Box, Button, IconButton, Paper,Table, TableBody, TableRow, TableCell,Grid,TableContainer,TextField,Dialog, DialogTitle, DialogContent,DialogContentText, DialogActions } from '@mui/material'
+import { Box, Button, IconButton, Paper,Table, TableBody, TableRow, TableCell,Grid,TableContainer,TextField,Dialog, DialogTitle, DialogContent,DialogContentText, DialogActions,Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import CoTypography from '../../components/atoms/common/CoTypography';
 import { MenuContext } from './MenuContext';
@@ -17,7 +17,6 @@ const AdminUserDetail = () => {
     const {userId} = useParams();
     const [open, setOpen] = useState(false);
     const [openReport, setOpenReport] = useState(false);
-
     const [selectedValue, setSelectedValue] = useState("");
 
     const handleSelectChange = (event) => {
@@ -32,11 +31,6 @@ const AdminUserDetail = () => {
       "해지하기"
     ];
 
-    const sendReport = (userId, selectedValue) => {
-      console.log(userId, selectedValue);
-    };
-
-    
     useEffect(() => {
       userDetail(userId);
     }, [userDetail, userId]);
@@ -45,11 +39,7 @@ const AdminUserDetail = () => {
     const OpenBlacklist = () => {
       setOpenReport(true);
     };
-  
-    const handleDialogOpen = () => {
-      setOpen(true);
-    };
-  
+
     const handleDialogClose = () => {
       setOpen(false);
     };
@@ -61,23 +51,34 @@ const AdminUserDetail = () => {
         [name]: value
       });
   
-      if (name === 'userPw') {
-        if (value === form.userPwChk) {
-          setPwChk(true);
+      if(e.target.name === 'userPw') {
+        if(value && value === form.userPwChk) {
+            setPwChk(true);
+            document.querySelector("#password-check-success").style.display = 'block';
+            document.querySelector("#password-check-fail").style.display = 'none';
         } else {
-          setPwChk(false);
+            setPwChk(false);
+            document.querySelector("#password-check-success").style.display = 'none';
+            document.querySelector("#password-check-fail").style.display = 'block';
         }
-      }
-  
-      if (name === 'userPwChk') {
-        if (value === form.userPw) {
-          setPwChk(true);
+
+        return;
+    }
+    if(e.target.name === 'userPwChk') {
+        if(value && value === form.userPw) {
+            setPwChk(true);
+            document.querySelector("#password-check-success").style.display = 'block';
+            document.querySelector("#password-check-fail").style.display = 'none';
         } else {
-          setPwChk(false);
+            setPwChk(false);
+            document.querySelector("#password-check-success").style.display = 'none';
+            document.querySelector("#password-check-fail").style.display = 'block';
         }
-      }
+
+        return;
+    }
     };
-  
+
     const validatePassword = (userPw) => {
       return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*+=-]).{9,}$/.test(userPw);
     };
@@ -85,8 +86,13 @@ const AdminUserDetail = () => {
     const handleUserPwBlur = (e) => {
       if (validatePassword(e.target.value)) {
         setPwValidation(true);
+        document.querySelector("#password-validation").style.display = "none";
+          return;
       } else {
         setPwValidation(false);
+        document.querySelector("#password-validation").style.display = "block";
+          document.querySelector("#userPw").focus();
+          return;
       }
     };
   
@@ -98,25 +104,23 @@ const AdminUserDetail = () => {
         document.querySelector("#userPw").focus();
         return;
       }
-  
       if (!pwChk) {
         alert("비밀번호가 일치하지 않습니다.");
         document.querySelector("#userPwChk").focus();
         return;
       }
+      console.log('비밀번호 변경 요청:', form);
   
-      axios.post(`http://localhost:9090/admin/user/${userId}`, form, {
+      axios.post(`http://localhost:9090/admin/user/${userId}`, pwChk, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
         },
       }).then((response) => {
         console.log('비밀번호 변경이 성공적으로 처리되었습니다.');
-        // 추가적인 처리가 필요한 경우 여기에 작성합니다.
       }).catch((error) => {
         console.error('비밀번호 변경 중 오류가 발생했습니다:', error);
-        // 오류 처리가 필요한 경우 여기에 작성합니다.
       });
-    }, [form, pwValidation, pwChk, userId]);
+    }, [ pwValidation, pwChk, userId]);
 
   
     const handleMemoChange = (event) => {
@@ -159,13 +163,11 @@ const AdminUserDetail = () => {
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">비밀번호</CoTypography></TableCell>
-            <TableCell><Button sx={{padding:'0'}}  onClick={() => setOpen(true)}><CoTypography size="HoverText">비밀번호 변경</CoTypography></Button></TableCell>
+            <TableCell><Button sx={{padding:'0'}}  onClick={() => setOpen(true)}>
+              <CoTypography size="HoverText">비밀번호 변경</CoTypography></Button></TableCell>
             <Dialog open={open} onClose={handleDialogClose}>
         <DialogTitle>비밀번호 변경</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            새로운 비밀번호를 입력하세요.
-          </DialogContentText>
+        <DialogContent sx={{minWidth:'32.75rem'}}>
           <TextField
             autoFocus
             margin="dense"
@@ -178,6 +180,14 @@ const AdminUserDetail = () => {
             onChange={handleInputChange}
             onBlur={handleUserPwBlur}
           />
+          <Typography
+             name='password-validation'
+             id='password-validation'
+             component='p'
+             variant='string'
+             style={{display: 'none', color: 'red', fontSize:'0.725rem'}}>
+             비밀번호는 특수문자, 영문자, 숫자 조합의 9자리 이상으로 설정하세요.
+          </Typography>
           <TextField
             margin="dense"
             id="userPwChk"
@@ -188,6 +198,22 @@ const AdminUserDetail = () => {
             value={form.userPwChk}
             onChange={handleInputChange}
           />
+           <Typography
+               name='password-check-success'
+               id='password-check-success'
+               component='p'
+               variant='string'
+               style={{display: 'none', color: 'green', fontSize:'0.725rem'}}>
+               비밀번호가 일치합니다.
+           </Typography>
+           <Typography
+               name='password-check-fail'
+               id='password-check-fail'
+               component='p'
+               variant='string'
+               style={{display: 'none', color: 'red', fontSize:'0.725rem'}}>
+               비밀번호가 일치하지 않습니다.
+           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>취소</Button>

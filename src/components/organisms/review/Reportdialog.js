@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,12 +7,10 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import CoTypography from "../../atoms/common/CoTypography";
 import {Table, TableBody, TableCell, TableRow, TextField,} from "@mui/material";
-import {MemberInfoContext} from "../../../pages/member/MemberInfoContext";
 
-const Reportdialog = ({open, handleClickClose, children, selectComponent, author, date, Title, onSubmit}) => {
+const Reportdialog = ({open, handleClickClose, children, selectComponent, author, Title, onSubmit}) => {
     const [reportReason, setReportReason] = useState("");
     const [detailReason, setDetailReason] = useState("");
-    const {setUserInfo} = useContext(MemberInfoContext);
 
     const handleReportChange = (e) => {
         console.log(e);
@@ -96,7 +94,7 @@ const Reportdialog = ({open, handleClickClose, children, selectComponent, author
                             <TableCell>
                                 <CoTypography size="Content">
                                     작성자 : {author} <br/>
-                                    작성일 : {date}
+                                    작성일 : {new Date().toLocaleDateString()}
                                 </CoTypography>
                             </TableCell>
                         </TableRow>

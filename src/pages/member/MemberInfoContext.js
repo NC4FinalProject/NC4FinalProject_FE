@@ -10,6 +10,8 @@ export const MemberInfoProvider = ({children}) => {
     });
 
     return (
-        <MemberInfoContext.Provider value={userInfo}/>
+        <MemberInfoContext.Provider value={{userInfo, setUserInfo}}>
+            {children}
+        </MemberInfoContext.Provider>
     );
 };

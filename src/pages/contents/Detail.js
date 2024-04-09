@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import VideoPlayer from "../../components/organisms/contents/detail/VideoPlayer";
 import { Box, Button, Container, Divider, Grid, Typography } from '@mui/material';
 import styled from '@emotion/styled';
 import {contentsInfoApi} from '../../api/contentsInfoApi';
 import { useTheme } from '@emotion/react';
-import ContentsDetail from '../../components/organisms/contents/detail/contentsDetail/ContentsDetail';
+import ContentsDetail from "../../components/organisms/contents/detail/contentsDetail/ContentsDetail";
 import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
 import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
@@ -46,7 +46,7 @@ const Detail = () => {
 
     const theme = useTheme();
 
-    const { getContentsOne, getContentsOneOutput } = useContentsStore();
+    const { getContents, getVideo, getSection, getContentsOutput } = useContentsStore();
 
     useEffect(() => {
         const adjustHeight = () => {
@@ -58,6 +58,9 @@ const Detail = () => {
             sideApp.style.height = `${videoBoxHeight}px`;
           }
         };
+        ////////////////////////////////////////////////////
+        getContentsOutput(1)///페이지 넘버 받아오는 곳///////
+        ////////////////////////////////////////////////////
     
         window.addEventListener('resize', adjustHeight);
         adjustHeight(); // 초기 설정을 위해 한 번 호출
@@ -65,11 +68,9 @@ const Detail = () => {
         return () => window.removeEventListener('resize', adjustHeight); // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     }, []);
 
-    useEffect(()=>{
-        // getContentsOne()
-        getContentsOneOutput(1)
-        console.log(getContentsOne)
-    },[]);
+    // useEffect(()=>{
+    //     getContentsOutput(2);
+    // },[])
 
   return (
     <>
@@ -95,7 +96,7 @@ const Detail = () => {
             <Grid className="side-app" item xs={12} lg={3} sx={{paddingLeft: 3.75}}>
             {/* sx={{ bgcolor: 'grey.300', borderRadius: '5px', display: { xs: 'none', lg: 'block' }, }} */}
                 <Grid sx={{ height: '100%'}}> 
-                    <ContentsSide ></ContentsSide>
+                    <ContentsSide/>
                 </Grid>
             </Grid>
 
@@ -113,7 +114,11 @@ const Detail = () => {
                     comments={firstContentsInfoItem.social.comment}
                     views={firstContentsInfoItem.social.views}
                     shares={firstContentsInfoItem.social.share}
-                    contentsTitle={getContentsOne.contentsTitle}
+                    
+                    contents={getContents}
+                    video={getVideo}
+                    // section={getSection}
+
                     color="rgb(145, 158, 171)"
                 />
 

@@ -28,10 +28,9 @@ const Modifydalog = ({
 }) => {
   const [reviewContent, setReviewContent] = useState("");
   const [reviewRating, setReviewRating] = useState(0);
-
-  const paymentList = useReviewStore((state) => state.paymentList);
   const modifyReview = useReviewStore((state) => state.modifyReview);
   const { setReviews } = useReviewStore();
+  const paymentList = useReviewStore((state) => state.paymentList);
 
   useEffect(() => {
     if (review) {
@@ -56,20 +55,33 @@ const Modifydalog = ({
   };
 
   const handleSubmit = async () => {
-    const matchingPayment = paymentList.find(
-      (payment) => payment.contentsId === Number(contentsId)
-    );
+    let matchingPayment;
+    let matchingContent;
+
+    for (let payment of paymentList) {
+      const contentsList = payment.contentsList || [];
+      matchingContent = contentsList.find(
+        (content) => content.contentsId === Number(contentsId)
+      );
+      if (matchingContent) {
+        matchingPayment = payment;
+        break;
+      }
+    }
+
+    if (!matchingPayment || !matchingContent) {
+      alert("결제 정보 또는 콘텐츠를 찾을 수 없습니다.");
+      return;
+    }
 
     const reviewList = await modifyReview(
       review.reviewId,
       reviewContent,
       reviewRating,
       matchingPayment.paymentId,
-      matchingPayment.contentsId,
-      matchingPayment.cartId
+      matchingContent.contentsId
     );
 
-    console.log(reviewList);
     alert("후기가 수정되었습니다.");
     setReviews(reviewList);
     handleClickClose();

@@ -13,7 +13,7 @@ const Login = () => {
     const toggleShowPw = () => {
         setshowPw(!showPw);
     };
-    const {setUserInfo} = useContext(MemberInfoContext);
+    // const {setUserInfo} = useContext(MemberInfoContext);
 
     const login = useCallback(
         async (username, password) => {
@@ -30,7 +30,7 @@ const Login = () => {
                         profileFile: response.data.item.profileFile
                     };
                     console.log(info);
-                    setUserInfo(info);
+                    // setUserInfo(info);
                     sessionStorage.setItem('ACCESS_TOKEN', response.data.item.token);
                     sessionStorage.getItem('ACCESS_TOKEN');
                     console.log(response.data.item.role);
