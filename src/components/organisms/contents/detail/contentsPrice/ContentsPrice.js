@@ -1,13 +1,14 @@
 import { Box, Button, Divider, Grid, IconButton, Rating, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {contentsListApi} from '../../../../../api/contentsListApi'
 import { FaCartPlus } from "react-icons/fa";
 import ContentsPriceCal from '../../../../atoms/common/ContentsPriceCal';
 import { useNavigate } from 'react-router-dom';
 import {useContentsStore} from '../../../../../stores/ContentsStore';
+import axios from 'axios';
 
 
-const ContentsPrice = () => {
+const ContentsPrice = ({contentsId}) => {
 
   /////////////////////////////////////////////////
   // 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
@@ -38,6 +39,33 @@ const ContentsPrice = () => {
 
   // 컨텐츠 자체 별점 정보 가져올 것
   const value = 4.2;
+
+  const addCart = useCallback(async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/cart/add`,
+        {contentsId},
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          },
+        } 
+      );
+
+      // console.log(response);
+      if(response.data.item.cartId) {
+        alert("장바구니에 추가되었습니다.");
+        navigate("/cart")
+      }
+    } catch(e) {
+      console.log(e);
+      if(e.response.data.errorCode === 4001) {
+        alert("이미 장바구니에 있는 강의입니다.");
+      } else {
+        alert("에러 발생. 관리자에게 문의하세요.");
+      }
+    }
+  }, [contentsId]);
 
   return (
 
@@ -79,7 +107,7 @@ const ContentsPrice = () => {
       
       {/* 두 번째 그리드 - 중앙 정렬 */}
       <Grid item  sx={{ padding: '1rem'   }}>
-        <Button fullWidth variant="outlined" onClick={()=>(fetchContents())}>수강신청</Button>
+        <Button fullWidth variant="outlined" onClick={()=>(addCart())}>수강신청</Button>
       </Grid>
 
       {/* 세 번째 그리드 - 좌측 정렬 */}

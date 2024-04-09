@@ -1,81 +1,40 @@
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import CoTypography from "../../atoms/common/CoTypography";
 import CoHoverButton from "../../atoms/common/CoHoverButton";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import CartItem from "./CartItem";
 import CartPayment from "./CartPayment";
 import CartUserInformation from "./CartUserInformation";
-
-const contentsItems = [
-  {
-    itemId: 1,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "아프니까 자바다",
-    teacherName: "홍길동",
-    price: 33333,
-  },
-  {
-    itemId: 2,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-  {
-    itemId: 3,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-  {
-    itemId: 4,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-  {
-    itemId: 5,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-  {
-    itemId: 6,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-  {
-    itemId: 7,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-  {
-    itemId: 8,
-    itemImg: "https://via.placeholder.com/150x80",
-    itemName: "너도 할 수 있다 개발자asdfasdfasfasfd",
-    teacherName: "홍길동",
-    price: 56565,
-  },
-];
-
-const user = [
-  {
-    Id: 1,
-    userNickname: "그만~",
-    userEmail: "aaa@naver.com",
-    userPhone: "01012345678",
-  },
-];
+import axios from 'axios';
+import MemberStore from '../../../stores/MemberStore';
 
 const Cart = () => {
+  const [cartItem, setCartItem] = useState([]);
+  const {memberInfo} = MemberStore();
+
+  const getCart = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/cart/cart`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      );
+
+      console.log(response.data.item.cartContentsList);
+      setCartItem(response.data.item.cartContentsList);
+    } catch(e) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    getCart();
+  }, []);
+
   return (
     <>
       <Grid
@@ -132,12 +91,12 @@ const Cart = () => {
               </Grid>
             </Grid>
           </Grid>
-          {contentsItems.map((item) => (
+          {cartItem && cartItem.map((item) => (
             <CartItem
-              key={item.itemId}
-              itemImg={item.itemImg}
-              itemName={item.itemName}
-              teacherName={item.teacherName}
+              key={item.contentsId}
+              itemImg={item.thumbnail}
+              itemName={item.contentsTitle}
+              teacherName={item.author}
               price={item.price}
             />
           ))}
@@ -154,14 +113,12 @@ const Cart = () => {
             maxHeight: "60vh",
           }}
         >
-          {user.map((user) => (
-            <CartUserInformation
-              key={user.Id}
-              userNickname={user.userNickname}
-              userEmail={user.userEmail}
-              userPhone={user.userPhone}
-            />
-          ))}
+          
+          <CartUserInformation
+            key={memberInfo.memberId}
+            userNickname={memberInfo.userNickname}
+            userEmail={memberInfo.username}
+          />
           <CartPayment />
         </Grid>
       </Grid>
