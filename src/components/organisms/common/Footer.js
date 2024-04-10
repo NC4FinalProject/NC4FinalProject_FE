@@ -42,7 +42,7 @@ const Footer = () => {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <Typography style={{fontSize:'0.725rem', width:'40.725rem', marginTop:'0.625rem'}}>
+        <Typography style={{fontSize:'0.725rem', width:'100%', marginTop:'0.625rem'}}>
           NC4 FINAL 대표 손우성 / 서울특별시 강남구 819 3 삼오빌딩 5-8층 / 대표전화 : 1588-1588 / 이메일 : bitcamp@nc4.final
           사업자등록번호 : 293-23-58284 / 통신판매업신고 : 2024-서울강남-52525 / 클라우드 호스팅 : NaverCloud Web Services Korea NC4
           사업자 정보 자세히 보기 NC4는 통신판매중개자로서 중개하는 거래에 대하여 책임을 부담하지 않습니다.

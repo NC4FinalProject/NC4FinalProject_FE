@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getContentsIdApi } from '../api/ContentsApi'
+import { getContentsIdApi, getContentsListApi } from '../api/ContentsApi'
 import { insertApi } from '../api/ContentsApi';
 
 // 가격타입
@@ -163,23 +163,49 @@ export const useContentsStore = create((set) => ({
           console.error(error);
       }
   },
-  stateNumChange: (newSelect) => set((state) => ({
+  stateNumChange: (newSelect) => set(() => ({
     stateNum: newSelect
+  })),
+}));
+// 전체 페이지 리스폰 데이터
+export const useContentsListStore = create((set) => ({
+  getContentsList: [],
+  selectPage: '',
+
+  getContentsListOutput: async () => {
+      try {
+          const data = await getContentsListApi();
+          set({ getContentsList: data.items,
+          });
+      } catch (error) {
+          console.error(error);
+      }
+  },
+  selectPageChange: (newSelect) => set(() => ({
+    selectPage: newSelect
+  })),
+
+}));
+
+
+// 상세페이지 영상 별 댓글 입력 정보 상태 및 액션
+export const useVideoReplyStore = create((set) => ({
+  videoReplyContent: '',
+  // 여기서는 댓글 입력 내용하고 해당 비디오 넘버 만 보내 주면 되나? 컨텐츠 아이디는 안필요해? 백에서 유추할 수 있을까?
+  // videoReplyInput: (videoId, newContent) => set((state) => {
+  //   const videoReplyInput = state.chapterTwo.map((videoReplyChange, idx) => {
+  //     if (idx === videoId) {
+  //       return { ...videoReplyChange, videoReplyContent: newContent};
+  //     }
+  //     return videoReplyChange;
+  //   });
+  //   return { videoReply: videoReplyInput };
+  // }),
+  videoReplyContentInput: (newVideoReplyContent) => set(() => ({
+    videoReplyContent: newVideoReplyContent
   })),
 }));
 
 
 
-// 영상 별 입력 정보 상태 및 액션
-export const useVideoReplyStore = create(set => ({
-  videoReply: {
-    videoReplyId: '',
-    content: '',
-    username: '',
-    userProfile: '',
-  },
-  commitVideoReply: async (videoReply) => {
-    const data = await insertApi(videoReply);
-    set({ chapterOne: data });
-  },
-}));
+
