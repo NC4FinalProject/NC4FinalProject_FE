@@ -62,7 +62,7 @@ export default function ContentsDetail() {
   const contentDetailRef = useRef(null);
   const [previousPageUrl, setPreviousPageUrl] = useState("");
 
-  const {getSection} = useContentsStore();
+  const { getSection } = useContentsStore();
 
   const scrollToTop = useCallback(() => {
     if (contentDetailRef.current) {
@@ -141,14 +141,23 @@ export default function ContentsDetail() {
   // props로 변수값(state 함수아님) 보내주기, 부모 컴포넌트에서 스테이트 만들어서 보내주기
   // const [reviewCount, setReviewCount] = useState(10); << 이런식으로 부모컴포넌트에 작성하기
   // useEffect안에 exios로 강의 id가져와서 스테이트에 넣어주고 보내주면됨
-  const handleChange = useCallback((event, newValue) => {
-    setValue(newValue);
-  }, []);
+  const handleChange = useCallback(
+    (event, newValue) => {
+      if (
+        view === "write" &&
+        !window.confirm("작성 중인 글은 저장되지 않습니다. 계속하시겠습니까?")
+      ) {
+        return;
+      }
+      setValue(newValue);
+      setView("list");
+    },
+    [view]
+  );
 
   const courseTabIndex = getSection.length > 1 ? 1 : null; // "코스" 탭의 인덱스. 코스가 없으면 null
   const reviewTabIndex = getSection.length > 1 ? 2 : 1; // "코스" 탭이 있으면 후기는 인덱스 2, 없으면 1
   const inquiryTabIndex = getSection.length > 1 ? 3 : 2; // "코스" 탭이 있으면 질의응답은 인덱스 3, 없으면 2
-
 
   return (
     <Box sx={{ width: "100%" }} ref={contentDetailRef}>
@@ -163,11 +172,13 @@ export default function ContentsDetail() {
           {getSection.length > 1 && (
             <Tab label="코스" {...a11yProps(courseTabIndex)} />
           )}
-          
-          <Tab label={`후기 (${reviews ? reviews.length : 0})`} {...a11yProps(reviewTabIndex)} />
+
+          <Tab
+            label={`후기 (${reviews ? reviews.length : 0})`}
+            {...a11yProps(reviewTabIndex)}
+          />
 
           <Tab label="질의응답" {...a11yProps(inquiryTabIndex)} />
-
         </Tabs>
       </Box>
 
@@ -175,7 +186,7 @@ export default function ContentsDetail() {
       <CustomTabPanel value={value} index={0}>
         Item One
       </CustomTabPanel>
-      
+
       {/* 코스 */}
       {getSection.length > 1 && (
         <CustomTabPanel value={value} index={courseTabIndex}>
