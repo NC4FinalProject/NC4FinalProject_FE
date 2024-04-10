@@ -9,7 +9,8 @@ import {
   TextField,
   Chip,
 } from "@mui/material";
-import InsertCkEditor from "../../atoms/common/InsertCKEditor";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useState } from "react";
 
 const InquiryPost = ({ onCancelClick, scrollToTop }) => {
@@ -41,6 +42,19 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
       scrollToTop();
     }
   };
+
+  function UploadAdapterPlugin(editor) {
+    editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+      return {
+        upload: async () => {
+          const file = await loader.file;
+          console.log(file);
+          // setFiles(file);
+          // return await handleUpload(file);
+        },
+      };
+    };
+  }
 
   return (
     <>
@@ -175,7 +189,24 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
         </Box>
       </Box>
       <Box sx={{ width: "90%", margin: "2rem auto" }}>
-        <InsertCkEditor />
+        <CKEditor
+          editor={ClassicEditor}
+          // data={content}
+          // onChange={handleContentChange}
+          onReady={(editor) => {
+            editor.editing.view.change((writer) => {
+              writer.setStyle(
+                "height",
+                "300px",
+                editor.editing.view.document.getRoot()
+              );
+            });
+          }}
+          config={{
+            extraPlugins: [UploadAdapterPlugin],
+            removePlugins: ["MediaEmbed"],
+          }}
+        />
       </Box>
     </>
   );

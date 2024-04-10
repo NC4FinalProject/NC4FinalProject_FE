@@ -27,6 +27,7 @@ import {
   ChatBubbleOutline,
 } from "@mui/icons-material";
 import CoHoverButton from "../../atoms/common/CoHoverButton";
+import { useParams } from "react-router-dom";
 
 const StyledFormControl = styled(FormControl)`
   & .MuiInputBase-root {
@@ -45,6 +46,8 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
   const [sortBy, setSortBy] = useState("latest");
   const [Option, setOption] = useState("");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
+
+  const { contentsId } = useParams();
 
   const handleChangeSort = (newValue) => {
     setSortBy(newValue);
@@ -70,12 +73,12 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     {
       inquriyId: 1,
       inquiryTitle: "강의 관련 질문 있습니다.",
-      userName: "User1",
+      userNickName: "User1",
       inquiryContent:
         "몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루",
       date: "2022-01-01",
       tag: null,
-      contentsName: "이것이 자바다", // leture 끌고오는거임
+      contentsName: "이것이 자바다",
       isPrivate: false,
       isSolved: true,
       commentCount: 1,
