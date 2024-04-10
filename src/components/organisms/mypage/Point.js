@@ -8,6 +8,8 @@ const Point = () => {
 
   const [pointDTOList, setPointDTOList] = useState([]);
   const [pointSumList, setPointSumList] = useState([0]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState([1]);
 
   const initialize = async e => {
     try { 
@@ -20,6 +22,7 @@ const Point = () => {
 
               const points = response.data.item.pointDTOList;
               setPointDTOList(points);
+              setTotalPages(Math.floor(points.length/10) + 1);
 
               const sumList = [];
               let sum = 0;
@@ -33,6 +36,10 @@ const Point = () => {
             }
         }
   
+  const handlePageChange = (event, page) => {
+    setCurrentPage(page); // 페이지 변경 시 currentPage 업데이트
+    console.log(currentPage);
+  };
 
   useEffect( () => {
     initialize();
@@ -58,16 +65,23 @@ const Point = () => {
             <TableBody>
             {pointDTOList.map((pointDTO, index) => (
               <TableRow key={index}>
+                { index >= (currentPage-1)*10 && index < currentPage*10 ? (
+                  <>                
                 <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{pointDTO.createdAt}</CoTypography></TableCell>
                 <TableCell><CoTypography size="AdminUser">{pointDTO.reason}</CoTypography></TableCell>
                 <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{pointDTO.value}</CoTypography></TableCell>
                 <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{pointSumList[index]}</CoTypography></TableCell>
+                </>
+                ) : (
+                <></>
+                ) }
+                
               </TableRow>
             ))}
             </TableBody>
           </Table>
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-          <Pagination color='primary' />
+          <Pagination color='primary' count={totalPages} page={currentPage} onChange={handlePageChange} />
         </Box>
       </Paper>
    </>

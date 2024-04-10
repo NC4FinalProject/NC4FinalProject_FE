@@ -10,6 +10,8 @@ import ContentsSide from '../../components/organisms/contents/detail/contentsSid
 import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
 import { useContentsStore } from '../../stores/ContentsStore';
 import { useParams } from "react-router-dom";
+import { useContentsListStore, useContentsStore } from '../../stores/ContentsStore';
+
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -48,7 +50,9 @@ const Detail = () => {
 
     const theme = useTheme();
 
-    const { getContents, getVideo, getSection, getContentsOutput } = useContentsStore();
+    const { selectPage, selectPageChange } = useContentsListStore();
+
+    const { getContents, getVideo, getContentsOutput } = useContentsStore();
 
     useEffect(() => {
         const adjustHeight = () => {
@@ -61,7 +65,7 @@ const Detail = () => {
           }
         };
         ////////////////////////////////////////////////////
-        getContentsOutput(1)///페이지 넘버 받아오는 곳///////
+        getContentsOutput(selectPage)///페이지 넘버 받아오는 곳///////
         ////////////////////////////////////////////////////
     
         window.addEventListener('resize', adjustHeight);
