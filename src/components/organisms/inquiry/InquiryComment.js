@@ -5,8 +5,7 @@ import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import Reportdialog from "../review/Reportdialog";
-
+import InquiryReportdialog from "./InquiryReportdialog";
 const InquriyComment = ({
   name,
   regDate,
@@ -116,7 +115,7 @@ const InquriyComment = ({
           </Grid>
         </Grid>
       </Grid>
-      <Reportdialog
+      <InquiryReportdialog
         open={openCommentReportDialog}
         handleClickClose={handleCloseCommentReportDialog}
       />
