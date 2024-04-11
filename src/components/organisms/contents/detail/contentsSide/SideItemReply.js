@@ -8,11 +8,12 @@ import { Link } from "react-router-dom";
 
 const BoxContainerStyle = styled(Grid)(({ theme }) => ({
   display: "flex",
-  
 }));
 
 const SideItemReply = (props) => {
+  
   const theme = useTheme();
+
   return (
     <BoxContainerStyle container sx={{ paddingLeft: 0.1, paddingY: 0.9 }}>
       

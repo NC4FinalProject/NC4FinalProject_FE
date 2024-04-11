@@ -9,7 +9,6 @@ const ContentsList = () => {
 
   useEffect(() => {
     getContentsListOutput();
-    console.log(getContentsList);
   }, []);
 
   return (
