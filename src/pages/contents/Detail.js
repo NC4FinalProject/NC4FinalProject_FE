@@ -1,44 +1,65 @@
-import React, { useEffect, useState } from 'react'
-import VideoPlayer from "../../components/organisms/contents/detail/video/VideoPlayer";
-import { Box, Container, Divider, Grid, Typography } from '@mui/material';
-import styled from '@emotion/styled';
 
-import { useTheme } from '@emotion/react';
+import React, { useEffect, useState } from "react";
+import VideoPlayer from "../../components/organisms/contents/detail/VideoPlayer";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
+import styled from "@emotion/styled";
+import { contentsInfoApi } from "../../api/contentsInfoApi";
+import { useTheme } from "@emotion/react";
 import ContentsDetail from "../../components/organisms/contents/detail/contentsDetail/ContentsDetail";
-import ContentsPrice from '../../components/organisms/contents/detail/contentsPrice/ContentsPrice';
-import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
-import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
-import { useContentsCountStateStore, useContentsStore } from '../../stores/ContentsStore';
+import ContentsPrice from "../../components/organisms/contents/detail/contentsPrice/ContentsPrice";
+import ContentsSide from "../../components/organisms/contents/detail/contentsSide/ContentsSide";
+import ContentsInfo from "../../components/organisms/contents/detail/contentsInfo/ContentsInfo";
+import { useContentsStore, useContentsCountStateStore } from "../../stores/ContentsStore";
+import { useParams } from "react-router-dom";
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
-    padding: 0,
-    paddingTop: theme.spacing(5),
-    // display: 'flex',
-    // flexDirection: 'column',
-  
-    // product header
-    // h3
-    // "& .productHeader": {
-    //   fontSize: 30,
-    //   fontWeight: 500,
-    // },
-  }));
+  padding: 0,
+  paddingTop: theme.spacing(5),
+  // display: 'flex',
+  // flexDirection: 'column',
+
+  // product header
+  // h3
+  // "& .productHeader": {
+  //   fontSize: 30,
+  //   fontWeight: 500,
+  // },
+}));
 
 const GridStyle = styled(Grid)(({ theme }) => ({
-    marginTop: theme.spacing(0),
-    marginBottom: theme.spacing(0.7)
+  marginTop: theme.spacing(0),
+  marginBottom: theme.spacing(0.7),
 }));
+
+const BoxLineStyle = styled(Box)(({ theme }) => ({
+  position: "sticky",
+  top: "10%",
+  borderLeft: `1px solid ${theme.palette.divider}`, // 구분선 색상과 굵기를 MUI 기본값에 맞춤
+  // '&:hover': {
+  //     borderColor: theme.palette.primary.main, // 호버 시 테마의 primary 색상으로 변경
+  //     borderLeft: `2px solid ${theme.palette.primary.main}`,
+  // }
+}));
+
+const firstContentsInfoItem = contentsInfoApi[0];
 
 const Detail = () => {
 
-    const theme = useTheme();
+  const { contentsId } = useParams();
+
+  const theme = useTheme();
 
     const { getContents, getVideo, getContentsOutput,
             stateNum } = useContentsStore();
     const { getCountState } = useContentsCountStateStore();
-
-
 
     useEffect(() => {
         const adjustHeight = () => {
@@ -61,12 +82,14 @@ const Detail = () => {
         return () => window.removeEventListener('resize', adjustHeight); // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     }, []);
 
+  // useEffect(()=>{
+  //     getContentsOutput(2);
+  // },[])
+
   return (
     <>
-    <ContainerStyle>
-
-        <GridStyle container >
-
+      <ContainerStyle>
+        <GridStyle container>
             {/* Video */}
             <Grid item xs={12} lg={9}>
                 {/* <Box sx={{ bgcolor: 'grey.300', height: '600px' }} /> */}
@@ -79,18 +102,64 @@ const Detail = () => {
 
             {/* SideApp */}
             <Grid className="side-app" item xs={12} lg={3} sx={{paddingLeft: 3.75}}>
+
+            <Box
+              className="video-box"
+              sx={{
+                position: "relative",
+                width: "100%",
+                paddingTop: "56.25%", // 16:9 비율
+                "& > *": {
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                },
+                bgcolor: "grey.300",
+              }}
+            >
+              <VideoPlayer />
+            </Box>
+          </Grid>
+
+          {/* SideApp */}
+
+          <Grid
+            className="side-app"
+            item
+            xs={12}
+            lg={3}
+            sx={{ paddingLeft: 3.75 }}
+          >
+
             {/* sx={{ bgcolor: 'grey.300', borderRadius: '5px', display: { xs: 'none', lg: 'block' }, }} */}
-                <Grid sx={{ height: '100%'}}> 
-                    <ContentsSide/>
-                </Grid>
+            <Grid sx={{ height: "100%" }}>
+              <ContentsSide />
             </Grid>
+
+          </Grid>
+
         </GridStyle>
 
-        <GridStyle container >
+        <GridStyle container>
+          {/* ContentsInfo */}
+          {/* ContentsDetail */}
+          <Grid item xs={9} lg={9}>
+            {/* ContentInfo */}
 
-            {/* ContentsInfo */}
+            <ContentsInfo
+              comments={firstContentsInfoItem.social.comment}
+              views={firstContentsInfoItem.social.views}
+              shares={firstContentsInfoItem.social.share}
+              contents={getContents}
+              video={getVideo}
+              // section={getSection}
+
+              color="rgb(145, 158, 171)"
+            />
+
             {/* ContentsDetail */}
-            <Grid item xs={9} lg={9}>
 
                 {/* ContentInfo */}
                 <ContentsInfo
@@ -102,19 +171,23 @@ const Detail = () => {
                 {/* ContentsDetail */}
                 <ContentsDetail/>
 
-            </Grid>
+          </Grid>
 
-            {/* ContentsPrice */}
-            <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
-                <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
-                    <ContentsPrice/>
-                </Grid>
+          {/* ContentsPrice */}
+          <Grid item xs={3} lg={3} sx={{ paddingLeft: 3.75, paddingTop: 3.75 }}>
+            <Grid
+              position="sticky"
+              top="10%"
+              sx={{ borderLeft: `1px solid ${theme.palette.divider}` }}
+            >
+              <ContentsPrice contentsId={contentsId} />
             </Grid>
-
+          </Grid>
         </GridStyle>
-    </ContainerStyle>
+
+      </ContainerStyle>
     </>
   );
-}
+};
 
 export default Detail;
