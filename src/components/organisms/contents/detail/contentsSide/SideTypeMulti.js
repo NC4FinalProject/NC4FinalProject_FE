@@ -7,13 +7,12 @@ import SideItemReply from "./SideItemReply";
 import SideItemVideoList from './SideItemVideoList';
 
 import { Video } from '../../../../../api/contentsVideoApi';
-import { useContentsStore } from '../../../../../stores/ContentsStore';
-
+import { useContentsStore, useVideoReplyStore, useVideoUrlStore } from '../../../../../stores/ContentsStore';
 
 const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
-
   // const [selectedItem, setSelectedItem] = useState(1);
-  const {getContents, getVideo, getContentsOutput, stateNum, stateNumChange} = useContentsStore();
+  const { getVideo, stateNum, stateNumChange } = useContentsStore();
+
 
   const handleItemClick = (videoId) => {
     stateNumChange(videoId);
@@ -21,9 +20,7 @@ const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
   };
 
   useEffect(()=>{
-    
   },[getVideo.length])
-
 
   return (
     <>
@@ -39,6 +36,7 @@ const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
             thumbnailPath={v.thumbnailPath}
             isSelected={stateNum === v.videoId}
             onItemSelect={() => handleItemClick(v.videoId)}
+            videoPath={v.videoPath}
           />
         ))}
       </Box>

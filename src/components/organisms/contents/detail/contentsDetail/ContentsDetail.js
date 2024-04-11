@@ -7,7 +7,6 @@ import Box from "@mui/material/Box";
 import ReviewList from "../../../review/ReviewList";
 import Inquiry from "../../../inquiry/Inquiry";
 import { useState } from "react";
-import CurriculumCourse from "../CurriculumCourse";
 import InquiryDetail from "../../../inquiry/InquiryDetail";
 import InquiryPost from "../../../inquiry/InquiryPost";
 import { useEffect } from "react";
@@ -16,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { useCallback } from "react";
 import { useRef } from "react";
 import { useContentsStore } from "../../../../../stores/ContentsStore";
+import Section from "./Section";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -87,20 +87,21 @@ export default function ContentsDetail() {
     console.log(reviews);
   }, [reviews]);
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = false;
-    };
+  // 새로고침 시 안내문구
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = false;
+  //   };
 
-    if (view === "list" || view === "write") {
-      window.onbeforeunload = handleBeforeUnload;
-    }
+  //   if (view === "list" || view === "write") {
+  //     window.onbeforeunload = handleBeforeUnload;
+  //   }
 
-    return () => {
-      window.onbeforeunload = null;
-    };
-  }, []);
+  //   return () => {
+  //     window.onbeforeunload = null;
+  //   };
+  // }, []);
 
   useEffect(() => {
     const handleBackButtonClick = () => {
@@ -179,7 +180,7 @@ export default function ContentsDetail() {
       {/* 코스 */}
       {getSection.length > 1 && (
         <CustomTabPanel value={value} index={courseTabIndex}>
-          <CurriculumCourse />
+          <Section />
         </CustomTabPanel>
       )}
 

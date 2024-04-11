@@ -2,13 +2,11 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import { Box, Button, Divider, Grid, TextField, Typography } from '@mui/material'
 import CoTypography from '../../../../atoms/common/CoTypography'
-
 import { useTheme } from '@emotion/react'
 import SideTypeMulti from './SideTypeMulti'
-
 import styled from 'styled-components'
 import { useContentsStore, useVideoReplyStore } from '../../../../../stores/ContentsStore'
-import { saveVideoReplyApi } from '../../../../../api/ContentsApi'
+
 
 const CustomTextField = styled(TextField)({
   '& .MuiInput-input::placeholder': {
@@ -21,8 +19,10 @@ const ContentsSide = () => {
   const theme = useTheme();
 
   const { getVideo, stateNum } = useContentsStore();
-  const { videoReplyContent, videoReplyContentInput } = useVideoReplyStore();
-  
+  const { videoReply, updateVideoReplyIds, updateVideoReplyContent, saveVideoReplyInput,
+          videoReplyList, getVideoReplyList} = useVideoReplyStore();
+
+          
 
   ///////////////////////////////
   // contentsType
@@ -74,6 +74,11 @@ const ContentsSide = () => {
     } // else if (getVideo.length < null) { 이 부분은 잘못된 조건이야. 'getVideo.length'가 null보다 '작다'는 조건은 의미가 없어.
   }, [getVideo.length]); 
 
+  useEffect(() => {
+    console.log(`stateNum가 변경되었습니다: ${stateNum}`);
+    // 여기에 stateNum 변경에 따른 로직을 추가하세요.
+  }, [stateNum]); 
+
   const [isReplyHover, setIsReplyHover] = useState(false);
 
   const handleReplyClick = () => {
@@ -88,18 +93,23 @@ const ContentsSide = () => {
 
   // 비디오별 댓글 입력 창이다.
   const handleReplyContent = (e) => {
+    updateVideoReplyIds({
+      contentsId: getVideo[stateNum-1].contentsId,
+      videoId: getVideo[stateNum-1].videoId,
+    });
     const newContent = e.target.value;
-    videoReplyContentInput(newContent)
+    updateVideoReplyContent(newContent)
   }
+
   // 비디오별 댓글 키다운 이벤트 헬들러 이거 누르면 디비에 저장됨
   const addVideoReplyFunc = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault(); // 엔터 키로 인한 기본 이벤트(예: 폼 제출) 방지
-      saveVideoReplyApi(stateNum, videoReplyContent)
+      saveVideoReplyInput(videoReply)
+      // saveVideoReplyApi(stateNum, videoReplyContent)
       e.target.value = '';
       // console.log("입력되는 비디오의 아이디다"+stateNum +"     ====== 내용이요 ㅋ"+videoReplyContent)
     }
-    // console.log(videoReplyContent)
   }
 
   const selectVideo = (newSelect) => {
@@ -107,7 +117,21 @@ const ContentsSide = () => {
     console.log("================이것이 콜백함수의 힘이여 여기 부모컴포넌트임"+newSelect)
   };
 
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const pathSegments = url.pathname.split('/');
+    const contentsId = pathSegments.pop() || '기본값';
   
+    getVideoReplyList(contentsId, stateNum).then(() => {
+      // console.log("비동기 처리 완료 후 videoReplyList:", videoReplyList);
+    });
+    console.log(videoReplyList);
+  }, [stateNum, getVideoReplyList, videoReplyList]); 
+
+  useEffect(() => {
+    console.log("비동기 처리 완료 후 videoReplyList:", videoReplyList);
+  }, [videoReplyList]); // videoReplyList 상태 변경을 추적
+
 
   return (
     <Grid container direction="column" sx={{ height: '100%', display: 'flex' }}>
@@ -211,7 +235,7 @@ const ContentsSide = () => {
       </Grid>
       
 
-      {/* 입력 필드 영역 */}
+      {/* 댓글 입력 필드 영역 */}
       <Grid item sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
           <Divider sx={{ width: '30%' }} />
