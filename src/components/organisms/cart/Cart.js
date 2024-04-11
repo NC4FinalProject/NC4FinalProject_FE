@@ -6,27 +6,24 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import CartItem from "./CartItem";
 import CartPayment from "./CartPayment";
 import CartUserInformation from "./CartUserInformation";
-import axios from 'axios';
-import MemberStore from '../../../stores/MemberStore';
+import axios from "axios";
+import MemberStore from "../../../stores/MemberStore";
 
 const Cart = () => {
   const [cartItem, setCartItem] = useState([]);
-  const {memberInfo} = MemberStore();
+  const { memberInfo } = MemberStore();
 
   const getCart = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:9090/cart/cart`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-          }
-        }
-      );
+      const response = await axios.get(`http://localhost:9090/cart/cart`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      });
 
       console.log(response.data.item.cartContentsList);
       setCartItem(response.data.item.cartContentsList);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }, []);
@@ -91,15 +88,16 @@ const Cart = () => {
               </Grid>
             </Grid>
           </Grid>
-          {cartItem && cartItem.map((item) => (
-            <CartItem
-              key={item.contentsId}
-              itemImg={item.thumbnail}
-              itemName={item.contentsTitle}
-              teacherName={item.author}
-              price={item.price}
-            />
-          ))}
+          {cartItem &&
+            cartItem.map((item) => (
+              <CartItem
+                key={item.contentsId}
+                itemImg={item.thumbnail}
+                itemName={item.contentsTitle}
+                teacherName={item.author}
+                price={item.price}
+              />
+            ))}
         </Grid>
         <Grid
           item
@@ -113,7 +111,6 @@ const Cart = () => {
             maxHeight: "60vh",
           }}
         >
-          
           <CartUserInformation
             key={memberInfo.memberId}
             userNickname={memberInfo.userNickname}
