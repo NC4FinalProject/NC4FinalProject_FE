@@ -1,5 +1,5 @@
 import { React, useContext, useEffect, useState} from 'react'
-import { Box, Button, IconButton, Paper,Table, TableBody, TableRow, TableCell,Grid,TableContainer,TextField,Dialog, DialogTitle, DialogContent,DialogContentText, DialogActions,Typography } from '@mui/material'
+import { Box, Button, IconButton, Paper,Table, TableBody,MenuItem, TableRow, TableCell,Grid,TableContainer,TextField,Dialog, Select,DialogTitle, DialogContent, DialogActions,Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
 import CoTypography from '../../components/atoms/common/CoTypography';
 import { MenuContext } from './MenuContext';
@@ -12,12 +12,39 @@ import CoSelect from '../../components/organisms/common/CoSelect';
 
 const AdminUserDetail = () => {
 
-    const { userDetail, MemberInfo, Memo,setMemo,form, pwValidation, pwChk, setForm, setPwValidation, setPwChk } = AdminStore();
+    const {point,handleSavePoint, reason, setPoint,setReason, userDetail,pointSum, userChangeRole, MemberInfo, Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw, userPwChk, setUserPw, setUserPwChk, setSelectedRole } = AdminStore();
     const maxChars = 150;
     const {userId} = useParams();
     const [open, setOpen] = useState(false);
     const [openReport, setOpenReport] = useState(false);
     const [selectedValue, setSelectedValue] = useState("");
+    const [openrole, setOpenRole] = useState(false);
+    const [openPointDialog, setOpenPointDialog] = useState(false);
+
+    const handleRoleChange = (event) => {
+      setSelectedRole(event.target.value);
+  };
+  const handleSaveRole = (userId ) => {
+    userChangeRole(userId);
+    setOpenRole(false);
+  };
+
+
+    const handlePointDialogOpen = () => {
+      setOpenPointDialog(true);
+    };
+
+    const handlePointDialogClose = () => {
+      setOpenPointDialog(false);
+    };
+
+    const handleReasonChange = (event) => {
+        setReason(event.target.value);
+    };
+
+    const handlePointChange = (event) => {
+        setPoint(event.target.value);
+    };
 
     const handleSelectChange = (event) => {
       setSelectedValue(event.target.value);
@@ -46,38 +73,38 @@ const AdminUserDetail = () => {
   
     const handleInputChange = (e) => {
       const { name, value } = e.target;
-      setForm({
-        ...form,
-        [name]: value
-      });
-  
-      if(e.target.name === 'userPw') {
-        if(value && value === form.userPwChk) {
-            setPwChk(true);
-            document.querySelector("#password-check-success").style.display = 'block';
-            document.querySelector("#password-check-fail").style.display = 'none';
+    
+      if (name === 'userPw') {
+        setUserPw(value);
+      } else if (name === 'userPwChk') {
+        setUserPwChk(value); 
+      }
+    
+      if (name === 'userPw') { 
+        if (value === userPwChk) {
+          setPwChk(true);
+          document.querySelector("#password-check-success").style.display = 'block';
+          document.querySelector("#password-check-fail").style.display = 'none';
         } else {
-            setPwChk(false);
-            document.querySelector("#password-check-success").style.display = 'none';
-            document.querySelector("#password-check-fail").style.display = 'block';
+          setPwChk(false);
+          document.querySelector("#password-check-success").style.display = 'none';
+          document.querySelector("#password-check-fail").style.display = 'block';
         }
-
-        return;
-    }
-    if(e.target.name === 'userPwChk') {
-        if(value && value === form.userPw) {
-            setPwChk(true);
-            document.querySelector("#password-check-success").style.display = 'block';
-            document.querySelector("#password-check-fail").style.display = 'none';
+      }
+    
+      if (name === 'userPwChk') {
+        if (value === userPw) {
+          setPwChk(true);
+          document.querySelector("#password-check-success").style.display = 'block';
+          document.querySelector("#password-check-fail").style.display = 'none';
         } else {
-            setPwChk(false);
-            document.querySelector("#password-check-success").style.display = 'none';
-            document.querySelector("#password-check-fail").style.display = 'block';
+          setPwChk(false);
+          document.querySelector("#password-check-success").style.display = 'none';
+          document.querySelector("#password-check-fail").style.display = 'block';
         }
-
-        return;
-    }
+      }
     };
+
 
     const validatePassword = (userPw) => {
       return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*+=-]).{9,}$/.test(userPw);
@@ -95,6 +122,25 @@ const AdminUserDetail = () => {
           return;
       }
     };
+    const handleSaveMemo = async (userId) => {
+      try {
+        const memoData = {
+          memo: Memo, 
+          memberId: userId
+        };
+        await axios.post('http://localhost:9090/admin/user/memo',
+          memoData, 
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+          }
+        );
+        alert('메모가 성공적으로 저장되었습니다.');
+    } catch (error) {
+      console.log('에러:', error);
+    }
+  };
   
     const handleJoin = useCallback((e) => {
       e.preventDefault();
@@ -109,16 +155,21 @@ const AdminUserDetail = () => {
         document.querySelector("#userPwChk").focus();
         return;
       }
-      console.log('비밀번호 변경 요청:', form);
-  
-      axios.post(`http://localhost:9090/admin/user/${userId}`, pwChk, {
+      
+      const response =  axios.post(`http://localhost:9090/admin/user/${userId}`, {
+        password: userPw,
+      }, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
         },
       }).then((response) => {
         console.log('비밀번호 변경이 성공적으로 처리되었습니다.');
+        alert('비밀번호가 성공적으로 변경되었습니다.');
+        setOpen(false);
       }).catch((error) => {
         console.error('비밀번호 변경 중 오류가 발생했습니다:', error);
+        alert('비밀번호 변경 중 오류가 발생했습니다.');
+        setOpen(false);
       });
     }, [ pwValidation, pwChk, userId]);
 
@@ -155,11 +206,37 @@ const AdminUserDetail = () => {
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">회원 유형</CoTypography></TableCell>
-            <TableCell><CoTypography size="HoverText">{MemberInfo.role}</CoTypography></TableCell>
+            <TableCell sx={{display:'flex'}}><CoTypography size="HoverText">{MemberInfo.role}</CoTypography>
+            <Button sx={{ padding: '0', marginLeft:'1rem' }} onClick={() => setOpenRole(true)}>
+                        <CoTypography size="HoverText">권한 변경</CoTypography>
+            </Button>
+            </TableCell>
+              <Dialog open={openrole} onClose={() => setOpenRole(false)}>
+                  <DialogTitle>권한 변경</DialogTitle>
+                  <DialogContent sx={{ minWidth: '32.75rem' }}>
+                      <Select
+                          value={MemberInfo.role}
+                          onChange={handleRoleChange}
+                          fullWidth
+                      >
+                          <MenuItem value="ADMIN">관리자</MenuItem>
+                          <MenuItem value="USER">수강생</MenuItem>
+                          <MenuItem value="TEACHER">강사</MenuItem>
+                          <MenuItem value="PRETEACHER">강사 신청중</MenuItem>
+                          <MenuItem value="BLACKLIST">블랙리스트 회원</MenuItem>
+                          <MenuItem value="RESIGNED">탈퇴 회원</MenuItem>
+                      </Select>
+                  </DialogContent>
+                  <DialogActions>
+                      <Button onClick={() => setOpenRole(false)}>취소</Button>
+                      <Button onClick={() => handleSaveRole(userId)} color="primary">저장</Button>
+                  </DialogActions>
+              </Dialog>
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">아이디</CoTypography></TableCell>
             <TableCell><CoTypography size="HoverText">{MemberInfo.username}</CoTypography></TableCell>
+            
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">비밀번호</CoTypography></TableCell>
@@ -176,7 +253,7 @@ const AdminUserDetail = () => {
             label="새로운 비밀번호"
             type="password"
             fullWidth
-            value={form.userPw}
+            value={userPw}
             onChange={handleInputChange}
             onBlur={handleUserPwBlur}
           />
@@ -195,7 +272,7 @@ const AdminUserDetail = () => {
             label="비밀번호 확인"
             type="password"
             fullWidth
-            value={form.userPwChk}
+            value={userPwChk}
             onChange={handleInputChange}
           />
            <Typography
@@ -259,9 +336,9 @@ const AdminUserDetail = () => {
         </Box>
         <Box sx={{display:'flex', alignItems:'center', paddingTop:'0.635rem',paddingBottom:'0.635rem',borderBottom: '1px solid rgb(224, 224, 224, 1)'}}>
         <CoTypography size="AdminUser" sx={{paddingLeft:'1rem'}}> 보유 포인트 </CoTypography>
-        <CoTypography size="HoverText" sx={{paddingLeft:'3rem'}}>2300P</CoTypography>
+        <CoTypography size="HoverText" sx={{paddingLeft:'3rem'}}>{pointSum}P</CoTypography>
         <Button sx={{padding:'0.325rem', paddingLeft:'0', paddingRight:'0', marginLeft:'2.525rem'}}>
-           <CoTypography size="HoverText">포인트 추가 / 차감</CoTypography>
+           <Button onClick={handlePointDialogOpen}><CoTypography size="HoverText">포인트 추가 / 차감</CoTypography></Button>
         </Button>
         </Box>
         <Table>
@@ -269,7 +346,40 @@ const AdminUserDetail = () => {
             <TableRow>
             <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">일자</CoTypography></TableCell>
             <TableCell sx={{width:'45%', paddingLeft:'0.8125rem'}}><CoTypography size="AdminUser">사유</CoTypography></TableCell>
-            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">포인트 지급 / 차감</CoTypography></TableCell>
+            <TableCell sx={{width:'30%'}} align='right'>
+                <CoTypography size="AdminUser">
+                   포인트 추가 / 차감
+                </CoTypography>
+            </TableCell>
+            <Dialog open={openPointDialog} onClose={handlePointDialogClose}>
+            <DialogTitle>포인트 추가 / 차감</DialogTitle>
+                <div style={{ padding: '20px', paddingTop:'0' }}>
+                  <TextField
+                      type="number"
+                      label="포인트"
+                      value={point}
+                      onChange={handlePointChange}
+                      fullWidth
+                      margin="normal"
+                  />
+                    <TextField
+                        label="사유"
+                        value={reason}
+                        onChange={handleReasonChange}
+                        fullWidth
+                        margin="normal"
+                    />
+                    <TextField
+                        label="날짜"
+                        value={new Date().toLocaleDateString()}
+                        fullWidth
+                        margin="normal"
+                        disabled
+                    />
+                    <Button onClick={() => handleSavePoint(userId)} style={{float:'right' }}>저장</Button>
+                    <Button onClick={handlePointDialogClose} style={{float:'right'}}>취소</Button>
+                </div>
+            </Dialog>
             </TableRow>
         </TableBody>
         </Table>
@@ -283,31 +393,13 @@ const AdminUserDetail = () => {
             }}}>
         <Table>
         <TableBody>
-            <TableRow>
-            <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-            <TableCell sx={{width:'45%'}}><CoTypography size="AdminUser">토스페이로 포인트 추가ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography></TableCell>
-            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">3000P 차감</CoTypography></TableCell>
+          {MemberInfo.pointDTOList && MemberInfo.pointDTOList.map((point, index) => (
+            <TableRow key={index}>
+            <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">{point.createdAt}</CoTypography></TableCell>
+            <TableCell sx={{width:'45%'}}><CoTypography size="AdminUser">{point.reason}</CoTypography></TableCell>
+            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">{point.value}P</CoTypography></TableCell>
             </TableRow>
-            <TableRow>
-            <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-            <TableCell sx={{width:'45%'}}><CoTypography size="AdminUser">토스페이로 포인트 추가ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography></TableCell>
-            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">3000P 지급</CoTypography></TableCell>
-            </TableRow>
-            <TableRow>
-            <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-            <TableCell sx={{width:'45%'}}><CoTypography size="AdminUser">토스페이로 포인트 추가ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography></TableCell>
-            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">3000P 지급</CoTypography></TableCell>
-            </TableRow>
-            <TableRow>
-            <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-            <TableCell sx={{width:'45%'}}><CoTypography size="AdminUser">토스페이로 포인트 추가ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography></TableCell>
-            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">3000P 지급</CoTypography></TableCell>
-            </TableRow>
-            <TableRow>
-            <TableCell sx={{width:'25%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-            <TableCell sx={{width:'45%'}}><CoTypography size="AdminUser">토스페이로 포인트 추가ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography></TableCell>
-            <TableCell sx={{width:'30%'}} align='right'><CoTypography size="AdminUser">3000P 지급</CoTypography></TableCell>
-            </TableRow>
+          ))}
         </TableBody>
         </Table>
         </TableContainer>
@@ -330,7 +422,7 @@ const AdminUserDetail = () => {
           variant="outlined"
         />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Button><CoTypography size="HoverText">등록하기</CoTypography></Button>
+            <Button onClick={() => handleSaveMemo(userId)}><CoTypography size="HoverText">등록하기</CoTypography></Button>
             <CoTypography size="AdminUser">{`${Memo ? Memo.length : '0'}/${maxChars}`}</CoTypography>
         </Box>
       </Box>

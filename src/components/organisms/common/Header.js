@@ -75,7 +75,7 @@ const Header = () => {
           ),
         }}
       />
-      <Box sx={{width:'25%', display:'flex'}}>
+      <Box sx={{width:'30%', display:'flex'}}>
       {isLogin ? (
         <>
           <CoHoverButton

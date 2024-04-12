@@ -10,43 +10,43 @@ import { useStore } from 'zustand';
 
 const InsertCKEditor = ({onChange}) => {
 
-    const tempFileDTOList = [];
+    // const tempFileDTOList = [];
 
-    const { setFiles, fileDTOList, setFileDTOList } = useStore();
+    // const { setFiles, fileDTOList, setFileDTOList } = useStore();
 
-    function UploadAdapterPlugin(editor) {
-        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-          return {
-            upload: async () => {
-              const file = await loader.file;
-              setFiles(file);
-              return await handleUpload(file);
-            }
-          };
-        };
-      }
+    // function UploadAdapterPlugin(editor) {
+    //     editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+    //       return {
+    //         upload: async () => {
+    //           const file = await loader.file;
+    //           setFiles(file);
+    //           return await handleUpload(file);
+    //         }
+    //       };
+    //     };
+    //   }
 
-      const handleUpload = async (file) => {
-        try {
-            const formData = new FormData();
-            formData.append('upload', file);
-            const response = await axios.post('http://localhost:9090/notice/upload', formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data'
-              }
-            });
+    //   const handleUpload = async (file) => {
+    //     try {
+    //         const formData = new FormData();
+    //         formData.append('upload', file);
+    //         const response = await axios.post('http://localhost:9090/notice/upload', formData, {
+    //           headers: {
+    //             'Content-Type': 'multipart/form-data'
+    //           }
+    //         });
             
-            tempFileDTOList.push({itemFilePath: response.data.itemFilePath, itemFileName: response.data.itemFileName, itemFileOrigin: response.data.itemFileOrigin});
+    //         tempFileDTOList.push({itemFilePath: response.data.itemFilePath, itemFileName: response.data.itemFileName, itemFileOrigin: response.data.itemFileOrigin});
     
-            console.log(fileDTOList);
-            setFileDTOList(tempFileDTOList);
-            return {default: response.data.url};
-        } catch (error) {
-          console.log(error);
-          console.error('Error uploading files: ', error);
-          return { error: { message: 'Files upload failed' } };
-        }
-      };
+    //         console.log(fileDTOList);
+    //         setFileDTOList(tempFileDTOList);
+    //         return {default: response.data.url};
+    //     } catch (error) {
+    //       console.log(error);
+    //       console.error('Error uploading files: ', error);
+    //       return { error: { message: 'Files upload failed' } };
+    //     }
+    //   };
 
     return (
         <CKEditor

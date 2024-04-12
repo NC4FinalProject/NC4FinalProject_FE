@@ -106,17 +106,19 @@ const ReviewList = () => {
     alert("삭제되었습니다.");
   };
 
-  let hasPaid = false;
-  let matchingContent;
+  const hasPaymentList = Array.isArray(paymentList);
 
-  for (let payment of paymentList) {
-    const contentsList = payment.contentsList || [];
-    matchingContent = contentsList.find(
-      (content) => content.contentsId === Number(contentsId)
-    );
-    if (matchingContent) {
-      hasPaid = true;
-      break;
+  let hasPaid = false;
+  if (hasPaymentList) {
+    for (let payment of paymentList) {
+      const contentsList = payment.contentsList || [];
+      const matchingContent = contentsList.find(
+        (content) => content.contentsId === Number(contentsId)
+      );
+      if (matchingContent) {
+        hasPaid = true;
+        break;
+      }
     }
   }
 
