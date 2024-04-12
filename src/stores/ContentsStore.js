@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getContentsIdApi, getContentsListApi } from '../api/ContentsApi'
+import { getContentsIdApi, getContentsListApi, getVideoReplyApi, saveVideoReplyApi } from '../api/ContentsApi'
 import { insertApi } from '../api/ContentsApi';
 
 // 가격타입
@@ -151,6 +151,7 @@ export const useContentsStore = create((set) => ({
   getContents: [],
   getVideo: [],
   getSection: [],
+  getVideoReplyList: [],
   stateNum: 1,
   getContentsOutput: async (contentId) => {
       try {
@@ -158,6 +159,7 @@ export const useContentsStore = create((set) => ({
           set({ getContents: data.item,
                 getVideo: data.item.videoList,
                 getSection: data.item.sectionList,
+                getVideoReplyList: data.item.videoReplyList,
           });
       } catch (error) {
           console.error(error);
@@ -167,6 +169,7 @@ export const useContentsStore = create((set) => ({
     stateNum: newSelect
   })),
 }));
+
 // 전체 페이지 리스폰 데이터
 export const useContentsListStore = create((set) => ({
   getContentsList: [],
@@ -187,25 +190,62 @@ export const useContentsListStore = create((set) => ({
 
 }));
 
-
-// 상세페이지 영상 별 댓글 입력 정보 상태 및 액션
-export const useVideoReplyStore = create((set) => ({
-  videoReplyContent: '',
-  // 여기서는 댓글 입력 내용하고 해당 비디오 넘버 만 보내 주면 되나? 컨텐츠 아이디는 안필요해? 백에서 유추할 수 있을까?
-  // videoReplyInput: (videoId, newContent) => set((state) => {
-  //   const videoReplyInput = state.chapterTwo.map((videoReplyChange, idx) => {
-  //     if (idx === videoId) {
-  //       return { ...videoReplyChange, videoReplyContent: newContent};
-  //     }
-  //     return videoReplyChange;
-  //   });
-  //   return { videoReply: videoReplyInput };
-  // }),
-  videoReplyContentInput: (newVideoReplyContent) => set(() => ({
-    videoReplyContent: newVideoReplyContent
+// 비디오 관련
+export const useVideoAddInfoStore = create((set) => ({
+  videoBaceURL: "https://kr.object.ncloudstorage.com/bitcamp-bucket-121/",
+  videoURL: '',
+  videoTotalDuration: '',
+  videoDuration: '',
+  getVideoURL: (videoURL) => set(() => ({
+    videoURL: videoURL
+  })),
+  getVideoTotalDuration: (totalDuration) => set(() => ({
+    videoTotalDuration: totalDuration
   })),
 }));
 
+// 상세페이지 영상 별 댓글 입력 정보 상태 및 액션
+export const useVideoReplyStore = create((set) => ({
+  videoReply: {
+    contentsId: '',
+    videoId: '',
+    videoReplyContent: '',
+  },
+  videoReplyList: [],
+  // contentsId, videoId, videoReplyId 업데이트하는 함수
+  updateVideoReplyIds: ({ contentsId, videoId }) => set((state) => ({
+    videoReply: {
+      ...state.videoReply,
+      contentsId,
+      videoId,
+    }
+  })),
+  // videoReplyContent 업데이트하는 함수
+  updateVideoReplyContent: (videoReplyContent) => set((state) => ({
+    videoReply: {
+      ...state.videoReply,
+      videoReplyContent,
+    }
+  })),
+  saveVideoReplyInput: async (videoReply) => {
+    try {
+        const data = await saveVideoReplyApi(videoReply);
+    } catch (error) {
+        console.error(error);
+    }
+  },
+  getVideoReplyList: async (contentsId, videoId) => {
+    try {
+        const data = await getVideoReplyApi(contentsId, videoId);
+        set({ videoReplyList: data,
+        });
+    } catch (error) {
+        console.error(error);
+    }
+  },
+}));
 
+export const useContentsCountStateStore = create((set) => ({
+}))
 
 

@@ -2,7 +2,7 @@ import React from "react";
 import CoTypography from "../../atoms/common/CoTypography";
 import { Grid } from "@mui/material";
 
-const CartInformation = ({ userNickname, userEmail, userPhone }) => {
+const CartInformation = ({ userNickname, userEmail }) => {
   return (
     <>
       <Grid
@@ -53,10 +53,10 @@ const CartInformation = ({ userNickname, userEmail, userPhone }) => {
           </Grid>
           <Grid container>
             <Grid item xs={4}>
-              <CoTypography size="Tag">전화번호</CoTypography>
+              <CoTypography size="Tag">닉네임</CoTypography>
             </Grid>
             <Grid item xs={8}>
-              <CoTypography size="Tag">{userPhone}</CoTypography>
+              <CoTypography size="Tag">{userNickname}</CoTypography>
             </Grid>
           </Grid>
         </Grid>
