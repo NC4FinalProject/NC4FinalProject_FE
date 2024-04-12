@@ -90,13 +90,16 @@ const InquiryComment = ({
               {content}
             </CoTypography>
           </Grid>
-          <Grid
-            container
-            justifyContent="flex-end"
-            sx={{ cursor: "pointer" }}
-            onClick={handleOpenCommentReportDialog}
-          >
-            <Grid sx={{ display: "flex", alignItems: "center", mr: "0.5rem" }}>
+          <Grid container justifyContent="flex-end">
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                mr: "0.5rem",
+                cursor: "pointer",
+              }}
+              onClick={handleOpenCommentReportDialog}
+            >
               <NotificationsOutlinedIcon
                 sx={{ mr: "0.25rem", color: "#e65100" }}
               />

@@ -218,6 +218,7 @@ export default function ContentsDetail() {
           <InquiryPost
             onCancelClick={handleCancelClick}
             scrollToTop={scrollToTop}
+            contentsId={parseInt(contentsId)}
           />
         )}
       </CustomTabPanel>

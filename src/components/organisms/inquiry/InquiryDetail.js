@@ -213,12 +213,12 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                     신고하기
                   </CoTypography>
                 </Grid>
-                <Grid sx={{ display: "flex", alignItems: "center" }}>
+                {/* <Grid sx={{ display: "flex", alignItems: "center" }}>
                   <ShareOutlinedIcon sx={{ mr: "0.25rem" }} />
                   <CoTypography size="TableContent" color="textSecondary">
                     공유하기
                   </CoTypography>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
             <InquiryReportDialog
@@ -323,7 +323,8 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                           "mergeTableCells",
                         ],
                       },
-                      licenseKey: "",
+                      // data={content}
+                      // onChange={handleContentChange}            
                     }}
                   />
                 </Grid>

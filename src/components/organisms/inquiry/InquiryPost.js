@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useEffect } from "react";
 import CoTypography from "../../atoms/common/CoTypography";
 import {
   Button,
@@ -12,27 +12,73 @@ import {
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useState } from "react";
+import MemberStore from "../../../stores/MemberStore";
+import useStore from "../../../stores/InquiryStore";
+import axios from "axios";
+import { useContentsStore } from "../../../stores/ContentsStore";
 
-const InquiryPost = ({ onCancelClick, scrollToTop }) => {
-  const [tags, setTags] = useState([]);
+const InquiryPost = ({ onCancelClick, scrollToTop, contentsId }) => {
+  const {
+    inquiries,
+    paymentList,
+    searchCondition,
+    searchKeyword,
+    likeCnt,
+    liked,
+    setLikeCheck,
+    setLikeCnt,
+    setInquiryFiles,
+    setInquiryFileDTOList,
+    setInquiries,
+    setSearchCondition,
+    setSearchKeyword,
+    fetchInquiries,
+    handleInquirySubmit,
+    inquiryFiles,
+    inquiryFileDTOList,
+    isPrivate,
+    setIsPrivate,
+  } = useStore();
+
+  const { contentsTitle } = useContentsStore();
+
+  const [tagContent, setTagContent] = useState([]);
   const [tagInput, setTagInput] = useState("");
+  const [inquiryTitle, setInquiryTitle] = useState("");
+  const [inquiryContent, setInquiryContent] = useState("");
+
+  const { userRole } = MemberStore();
+  const tempFileDTOList = [];
 
   const handleTagChange = (event) => {
-    setTagInput(event.target.value.trim());
+    if (event.target.value.length <= 10) {
+      setTagInput(event.target.value);
+    }
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      if (tagInput && !tags.includes(tagInput) && tags.length < 3) {
-        setTags([...tags, tagInput]);
+      if (
+        tagInput &&
+        !tagContent.includes(tagInput) &&
+        tagContent.length < 3 &&
+        tagInput.length <= 10
+      ) {
+        setTagContent([...tagContent, tagInput]);
         setTagInput("");
       }
     }
   };
 
+  const handleCheckboxChange = (event) => {
+    setIsPrivate(event.target.checked);
+  };
+
   const handleDeleteTag = (tagToDelete) => () => {
-    setTags((prevTags) => prevTags.filter((tag) => tag !== tagToDelete));
+    setTagContent((prevTagContent) =>
+      prevTagContent.filter((tag) => tag !== tagToDelete)
+    );
   };
 
   const handleCancelClick = () => {
@@ -43,14 +89,53 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
     }
   };
 
+  const handleTitleChange = (e) => {
+    setInquiryTitle(e.target.value);
+  };
+
+  const handleContentChange = (e, editor) => {
+    const data = editor.getData();
+    setInquiryContent(data);
+  };
+
+  const handleUpload = async (inquiryFile) => {
+    try {
+      const formData = new FormData();
+      formData.append("upload", inquiryFile);
+      const response = await axios.post(
+        "http://localhost:9090/inquiry/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      tempFileDTOList.push({
+        inquiryFilePath: response.data.inquiryFilePath,
+        inquiryFileName: response.data.inquiryFileName,
+        inquiryFileOrigin: response.data.inquiryFileOrigin,
+      });
+
+      console.log(inquiryFileDTOList);
+      setInquiryFileDTOList(tempFileDTOList);
+      return { default: response.data.url };
+    } catch (error) {
+      console.log(error);
+      console.error("Error uploading files: ", error);
+      return { error: { message: "Files upload failed" } };
+    }
+  };
+
   function UploadAdapterPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       return {
         upload: async () => {
           const file = await loader.file;
           console.log(file);
-          // setFiles(file);
-          // return await handleUpload(file);
+          setInquiryFiles(file);
+          return await handleUpload(file);
         },
       };
     };
@@ -83,7 +168,19 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
           >
             취소
           </Button>
-          <Button color="primary" variant="contained">
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() =>
+              handleInquirySubmit(
+                inquiryTitle,
+                inquiryContent,
+                tagContent,
+                isPrivate,
+                contentsId
+              )
+            }
+          >
             등록
           </Button>
         </Box>
@@ -100,7 +197,7 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
       >
         <TextField
           variant="standard"
-          placeholder="강의명 : 모르니까 자바다"
+          placeholder={contentsTitle}
           disabled
           sx={{
             "& .MuiInputBase-input::placeholder": {
@@ -115,7 +212,9 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
         />
         <FormGroup>
           <FormControlLabel
-            control={<Checkbox />}
+            control={
+              <Checkbox checked={isPrivate} onChange={handleCheckboxChange} />
+            }
             label={
               <CoTypography size="NoticeTitle" sx={{ ml: "-0.25rem" }}>
                 비밀글여부
@@ -151,11 +250,12 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
             padding: "2rem 2rem 0 2rem",
           }}
           InputProps={{ disableUnderline: true }}
+          onChange={handleTitleChange}
         ></TextField>
 
         <TextField
           variant="standard"
-          placeholder="#관련 태그 설정 (최대 3개) "
+          placeholder="#관련 태그 설정 (최대 3개, 글자수 10 미만) "
           sx={{
             "& .MuiInputBase-input::placeholder": {
               fontSize: "1rem",
@@ -177,7 +277,7 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
             padding: "0rem 1rem 1rem 1rem",
           }}
         >
-          {tags.map((tag, index) => (
+          {tagContent.map((tag, index) => (
             <Chip
               color="primary"
               key={index}
@@ -191,8 +291,12 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
       <Box sx={{ width: "90%", margin: "2rem auto" }}>
         <CKEditor
           editor={ClassicEditor}
-          // data={content}
-          // onChange={handleContentChange}
+          data={inquiryContent}
+          onChange={handleContentChange}
+          config={{
+            extraPlugins: [UploadAdapterPlugin],
+            removePlugins: ["MediaEmbed"],
+          }}
           onReady={(editor) => {
             editor.editing.view.change((writer) => {
               writer.setStyle(
@@ -201,10 +305,6 @@ const InquiryPost = ({ onCancelClick, scrollToTop }) => {
                 editor.editing.view.document.getRoot()
               );
             });
-          }}
-          config={{
-            extraPlugins: [UploadAdapterPlugin],
-            removePlugins: ["MediaEmbed"],
           }}
         />
       </Box>
