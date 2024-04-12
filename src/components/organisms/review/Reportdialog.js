@@ -142,7 +142,7 @@ const Reportdialog = ({open, handleClickClose, children, selectComponent, author
                         취소하기
                     </Button>
                     <Button onClick={handleSubmit} color="error" variant="contained">
-                        {Title === "블랙리스트 추가 / 변경" ? "변경하기" : "삭제하기"}
+                        {Title === "신고하기" ? "신고하기" : "변경하기"}
                     </Button>
                 </Box>
             </DialogActions>
