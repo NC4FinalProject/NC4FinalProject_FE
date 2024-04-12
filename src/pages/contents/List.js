@@ -24,9 +24,9 @@ const List = () => {
 
   const { getContentsList, getContentsListOutput } = useContentsListStore();
 
+  // 마운트 시, 로그인
   useEffect(() => {
     getContentsListOutput();
-    // console.log(getContentsList);
   }, []);
 
 

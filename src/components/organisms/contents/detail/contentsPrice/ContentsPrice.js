@@ -1,46 +1,79 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  Rating,
-  Typography,
-} from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
-import { contentsListApi } from "../../../../../api/contentsListApi";
+import { Box, Button, Grid, Rating, Typography } from '@mui/material'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FaCartPlus } from "react-icons/fa";
-import ContentsPriceCal from "../../../../atoms/common/ContentsPriceCal";
-import { useNavigate } from "react-router-dom";
-import { useContentsStore } from "../../../../../stores/ContentsStore";
-import axios from "axios";
+import ContentsPriceCal from '../../../../atoms/common/ContentsPriceCal';
+import { useNavigate } from 'react-router-dom';
+import {useContentsStore, useVideoAddInfoStore} from '../../../../../stores/ContentsStore';
+import axios from 'axios';
+
+const formatDuration = (seconds) => {
+  // 분과 초를 계산
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  // 두 자리수로 포맷팅
+  const paddedMinutes = minutes.toString().padStart(2, '0');
+  const paddedSeconds = remainingSeconds.toString().padStart(2, '0');
+
+  return `${paddedMinutes}:${paddedSeconds}`;
+};
+
 
 const ContentsPrice = ({ contentsId }) => {
+
   /////////////////////////////////////////////////
   // 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
-  // 실시간 일 경우 음수를 받아와 국비지원 인 것을 알아야 할듯? -1
+  // 실시간 일 경우 음수를 받아와 국비지원 인 것을 알아야 할듯? -1 
   // 유료일 경우 컨텐츠로 부터 가격 데이터를 받아옴 가격 > 0
-  const { fetchContents, getContents } = useContentsStore();
+  const { fetchContents, getContents, getVideo, getSection } = useContentsStore();
 
+  const { videoBaceURL, videoTotalDuration, getVideoTotalDuration } = useVideoAddInfoStore();
+
+  const [totalDuration, setTotalDuration] = useState(0);
+  
+  
   /////////////////컨텐츠 번호 가져와서 플라이스 컴포넌트에 전달/////////////////
-  const [priceState, setPriceState] = useState("");
+  const [priceState, setPriceState] = useState('');
+
+  const [contentsType, setContentsType] = useState('');
 
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // videoTotalDuration의 변화를 감지하여 totalDuration에 더해주는 로직
+  //   if(videoTotalDuration !== totalDuration){
+  //     setTotalDuration(totalDuration + Number(videoTotalDuration));
+  //   }
+  //   console.log(totalDuration)
+  // }, [videoTotalDuration, getVideo.videoPath]);
+
+  useEffect(() => {
+    if(videoTotalDuration !== 0){
+      setTotalDuration(videoTotalDuration)
+    }
+  }, [videoTotalDuration]);
+
 
   useEffect(() => {
     let price = getContents.price;
     if (price == 0) {
-      setPriceState("무료강의");
-      console.log("1");
+      setPriceState('무료강의')
+      console.log("1")
     } else if (price > 0) {
-      setPriceState(price);
-      console.log("2");
-    } else if (price < 0) {
-      setPriceState("국비지원");
-      console.log("3");
-    }
-  }, [getContents.price]);
+      setPriceState(price)
+      console.log("2")
+    } else if(price < 0){
+      setPriceState('국비지원')
+      console.log("3")
+    } 
+    if (getVideo.length === 1){
+      setContentsType('단일 강의')
+    } else (setContentsType(`강의 ${getVideo.length}개`)
+    )
+  }, [getContents.price, getVideo]);
   /////////////////////////////////////////////////
+
+
 
   // 컨텐츠 자체 별점 정보 가져올 것
   const value = 4.2;
@@ -73,54 +106,54 @@ const ContentsPrice = ({ contentsId }) => {
   }, [contentsId]);
 
   return (
+
     <Grid container direction="column">
+
       {/* 첫 번째 그리드 - 사이드 정렬 */}
-      <Grid container paddingX={"1rem"}>
-        <Grid item xs={7} sx={{ textAlign: "left" }}>
-          <Typography
-            variant="h5"
-            sx={{ color: "#1C1C1C", letterSpacing: "-1px" }}
-          >
-            <ContentsPriceCal price={priceState} />
+      <Grid container paddingX={'1rem'}>
+
+        <Grid item xs={7} sx={{ textAlign: 'left' }}>
+          <Typography variant='h5' sx={{ color:'#1C1C1C', letterSpacing: '-1px'}}>
+            <ContentsPriceCal price={priceState}/>
           </Typography>
         </Grid>
 
-        <Grid item xs={5} sx={{ textAlign: "right", alignContent: "center" }}>
+        <Grid item xs={5} sx={{ textAlign: 'right', alignContent: 'center'}}>
           <Box>
             <Rating
               value={value}
               size="small"
               name="read-only"
               precision={0.5}
-              readOnly
+              readOnly 
               sx={{
-                "& .MuiRating-iconFilled": {
-                  marginRight: "-2px", // 기본 마진 감소
+                '& .MuiRating-iconFilled': {
+                  marginRight: '-2px', // 기본 마진 감소
                 },
-                "& .MuiRating-iconEmpty": {
-                  marginRight: "-2px", // 기본 마진 감소
-                },
+                '& .MuiRating-iconEmpty': {
+                  marginRight: '-2px', // 기본 마진 감소
+                }
               }}
             />
           </Box>
-          <Box sx={{ textAlign: "right", marginTop: "-7%", color: "#6E6E6E" }}>
-            <Typography variant="caption">(315)</Typography>
+          <Box sx={{ textAlign: 'right', marginTop: '-7%', color: '#6E6E6E'}}>
+            <Typography variant='caption' >(315)</Typography>
           </Box>
         </Grid>
-      </Grid>
 
+      </Grid>
+      
       {/* 두 번째 그리드 - 중앙 정렬 */}
-      <Grid item sx={{ padding: "1rem" }}>
-        <Button fullWidth variant="outlined" onClick={() => addCart()}>
-          수강신청
-        </Button>
+      <Grid item  sx={{ padding: '1rem'   }}>
+        <Button fullWidth variant="outlined" onClick={()=>(addCart())}>수강신청</Button>
       </Grid>
 
       {/* 세 번째 그리드 - 좌측 정렬 */}
-      <Grid container item sx={{ color: "#6E6E6E", paddingX: "1rem" }}>
+      <Grid container item sx={{ color: "#6E6E6E", paddingX: '1rem' }}>
+
         <Grid container item xs={8} direction="column">
-          <Typography>· 단일 강의</Typography>
-          <Typography>· 챕터 1개 · 59:13</Typography>
+          <Typography>· {contentsType}</Typography>
+          <Typography>· 챕터 {getSection.length}개 · {formatDuration(totalDuration)}</Typography>
           <Typography>· 난이도 : 입문</Typography>
         </Grid>
 
@@ -137,9 +170,11 @@ const ContentsPrice = ({ contentsId }) => {
             }}
           />
         </Grid>
-      </Grid>
-    </Grid>
-  );
-};
 
-export default ContentsPrice;
+      </Grid>
+
+    </Grid>
+  )
+}
+
+export default ContentsPrice
