@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import axios from "axios";
 const useStore = create((set, get) => ({
   searchCondition: "all",
@@ -9,12 +9,14 @@ const useStore = create((set, get) => ({
   inquiryModifyFileList: [],
   likeCnt: 0,
   liked: 0,
-  contentsId: 0,
   loginMemberId: "",
   loginMemberNickname: "",
   loginMemberRole: "",
   inquiries: [],
   paymentList: [],
+  tagDTOList: [],
+  contentsId: 0,
+  isPrivate: false,
   setLikeCheck: (liked) => set({ liked }),
   setLikeCnt: (likeCnt) => set({ likeCnt }),
   setInquiryFiles: (inquiryFiles) => set({ inquiryFiles }),
@@ -25,10 +27,11 @@ const useStore = create((set, get) => ({
   setInquiryFileDTOList: (inquiryFileDTOList) => set({ inquiryFileDTOList }),
   setInquiryModifyFileList: (inquiryModifyFileList) =>
     set({ inquiryModifyFileList }),
+  setContentsId: (contentsId) => set({ contentsId }),
+  setIsPrivate: (isPrivate) => set({ isPrivate }),
 
   fetchInquiries: async (contentsId) => {
-    const { searchCondition, searchKeyword, setPage, page, setInquiries } =
-      get();
+    const { searchCondition, searchKeyword, setPage, page } = get();
     try {
       const response = await axios.get(
         "http://localhost:9090/inquiry/inquiry",
@@ -37,45 +40,75 @@ const useStore = create((set, get) => ({
             searchCondition: searchCondition,
             searchKeyword: searchKeyword,
             page: page,
-            contentsId: contentsId,
+            contentsId: parseInt(contentsId),
           },
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
           },
         }
       );
-      setInquiries(response.data.inquiryList);
+      set({
+        inquiries: response.data.inquiryList,
+        search: response.data.search,
+        loginMemberRole: response.data.loginMemberRole,
+        loginMemberId: response.data.loginMemberId,
+        loginMemberNickname: response.data.loginMemberNickname,
+        paymentList: response.data.paymentList,
+      });
       setPage(response.data.inquiryList.pageable.pageNumber);
     } catch (error) {
       console.error("Error fetching inquiries:", error);
     }
   },
 
-  handleInquirySubmit: async (inquiryTitle, inquiryContent) => {
-    const { inquiryFileDTOList } = get();
+  handleInquirySubmit: async (
+    inquiryTitle,
+    inquiryContent,
+    tagContent,
+    isPrivate,
+    contentsId,
+    inquiryFileDTOList,
+    fetchInquiries
+  ) => {
     try {
-      const noticeData = {
+      const inquiryData = {
         inquiryTitle: inquiryTitle,
         inquiryContent: inquiryContent
           .replaceAll("<", "&lt;")
           .replace(/>/g, "&gt;"),
+        isPrivate: isPrivate || false,
       };
+      console.log("태그", tagContent);
+      console.log("문의 데이터", inquiryData);
+      console.log("아이디는", contentsId);
+      console.log("타입은", typeof contentsId);
 
       const formData = new FormData();
 
-      const noticeDTO = new Blob([JSON.stringify(noticeData)], {
+      const inquiryDTO = new Blob([JSON.stringify(inquiryData)], {
         type: "application/json",
       });
 
-      formData.append("noticeDTO", noticeDTO);
+      formData.append("inquiryDTO", inquiryDTO);
 
       const inquiryFileDTOs = new Blob([JSON.stringify(inquiryFileDTOList)], {
         type: "application/json",
       });
 
-      formData.append("fileDTOList", inquiryFileDTOs);
+      formData.append("inquiryFileDTOList", inquiryFileDTOs);
 
-      await axios.post("http://localhost:9090/inquiry/inquiry", formData);
+      formData.append("tagDTOList", JSON.stringify(tagContent));
+
+      formData.forEach(function (value, key) {
+        console.log(key + ": " + value);
+      });
+
+      await axios.post(`http://localhost:9090/inquiry/inquiry`, formData, {
+        params: { contentsId: contentsId },
+      });
+
+      fetchInquiries();
+      alert("문의가 등록되었습니다.");
     } catch (error) {
       console.error("Error adding inquiry:", error);
     }
@@ -89,7 +122,7 @@ const useStore = create((set, get) => ({
     const { inquiryFileDTOList, setInquiryModifyFileList, inquiryModifyProc } =
       get();
     try {
-      const noticeData = {
+      const inquiryData = {
         id: inquiryId,
         inquiryTitle: inquiryTitle,
         inquiryContent: inquiryContent,
@@ -97,7 +130,7 @@ const useStore = create((set, get) => ({
 
       const formData = new FormData();
 
-      const inquiryDTO = new Blob([JSON.stringify(noticeData)], {
+      const inquiryDTO = new Blob([JSON.stringify(inquiryData)], {
         type: "application/json",
       });
 
@@ -159,7 +192,7 @@ const useStore = create((set, get) => ({
 
       console.log(response.data.item);
     } catch (error) {
-      console.error("Error adding notice:", error);
+      console.error("Error adding inquiry:", error);
     }
   },
 }));
