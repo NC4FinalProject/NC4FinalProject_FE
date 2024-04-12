@@ -22,6 +22,9 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import EmailVerification from "./pages/member/EmailVerification";
 import AdminUserDetail from "./pages/admin/AdminUserDetail";
 import AdminReportList from "./pages/admin/AdminReportList";
+import PaymentWidget from './components/organisms/cart/PaymentWidget';
+import PaymentSuccess from "./components/organisms/cart/PaymentSuccess";
+import PaymentFail from "./components/organisms/cart/PaymentFail";
 
 function App() {
   return (
@@ -71,6 +74,9 @@ function App() {
             <Route path="/error" element={<ErrorPage></ErrorPage>} />
             <Route path="/*" element={<ErrorPage></ErrorPage>} />
             <Route path="/cart" element={<Cart></Cart>}></Route>
+            <Route path="/paymentWidget" element={<PaymentWidget/>}/>
+            <Route path="/payment/success" element={<PaymentSuccess/>}/>
+            <Route path="/payment/fail" element={<PaymentFail/>}/>
           </Route>
         </Routes>
       </Container>

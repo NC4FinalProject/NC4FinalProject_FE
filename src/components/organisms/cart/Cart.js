@@ -12,6 +12,9 @@ import MemberStore from '../../../stores/MemberStore';
 const Cart = () => {
   const [cartItem, setCartItem] = useState([]);
   const {memberInfo} = MemberStore();
+  const [selectedItem, setSelectedItem] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [checkedCnt, setCheckedCnt] = useState(0);
 
   const getCart = useCallback(async () => {
     try {
@@ -34,6 +37,53 @@ const Cart = () => {
   useEffect(() => {
     getCart();
   }, []);
+
+  const changeSelectItem = useCallback((item, checked) => {
+    if(checked) {
+      setSelectedItem([...selectedItem, item]);
+    } else {
+      setSelectedItem(selectedItem.filter(sItem => sItem.contentsId !== item.contentsId));
+    }
+  }, [selectedItem, setSelectedItem]);
+
+  useEffect(() => {
+    if(selectedItem.length !== 0) {
+      sessionStorage.setItem("selectedItem", JSON.stringify(selectedItem));
+    } else {
+      sessionStorage.removeItem("selectedItem");
+    }
+  }, [selectedItem]);
+
+  useEffect(() => {
+    if(selectedItem) {
+      setTotalPrice(selectedItem.reduce((sum, cItem) => parseInt(sum) + parseInt(cItem.price), 0))
+    }
+    setCheckedCnt(selectedItem.length);
+  }, [selectedItem]);
+
+  const deleteSelectedItem = useCallback(async () => {
+    const deleteItem = selectedItem.map(item => ({
+      cartId: item.cartId,
+      contentsId: item.contentsId
+    }));
+
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/cart/delete`,
+        deleteItem,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      );
+      console.log(response);
+      setCartItem(response.data.item.cartContentsList);
+      setSelectedItem([]);
+    } catch(e) {
+      console.log(e);
+    }
+  }, [selectedItem]);
 
   return (
     <>
@@ -60,23 +110,15 @@ const Cart = () => {
               borderBottom="2px solid black"
             >
               <Grid>
-                <FormControlLabel
-                  control={<Checkbox />}
-                  label={
-                    <CoTypography size="NavTab">
-                      전체선택 {1} / {3}
-                    </CoTypography>
-                  }
-                  sx={{
-                    width: "max-content",
-                    "& .MuiSvgIcon-root": { fontSize: 28 },
-                  }}
-                />
+                  <CoTypography size="NavTab">
+                    선택된 강의 {checkedCnt} / {cartItem && cartItem.length}
+                  </CoTypography>
               </Grid>
               <Grid>
                 <CoHoverButton
                   variant="outlined"
                   style={{ padding: "5px 8px 5px 10px" }}
+                  onClick={deleteSelectedItem}
                 >
                   <span
                     style={{
@@ -91,15 +133,18 @@ const Cart = () => {
               </Grid>
             </Grid>
           </Grid>
-          {cartItem && cartItem.map((item) => (
+          {cartItem.length !== 0 ? cartItem.map((item) => (
             <CartItem
               key={item.contentsId}
               itemImg={item.thumbnail}
               itemName={item.contentsTitle}
               teacherName={item.author}
               price={item.price}
+              item={item}
+              setCartItem={setCartItem}
+              changeSelectItem={changeSelectItem}
             />
-          ))}
+          )) : <div>장바구니에 담긴 강의가 없습니다.</div>}
         </Grid>
         <Grid
           item
@@ -119,7 +164,12 @@ const Cart = () => {
             userNickname={memberInfo.userNickname}
             userEmail={memberInfo.username}
           />
-          <CartPayment />
+          <CartPayment 
+            totalPrice={totalPrice}
+            selectedItem={selectedItem}
+            userNickname={memberInfo.userNickname}
+            userEmail={memberInfo.username}
+          />
         </Grid>
       </Grid>
     </>
