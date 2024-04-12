@@ -6,21 +6,18 @@ import { Link } from 'react-router-dom'
 import SideItemReply from "./SideItemReply";
 import SideItemVideoList from './SideItemVideoList';
 
-import { Video } from '../../../../../api/contentsVideoApi';
-import { useContentsStore, useVideoReplyStore, useVideoUrlStore } from '../../../../../stores/ContentsStore';
+import { useContentsStore, useVideoReplyStore } from '../../../../../stores/ContentsStore';
+
 
 const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
   // const [selectedItem, setSelectedItem] = useState(1);
   const { getVideo, stateNum, stateNumChange } = useContentsStore();
-
+  const { videoReplyList } = useVideoReplyStore();
 
   const handleItemClick = (videoId) => {
     stateNumChange(videoId);
     videoCheck(videoId);
   };
-
-  useEffect(()=>{
-  },[getVideo.length])
 
   return (
     <>
@@ -42,11 +39,11 @@ const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
       </Box>
       ) : (
       <Box sx={{ paddingY: { xs: 1, sm: 1 },}}>
-        {Video[stateNum -1].videoReplyList.map((vrl, index) => (
+        {videoReplyList.map((vrl, index) => (
           <SideItemReply
             key={index}
-            content={vrl.content}
-            userName={vrl.username}
+            videoReplyContent={vrl.videoReplyContent}
+            userNickname={vrl.userNickname}
             userprofile={vrl.userProfile}
           />
         ))}

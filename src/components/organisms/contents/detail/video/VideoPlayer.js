@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useContentsStore, useVideoUrlStore } from '../../../../../stores/ContentsStore';
+import { useContentsStore, useVideoAddInfoStore } from '../../../../../stores/ContentsStore';
 
 const VideoPlayer = () => {
 
   const videoRef = useRef(null); // 비디오 요소를 참조하기 위한 ref 생성
 
   const { getVideo, stateNum, stateNumChange } = useContentsStore();
-  const { videoBaceURL, videoURL, getVideoURL } = useVideoUrlStore();
+  const { videoBaceURL, videoURL, getVideoURL } = useVideoAddInfoStore();
 
   const [videoSrc, setVideoSrc] = useState();
 

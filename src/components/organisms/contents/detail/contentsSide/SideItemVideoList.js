@@ -4,7 +4,7 @@ import { Avatar, Box, Card, CardMedia, Grid, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from "react-router-dom";
 import VideoThumbnail from '../video/VideoThumbnail';
-import { useVideoUrlStore } from '../../../../../stores/ContentsStore';
+import { useVideoAddInfoStore } from '../../../../../stores/ContentsStore';
 import VideoDuration from '../video/VideoDuration';
 
 
@@ -14,42 +14,48 @@ const GridContainerStyle = styled(Grid)(({ theme }) => ({
   display: "flex",
 }));
 
+const formatDuration = (seconds) => {
+  // 분과 초를 계산
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  // 두 자리수로 포맷팅
+  const paddedMinutes = minutes.toString().padStart(2, '0');
+  const paddedSeconds = remainingSeconds.toString().padStart(2, '0');
+
+  return `${paddedMinutes}:${paddedSeconds}`;
+};
+
 const SideItemVideoList = (props) => {
 
   const theme = useTheme();
   const videoRef = useRef(null);
-  const { videoBaceURL } = useVideoUrlStore();
+
+  const { videoBaceURL, videoTotalDuration, videoDuration, getVideoTotalDuration } = useVideoAddInfoStore();
+
   const [videoSrc, setVideoSrc] = useState();
+  const [duration, setDuration] = useState();
+
+
 
   useEffect(() => {
-    if(props.videoPath !== null){
-      setVideoSrc(videoBaceURL + props.videoPath)
-      console.log(videoSrc)
-      console.log("또 못가져오냐?")
+    // props.videoPath가 유효한지 확인
+    if (props.videoPath) {
+      const fullVideoUrl = videoBaceURL + props.videoPath;
+      setVideoSrc(fullVideoUrl); // videoSrc 상태 업데이트
+  
+      const video = document.createElement('video');
+      video.src = fullVideoUrl; // 직접 fullVideoUrl을 할당
+  
+      video.addEventListener('loadedmetadata', () => {
+        setDuration(video.duration); // 재생 시간 설정;
+      });  
+      // 메타데이터 로드를 위해 비디오 요소를 문서에 추가할 필요는 없음
+      // 하지만 필요하다면 video.play() 같은 작업을 수행하기 전에 할 수 있음
+      getVideoTotalDuration(videoDuration+videoTotalDuration)
+      console.log(videoTotalDuration)
     }
-  }, [videoSrc]);
-
-  // const [duration, setDuration] = useState(null);
-
-  // useEffect(() => {
-  //   // 비디오 요소 생성
-  //   const video = document.createElement('video');
-  //   video.src = videoSrc;
-  //   video.crossOrigin = 'anonymous'; // CORS 정책 준수
-
-  //   // 메타데이터 로드 완료 시 비디오 길이 설정
-  //   const onLoadedMetadata = () => {
-  //     setDuration(video.duration);
-  //     video.remove(); // 비디오 요소 제거
-  //   };
-
-  //   video.addEventListener('loadedmetadata', onLoadedMetadata);
-
-  //   // 컴포넌트 언마운트 시 이벤트 리스너 제거
-  //   return () => {
-  //     video.removeEventListener('loadedmetadata', onLoadedMetadata);
-  //   };
-  // }, [videoSrc]);
+  }, [props.videoPath, videoSrc, videoTotalDuration, duration]); // 의존성 배열에 videoBaceURL 추가
 
 
   return (
@@ -106,7 +112,9 @@ const SideItemVideoList = (props) => {
         {/* 타임 */}
         <Grid>
           <Typography sx={{ color: "#A4A4A4", fontSize: '0.7rem', lineHeight: '1.10' }} component="p">
-            {/* {duration.toFixed(2)} */} 00:14
+            {/* {duration.toFixed(2)} 00:14 */}
+            {formatDuration(duration)}
+            {/* {duration} */}
           </Typography>
           {/* <VideoDuration videoUrl={videoSrc}></VideoDuration> */}
         </Grid>

@@ -22,18 +22,13 @@ const ContentsSide = () => {
   const { videoReply, updateVideoReplyIds, updateVideoReplyContent, saveVideoReplyInput,
           videoReplyList, getVideoReplyList} = useVideoReplyStore();
 
-          
-
   ///////////////////////////////
   // contentsType
   // 단일 강의 일 경우 sideTypeOne - reply
   // 다중 강의 일 경우 sideTypeMulti - list reply
   // 화상 강의 일 경우 sideTypeReal - chat
   const [contentsType, setContentsType] = useState('sideTypeOne');
-  // contentsTypeBody
-  // list, reply, chat
   const [activeComponent, setActiveComponent] = useState('reply');
-  // 아아아아아?
   const [videoId, setVideoId] = useState();
   ///////////////////////////////
 
@@ -59,10 +54,10 @@ const ContentsSide = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [activeComponent]); 
+  }, [activeComponent, videoReplyList.length]); 
 
   useEffect(() => {
-    console.log(getVideo.length+"야 이게 최초 길이다 새끼야") //오ㅐ 1일지? 왜 0부터 안시작해?
+    // console.log(getVideo.length+"야 이게 최초 길이다 새끼야") //오ㅐ 1일지? 왜 0부터 안시작해?
     if (getVideo.length === 1) {
       setContentsType('sideTypeOne');
       setActiveComponent('reply');
@@ -75,7 +70,7 @@ const ContentsSide = () => {
   }, [getVideo.length]); 
 
   useEffect(() => {
-    console.log(`stateNum가 변경되었습니다: ${stateNum}`);
+    // console.log(`stateNum가 변경되었습니다: ${stateNum}`);
     // 여기에 stateNum 변경에 따른 로직을 추가하세요.
   }, [stateNum]); 
 
@@ -102,13 +97,16 @@ const ContentsSide = () => {
   }
 
   // 비디오별 댓글 키다운 이벤트 헬들러 이거 누르면 디비에 저장됨
-  const addVideoReplyFunc = (e) => {
+  const addVideoReplyFunc = async (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // 엔터 키로 인한 기본 이벤트(예: 폼 제출) 방지
-      saveVideoReplyInput(videoReply)
-      // saveVideoReplyApi(stateNum, videoReplyContent)
-      e.target.value = '';
-      // console.log("입력되는 비디오의 아이디다"+stateNum +"     ====== 내용이요 ㅋ"+videoReplyContent)
+      e.preventDefault(); // 엔터 키로 인한 기본 이벤트 방지
+      await saveVideoReplyInput(videoReply); // 댓글 저장을 기다림
+      const url = new URL(window.location.href);
+      const pathSegments = url.pathname.split('/');
+      const contentsId = pathSegments.pop() || '기본값';
+      await getVideoReplyList(contentsId, stateNum); // 최신 댓글 리스트를 가져옴
+  
+      e.target.value = ''; // 입력 필드 초기화
     }
   }
 
@@ -122,15 +120,12 @@ const ContentsSide = () => {
     const pathSegments = url.pathname.split('/');
     const contentsId = pathSegments.pop() || '기본값';
   
-    getVideoReplyList(contentsId, stateNum).then(() => {
-      // console.log("비동기 처리 완료 후 videoReplyList:", videoReplyList);
-    });
-    console.log(videoReplyList);
-  }, [stateNum, getVideoReplyList, videoReplyList]); 
+    getVideoReplyList(contentsId, stateNum)
 
-  useEffect(() => {
-    console.log("비동기 처리 완료 후 videoReplyList:", videoReplyList);
-  }, [videoReplyList]); // videoReplyList 상태 변경을 추적
+    console.log("받아오는거여 아니여 뭐여", videoReplyList);
+  }, [stateNum, , videoReplyList.length, getVideoReplyList]); 
+
+
 
 
   return (
@@ -252,6 +247,5 @@ const ContentsSide = () => {
     </Grid>
   )
 }
-
 
 export default ContentsSide

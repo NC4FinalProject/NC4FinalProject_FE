@@ -191,11 +191,16 @@ export const useContentsListStore = create((set) => ({
 }));
 
 // 비디오 관련
-export const useVideoUrlStore = create((set) => ({
+export const useVideoAddInfoStore = create((set) => ({
   videoBaceURL: "https://kr.object.ncloudstorage.com/bitcamp-bucket-121/",
   videoURL: '',
+  videoTotalDuration: '',
+  videoDuration: '',
   getVideoURL: (videoURL) => set(() => ({
     videoURL: videoURL
+  })),
+  getVideoTotalDuration: (totalDuration) => set(() => ({
+    videoTotalDuration: totalDuration
   })),
 }));
 
@@ -232,18 +237,15 @@ export const useVideoReplyStore = create((set) => ({
   getVideoReplyList: async (contentsId, videoId) => {
     try {
         const data = await getVideoReplyApi(contentsId, videoId);
-        set({ videoReplyList: data.items,
+        set({ videoReplyList: data,
         });
     } catch (error) {
         console.error(error);
     }
   },
-
 }));
 
-
 export const useContentsCountStateStore = create((set) => ({
-
 }))
 
 

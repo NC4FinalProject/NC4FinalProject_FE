@@ -94,7 +94,7 @@ const ContentsInfo = ({ contents, countState, video } ) => {
       
       <Grid alignItems='start'>
        <Typography sx={{ fontSize: '0.95rem' }}>
-          {getContents.memberId}
+          {getContents.userNickname}
           {/* 고기천 강자님 */}
         </Typography>
        <Typography sx={{ fontSize: '0.75rem' }}>
