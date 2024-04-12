@@ -13,7 +13,7 @@ import { MenuContext } from '../admin/MenuContext';
 
 const AdminLayout = ({ children }) => {
   const [hover, setHover] = useState(false);
-  const { userNotice, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
+  const { userNotice, contents, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
   const { toggleMenu } = useContext(MenuContext);
   const [disable, setDisable] = useState([]);
   const [graphMode, setGraphMode] = useState('daily'); 
@@ -94,6 +94,7 @@ const AdminLayout = ({ children }) => {
 }, [graphMode,NewUser,MonthlytotalUserCount,MonthlyCounts,daliyOutUserCount]);
 
   return (
+    console.log(contents),
     <>
       <Box sx={{display:'flex'}}>
         <Paper sx={{height:'4.25rem', display:'flex', width:'100%'}}>
@@ -165,22 +166,12 @@ const AdminLayout = ({ children }) => {
                 <Typography sx={{ paddingTop: '0.5rem', paddingRight: '0.5rem', fontSize: '0.8125rem' }}>더보기+</Typography>
               </Link>
             </Box>
+            {contents.map((content, index) => (
             <Box sx={{ width: '100%' }}>
-              <CoTypography size="AdminNotice">최근 게시판 :ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography>
-              <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11&nbsp;&nbsp;조회수 : 0</CoTypography>
+              <CoTypography size="AdminNotice">{content.contentsTitle}</CoTypography>
+              <CoTypography size="AdminTag">작성자 | {content.memberId}&nbsp;&nbsp; 작성일 : {formatDate(content.regDate)}&nbsp;&nbsp;카테고리 : {content.category}</CoTypography>
             </Box>
-            <Box sx={{ width: '100%' }}>
-              <CoTypography size="AdminNotice">최근 게시판 :ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography>
-              <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11&nbsp;&nbsp;조회수 : 0</CoTypography>
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <CoTypography size="AdminNotice">최근 게시판 :ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography>
-              <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11&nbsp;&nbsp;조회수 : 0</CoTypography>
-            </Box>
-            <Box sx={{ width: '100%' }}>
-              <CoTypography size="AdminNotice">최근 게시판 :ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ</CoTypography>
-              <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11&nbsp;&nbsp;조회수 : 0</CoTypography>
-            </Box>
+            ))}
           </Paper>
         </Box>
       </Grid>

@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom'
 // icon & images
 import SideItemReply from "./SideItemReply";
 import { ReplyList } from '../../../../api/contentsReplyApi';
+import { useVideoReplyStore } from '../../../../../stores/ContentsStore';
 
 
 const SideTypeOne = () => {
+
   return (
     <>
       <Box sx={{ padding: { xs: 1, sm: 1 } }}>
