@@ -1,13 +1,11 @@
-import { Box, Button, ButtonGroup, Grid, IconButton, Table, TextField, Typography } from '@mui/material'
+import { Grid, IconButton, TextField, Typography } from '@mui/material'
 import React, { Fragment, useState } from 'react'
-import CoTypography from '../../../atoms/common/CoTypography'
+import CoTypography from '../../../../atoms/common/CoTypography'
 import styled from 'styled-components'
-import {CategoryList} from '../../../../api/curriculumCourseApi'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import RemoveSharpIcon from '@mui/icons-material/RemoveSharp';
-import CoHoverButton from '../../../atoms/common/CoHoverButton'
-import Codialog from '../../common/Codialog'
-import { useContentsStore } from '../../../../stores/ContentsStore'
+import CoHoverButton from '../../../../atoms/common/CoHoverButton'
+import { useContentsStore } from '../../../../../stores/ContentsStore'
 
 
 const SubSection = ({ sectionSub, subIndex }) => (
@@ -39,7 +37,7 @@ const TitleTextField = styled(TextField)({
   },
 });
 
-const CurriculumCourse = () => {
+const Section = () => {
 
   const [showHideSubSections, setShowHideSubSections] = useState(false);
 
@@ -118,4 +116,4 @@ const CurriculumCourse = () => {
   );
 }
 
-export default CurriculumCourse
+export default Section

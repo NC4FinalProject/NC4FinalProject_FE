@@ -4,10 +4,14 @@ import InsertCKEditor from '../../../atoms/common/InsertCKEditor'
 import CoTypography from '../../../atoms/common/CoTypography'
 
 const ChapterThree = () => {
+
     const [introduce, setIntroduce] = useState("");
+
 
     const handleContentChange = (event, editor) => {
         const data = editor.getData();
+        // const text = event.target();
+        console.log(data)
         setIntroduce(data);
     };
 
@@ -17,7 +21,14 @@ const ChapterThree = () => {
                 <Grid item xs={2}/>
                 <Grid item xs={8}>
                     <CoTypography size="Title" style={{marginBottom: '24px'}}>강의소개</CoTypography>
-                    <InsertCKEditor onChange={handleContentChange}/>
+                    <InsertCKEditor 
+                        onChange={handleContentChange}
+                        // data={content}
+                        config={{
+                            // extraPlugins: [UploadAdapterPlugin],
+                        }}/>
+
+                    
                 </Grid>
                 <Grid item xs={2}/>
             </Grid>

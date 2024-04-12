@@ -20,6 +20,7 @@ export const getContentsIdApi = async (contentsId) => {
       throw error;
   }
 }
+
 // 전체 목록 가져오기
 export const getContentsListApi = async()=>{
   try {
@@ -34,39 +35,6 @@ export const getContentsListApi = async()=>{
 } catch (error) {
     throw error;
 }}
-
-// export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail) => {
-//   console.log("=============" + chapterOne, chapterTwo, videoInfo, videoFile, thumbnail);
-//   try {
-//     const requestBody = {
-//       contentsDTO: chapterOne,
-//       sectionDTO: chapterTwo,
-//       videoDTO: videoInfo,
-//       formVideoFile: videoFile,
-//       formThumbnail: thumbnail
-//     };
-
-//     const response = await axios.post('http://localhost:9090/contents/create',
-//     requestBody,
-    
-//     {
-//       headers: {
-//         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-//       },
-//       // params: {
-//       //   searchCondition: search.searchCondition,
-//       //   searchKeyword: search.searchKeyword,
-//       //   page: search.page
-//       // }
-//     }
-
-//   );
-//     return response.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
 
 export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail) => {
   console.log("=======에이피아이쪽======" + chapterOne +"11111"+ chapterTwo +"11111"+ videoInfo +"11111"+ videoFile +"11111"+ thumbnail);
@@ -99,25 +67,47 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
       console.log(error.response.data);
     }
   }
-
 };
 
-export const saveVideoReplyApi = async (videoReplyId, videoReplyContent) => {
-  console.log(videoReplyId, videoReplyContent);
+export const saveVideoReplyApi = async (videoReply) => {
   try {
-    const response = await axios.post('http://localhost:9090/contents/detail/saveVideoReply', {
-      videoReplyId, videoReplyContent
-    },{
+    await axios.post('http://localhost:9090/contents/detail/saveVideoReply', videoReply, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
       },
     });
-    console.log('서버 응답:', response.data);
+    // 요청이 성공적으로 처리되었을 때 필요한 처리를 여기에 추가할 수 있습니다.
+    // 예: console.log('댓글이 성공적으로 저장되었습니다.');
   } catch (error) {
     console.error('데이터 전송 중 에러 발생:', error);
     if (error.response) {
+      // 서버로부터의 오류 응답을 처리합니다.
       console.log(error.response.data);
     }
   }
+};
 
+
+export const getVideoReplyApi = async (contentsId, videoId) => {
+  try {
+    const response = await axios.get('http://localhost:9090/contents/detail/getVideoReplyList', {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+      },
+      params: {
+        contentsId: contentsId,
+        videoId: videoId,
+      },
+    });
+    console.log(contentsId, videoId)
+    console.log("아오씨 데이터 받아오나 마?")
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error('데이터 요청 중 에러 발생:', error);
+    if (error.response) {
+      // 서버로부터의 오류 응답을 처리합니다.
+      console.log(error.response.data);
+    }
+  }
 };
