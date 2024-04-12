@@ -5,9 +5,8 @@ import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import Reportdialog from "../review/Reportdialog";
-
-const InquriyComment = ({
+import InquiryReportDialog from "./InquiryReportDialog";
+const InquiryComment = ({
   name,
   regDate,
   content,
@@ -91,13 +90,16 @@ const InquriyComment = ({
               {content}
             </CoTypography>
           </Grid>
-          <Grid
-            container
-            justifyContent="flex-end"
-            sx={{ cursor: "pointer" }}
-            onClick={handleOpenCommentReportDialog}
-          >
-            <Grid sx={{ display: "flex", alignItems: "center", mr: "0.5rem" }}>
+          <Grid container justifyContent="flex-end">
+            <Grid
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                mr: "0.5rem",
+                cursor: "pointer",
+              }}
+              onClick={handleOpenCommentReportDialog}
+            >
               <NotificationsOutlinedIcon
                 sx={{ mr: "0.25rem", color: "#e65100" }}
               />
@@ -116,7 +118,7 @@ const InquriyComment = ({
           </Grid>
         </Grid>
       </Grid>
-      <Reportdialog
+      <InquiryReportDialog
         open={openCommentReportDialog}
         handleClickClose={handleCloseCommentReportDialog}
       />
@@ -124,4 +126,4 @@ const InquriyComment = ({
   );
 };
 
-export default InquriyComment;
+export default InquiryComment;
