@@ -263,7 +263,7 @@ const AdminLayout = ({ children }) => {
               {user.profileFile === null ? (
                 <Avatar src="/broken-mage.jpg" style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem'}}/> 
                   ) : (
-                      <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + user.profileFile} alt='thumbnail' style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem', borderRadius:'70%'}}/> 
+                      <img src={`https://kr.object.ncloudstorage.com/envdev/` + user.profileFile} alt='thumbnail' style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem', borderRadius:'70%'}}/>
                     )}
                 <Box sx={{ width: '100%' }}>
                   <CoTypography size="AdminNotice">{user.userNickname}&nbsp;</CoTypography>
@@ -299,7 +299,7 @@ const AdminLayout = ({ children }) => {
                     {user.profileFile === null ? (
                       <Avatar src="/broken-mage.jpg" style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem' }} />
                     ) : (
-                      <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + user.profileFile} alt='thumbnail' style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem', borderRadius: '70%' }} />
+                      <img src={`https://kr.object.ncloudstorage.com/envdev/` + user.profileFile} alt='thumbnail' style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem', borderRadius: '70%' }} />
                     )}
                     <Box sx={{ width: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
