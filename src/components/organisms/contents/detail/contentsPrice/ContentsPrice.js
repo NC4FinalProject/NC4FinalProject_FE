@@ -61,6 +61,8 @@ const ContentsPrice = ({contentsId}) => {
       console.log(e);
       if(e.response.data.errorCode === 4001) {
         alert("이미 장바구니에 있는 강의입니다.");
+      } else if(e.response.data.errorCode === 4002) {
+        alert("이미 구매한 강의입니다.");
       } else {
         alert("에러 발생. 관리자에게 문의하세요.");
       }
