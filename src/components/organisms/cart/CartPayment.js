@@ -1,8 +1,19 @@
 import { Button, Grid } from "@mui/material";
-import React from "react";
+import React, {useCallback} from "react";
 import CoTypography from "../../atoms/common/CoTypography";
+import {useNavigate} from 'react-router-dom';
 
-const CartPayment = () => {
+const CartPayment = ({totalPrice, selectedItem, userNickname, userEmail}) => {
+  const navi = useNavigate();
+
+  const openPaymentWidget = useCallback(async () => {
+    if(selectedItem.length <= 0) {
+      alert("결제할 강의를 먼저 선택하세요.");
+      return;
+    }
+    navi("/paymentWidget", {state: {selectedItem: selectedItem, userNickname: userNickname, userEmail: userEmail}})
+  }, [selectedItem]);
+
   return (
     <>
       <Grid
@@ -20,12 +31,12 @@ const CartPayment = () => {
           </Grid>
           <Grid>
             <CoTypography size="Tag" style={{ color: "black" }}>
-              40,800원
+              {totalPrice + '원'}
             </CoTypography>
           </Grid>
         </Grid>
         <Grid mb="1rem">
-          <Button variant="contained" fullWidth>
+          <Button onClick={openPaymentWidget} variant="contained" fullWidth>
             결제하기
           </Button>
         </Grid>

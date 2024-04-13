@@ -22,6 +22,10 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import EmailVerification from "./pages/member/EmailVerification";
 import AdminUserDetail from "./pages/admin/AdminUserDetail";
 import AdminReportList from "./pages/admin/AdminReportList";
+import AdminContent from "./pages/admin/AdminContent";
+import PaymentWidget from './components/organisms/cart/PaymentWidget';
+import PaymentSuccess from "./components/organisms/cart/PaymentSuccess";
+import PaymentFail from "./components/organisms/cart/PaymentFail";
 
 function App() {
     return (
@@ -33,6 +37,7 @@ function App() {
                         <Route path="/admin/user" element={<AdminUser></AdminUser>}></Route>
                         <Route path="/admin/user/:userId" element={<AdminUserDetail></AdminUserDetail>}></Route>
                         <Route path="/admin/report" element={<AdminReportList></AdminReportList>}></Route>
+                        <Route path="/admin/contents" element={<AdminContent></AdminContent>}></Route>
                     </Route>
                     <Route element={<MainLayout/>}>
                         <Route path="/" element={<Home></Home>}></Route>
@@ -67,15 +72,18 @@ function App() {
 
                         <Route path="/insert" element={<Insert></Insert>}/>
                         {/* /////////////////////////////////////////// */}
+            <Route path="/error" element={<ErrorPage></ErrorPage>} />
+            <Route path="/*" element={<ErrorPage></ErrorPage>} />
+            <Route path="/cart" element={<Cart></Cart>}></Route>
+            <Route path="/paymentWidget" element={<PaymentWidget/>}/>
+            <Route path="/payment/success" element={<PaymentSuccess/>}/>
+            <Route path="/payment/fail" element={<PaymentFail/>}/>
+          </Route>
+        </Routes>
+      </Container>
+    </ThemeProvider>
+  );
 
-                        <Route path="/error" element={<ErrorPage></ErrorPage>}/>
-                        <Route path="/*" element={<ErrorPage></ErrorPage>}/>
-                        <Route path="/cart" element={<Cart></Cart>}></Route>
-                    </Route>
-                </Routes>
-            </Container>
-        </ThemeProvider>
-    );
 }
 
 export default App;
