@@ -72,19 +72,6 @@ const Home = () => {
 
             :
             <ContentsCard key={index} {...item} sx={{display:'none'}} />
-
-            // <div style={{display: 'none', transition: 'display 0.5s'}}>
-            //   <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
-            //     <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
-            //   </Paper>
-            //   <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
-            //   <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
-            //   <div style={{display: 'flex', alignItems: 'center'}}>
-            //     <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-            //     <CoTypography size="Tag">(300)</CoTypography>
-            //   </div>
-            // </div>
-            
       })}
         </Grid>
         <Carousel show={1} slide={1} swiping={true} style={{width:'100%'}}
@@ -119,40 +106,14 @@ const Home = () => {
            return parseInt(index / 4) * 4 === slideIndex ?
             
            <ContentsCard key={index} {...item} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
-
-          //  <div style={{display: 'block'}}>
-          //     <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem',position: 'relative'}}>
-          //       <img src={item.img} alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
-          //       <BookmarkBorderIcon style={{position: 'absolute', top: '5px', right:'5px'}} />
-          //     </Paper>
-          //     <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
-          //     <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
-          //     <div style={{display: 'flex', alignItems: 'center'}}>
-          //       <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-          //       <CoTypography size="Tag">(300)</CoTypography>
-          //     </div>
-          //   </div>
-          
             :
 
             <ContentsCard key={index} {...item} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
-            // <div key={index} style={{display: 'none'}}>
-            //   <Paper elevation={1} style={{width:'19.1875rem', height:'11.875rem',  borderRadius: '0.5rem', marginRight:'1.5rem'}}>
-            //     <img src='/images/teacher.jpg' alt='teacher' style={{width: '100%', height: '100%', objectFit: 'cover',  borderRadius: '0.25rem'}} />
-            //   </Paper>
-            //   <CoTypography style={{marginTop:'5px'}}>프론트 리액트 1시간만에 마스터하기</CoTypography>
-            //   <CoTypography size="Content" style={{color:'#7d7d7d'}}>프론트앤드 | 손우성</CoTypography>
-            //   <div style={{display: 'flex', alignItems: 'center'}}>
-            //     <Rating name="read-only" value={4} readOnly style={{fontSize: '1rem'}} />
-            //     <CoTypography size="Tag">(300)</CoTypography>
-            //   </div>
-            // </div>
-            
       })}
         </Grid>
         <Grid container spacing={2} style={{marginTop:'0.725rem'}}>
   <Grid item xs={6} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '20rem' }}>
-    <CoTypography style={{fontSize:'3rem'}}>NC4 FINAL을 통해 연결되는 IT, 당신의 열정을 응원합니다.</CoTypography>
+    <CoTypography style={{fontSize:'3rem'}}>NC4 ALL을 통해 연결되는 IT, &nbsp;&nbsp;당신의 열정을 응원합니다.</CoTypography>
     <CoTypography>학교에서 배우기 어렵거나 큰 비용을 지불해야만 배울 수 있는 전문적인 지식들을 제공합니다.
     오픈 플랫폼의 이점을 통해 다양성과 경제성을 모두 높입니다.</CoTypography>
   </Grid>
