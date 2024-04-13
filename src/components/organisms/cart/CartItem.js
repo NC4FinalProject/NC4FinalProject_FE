@@ -1,9 +1,36 @@
 import { Checkbox, FormControlLabel, Grid } from "@mui/material";
-import React from "react";
+import React, { useCallback } from "react";
 import CoTypography from "../../atoms/common/CoTypography";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import axios from 'axios';
 
-const CartItem = ({ itemImg, itemName, teacherName, price }) => {
+const CartItem = ({ itemImg, itemName, teacherName, price, setCartItem, item, changeSelectItem }) => {
+  const onCheckBoxClick = useCallback((e) => {
+    changeSelectItem(item, e.target.checked);
+  }, [changeSelectItem]);
+
+  const deleteOne = useCallback(async() => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:9090/cart/deleteOne/${item.cartId}`,
+        {
+          headers:
+            {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+            },
+            params: {
+              contentsId: item.contentsId
+            }
+        }
+      );
+
+      setCartItem(response.data.item.cartContentsList);
+      changeSelectItem(item, false);
+    } catch(e) {
+      console.log(e);
+    }
+  }, [item]);
+  
   return (
     <>
       <Grid
@@ -18,7 +45,7 @@ const CartItem = ({ itemImg, itemName, teacherName, price }) => {
       >
         <Grid item xs={0.5}>
           <FormControlLabel
-            control={<Checkbox />}
+            control={<Checkbox onClick={onCheckBoxClick}/>}
             sx={{
               width: "max-content",
               "& .MuiSvgIcon-root": { fontSize: 28 },
@@ -48,7 +75,7 @@ const CartItem = ({ itemImg, itemName, teacherName, price }) => {
           </Grid>
         </Grid>
         <Grid item xs={0.75}>
-          <CloseOutlinedIcon style={{ verticalAlign: "middle" }} />
+          <CloseOutlinedIcon onClick={deleteOne} style={{ cursor: 'pointer', verticalAlign: "middle" }} />
         </Grid>
         <Grid item xs={2} display="flex" justifyContent={"flex-end"}>
           {price && (
