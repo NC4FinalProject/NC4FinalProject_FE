@@ -203,7 +203,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     },
   ];
 
-  const selectSearch = ["전체", "작성자", "내용", "주제"];
+  const selectSearch = ["전체", "작성자", "내용", "주제, 태그"];
 
   return (
     <>
