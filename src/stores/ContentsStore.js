@@ -22,10 +22,8 @@ export const contentsCategoryItems = [
   { id: "el4", type: "인공지능" },
   { id: "el5", type: "보안 · 네트워크" },
   { id: "el6", type: "비즈니스 · 마케팅" },
-  { id: "el7", type: "인공지능" },
-  { id: "el8", type: "보안 · 네트워크" },
-  { id: "el9", type: "하드웨어" },
-  { id: "el10", type: "웹 디자인" },
+  { id: "el7", type: "하드웨어" },
+  { id: "el8", type: "웹 디자인" },
 ];
 
 // 챕터 1에 대한 입력 정보 상태 및 액션//////////////////////////////

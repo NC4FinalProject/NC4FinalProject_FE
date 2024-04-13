@@ -10,6 +10,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from 'axios';
 import Login from '../member/Login';
+import AdminStore from '../../stores/AdminStore';
 import MemberStore from '../../stores/MemberStore';
 
 const NoticeList = () => {
@@ -37,7 +38,7 @@ const NoticeList = () => {
     setFileDTOList,
   } = useStore();
 
-  const {userRole} = MemberStore();
+  const { userRole } = MemberStore();
 
   const tempFileDTOList = [];
 

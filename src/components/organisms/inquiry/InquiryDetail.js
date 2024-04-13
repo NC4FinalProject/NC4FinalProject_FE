@@ -1,4 +1,4 @@
-import { ThumbUp, Visibility } from "@mui/icons-material";
+import {  Visibility } from "@mui/icons-material";
 import { Button, ButtonGroup, Chip, Grid, Box } from "@mui/material";
 import React from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
@@ -10,10 +10,13 @@ import InquiryReportDialog from "./InquiryReportDialog";
 import InquiryComment from "./InquiryComment";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [openReportDialog, setOpenReportDialog] = useState(false);
+  const [isFavorited, setFavorited] = useState(false);
 
   const handleEditorClick = () => {
     setShowEditor(true);
@@ -106,15 +109,6 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                     mr: "1rem",
                   }}
                 />
-                <ThumbUp
-                  sx={{
-                    mr: "0.25rem",
-                    color: "#868e96",
-                  }}
-                />
-                <CoTypography size="TableContent" color="textSecondary">
-                  {inquiry.viewCount}
-                </CoTypography>
               </Grid>
             </Grid>
           </Grid>
@@ -213,6 +207,22 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                     신고하기
                   </CoTypography>
                 </Grid>
+                <Grid sx={{ display: "flex", alignItems: "center" }}>
+                {isFavorited ? (
+                  <FavoriteIcon
+                    sx={{ mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
+                    onClick={() => setFavorited(false)}
+                  />
+                ) : (
+                  <FavoriteBorderOutlinedIcon
+                    sx={{ mr: "0.25rem", color: "#444444" }}
+                    onClick={() => setFavorited(true)}
+                  />
+                )}
+              <CoTypography size="TableContent" color="textSecondary">
+                {/* {likeCount} */}3
+              </CoTypography>
+            </Grid>
                 {/* <Grid sx={{ display: "flex", alignItems: "center" }}>
                   <ShareOutlinedIcon sx={{ mr: "0.25rem" }} />
                   <CoTypography size="TableContent" color="textSecondary">
@@ -268,15 +278,6 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                   </CoTypography>
                   <Button style={{ border: "none" }}>
                     <CoTypography size="TableContent">좋아요순</CoTypography>
-                  </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">댓글순</CoTypography>
                   </Button>
                 </ButtonGroup>
               </Grid>

@@ -97,6 +97,7 @@ userPwChk: '',
         });
         setPage(response.data.pageable.pageNumber);
        setMemberInfo(response.data);
+
     } catch (error) {
         console.log('에러:', error);
     }
@@ -155,6 +156,25 @@ handleSavePoint: async (userId) => {
         });
         alert('포인트가 적립되었습니다.');
         window.location.reload();
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+getContentsList: async () => {
+    const { setContents, searchCondition, searchKeyword,page,setPage } = get();
+    try {
+        const response = await axios.get('http://localhost:9090/admin/contents', {
+            params: {
+                searchCondition: searchCondition,
+                searchKeyword: searchKeyword,
+                page: page,
+              },
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        });
+        setPage(response.data.pageable.pageNumber);
+        setContents(response.data);
     } catch (error) {
         console.log('에러:', error);
     }
