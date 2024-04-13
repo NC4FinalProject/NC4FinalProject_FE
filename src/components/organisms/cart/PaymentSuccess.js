@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {Button} from '@mui/material';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 
 export default function PaymentSuccess() {
   const [isConfirmed, setIsConfirmed] = useState(false);
@@ -10,6 +11,7 @@ export default function PaymentSuccess() {
   const orderId = searchParams.get("orderId");
   const amount = searchParams.get("amount");
   const selectedItem = JSON.parse(sessionStorage.getItem("selectedItem"));
+  const navi = useNavigate();
 
   async function confirmPayment() {
     // TODO: API를 호출해서 서버에게 paymentKey, orderId, amount를 넘겨주세요.
@@ -47,6 +49,11 @@ export default function PaymentSuccess() {
         );
 
         console.log(response.data);
+
+        if(response.data.item.paymentId) {
+            sessionStorage.removeItem("selectedItem");
+            navi('/mypage', {state: {tab: 1}});
+        }
     } catch(e) {
         console.log(e);
     }

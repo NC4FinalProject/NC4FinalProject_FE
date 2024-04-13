@@ -11,6 +11,7 @@ import Point from '../../components/organisms/mypage/Point';
 import Cart from '../../components/organisms/cart/Cart';
 import MyContents from '../../components/organisms/mypage/MyContents';
 import axios from 'axios';
+import {useLocation} from 'react-router-dom';
 
 function a11yProps(index) {
     return {
@@ -23,6 +24,14 @@ const Mypage = () => {
 
     const [value, setValue] = useState(0);
     const [role, setRole] = useState(null);
+    const location = useLocation();
+    const tabIndex = location.state.tab;
+
+    useEffect(() => {
+      if(tabIndex) {
+        handleChange(null, tabIndex);
+      }
+    }, [tabIndex]);
 
     const initialize = async e => {
       try { 

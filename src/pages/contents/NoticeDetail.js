@@ -286,7 +286,7 @@ const handleDelete = async () => {
        {notice.profileImageUrl == null ? (
         <Avatar src="/broken-mage.jpg" style={{width: '2rem', height: '2rem',marginLeft: '0'}}/> 
            ) : (
-              <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + notice.profileImageUrl} alt='thumbnail' style={{width: '3rem', height: '3rem', borderRadius: '70%'}}/> 
+              <img src={`https://kr.object.ncloudstorage.com/envdev/` + notice.profileImageUrl} alt='thumbnail' style={{width: '3rem', height: '3rem', borderRadius: '70%'}}/> 
             )}
             <CoTypography size='Content' sx={{marginLeft:'0.725rem'}}>작성자: {notice.noticeWriter}</CoTypography>
      </Box>
