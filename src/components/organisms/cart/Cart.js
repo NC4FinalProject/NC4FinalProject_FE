@@ -11,14 +11,10 @@ import MemberStore from "../../../stores/MemberStore";
 
 const Cart = () => {
   const [cartItem, setCartItem] = useState([]);
-<<<<<<< HEAD
   const {memberInfo} = MemberStore();
   const [selectedItem, setSelectedItem] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedCnt, setCheckedCnt] = useState(0);
-=======
-  const { memberInfo } = MemberStore();
->>>>>>> origin/main
 
   const getCart = useCallback(async () => {
     try {
@@ -134,7 +130,6 @@ const Cart = () => {
               </Grid>
             </Grid>
           </Grid>
-<<<<<<< HEAD
           {cartItem.length !== 0 ? cartItem.map((item) => (
             <CartItem
               key={item.contentsId}
@@ -147,18 +142,6 @@ const Cart = () => {
               changeSelectItem={changeSelectItem}
             />
           )) : <div>장바구니에 담긴 강의가 없습니다.</div>}
-=======
-          {cartItem &&
-            cartItem.map((item) => (
-              <CartItem
-                key={item.contentsId}
-                itemImg={item.thumbnail}
-                itemName={item.contentsTitle}
-                teacherName={item.author}
-                price={item.price}
-              />
-            ))}
->>>>>>> origin/main
         </Grid>
         <Grid
           item
