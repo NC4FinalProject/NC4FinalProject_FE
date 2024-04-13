@@ -231,7 +231,7 @@ export const useContentsListStore = create((set) => ({
 }));
 
 export const useVideoAddInfoStore = create((set) => ({
-  videoBaceURL: "https://kr.object.ncloudstorage.com/bitcamp-bucket-121/",
+  videoBaceURL: "https://kr.object.ncloudstorage.com/envdev/",
   videoURL: "",
   videoTotalDuration: "",
   videoDuration: "",
