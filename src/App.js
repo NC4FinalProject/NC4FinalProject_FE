@@ -23,11 +23,14 @@ import EmailVerification from "./pages/member/EmailVerification";
 import AdminUserDetail from "./pages/admin/AdminUserDetail";
 import AdminReportList from "./pages/admin/AdminReportList";
 import AdminContent from "./pages/admin/AdminContent";
+import PaymentWidget from './components/organisms/cart/PaymentWidget';
+import PaymentSuccess from "./components/organisms/cart/PaymentSuccess";
+import PaymentFail from "./components/organisms/cart/PaymentFail";
 
 function App() {
     return (
         <ThemeProvider theme={createTheme}>
-            <Container  style={{maxWidth: "1300px", padding: 0}}>
+            <Container maxWidth="sm" style={{maxWidth: "1300px", padding: 0}}>
                 <Routes>
                     <Route element={<AdminPage/>}>
                         <Route path="/admin/main" element={<AdminLayout></AdminLayout>}></Route>
@@ -69,15 +72,18 @@ function App() {
 
                         <Route path="/insert" element={<Insert></Insert>}/>
                         {/* /////////////////////////////////////////// */}
+            <Route path="/error" element={<ErrorPage></ErrorPage>} />
+            <Route path="/*" element={<ErrorPage></ErrorPage>} />
+            <Route path="/cart" element={<Cart></Cart>}></Route>
+            <Route path="/paymentWidget" element={<PaymentWidget/>}/>
+            <Route path="/payment/success" element={<PaymentSuccess/>}/>
+            <Route path="/payment/fail" element={<PaymentFail/>}/>
+          </Route>
+        </Routes>
+      </Container>
+    </ThemeProvider>
+  );
 
-                        <Route path="/error" element={<ErrorPage></ErrorPage>}/>
-                        <Route path="/*" element={<ErrorPage></ErrorPage>}/>
-                        <Route path="/cart" element={<Cart></Cart>}></Route>
-                    </Route>
-                </Routes>
-            </Container>
-        </ThemeProvider>
-    );
 }
 
 export default App;
