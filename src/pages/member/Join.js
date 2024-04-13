@@ -26,7 +26,7 @@ const Join = () => {
     };
 
     const Kakao_Rest_api_key = process.env.REACT_APP_KAKAO_REST_API; //REST API KEY
-    const kakao_redirect_url = 'http://localhost:3000/kakao-login' //Redirect URI
+    const kakao_redirect_url = 'http://${process.env.REACT_APP_FRONT_URL}/kakao-login' //Redirect URI
     // oauth 요청 URL
     const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${Kakao_Rest_api_key}&redirect_uri=${kakao_redirect_url}&response_type=code`
     
@@ -35,7 +35,7 @@ const Join = () => {
         };
 
     const Google_Rest_api_key = process.env.REACT_APP_GOOGLE_REST_API; //REST API KEY
-    const google_redirect_url = 'http://localhost:3000/google-login' //Redirect URI
+    const google_redirect_url = 'http://${process.env.REACT_APP_FRONT_URL}/google-login' //Redirect URI
     // oauth 요청 URL
     const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${Google_Rest_api_key}&redirect_uri=${google_redirect_url}&response_type=code&scope=email profile`
     
@@ -46,7 +46,7 @@ const Join = () => {
     const join = useCallback(
         async (username, password, userNickname) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/join', {
+                const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/member/join', {
                     username: username,
                     password: password,
                     userNickname: userNickname
@@ -93,7 +93,7 @@ const Join = () => {
     const emailCheck = useCallback(
         async (username) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/email-check', {
+                const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/member/email-check', {
                     username: username
                 });
 
@@ -126,7 +126,7 @@ const Join = () => {
     const nicknameCheck = useCallback(
         async (userNickname) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/nickname-check', {
+                const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/member/nickname-check', {
                     userNickname: userNickname
                 });
 

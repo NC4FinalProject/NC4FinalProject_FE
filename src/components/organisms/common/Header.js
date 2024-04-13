@@ -16,7 +16,7 @@ const Header = () => {
     const {setMemberInfo} = MemberStore((state) => state);
     const handleLogout = () => {
         const response = axios
-            .get(`http://localhost:9090/member/logout`, {
+            .get(`http://${process.env.REACT_APP_BACK_URL}/member/logout`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
                 },

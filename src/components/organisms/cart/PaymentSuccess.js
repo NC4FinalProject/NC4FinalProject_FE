@@ -37,7 +37,7 @@ export default function PaymentSuccess() {
         }));
 
         const response = await axios.post(
-            `http://localhost:9090/payment/success`,
+            `http://${process.env.REACT_APP_BACK_URL}/payment/success`,
             formData,
             {
                 headers: {

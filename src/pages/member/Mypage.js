@@ -26,7 +26,7 @@ const Mypage = () => {
 
     const initialize = async e => {
       try { 
-          const response = await axios.get(`http://localhost:9090/mypage`, 
+          const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/mypage`,
                   {
                       headers: {
                           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`

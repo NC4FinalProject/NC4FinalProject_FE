@@ -18,7 +18,7 @@ const Cart = () => {
 
   const getCart = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:9090/cart/cart`, {
+      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/cart/cart`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },
@@ -66,7 +66,7 @@ const Cart = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:9090/cart/delete`,
+        `http://${process.env.REACT_APP_BACK_URL}/cart/delete`,
         deleteItem,
         {
           headers: {

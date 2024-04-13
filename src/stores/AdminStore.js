@@ -58,7 +58,7 @@ userPwChk: '',
     const { setNotices, setUsers, setNewUser,setMonthlytotalUserCount,setMonthlyCounts,setPreTeacherCount
             ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount,setContents } = get();
     try {
-        const response = await axios.get('http://localhost:9090/admin/main', {
+        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/admin/main', {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
@@ -85,7 +85,7 @@ userPwChk: '',
  userInfo: async () => {
     const { setMemberInfo, searchCondition, searchKeyword,page,setPage } = get();
     try {
-        const response = await axios.get('http://localhost:9090/admin/user', {
+        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/admin/user', {
             params: {
                 searchCondition: searchCondition,
                 searchKeyword: searchKeyword,
@@ -105,7 +105,7 @@ userPwChk: '',
 userDetail: async (userId) => {
     const { setMemberInfo, setMemo, setPointSum } = get();
     try {
-        const response = await axios.get(`http://localhost:9090/admin/user/${userId}`, {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/admin/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
@@ -128,7 +128,7 @@ userDetail: async (userId) => {
 userChangeRole: async (userId) => {
     const { selectRole, userInfo } = get();
     try {
-        const response = await axios.put(`http://localhost:9090/admin/user/${userId}`, {
+        const response = await axios.put(`http://${process.env.REACT_APP_BACK_URL}/admin/user/${userId}`, {
             role: selectRole,
         }, {
             headers: {
@@ -145,7 +145,7 @@ handleSavePoint: async (userId) => {
     const { point, reason } = get();
 
     try {
-        const response = await axios.post(`http://localhost:9090/admin/user/point/${userId}`, {
+        const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/admin/user/point/${userId}`, {
             value: point,
             reason: reason,
         }, {

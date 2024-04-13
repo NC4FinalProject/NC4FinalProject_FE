@@ -12,7 +12,7 @@ const CartItem = ({ itemImg, itemName, teacherName, price, setCartItem, item, ch
   const deleteOne = useCallback(async() => {
     try {
       const response = await axios.delete(
-        `http://localhost:9090/cart/deleteOne/${item.cartId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/cart/deleteOne/${item.cartId}`,
         {
           headers:
             {

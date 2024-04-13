@@ -12,7 +12,7 @@ const useReviewStore = create((set) => ({
     try {
       const accessToken = sessionStorage.getItem("ACCESS_TOKEN");
 
-      const response = await axios.get(`http://localhost:9090/review/review`, {
+      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/review/review`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -35,7 +35,7 @@ const useReviewStore = create((set) => ({
   postReview: async (reviewContent, reviewRating, paymentId, contentsId) => {
     try {
       const response = await axios.post(
-        `http://localhost:9090/review/review`,
+        `http://${process.env.REACT_APP_BACK_URL}/review/review`,
         {
           paymentId,
           reviewContent,
@@ -64,7 +64,7 @@ const useReviewStore = create((set) => ({
   ) => {
     try {
       const response = await axios.put(
-        `http://localhost:9090/review/review`,
+        `http://${process.env.REACT_APP_BACK_URL}/review/review`,
         {
           reviewId,
           reviewContent,
@@ -89,7 +89,7 @@ const useReviewStore = create((set) => ({
   deleteReview: async (reviewId, contentsId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:9090/review/review/${reviewId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/review/review/${reviewId}`,
         {
           params: {
             contentsId: contentsId,

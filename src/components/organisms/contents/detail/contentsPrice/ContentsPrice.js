@@ -81,7 +81,7 @@ const ContentsPrice = ({ contentsId }) => {
   const addCart = useCallback(async () => {
     try {
       const response = await axios.post(
-        `http://localhost:9090/cart/add`,
+        `http://${process.env.REACT_APP_BACK_URL}/cart/add`,
         { contentsId },
         {
           headers: {

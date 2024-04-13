@@ -8,7 +8,7 @@ export const getContentsIdApi = async (contentsId) => {
   // console.log("Sending token: ", token);
 
   try {
-      const response = await axios.get(`http://localhost:9090/contents/detail/${contentsId}`, {
+      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/contents/detail/${contentsId}`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
         },
@@ -24,7 +24,7 @@ export const getContentsIdApi = async (contentsId) => {
 // 전체 목록 가져오기
 export const getContentsListApi = async()=>{
   try {
-    const response = await axios.get(`http://localhost:9090/contents/list`, {
+    const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/contents/list`, {
       // headers: {
       //   Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
       // },
@@ -52,7 +52,7 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
   videoFile.forEach(videoFileData => formData.append("videoFile", videoFileData));
 
   try {
-    const response = await axios.post('http://localhost:9090/contents/create', formData, {
+    const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/contents/create', formData, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         // 'Content-Type': 'multipart/form-data' 
@@ -71,7 +71,7 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
 
 export const saveVideoReplyApi = async (videoReply) => {
   try {
-    await axios.post('http://localhost:9090/contents/detail/saveVideoReply', videoReply, {
+    await axios.post('http://${process.env.REACT_APP_BACK_URL}/contents/detail/saveVideoReply', videoReply, {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
       },
@@ -90,7 +90,7 @@ export const saveVideoReplyApi = async (videoReply) => {
 
 export const getVideoReplyApi = async (contentsId, videoId) => {
   try {
-    const response = await axios.get('http://localhost:9090/contents/detail/getVideoReplyList', {
+    const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/contents/detail/getVideoReplyList', {
       headers: {
         Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
       },

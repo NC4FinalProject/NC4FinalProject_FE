@@ -40,7 +40,7 @@ const AdminUser = () => {
         memo: memo, 
         id: selectedMemberId
       };
-      await axios.post('http://localhost:9090/admin/user/memo',
+      await axios.post('http://${process.env.REACT_APP_BACK_URL}/admin/user/memo',
         memoData, 
         {
           headers: {

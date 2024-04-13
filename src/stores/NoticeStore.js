@@ -32,7 +32,7 @@ const useStore = create((set, get) => ({
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
-        const response = await axios.get('http://localhost:9090/notice/notice-list', {
+        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/notice/notice-list', {
           params: {
             searchCondition: searchCondition,
             searchKeyword: searchKeyword,
@@ -50,7 +50,7 @@ const useStore = create((set, get) => ({
     fetchUserNickname: async () => {
       const { setUserNickname } = get();
       try {
-        const response = await axios.get('http://localhost:9090/mypage', {
+        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/mypage', {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
@@ -88,7 +88,7 @@ const useStore = create((set, get) => ({
 
         formData.append('fileDTOList', fileDTOs);
   
-        await axios.post('http://localhost:9090/notice/notice', formData);
+        await axios.post('http://${process.env.REACT_APP_BACK_URL}/notice/notice', formData);
   
         fetchNotices();
   
@@ -131,7 +131,7 @@ const useStore = create((set, get) => ({
 
         formData.append('fileDTOList', fileDTOs);
   
-       const response = await axios.put('http://localhost:9090/notice/update', formData);
+       const response = await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/update', formData);
         
         setModifyFileList(response.data.item);
         noticeModifyProc(putNoticeId);
@@ -169,7 +169,7 @@ const useStore = create((set, get) => ({
 
         formData.append('fileDTOList', fileDTOs);
   
-       const response = await axios.put('http://localhost:9090/notice/updateProc', formData);
+       const response = await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/updateProc', formData);
 
         setOpenDialog(false);
         alert('공지사항이 수정되었습니다.');
@@ -183,7 +183,7 @@ const useStore = create((set, get) => ({
     getNotice: async (noticeId) => {
       const { setNotices, userNickname ,setUserNickname} = get();
       try {
-        const response = await axios.get(`http://localhost:9090/notice/notice/${noticeId}`,{
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/notice/${noticeId}`,{
         withCredentials: true,
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,

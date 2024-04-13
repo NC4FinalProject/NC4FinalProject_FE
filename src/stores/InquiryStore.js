@@ -34,7 +34,7 @@ const useStore = create((set, get) => ({
     const { searchCondition, searchKeyword, setPage, page } = get();
     try {
       const response = await axios.get(
-        "http://localhost:9090/inquiry/inquiry",
+        "http://${process.env.REACT_APP_BACK_URL}/inquiry/inquiry",
         {
           params: {
             searchCondition: searchCondition,
@@ -103,7 +103,7 @@ const useStore = create((set, get) => ({
         console.log(key + ": " + value);
       });
 
-      await axios.post(`http://localhost:9090/inquiry/inquiry`, formData, {
+      await axios.post(`http://${process.env.REACT_APP_BACK_URL}/inquiry/inquiry`, formData, {
         params: { contentsId: contentsId },
       });
 
@@ -143,7 +143,7 @@ const useStore = create((set, get) => ({
       formData.append("inquiryFileDTOList", inquiryFileDTOs);
 
       const response = await axios.put(
-        "http://localhost:9090/inquiry/update",
+        "http://${process.env.REACT_APP_BACK_URL}/inquiry/update",
         formData
       );
 
@@ -186,7 +186,7 @@ const useStore = create((set, get) => ({
       formData.append("inquiryFileDTOs", inquiryFileDTOs);
 
       const response = await axios.put(
-        "http://localhost:9090/inquiry/updateProc",
+        "http://${process.env.REACT_APP_BACK_URL}/inquiry/updateProc",
         formData
       );
 

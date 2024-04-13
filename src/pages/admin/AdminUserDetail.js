@@ -128,7 +128,7 @@ const AdminUserDetail = () => {
           memo: Memo, 
           memberId: userId
         };
-        await axios.post('http://localhost:9090/admin/user/memo',
+        await axios.post('http://${process.env.REACT_APP_BACK_URL}/admin/user/memo',
           memoData, 
           {
             headers: {
@@ -156,7 +156,7 @@ const AdminUserDetail = () => {
         return;
       }
       
-      const response =  axios.post(`http://localhost:9090/admin/user/${userId}`, {
+      const response =  axios.post(`http://${process.env.REACT_APP_BACK_URL}/admin/user/${userId}`, {
         password: userPw,
       }, {
         headers: {

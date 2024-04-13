@@ -48,7 +48,7 @@ const NoticeDetail = () => {
   useEffect(() => {
   const getNextNotice = async () => {
     try {
-      const response = await axios.get(`http://localhost:9090/notice/${nextNotice}`);
+      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/${nextNotice}`);
       
       if (response.data.item.noticeTitle === null) {
         console.log('다음글이 없습니다.');
@@ -68,7 +68,7 @@ const NoticeDetail = () => {
   useEffect(() => {
     const getBackNotice = async () => {
       try {
-        const response = await axios.get(`http://localhost:9090/notice/${backNotice}`);
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/${backNotice}`);
         
         setBackNoticeData(response.data.item);
       } catch (error) {
@@ -85,7 +85,7 @@ const NoticeDetail = () => {
 const handleDelete = async () => {
    try {
 
-    const response = await axios.delete(`http://localhost:9090/notice/delete/${noticeId}`);
+    const response = await axios.delete(`http://${process.env.REACT_APP_BACK_URL}/notice/delete/${noticeId}`);
     console.log(response);
         alert('게시글이 삭제되었습니다.');
         navi("/noticelist");
@@ -97,7 +97,7 @@ const handleDelete = async () => {
   useEffect(() => {
     const getlikedata = async () => {
     try {
-      const response = await axios.get(`http://localhost:9090/notice/likeget/${noticeId}`, {
+      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/likeget/${noticeId}`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         }
@@ -114,7 +114,7 @@ const handleDelete = async () => {
 
     const getLikeNotice = async () => {
       try {
-        const response = await axios.post(`http://localhost:9090/notice/like/${noticeId}`,null, {
+        const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/notice/like/${noticeId}`,null, {
           headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
           }
@@ -141,7 +141,7 @@ const handleDelete = async () => {
 
   const handleDialogClose = async () => {
     try {
-      await axios.put('http://localhost:9090/notice/remove');
+      await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/remove');
       console.log("이미지가 삭제되었습니다.");
       setOpenDialog(false);
     } catch (error) {
@@ -168,7 +168,7 @@ const handleDelete = async () => {
     try {
         const formData = new FormData();
         formData.append('upload', file);
-        const response = await axios.post('http://localhost:9090/notice/upload', formData, {
+        const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/notice/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
