@@ -23,6 +23,7 @@ const Login = () => {
 
                 if (response.data.item && response.data.statusCode === 200) {
                     const info = {
+                        role: response.data.item.role,
                         memberId: response.data.item.memberId,
                         userNickname: response.data.item.userNickname,
                         username: response.data.item.username,

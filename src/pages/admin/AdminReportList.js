@@ -76,7 +76,6 @@ const AdminReportList = () => {
     const { toggleMenu } = useContext(MenuContext);
 
   return (
-    console.log(userInfo),  
     <>
     <Box sx={{display:'flex', alignItems:'center', marginTop:'1.625rem',marginBottom:'1rem'}}>
       <IconButton onClick={toggleMenu}>
