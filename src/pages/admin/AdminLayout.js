@@ -57,8 +57,8 @@ const AdminLayout = ({ children }) => {
         
         cumulativeCreate += createUserCount;
         cumulativeDelete += deleteUserCount;
-
-        const clientTotal = cumulativeCreate - deleteUserCount;
+    
+        const clientTotal = cumulativeCreate - cumulativeDelete;
         
         return {
           date: grapghformatDate(total.registration_date),
@@ -66,7 +66,7 @@ const AdminLayout = ({ children }) => {
           delete: deleteUserCount,
           clientTotal: clientTotal,
         };
-      });
+    });
     } else {
         newData = MonthlyCounts.map(total => {
           const totalUser = MonthlyCounts.find(user => grapghformatDate(user.registration_date) === grapghformatDate(total.registration_date));
@@ -158,7 +158,7 @@ const AdminLayout = ({ children }) => {
             <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
               <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>게시판 현황</CoTypography>
               <Link
-                to="/noticelist"
+                to="/admin/contents"
                 style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
@@ -249,7 +249,7 @@ const AdminLayout = ({ children }) => {
               <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                 <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>최근 가입자 현황</CoTypography>
                 <Link
-                  to="/noticelist"
+                  to="/admin/user"
                   style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
@@ -284,7 +284,7 @@ const AdminLayout = ({ children }) => {
               <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                 <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>강사 등록 신청 현황</CoTypography>
                 <Link
-                  to="/noticelist"
+                  to="/admin/user"
                   style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
@@ -318,7 +318,7 @@ const AdminLayout = ({ children }) => {
                           <Button
                             size="small"
                             component={Link}
-                            to={`/admin/user/${user.id}`}
+                            to={`/admin/user/${user.memberId}`}
                             variant="outlined"
                             color="primary"
                             sx={{marginTop:'0.625rem', marginRight:'1rem'}}

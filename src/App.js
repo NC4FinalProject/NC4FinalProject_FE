@@ -22,17 +22,19 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import EmailVerification from "./pages/member/EmailVerification";
 import AdminUserDetail from "./pages/admin/AdminUserDetail";
 import AdminReportList from "./pages/admin/AdminReportList";
+import AdminContent from "./pages/admin/AdminContent";
 
 function App() {
     return (
         <ThemeProvider theme={createTheme}>
-            <Container maxWidth="sm" style={{maxWidth: "1300px", padding: 0}}>
+            <Container  style={{maxWidth: "1300px", padding: 0}}>
                 <Routes>
                     <Route element={<AdminPage/>}>
                         <Route path="/admin/main" element={<AdminLayout></AdminLayout>}></Route>
                         <Route path="/admin/user" element={<AdminUser></AdminUser>}></Route>
                         <Route path="/admin/user/:userId" element={<AdminUserDetail></AdminUserDetail>}></Route>
                         <Route path="/admin/report" element={<AdminReportList></AdminReportList>}></Route>
+                        <Route path="/admin/contents" element={<AdminContent></AdminContent>}></Route>
                     </Route>
                     <Route element={<MainLayout/>}>
                         <Route path="/" element={<Home></Home>}></Route>

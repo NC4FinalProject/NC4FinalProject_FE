@@ -35,7 +35,7 @@ function ContentsCard({
         <Box sx={sx}>
             <Paper elevation={1} style={{ width:'19.1875rem', height:'11.875rem', borderRadius:'0.5rem', marginTop:'1.5rem', marginRight:'1.5rem', position:'relative', ...paperstyle }}>
                 <Box onClick={goDetail(contentsId)} sx={{ cursor:'pointer' }}>
-                    <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-121/${thumbnail}`} alt='thumbnail' style={{ width:'19.1875rem', height:'11.875rem', objectFit:'cover', borderRadius:'0.25rem' }} />
+                    <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/${thumbnail}`} alt='thumbnail' style={{ width:'19.1875rem', height:'11.875rem', objectFit:'cover', borderRadius:'0.25rem' }} />
                 </Box>
                 {Localbooked ? (
                     <Box onClick={changeBooked}>
