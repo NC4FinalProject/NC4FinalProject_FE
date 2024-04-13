@@ -6,30 +6,31 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import CartItem from "./CartItem";
 import CartPayment from "./CartPayment";
 import CartUserInformation from "./CartUserInformation";
-import axios from 'axios';
-import MemberStore from '../../../stores/MemberStore';
+import axios from "axios";
+import MemberStore from "../../../stores/MemberStore";
 
 const Cart = () => {
   const [cartItem, setCartItem] = useState([]);
+<<<<<<< HEAD
   const {memberInfo} = MemberStore();
   const [selectedItem, setSelectedItem] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedCnt, setCheckedCnt] = useState(0);
+=======
+  const { memberInfo } = MemberStore();
+>>>>>>> origin/main
 
   const getCart = useCallback(async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:9090/cart/cart`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-          }
-        }
-      );
+      const response = await axios.get(`http://localhost:9090/cart/cart`, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+        },
+      });
 
       console.log(response.data.item.cartContentsList);
       setCartItem(response.data.item.cartContentsList);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }, []);
@@ -133,6 +134,7 @@ const Cart = () => {
               </Grid>
             </Grid>
           </Grid>
+<<<<<<< HEAD
           {cartItem.length !== 0 ? cartItem.map((item) => (
             <CartItem
               key={item.contentsId}
@@ -145,6 +147,18 @@ const Cart = () => {
               changeSelectItem={changeSelectItem}
             />
           )) : <div>장바구니에 담긴 강의가 없습니다.</div>}
+=======
+          {cartItem &&
+            cartItem.map((item) => (
+              <CartItem
+                key={item.contentsId}
+                itemImg={item.thumbnail}
+                itemName={item.contentsTitle}
+                teacherName={item.author}
+                price={item.price}
+              />
+            ))}
+>>>>>>> origin/main
         </Grid>
         <Grid
           item
@@ -158,7 +172,6 @@ const Cart = () => {
             maxHeight: "60vh",
           }}
         >
-          
           <CartUserInformation
             key={memberInfo.memberId}
             userNickname={memberInfo.userNickname}

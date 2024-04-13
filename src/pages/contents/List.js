@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import { Box, Button, Container, Pagination, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import ContentsList from '../../components/organisms/contents/list/ContentsList';
 import ContentsFilters from '../../components/organisms/contents/list/ContentsFilters';
+import { useContentsListStore } from '../../stores/ContentsStore';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -20,6 +21,16 @@ const ContainerStyle = styled(Container)(({ theme }) => ({
 
 
 const List = () => {
+
+  const { getContentsList, getContentsListOutput } = useContentsListStore();
+
+  // 마운트 시, 로그인
+  useEffect(() => {
+    getContentsListOutput();
+  }, []);
+
+
+
   return (
     <>
       {/* Helmet */}
