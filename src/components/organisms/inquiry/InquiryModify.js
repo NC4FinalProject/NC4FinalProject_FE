@@ -8,7 +8,21 @@ import {
   FormGroup,
   TextField,
 } from "@mui/material";
-import InsertCkEditor from "../../atoms/common/InsertCKEditor";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
+function UploadAdapterPlugin(editor) {
+  editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+    return {
+      upload: async () => {
+        const file = await loader.file;
+        console.log(file);
+        // setFiles(file);
+        // return await handleUpload(file);
+      },
+    };
+  };
+}
 
 const InquiryPost = () => {
   return (
@@ -129,7 +143,14 @@ const InquiryPost = () => {
         ></TextField>
       </Box>
       <Box sx={{ width: "90%", margin: "2rem auto" }}>
-        <InsertCkEditor />
+        <CKEditor
+          editor={ClassicEditor}
+          // data={content}
+          // onChange={handleContentChange}
+          config={{
+            extraPlugins: [UploadAdapterPlugin],
+          }}
+        />
       </Box>
     </>
   );

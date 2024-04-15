@@ -1,18 +1,22 @@
-import { ThumbUp, Visibility } from "@mui/icons-material";
-import { Button, ButtonGroup, Chip, Grid } from "@mui/material";
+import {  Visibility } from "@mui/icons-material";
+import { Button, ButtonGroup, Chip, Grid, Box } from "@mui/material";
 import React from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
 import CoHoverButton from "../../atoms/common/CoHoverButton";
-import InsertCKEditor from "../../atoms/common/InsertCKEditor";
 import { useState } from "react";
-import Reportdialog from "../../organisms/review/Reportdialog";
-import InquriyComment from "./InquriyComment";
+import InquiryReportDialog from "./InquiryReportDialog";
+import InquiryComment from "./InquiryComment";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [openReportDialog, setOpenReportDialog] = useState(false);
+  const [isFavorited, setFavorited] = useState(false);
 
   const handleEditorClick = () => {
     setShowEditor(true);
@@ -29,7 +33,13 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
   const handleListClick = () => {
     onListClick();
     scrollToTop();
-    // window.scrollTo(0, 0);
+  };
+
+  const handleCancelClick = () => {
+    if (window.confirm("작성중인 글은 저장되지 않습니다. 취소하시겠습니까? ")) {
+      alert("취소되었습니다.");
+      setShowEditor(false);
+    }
   };
 
   return (
@@ -99,15 +109,6 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                     mr: "1rem",
                   }}
                 />
-                <ThumbUp
-                  sx={{
-                    mr: "0.25rem",
-                    color: "#868e96",
-                  }}
-                />
-                <CoTypography size="TableContent" color="textSecondary">
-                  {inquiry.viewCount}
-                </CoTypography>
               </Grid>
             </Grid>
           </Grid>
@@ -207,14 +208,30 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                   </CoTypography>
                 </Grid>
                 <Grid sx={{ display: "flex", alignItems: "center" }}>
+                {isFavorited ? (
+                  <FavoriteIcon
+                    sx={{ mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
+                    onClick={() => setFavorited(false)}
+                  />
+                ) : (
+                  <FavoriteBorderOutlinedIcon
+                    sx={{ mr: "0.25rem", color: "#444444" }}
+                    onClick={() => setFavorited(true)}
+                  />
+                )}
+              <CoTypography size="TableContent" color="textSecondary">
+                {/* {likeCount} */}3
+              </CoTypography>
+            </Grid>
+                {/* <Grid sx={{ display: "flex", alignItems: "center" }}>
                   <ShareOutlinedIcon sx={{ mr: "0.25rem" }} />
                   <CoTypography size="TableContent" color="textSecondary">
                     공유하기
                   </CoTypography>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
-            <Reportdialog
+            <InquiryReportDialog
               open={openReportDialog}
               handleClickClose={handleCloseReportDialog}
             />
@@ -262,22 +279,77 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                   <Button style={{ border: "none" }}>
                     <CoTypography size="TableContent">좋아요순</CoTypography>
                   </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
-                  >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">댓글순</CoTypography>
-                  </Button>
                 </ButtonGroup>
               </Grid>
             </Grid>
           </Grid>
           <Grid container flexDirection="column" alignItems="center">
             {showEditor ? (
-              <InsertCKEditor /> // 버튼 자리에 CK에디터 컴포넌트 렌더링
+              <Grid container flexDirection="column">
+                <Grid sx={{ width: "100%" }}>
+                  <CKEditor
+                    editor={ClassicEditor}
+                    config={{
+                      toolbar: {
+                        items: [
+                          "heading",
+                          "|",
+                          "bold",
+                          "italic",
+                          "link",
+                          "bulletedList",
+                          "numberedList",
+                          "|",
+                          "indent",
+                          "outdent",
+                          "|",
+                          "blockQuote",
+                          "insertTable",
+                          "undo",
+                          "redo",
+                        ],
+                      },
+                      language: "en",
+                      image: {
+                        toolbar: [
+                          "imageTextAlternative",
+                          "imageStyle:full",
+                          "imageStyle:side",
+                        ],
+                      },
+                      table: {
+                        contentToolbar: [
+                          "tableColumn",
+                          "tableRow",
+                          "mergeTableCells",
+                        ],
+                      },
+                      // data={content}
+                      // onChange={handleContentChange}            
+                    }}
+                  />
+                </Grid>
+                <Grid
+                  container
+                  justifyContent="flex-end"
+                  sx={{ mt: "1rem", width: "100%" }}
+                >
+                  <Button
+                    variant="outlined"
+                    style={{
+                      marginRight: "0.625rem",
+                      color: "black",
+                      borderColor: "#ced4da",
+                    }}
+                    onClick={() => handleCancelClick()}
+                  >
+                    취소
+                  </Button>
+                  <Button color="primary" variant="contained">
+                    등록
+                  </Button>
+                </Grid>
+              </Grid>
             ) : (
               <CoHoverButton
                 fullWidth
@@ -299,7 +371,7 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
             inquiry.inquiryComments &&
             inquiry.inquiryComments.length > 0 &&
             inquiry.inquiryComments.map((comment, id) => (
-              <InquriyComment
+              <InquiryComment
                 key={id}
                 name={comment.commenterName}
                 regDate={comment.commentDate}

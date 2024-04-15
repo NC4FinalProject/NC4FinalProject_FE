@@ -11,10 +11,8 @@ const AdminStore = create((set, get) => ({
   MemberInfo: [],
   page: 0,
   Memo: '',
-  form: {
-    userPw: '',
-    userPwChk: ''
-  },
+  userPw: '',
+userPwChk: '',
   pwValidation: false,
   pwChk: false,
   searchCondition: 'all',
@@ -24,8 +22,19 @@ const AdminStore = create((set, get) => ({
   monthlyOutUserCount: [],
   preTeachers: [],
   todayUserCount: 0,
+  selectRole: '',
+  pointSum: 0,
+  reason:'',
+  point: 0,
+  contents: [],
+  setContents: (contents) => set({ contents }),
+  setPoint: (point) => set({ point }),
+  setReason: (reason) => set({ reason }),
+  setPointSum: (pointSum) => set({ pointSum }),  
+  setSelectedRole: (selectRole) => set({ selectRole }),
   setTodayUserCount: (todayUserCount) => set({ todayUserCount }),
-  setForm: (newForm) => set({ form: newForm }),
+  setUserPw: (userPw) => set({ userPw }),
+  setUserPwChk: (userPwChk) => set({ userPwChk }),
   setPwValidation: (isValid) => set({ pwValidation: isValid }),
   setPwChk: (isMatch) => set({ pwChk: isMatch }),
   setMemo: (Memo) => set({ Memo }),
@@ -47,14 +56,14 @@ const AdminStore = create((set, get) => ({
   
   userNotice: async () => {
     const { setNotices, setUsers, setNewUser,setMonthlytotalUserCount,setMonthlyCounts,setPreTeacherCount
-            ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount } = get();
+            ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount,setContents } = get();
     try {
         const response = await axios.get('http://localhost:9090/admin/main', {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
         });
-        const { notices, recentUsers, registrationCounts,
+        const { notices, recentUsers, registrationCounts,contents,
                 monthlytotalUserCount,monthlyCounts,preTeacherCount,daliyOutUserCount, monthlyOutUserCount,preTeachers,todayUserCount } = response.data;
         console.log(response.data);
         setNotices(notices);
@@ -67,6 +76,7 @@ const AdminStore = create((set, get) => ({
         setMonthlyOutUserCount(monthlyOutUserCount);
         setPreTeachers(preTeachers);
         setTodayUserCount(todayUserCount);
+        setContents(contents);
     } catch (error) {
         console.log('에러:', error);
     }
@@ -85,24 +95,86 @@ const AdminStore = create((set, get) => ({
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
         });
-        console.log(response.data.content);
         setPage(response.data.pageable.pageNumber);
        setMemberInfo(response.data);
+
     } catch (error) {
         console.log('에러:', error);
     }
 },
 
 userDetail: async (userId) => {
-    const { setMemberInfo, setMemo } = get();
+    const { setMemberInfo, setMemo, setPointSum } = get();
     try {
         const response = await axios.get(`http://localhost:9090/admin/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
         });
+        console.log(response.data);
         setMemberInfo(response.data);
         setMemo(response.data.memo || '');
+        const points = response.data.pointDTOList;
+        let sum = 0;
+            for (const point of points) {
+                sum += point.value;
+            }
+        setPointSum(sum);
+        console.log(sum);
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+
+userChangeRole: async (userId) => {
+    const { selectRole, userInfo } = get();
+    try {
+        const response = await axios.put(`http://localhost:9090/admin/user/${userId}`, {
+            role: selectRole,
+        }, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        });
+        alert('권한이 변경되었습니다.');
+        window.location.reload();
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+handleSavePoint: async (userId) => {
+    const { point, reason } = get();
+
+    try {
+        const response = await axios.post(`http://localhost:9090/admin/user/point/${userId}`, {
+            value: point,
+            reason: reason,
+        }, {
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        });
+        alert('포인트가 적립되었습니다.');
+        window.location.reload();
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+getContentsList: async () => {
+    const { setContents, searchCondition, searchKeyword,page,setPage } = get();
+    try {
+        const response = await axios.get('http://localhost:9090/admin/contents', {
+            params: {
+                searchCondition: searchCondition,
+                searchKeyword: searchKeyword,
+                page: page,
+              },
+            headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        });
+        setPage(response.data.pageable.pageNumber);
+        setContents(response.data);
     } catch (error) {
         console.log('에러:', error);
     }

@@ -27,6 +27,11 @@ import {
   ChatBubbleOutline,
 } from "@mui/icons-material";
 import CoHoverButton from "../../atoms/common/CoHoverButton";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import MemberStore from "../../../stores/MemberStore";
+import useStore from "../../../stores/InquiryStore";
+import { useContentsStore } from "../../../stores/ContentsStore";
 
 const StyledFormControl = styled(FormControl)`
   & .MuiInputBase-root {
@@ -42,10 +47,46 @@ const StyledInputLabel = styled(InputLabel)`
 `;
 
 const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
+  const {
+    inquiries,
+    paymentList,
+    searchCondition,
+    searchKeyword,
+    likeCnt,
+    liked,
+    setLikeCheck,
+    setLikeCnt,
+    setInquiryFiles,
+    setInquiryFileDTOList,
+    setInquiries,
+    setSearchCondition,
+    setSearchKeyword,
+    fetchInquiries,
+    handleInquirySubmit,
+    inquiryFiles,
+    inquiryFileDTOList,
+    setInquiryTitle,
+    setInquiryContent,
+  } = useStore();
+
   const [sortBy, setSortBy] = useState("latest");
   const [Option, setOption] = useState("");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
 
+  const { contentsId } = useParams();
+  const setContentsId = useStore((state) => state.setContentsId);
+  const { contentsTitle } = useContentsStore();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setContentsId(parseInt(contentsId));
+      await fetchInquiries(contentsId);
+    };
+    fetchData();
+  }, []);
+
+  console.log(contentsId);
+  console.log(inquiries);
   const handleChangeSort = (newValue) => {
     setSortBy(newValue);
   };
@@ -66,16 +107,24 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     inquiryPostClick();
   };
 
+  const handleSearchConditionChange = (event) => {
+    setSearchCondition(event.target.value);
+  };
+
+  const handleSearchKeywordChange = (event) => {
+    setSearchKeyword(event.target.value);
+  };
+
   const Inquiries = [
     {
       inquriyId: 1,
       inquiryTitle: "강의 관련 질문 있습니다.",
-      userName: "User1",
+      userNickName: "User1",
       inquiryContent:
         "몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루",
       date: "2022-01-01",
       tag: null,
-      contentsName: "이것이 자바다", // leture 끌고오는거임
+      contentsName: "이것이 자바다",
       isPrivate: false,
       isSolved: true,
       commentCount: 1,
@@ -154,7 +203,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     },
   ];
 
-  const selectSearch = ["전체", "작성자", "내용", "주제"];
+  const selectSearch = ["전체", "작성자", "내용", "주제, 태그"];
 
   return (
     <>

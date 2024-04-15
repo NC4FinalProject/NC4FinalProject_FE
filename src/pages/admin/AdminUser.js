@@ -172,7 +172,6 @@ const AdminUser = () => {
             <TableCell><CoTypography variant="AdminUser">아이디</CoTypography></TableCell>
             <TableCell><CoTypography variant="AdminUser">권한</CoTypography></TableCell>
               <TableCell><CoTypography variant="AdminUser">계정 생성일</CoTypography></TableCell>
-              <TableCell><CoTypography variant="AdminUser">포인트</CoTypography></TableCell>
               <TableCell><CoTypography variant="AdminUser">댓글 / 문의</CoTypography></TableCell>
             </Hidden>
             <TableCell><CoTypography variant="AdminUser" sx={{paddingLeft:'0'}}>메모</CoTypography></TableCell>
@@ -180,8 +179,8 @@ const AdminUser = () => {
         </TableHead>
         <TableBody>
           {MemberInfo.content && MemberInfo.content.map((member) => (
-            <TableRow key={member.id} onClick={() => handleUser(member.memberId)} sx={{cursor: 'pointer'}}>
-              <TableCell>
+            <TableRow key={member.id}  sx={{cursor: 'pointer'}}>
+              <TableCell onClick={() => handleUser(member.memberId)}>
               {member.role === 'BLACKLIST' ? (
                 <CheckBoxIcon
                   sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}
@@ -190,14 +189,14 @@ const AdminUser = () => {
                   sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}
                 />)}
               </TableCell>
-              <TableCell>
+              <TableCell onClick={() => handleUser(member.memberId)}>
                 <CoTypography variant="AdminUser">{member.userNickname}</CoTypography>
               </TableCell>
               <Hidden smDown>
-              <TableCell>
+              <TableCell onClick={() => handleUser(member.memberId)}>
                 <CoTypography variant="AdminUser">{member.username}</CoTypography>
               </TableCell>
-              <TableCell>
+              <TableCell onClick={() => handleUser(member.memberId)}>
                 <CoTypography sx={{ color: member.role === 'RESIGNED' ? 'red' : 'inherit' }}>
                                                    {member.role === 'ADMIN' ? '관리자' :
                                                     member.role === 'TEACHER' ? '강사' :
@@ -207,13 +206,10 @@ const AdminUser = () => {
                                                     member.role === 'PRETEACHER' ? '강사 신청' : 'null'}
                 </CoTypography>
               </TableCell>
-                <TableCell>
+                <TableCell onClick={() => handleUser(member.memberId)}>
                   <CoTypography variant="AdminUser">{formtDate(member.createdAt)}</CoTypography>
                 </TableCell>
-                <TableCell>
-                  <CoTypography variant="AdminUser">포인트</CoTypography>
-                </TableCell>
-                <TableCell>
+                <TableCell onClick={() => handleUser(member.memberId)}>
                   <CoTypography variant="AdminUser">댓글 / 문의</CoTypography>
                 </TableCell>
               </Hidden>

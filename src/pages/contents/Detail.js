@@ -9,6 +9,7 @@ import ContentsPrice from '../../components/organisms/contents/detail/contentsPr
 import ContentsSide from '../../components/organisms/contents/detail/contentsSide/ContentsSide';
 import ContentsInfo from '../../components/organisms/contents/detail/contentsInfo/ContentsInfo';
 import { useContentsCountStateStore, useContentsStore } from '../../stores/ContentsStore';
+import { useParams } from "react-router-dom";
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
@@ -27,14 +28,26 @@ const ContainerStyle = styled(Container)(({ theme }) => ({
 
 const GridStyle = styled(Grid)(({ theme }) => ({
     marginTop: theme.spacing(0),
-    marginBottom: theme.spacing(0.7)
+    marginBottom: theme.spacing(0.7),
+  }));
+  
+const BoxLineStyle = styled(Box)(({ theme }) => ({
+    position: "sticky",
+    top: "10%",
+    borderLeft: `1px solid ${theme.palette.divider}`, // 구분선 색상과 굵기를 MUI 기본값에 맞춤
+    // '&:hover': {
+    //     borderColor: theme.palette.primary.main, // 호버 시 테마의 primary 색상으로 변경
+    //     borderLeft: `2px solid ${theme.palette.primary.main}`,
+    // }
 }));
 
 const Detail = () => {
 
+    const { contentsId } = useParams();
+
     const theme = useTheme();
 
-    const { getContents, getVideo, getContentsOutput,
+    const { fetchContents, getContents, getVideo, getContentsOutput,
             stateNum } = useContentsStore();
     const { getCountState } = useContentsCountStateStore();
 
@@ -88,7 +101,6 @@ const Detail = () => {
 
         <GridStyle container >
 
-            {/* ContentsInfo */}
             {/* ContentsDetail */}
             <Grid item xs={9} lg={9}>
 
@@ -107,7 +119,7 @@ const Detail = () => {
             {/* ContentsPrice */}
             <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
                 <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
-                    <ContentsPrice/>
+                    <ContentsPrice contentsId={contentsId} />
                 </Grid>
             </Grid>
 

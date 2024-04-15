@@ -1,18 +1,36 @@
 import { Box, Button, Grid, Rating, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { FaCartPlus } from "react-icons/fa";
 import ContentsPriceCal from '../../../../atoms/common/ContentsPriceCal';
 import { useNavigate } from 'react-router-dom';
-import {useContentsStore} from '../../../../../stores/ContentsStore';
+import {useContentsStore, useVideoAddInfoStore} from '../../../../../stores/ContentsStore';
+import axios from 'axios';
+
+const formatDuration = (seconds) => {
+  // 분과 초를 계산
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  // 두 자리수로 포맷팅
+  const paddedMinutes = minutes.toString().padStart(2, '0');
+  const paddedSeconds = remainingSeconds.toString().padStart(2, '0');
+
+  return `${paddedMinutes}:${paddedSeconds}`;
+};
 
 
-const ContentsPrice = () => {
+const ContentsPrice = ({ contentsId }) => {
 
   /////////////////////////////////////////////////
   // 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
   // 실시간 일 경우 음수를 받아와 국비지원 인 것을 알아야 할듯? -1 
   // 유료일 경우 컨텐츠로 부터 가격 데이터를 받아옴 가격 > 0
   const { fetchContents, getContents, getVideo, getSection } = useContentsStore();
+
+  const { videoBaceURL, videoTotalDuration, getVideoTotalDuration } = useVideoAddInfoStore();
+
+  const [totalDuration, setTotalDuration] = useState(0);
+  
   
   /////////////////컨텐츠 번호 가져와서 플라이스 컴포넌트에 전달/////////////////
   const [priceState, setPriceState] = useState('');
@@ -20,6 +38,20 @@ const ContentsPrice = () => {
   const [contentsType, setContentsType] = useState('');
 
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   // videoTotalDuration의 변화를 감지하여 totalDuration에 더해주는 로직
+  //   if(videoTotalDuration !== totalDuration){
+  //     setTotalDuration(totalDuration + Number(videoTotalDuration));
+  //   }
+  //   console.log(totalDuration)
+  // }, [videoTotalDuration, getVideo.videoPath]);
+
+  useEffect(() => {
+    if(videoTotalDuration !== 0){
+      setTotalDuration(videoTotalDuration)
+    }
+  }, [videoTotalDuration]);
 
 
   useEffect(() => {
@@ -36,7 +68,7 @@ const ContentsPrice = () => {
     } 
     if (getVideo.length === 1){
       setContentsType('단일 강의')
-    } else (setContentsType('다중 강의')
+    } else (setContentsType(`강의 ${getVideo.length}개`)
     )
   }, [getContents.price, getVideo]);
   /////////////////////////////////////////////////
@@ -45,6 +77,35 @@ const ContentsPrice = () => {
 
   // 컨텐츠 자체 별점 정보 가져올 것
   const value = 4.2;
+
+  const addCart = useCallback(async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/cart/add`,
+        { contentsId },
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          },
+        }
+      );
+
+      // console.log(response);
+      if (response.data.item.cartId) {
+        alert("장바구니에 추가되었습니다.");
+        navigate("/cart");
+      }
+    } catch (e) {
+      console.log(e);
+      if (e.response.data.errorCode === 4001) {
+        alert("이미 장바구니에 있는 강의입니다.");
+      } else if(e.response.data.errorCode === 4002) {
+        alert("이미 구매한 강의입니다.");
+      } else {
+        alert("에러 발생. 관리자에게 문의하세요.");
+      }
+    }
+  }, [contentsId]);
 
   return (
 
@@ -86,7 +147,7 @@ const ContentsPrice = () => {
       
       {/* 두 번째 그리드 - 중앙 정렬 */}
       <Grid item  sx={{ padding: '1rem'   }}>
-        <Button fullWidth variant="outlined" onClick={()=>(fetchContents())}>수강신청</Button>
+        <Button fullWidth variant="outlined" onClick={()=>(addCart())}>수강신청</Button>
       </Grid>
 
       {/* 세 번째 그리드 - 좌측 정렬 */}
@@ -94,14 +155,22 @@ const ContentsPrice = () => {
 
         <Grid container item xs={8} direction="column">
           <Typography>· {contentsType}</Typography>
-          <Typography>· 챕터 {getSection.length}개 · 59:13</Typography>
+          <Typography>· 챕터 {getSection.length}개 · {formatDuration(totalDuration)}</Typography>
           <Typography>· 난이도 : 입문</Typography>
         </Grid>
-        
-        <Grid container item xs={4} justifyContent={'flex-end'}>
-          
-          <FaCartPlus onClick = {() => { navigate('/cart')}} style={{ marginRight: '0.3em', color: '#6E6E6E', cursor: 'pointer', fontSize: '20px' }}/>
 
+        <Grid container item xs={4} justifyContent={"flex-end"}>
+          <FaCartPlus
+            onClick={() => {
+              navigate("/cart");
+            }}
+            style={{
+              marginRight: "0.3em",
+              color: "#6E6E6E",
+              cursor: "pointer",
+              fontSize: "20px",
+            }}
+          />
         </Grid>
 
       </Grid>

@@ -15,6 +15,7 @@ const useStore = create((set, get) => ({
     modifyFileList: [],
     likeCnt: 0,
     liked: 0,
+    notice: {},
     setLikeCheck: (liked) => set({ liked }),
     setLikeCnt: (likeCnt) => set({ likeCnt }),
     setFiles: (files) => set({ files }),
@@ -29,6 +30,7 @@ const useStore = create((set, get) => ({
     setPorfileImage: (profileImage) => set({ profileImage }),
     setFileDTOList: (fileDTOList) => set({ fileDTOList }),
     setModifyFileList: (modifyFileList) => set({ modifyFileList }),
+    setNotice: (notice) => set({notice}),
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
@@ -181,7 +183,7 @@ const useStore = create((set, get) => ({
     },
     
     getNotice: async (noticeId) => {
-      const { setNotices, userNickname ,setUserNickname} = get();
+      const { setNotice, userNickname ,setUserNickname} = get();
       try {
         const response = await axios.get(`http://localhost:9090/notice/notice/${noticeId}`,{
         withCredentials: true,
@@ -190,7 +192,7 @@ const useStore = create((set, get) => ({
           },
         });
       
-        setNotices(response.data.item);
+        setNotice(response.data.item);
         setUserNickname(userNickname);
         } catch (error) {
           console.log("id 못찾음")

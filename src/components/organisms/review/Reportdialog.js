@@ -7,10 +7,12 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import CoTypography from "../../atoms/common/CoTypography";
 import {Table, TableBody, TableCell, TableRow, TextField,} from "@mui/material";
+import MemberStore from "../../../stores/MemberStore";
 
 const Reportdialog = ({open, handleClickClose, children, selectComponent, author, Title, onSubmit}) => {
     const [reportReason, setReportReason] = useState("");
     const [detailReason, setDetailReason] = useState("");
+    const {memberInfo} = MemberStore();
 
     const handleReportChange = (e) => {
         console.log(e);
@@ -93,7 +95,7 @@ const Reportdialog = ({open, handleClickClose, children, selectComponent, author
                         <TableRow>
                             <TableCell>
                                 <CoTypography size="Content">
-                                    작성자 : {author} <br/>
+                                    작성자 : {memberInfo.userNickname} <br/>
                                     작성일 : {new Date().toLocaleDateString()}
                                 </CoTypography>
                             </TableCell>
@@ -140,7 +142,7 @@ const Reportdialog = ({open, handleClickClose, children, selectComponent, author
                         취소하기
                     </Button>
                     <Button onClick={handleSubmit} color="error" variant="contained">
-                        {Title === "블랙리스트 추가 / 변경" ? "변경하기" : "삭제하기"}
+                        {Title === "신고하기" ? "신고하기" : "변경하기"}
                     </Button>
                 </Box>
             </DialogActions>

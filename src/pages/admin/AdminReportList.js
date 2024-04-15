@@ -76,7 +76,6 @@ const AdminReportList = () => {
     const { toggleMenu } = useContext(MenuContext);
 
   return (
-    console.log(userInfo),  
     <>
     <Box sx={{display:'flex', alignItems:'center', marginTop:'1.625rem',marginBottom:'1rem'}}>
       <IconButton onClick={toggleMenu}>
@@ -179,7 +178,7 @@ const AdminReportList = () => {
                 </Button> 
                </TableCell>
                 <Reportdialog open={openReport} handleClickClose={() => setOpenReport(false)}
-                    author={userInfo.username}
+                    author={userInfo}
                     Title="블랙리스트 추가 / 변경"
                     onSubmit={(detailReason) => onSubmit(detailReason, selectedValue)}                
                     selectComponent={
