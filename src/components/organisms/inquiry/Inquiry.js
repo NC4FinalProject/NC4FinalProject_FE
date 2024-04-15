@@ -67,15 +67,20 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     inquiryFileDTOList,
     setInquiryTitle,
     setInquiryContent,
+    page,
+    setPage,
+    updateInquiryView,
+    fetchMyInquiries
   } = useStore();
 
-  const [sortBy, setSortBy] = useState("latest");
-  const [Option, setOption] = useState("");
+  const [sortBy, setSortBy] = useState("entire");
+  const [Option, setOption] = useState("all");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
 
   const { contentsId } = useParams();
   const setContentsId = useStore((state) => state.setContentsId);
   const { contentsTitle } = useContentsStore();
+  const {memberInfo} = MemberStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,121 +94,98 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
   console.log(inquiries);
   const handleChangeSort = (newValue) => {
     setSortBy(newValue);
+    if(newValue === 'entire') {
+      const fetchData = async () => {
+        setContentsId(parseInt(contentsId));
+        await fetchInquiries(contentsId);
+      };
+      fetchData();
+    } else if(newValue === 'mine') {
+      const fetchMyData = async () => {
+        setContentsId(parseInt(contentsId));
+        await fetchMyInquiries(contentsId);
+      };
+      fetchMyData();
+    }
   };
 
   const handleChange = (event) => {
     setOption(event.target.value);
+    setSearchCondition(event.target.value);
   };
 
   const handleRowClick = (inquiryId) => {
-    const selected = Inquiries.find(
-      (inquiry) => inquiry.inquriyId === inquiryId
+    const selected = inquiries.content.find(
+      (inquiry) => inquiry.inquiryId === inquiryId
     );
-    setSelectedInquiry(selected);
-    onInquiryClick(selected);
+    if(!selected.private) {
+      setSelectedInquiry(selected);
+      onInquiryClick(selected);
+      updateInquiryView(inquiryId);
+    } else {
+      if(selected.memberDTO.userNickname === memberInfo.userNickname ||
+        memberInfo.role === "ADMIN" ||
+        selected.author === memberInfo.userNickname
+      ) {
+        setSelectedInquiry(selected);
+        onInquiryClick(selected);
+        updateInquiryView(inquiryId);
+      } else {
+        alert("비밀글입니다.");
+        return;
+      }
+    }
   };
 
   const handlePostClick = () => {
     inquiryPostClick();
   };
 
-  const handleSearchConditionChange = (event) => {
-    setSearchCondition(event.target.value);
-  };
-
   const handleSearchKeywordChange = (event) => {
     setSearchKeyword(event.target.value);
   };
 
-  const Inquiries = [
+  const selectSearch = [
     {
-      inquriyId: 1,
-      inquiryTitle: "강의 관련 질문 있습니다.",
-      userNickName: "User1",
-      inquiryContent:
-        "몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루몰루",
-      date: "2022-01-01",
-      tag: null,
-      contentsName: "이것이 자바다",
-      isPrivate: false,
-      isSolved: true,
-      commentCount: 1,
-      likeCount: 1,
-      viewCount: 1,
-      inquiryComments: [
-        {
-          commenterName: "User2",
-          commentDate: "2022-01-02",
-          commentContent: "어려워요.",
-          commentLikeCount: 30,
-          profileImage: "user2.jpg",
-        },
-        {
-          commenterName: "User3",
-          commentDate: "2022-01-03",
-          commentContent:
-            "정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. 정말 어려운 문제입니다.정말 어려운 문제입니다. ",
-          commentLikeCount: 20,
-          profileImage: "user3.jpg",
-        },
-      ],
-    },
-    {
-      inquriyId: 2,
-      inquiryTitle: "강의 관련 질문 있습니다.",
-      userName: "User2",
-      inquiryContent:
-        "어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.어려워요.",
-      date: "2022-01-02",
-      tag: null,
-      isPrivate: false,
-      isSolved: true,
-      commentCount: 5,
-      likeCount: 30,
-      viewCount: 5,
-    },
-    {
-      inquriyId: 3,
-      inquiryTitle: "강의 관련 질문 있습니다.",
-      userName: "User3",
-      inquiryContent: "홀리.",
-      date: "2022-01-03",
-      tag: null,
-      isPrivate: false,
-      isSolved: false,
-      commentCount: 150000,
-      likeCount: 1300,
-      viewCount: 2,
-    },
-    {
-      inquriyId: 4,
-      inquiryTitle: "강의 관련 질문 있습니다.",
-      userName: "User4",
-      inquiryContent: "응애.",
-      date: "2022-01-04",
-      tag: null,
-      isPrivate: false,
-      isSolved: false,
-      commentCount: 5,
-      likeCount: 300,
-      viewCount: 5,
-    },
-    {
-      inquriyId: 5,
-      inquiryTitle: "강의 관련 질문 있습니다.",
-      userName: "User5",
-      inquiryContent: "리액트 졸잼.",
-      date: "2022-01-05",
-      tag: null,
-      isPrivate: true,
-      isSolved: false,
-      commentCount: 6,
-      likeCount: 5,
-      viewCount: 3,
-    },
+      value: "all",
+      name: "전제"
+    }, {
+      value: "title",
+      name: "제목"
+    }, {
+      value: "content",
+      name: "내용"
+    }, {
+      value: "writer",
+      name: "작성자"
+    }, {
+      value: "tag",
+      name: "태그"
+    } 
   ];
+  
+  const changePage = (e, v) => {
+    setPage(parseInt(v) - 1);
+    const fetchData = async () => {
+      setContentsId(parseInt(contentsId));
+      await fetchInquiries(contentsId);
+    };
+    fetchData();
+  };
 
-  const selectSearch = ["전체", "작성자", "내용", "주제, 태그"];
+  const handleSearch = (e) => {
+    const fetchData = async () => {
+      setContentsId(parseInt(contentsId));
+      await fetchInquiries(contentsId);
+    };
+    if(e.target.name === "searchKeyword") {
+      if(e.keyCode === 13) {
+        fetchData();
+      }
+    } else {
+      fetchData();
+    }
+  }
 
   return (
     <>
@@ -218,8 +200,8 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
         <ButtonGroup variant="text" sx={{ mb: "1rem" }}>
           <Button
             style={{ border: "none" }}
-            onClick={() => handleChangeSort("latest")}
-            color={sortBy === "latest" ? "primary" : "inherit"}
+            onClick={() => handleChangeSort("entire")}
+            color={sortBy === "entire" ? "primary" : "inherit"}
           >
             <CoTypography size="Content">전체보기</CoTypography>
           </Button>
@@ -230,8 +212,8 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
             |
           </CoTypography>
           <Button
-            onClick={() => handleChangeSort("highestRated")}
-            color={sortBy === "highestRated" ? "primary" : "inherit"}
+            onClick={() => handleChangeSort("mine")}
+            color={sortBy === "mine" ? "primary" : "inherit"}
           >
             <CoTypography size="Content">내가 쓴 글 보기</CoTypography>
           </Button>
@@ -271,12 +253,12 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
             width: "100%",
           }}
         >
-          {Inquiries.map((inquiry) => (
+          {inquiries.content && inquiries.content.map((inquiry) => (
             <TableRow
               key={inquiry.inquriyId}
               style={{ display: "flex", width: "100%" }}
-              onClick={() => handleRowClick(inquiry.inquriyId)}
-              inquiries={Inquiries}
+              onClick={() => handleRowClick(inquiry.inquiryId)}
+              inquiries={inquiries}
             >
               <TableCell
                 sx={{
@@ -298,7 +280,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
                     <CoTypography size="Title" sx={{ mb: "1rem" }}>
                       {inquiry.inquiryTitle}
                     </CoTypography>
-                    {inquiry.isPrivate && (
+                    {inquiry.private && (
                       <LockOutlined
                         sx={{
                           marginLeft: "1rem",
@@ -309,12 +291,12 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Chip
                       size="medium"
-                      label={inquiry.isSolved ? "해결완료" : "미해결"}
+                      label={inquiry.solved ? "해결완료" : "미해결"}
                       sx={{
-                        backgroundColor: inquiry.isSolved
+                        backgroundColor: inquiry.solved
                           ? "primary.main"
                           : "primary",
-                        color: inquiry.isSolved ? "white" : "primary",
+                        color: inquiry.solved ? "white" : "primary",
                         mt: "-1rem",
                       }}
                     />
@@ -332,7 +314,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {inquiry.inquiryContent}
+                    {!inquiry.private ? inquiry.inquiryContent.substring(9, inquiry.inquiryContent.indexOf("&lt;", 8)) : "비밀글입니다."}
                   </CoTypography>
                 </Box>
 
@@ -347,7 +329,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
                     sx={{ display: "flex", alignItems: "center" }}
                   >
                     <CoTypography size="Tag">
-                      {inquiry.userName} | {inquiry.date}
+                      {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT}
                     </CoTypography>
                   </Grid>
 
@@ -392,7 +374,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
                               fontSize: "1rem",
                             }}
                           />
-                          {inquiry.viewCount}
+                          {inquiry.inquiryView}
                         </CoTypography>
                       </Grid>
                       <Grid item>
@@ -429,18 +411,18 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
         }}
       >
         <Box sx={{ width: "8rem", mb: "0rem" }}>
-          <StyledFormControl fullWidth size="small">
+          <StyledFormControl fullWidth size="small" onSubmit={handleSearch}>
             <StyledInputLabel id="search-label">search</StyledInputLabel>
             <Select
               labelId="search-label"
               id="search"
-              value={Option}
+              value={searchCondition}
               label="search"
               onChange={handleChange}
             >
               {selectSearch.map((item, index) => (
-                <MenuItem key={index} value={item}>
-                  {item}
+                <MenuItem key={index} value={item.value}>
+                  {item.name}
                 </MenuItem>
               ))}
             </Select>
@@ -457,18 +439,26 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
               },
             },
           }}
+          value={searchKeyword}
+          onChange={handleSearchKeywordChange}
+          onKeyDown={handleSearch}
+          name="searchKeyword"
           placeholder="검색어를 입력해주세요. "
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <SearchIcon sx={{ cursor: "pointer" }} />
+                <SearchIcon sx={{ cursor: "pointer" }} 
+                onClick={handleSearch}
+                name="searchIcon"/>
               </InputAdornment>
             ),
           }}
         />
       </Box>
       <Pagination
-        count={10}
+        count={inquiries.totalPages}
+        page={page + 1} 
+        onChange={changePage}
         color="primary"
         sx={{ mt: "2rem", display: "flex", justifyContent: "center" }}
       />

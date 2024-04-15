@@ -65,11 +65,10 @@ const useStore = create((set, get) => ({
     inquiryTitle,
     inquiryContent,
     tagContent,
-    isPrivate,
     contentsId,
-    inquiryFileDTOList,
-    fetchInquiries
+    inquiryFileDTOList
   ) => {
+    const {setInquiries, setPage, isPrivate} = get();
     try {
       const inquiryData = {
         inquiryTitle: inquiryTitle,
@@ -82,6 +81,7 @@ const useStore = create((set, get) => ({
       console.log("문의 데이터", inquiryData);
       console.log("아이디는", contentsId);
       console.log("타입은", typeof contentsId);
+      console.log(inquiryFileDTOList);
 
       const formData = new FormData();
 
@@ -90,25 +90,40 @@ const useStore = create((set, get) => ({
       });
 
       formData.append("inquiryDTO", inquiryDTO);
+      formData.append("isPrivate", new Blob([JSON.stringify(isPrivate)], {
+        type: "application/json",
+      }));
 
       const inquiryFileDTOs = new Blob([JSON.stringify(inquiryFileDTOList)], {
         type: "application/json",
       });
 
       formData.append("inquiryFileDTOList", inquiryFileDTOs);
+      
+      const tagDTOs = tagContent.map(tag => ({
+        tagContent: tag
+      }));
 
-      formData.append("tagDTOList", JSON.stringify(tagContent));
+      formData.append("tagDTOList", new Blob([JSON.stringify(tagDTOs)], {
+        type: "application/json",
+      }));
 
       formData.forEach(function (value, key) {
         console.log(key + ": " + value);
       });
 
-      await axios.post(`http://localhost:9090/inquiry/inquiry`, formData, {
-        params: { contentsId: contentsId },
+      const response = await axios.post(`http://localhost:9090/inquiry/inquiry/${contentsId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
+          "Content-Type": "multipart/form-data" 
+        }
       });
 
-      fetchInquiries();
+      console.log(response);
+      setInquiries(response.data.pageItems);
+      setPage(response.data.pageItems.pageable.pageNumber);
       alert("문의가 등록되었습니다.");
+      window.location.href=`/detail/${contentsId}?tab=inquiry`
     } catch (error) {
       console.error("Error adding inquiry:", error);
     }
@@ -117,15 +132,20 @@ const useStore = create((set, get) => ({
   handleInquiryModifySubmit: async (
     inquiryId,
     inquiryTitle,
-    inquiryContent
+    inquiryContent,
+    tagContent,
+    contentsId
   ) => {
-    const { inquiryFileDTOList, setInquiryModifyFileList, inquiryModifyProc } =
+    const {isPrivate, inquiryFileDTOList, setInquiries, setPage } =
       get();
     try {
       const inquiryData = {
-        id: inquiryId,
+        inquiryId: inquiryId,
         inquiryTitle: inquiryTitle,
-        inquiryContent: inquiryContent,
+        inquiryContent: inquiryContent
+          .replaceAll("<", "&lt;")
+          .replace(/>/g, "&gt;"),
+        isPrivate: isPrivate || false,
       };
 
       const formData = new FormData();
@@ -135,6 +155,9 @@ const useStore = create((set, get) => ({
       });
 
       formData.append("inquiryDTO", inquiryDTO);
+      formData.append("isPrivate", new Blob([JSON.stringify(isPrivate)], {
+        type: "application/json",
+      }));
 
       const inquiryFileDTOs = new Blob([JSON.stringify(inquiryFileDTOList)], {
         type: "application/json",
@@ -142,13 +165,24 @@ const useStore = create((set, get) => ({
 
       formData.append("inquiryFileDTOList", inquiryFileDTOs);
 
+      formData.append("tagDTOList", new Blob([JSON.stringify(tagContent)], {
+        type: "application/json",
+      }));
+
       const response = await axios.put(
-        "http://localhost:9090/inquiry/update",
-        formData
+        `http://localhost:9090/inquiry/update/${contentsId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
       );
 
-      setInquiryModifyFileList(response.data.item);
-      inquiryModifyProc(inquiryId);
+      setInquiries(response.data.pageItems);
+      setPage(response.data.pageItems.pageable.pageNumber);
+      alert("문의가 수정되었습니다.");
+      window.location.href=`/detail/${contentsId}?tab=inquiry`
     } catch (error) {
       console.error("Error adding inquiry:", error);
     }
@@ -195,6 +229,69 @@ const useStore = create((set, get) => ({
       console.error("Error adding inquiry:", error);
     }
   },
+  updateInquiryView: async(inquiryId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/inquiry/updateInquiryView/${inquiryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      )
+    } catch(e) {
+      console.log(e);
+    }
+  },
+  fetchMyInquiries: async(contentsId) => {
+    const {setInquiries, setPage, searchCondition, searchKeyword} = get();
+
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/inquiry/myInquiries/${contentsId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          },
+          params: {
+            searchCondition: searchCondition,
+            searchKeyword: searchKeyword
+          }
+        }
+      );
+
+      console.log(response);
+
+      setInquiries(response.data.pageItems);
+      setPage(response.data.pageItems.pageable.pageNumber);
+    } catch(e) {
+      console.log(e);
+    }
+  },
+  deleteInquiry: async(inquiryId, contentsId) => {
+    const {setInquiries, setPage, searchCondition, searchKeyword} = get();
+    
+    try {
+      const response = await axios.delete(
+        `http://localhost:9090/inquiry/delete/${inquiryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          },
+          params: {
+            contentsId: contentsId,
+            searchCondition: searchCondition,
+            searchKeyword: searchKeyword
+          }
+        }
+      );
+      alert("삭제되었습니다.");
+      setInquiries(response.data.pageItems);
+      setPage(response.data.pageItems.pageable.pageNumber);
+    } catch(e) {
+      console.log(e);
+    }
+  }
 }));
 
 export default useStore;
