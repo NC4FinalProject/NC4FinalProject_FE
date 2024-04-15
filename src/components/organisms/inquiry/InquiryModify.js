@@ -16,9 +16,8 @@ import useStore from "../../../stores/InquiryStore";
 import axios from "axios";
 
 
-const InquiryPost = ({inquiry, onCancelClick, onListClick}) => {
-  const [inquiryContent, setInquiryContent] = useState(inquiry.inquiryContent.replaceAll("&lt;", "<").replaceAll("&gt;", ">"));
-  const [inquiryTitle, setInquiryTitle] = useState(inquiry.inquiryTitle);
+const InquiryPost = ({onCancelClick, onListClick}) => {
+  
   
   const {
     inquiries,
@@ -41,7 +40,11 @@ const InquiryPost = ({inquiry, onCancelClick, onListClick}) => {
     handleInquiryModifySubmit,
     isPrivate,
     setIsPrivate,
+    inquiry,
   } = useStore();
+
+  const [inquiryContent, setInquiryContent] = useState();
+  const [inquiryTitle, setInquiryTitle] = useState();
 
   const tempFileDTOList = [];
 
@@ -61,6 +64,8 @@ const InquiryPost = ({inquiry, onCancelClick, onListClick}) => {
   useEffect(() => {
     if(inquiry) {
       setIsPrivate(inquiry.private);
+      setInquiryTitle(inquiry.inquiryTitle);
+      setInquiryContent(inquiry.inquiryContent.replaceAll("&lt;", "<").replaceAll("&gt;", ">"));
     }
   }, [inquiry]);
 
@@ -107,6 +112,18 @@ const InquiryPost = ({inquiry, onCancelClick, onListClick}) => {
     setInquiryTitle(event.target.value);
   };
 
+  const handleModify = async () => {
+    await handleInquiryModifySubmit(
+      inquiry.inquiryId,
+      inquiryTitle,
+      inquiryContent,
+      inquiry.tagDTOList,
+      inquiry.contentsId
+    );
+    
+    onCancelClick();
+  };
+
   return (
     <>
       <Box
@@ -142,14 +159,7 @@ const InquiryPost = ({inquiry, onCancelClick, onListClick}) => {
           >
             취소
           </Button>
-          <Button color="primary" variant="contained" onClick={() => 
-            handleInquiryModifySubmit(
-              inquiry.inquiryId,
-              inquiryTitle,
-              inquiryContent,
-              inquiry.tagDTOList,
-              inquiry.contentsId
-            )}>
+          <Button color="primary" variant="contained" onClick={() => handleModify()}>
             수정
           </Button>
         </Box>
@@ -230,7 +240,7 @@ const InquiryPost = ({inquiry, onCancelClick, onListClick}) => {
             padding: "0rem 1rem 1rem 1rem",
           }}
         >
-          {inquiry.tagDTOList.map((tag, index) => (
+          {inquiry.tagDTOList && inquiry.tagDTOList.map((tag, index) => (
             <Chip
               color="primary"
               key={index}

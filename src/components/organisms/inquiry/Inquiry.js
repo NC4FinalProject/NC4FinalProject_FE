@@ -70,7 +70,8 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     page,
     setPage,
     updateInquiryView,
-    fetchMyInquiries
+    fetchMyInquiries,
+    setInquiry,
   } = useStore();
 
   const [sortBy, setSortBy] = useState("entire");
@@ -119,6 +120,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
       (inquiry) => inquiry.inquiryId === inquiryId
     );
     if(!selected.private) {
+      setInquiry(selected);
       setSelectedInquiry(selected);
       onInquiryClick(selected);
       updateInquiryView(inquiryId);
@@ -127,6 +129,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
         memberInfo.role === "ADMIN" ||
         selected.author === memberInfo.userNickname
       ) {
+        setInquiry(selected);
         setSelectedInquiry(selected);
         onInquiryClick(selected);
         updateInquiryView(inquiryId);

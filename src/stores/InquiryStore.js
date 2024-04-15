@@ -17,6 +17,7 @@ const useStore = create((set, get) => ({
   tagDTOList: [],
   contentsId: 0,
   isPrivate: false,
+  inquiry: {},
   setLikeCheck: (liked) => set({ liked }),
   setLikeCnt: (likeCnt) => set({ likeCnt }),
   setInquiryFiles: (inquiryFiles) => set({ inquiryFiles }),
@@ -29,7 +30,7 @@ const useStore = create((set, get) => ({
     set({ inquiryModifyFileList }),
   setContentsId: (contentsId) => set({ contentsId }),
   setIsPrivate: (isPrivate) => set({ isPrivate }),
-
+  setInquiry: (inquiry) => set({inquiry}),
   fetchInquiries: async (contentsId) => {
     const { searchCondition, searchKeyword, setPage, page } = get();
     try {
@@ -136,7 +137,7 @@ const useStore = create((set, get) => ({
     tagContent,
     contentsId
   ) => {
-    const {isPrivate, inquiryFileDTOList, setInquiries, setPage } =
+    const {isPrivate, inquiryFileDTOList, setInquiry } =
       get();
     try {
       const inquiryData = {
@@ -179,10 +180,9 @@ const useStore = create((set, get) => ({
         }
       );
 
-      setInquiries(response.data.pageItems);
-      setPage(response.data.pageItems.pageable.pageNumber);
+      setInquiry(response.data.item);
+      
       alert("문의가 수정되었습니다.");
-      window.location.href=`/detail/${contentsId}?tab=inquiry`
     } catch (error) {
       console.error("Error adding inquiry:", error);
     }

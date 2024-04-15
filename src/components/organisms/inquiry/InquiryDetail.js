@@ -16,8 +16,9 @@ import HtmlParser from 'react-html-parser';
 import MemberStore from "../../../stores/MemberStore";
 import useStore from "../../../stores/InquiryStore";
 import axios from "axios";
+import Notice from "../../../scss/Notice.scss";
 
-const InquiryDetail = ({ inquiry, handleModifyClick, onListClick, scrollToTop }) => {
+const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [openReportDialog, setOpenReportDialog] = useState(false);
   const [isFavorited, setFavorited] = useState(false);
@@ -27,8 +28,10 @@ const InquiryDetail = ({ inquiry, handleModifyClick, onListClick, scrollToTop })
     setInquiries,
     searchCondition,
     searchKeyword,
-    setPage
+    setPage,
+    inquiry,
   } = useStore();
+  const [commentContent, setCommentContent] = useState("");
 
   const handleEditorClick = () => {
     setShowEditor(true);
@@ -89,6 +92,15 @@ const InquiryDetail = ({ inquiry, handleModifyClick, onListClick, scrollToTop })
     }
   }
 
+  const handleContentChange = (editor) => {
+    const data = editor.getData();
+    setCommentContent(data);
+  }
+
+  const handlePostComment = () => {
+
+  }
+
   return (
     <>
       {inquiry && (
@@ -126,7 +138,7 @@ const InquiryDetail = ({ inquiry, handleModifyClick, onListClick, scrollToTop })
                   {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT} | {inquiry.contentsTitle} |
                 </CoTypography>
                 <Visibility
-                  sx={{
+                  sx={{ 
                     color: "#868e96",
                     marginLeft: "0.25rem",
                     marginRight: "0.25rem",
@@ -392,8 +404,8 @@ const InquiryDetail = ({ inquiry, handleModifyClick, onListClick, scrollToTop })
                           "mergeTableCells",
                         ],
                       },
-                      // data={content}
-                      // onChange={handleContentChange}            
+                      data: {commentContent},
+                      onChange: {handleContentChange}            
                     }}
                   />
                 </Grid>
@@ -413,7 +425,7 @@ const InquiryDetail = ({ inquiry, handleModifyClick, onListClick, scrollToTop })
                   >
                     취소
                   </Button>
-                  <Button color="primary" variant="contained">
+                  <Button onClick={handlePostComment} color="primary" variant="contained">
                     등록
                   </Button>
                 </Grid>

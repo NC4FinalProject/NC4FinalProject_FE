@@ -232,7 +232,6 @@ export default function ContentsDetail() {
         )}
         {view === "detail" && (
           <InquiryDetail
-            inquiry={selectedInquiry}
             handleModifyClick={handleModifyClick}
             onListClick={handleListClick}
             scrollToTop={scrollToTop}
@@ -248,7 +247,6 @@ export default function ContentsDetail() {
 
         {view === "modify" && (
           <InquiryModify
-            inquiry={selectedInquiry}
             onCancelClick={handleModifyCancelClick}
             onListClick={handleListClick}
           />
