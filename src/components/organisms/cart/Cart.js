@@ -157,7 +157,7 @@ const Cart = () => {
         >
           <CartUserInformation
             key={memberInfo.memberId}
-            userNickname={memberInfo.userNickname}
+            userNickname={memberInfo && memberInfo.userNickname}
             userEmail={memberInfo.username}
           />
           <CartPayment 

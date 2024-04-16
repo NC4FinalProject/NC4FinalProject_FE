@@ -1,6 +1,6 @@
 import {  Visibility } from "@mui/icons-material";
 import { Button, ButtonGroup, Chip, Grid, Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
@@ -12,11 +12,30 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import HtmlParser from 'react-html-parser';
+import MemberStore from "../../../stores/MemberStore";
+import useStore from "../../../stores/InquiryStore";
+import axios from "axios";
+import Notice from "../../../scss/Notice.scss";
 
-const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
+const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
   const [showEditor, setShowEditor] = useState(false);
   const [openReportDialog, setOpenReportDialog] = useState(false);
   const [isFavorited, setFavorited] = useState(false);
+  const {memberInfo} = MemberStore();
+  const {
+    deleteInquiry,
+    setInquiries,
+    searchCondition,
+    searchKeyword,
+    setPage,
+    inquiry,
+    setInquiry,
+    comments,
+    setComments,
+    postComment,
+  } = useStore();
+  const [commentContent, setCommentContent] = useState("");
 
   const handleEditorClick = () => {
     setShowEditor(true);
@@ -41,6 +60,66 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
       setShowEditor(false);
     }
   };
+
+  const handleDelete = () => {
+    deleteInquiry(inquiry.inquiryId, inquiry.contentsId);
+    onListClick();
+  }
+
+  const handleSolve = async () => {
+    if(window.confirm("질문이 모두 해결되셨나요?")) {
+      try {
+        const response = await axios.put(
+          `http://localhost:9090/inquiry/updateSolve/${inquiry.inquiryId}`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+            },
+            params: {
+              searchCondition: searchCondition,
+              searchKeyword: searchKeyword,
+              contentsId: inquiry.contentsId
+            }
+          }
+        );
+
+        alert("질문이 해결완료 상태로 변경되었습니다.");
+
+        setInquiry(response.data.item);
+
+      } catch(e) {
+        console.log(e);
+      }
+    }
+  }
+
+  const handleContentChange = (e, editor) => {
+    const data = editor.getData();
+    setCommentContent(data);
+  }
+
+  const handlePostComment = () => {
+    postComment(commentContent, inquiry.inquiryId);
+    setShowEditor(false);
+  }
+
+  const handleLikeClick = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/inquiry/like/${inquiry.inquiryId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      ) 
+      setInquiry(response.data.item);
+    } catch(e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -76,17 +155,17 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
               </Grid>
               <Grid container ml="0.5rem" alignItems={"center"}>
                 <CoTypography size="TableContent">
-                  {inquiry.userName} | {inquiry.date} | {inquiry.contentsName} |
+                  {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT} | {inquiry.contentsTitle} |
                 </CoTypography>
                 <Visibility
-                  sx={{
+                  sx={{ 
                     color: "#868e96",
                     marginLeft: "0.25rem",
                     marginRight: "0.25rem",
                   }}
                 />
                 <CoTypography size="TableContent">
-                  {inquiry.viewCount}
+                  {inquiry.inquiryView}
                 </CoTypography>
               </Grid>
             </Grid>
@@ -97,19 +176,36 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                 mt: "0.25rem",
               }}
             >
-              <Grid container alignItems={"center"}>
+              <Grid container justifyContent={"center"} sx={{ paddingBottom: "1rem" }} alignItems={"center"}>
                 <Chip
                   size="medium"
-                  label={inquiry.isSolved ? "해결완료" : "미해결"}
+                  label={inquiry.solved ? "해결완료" : "미해결"}
                   sx={{
-                    backgroundColor: inquiry.isSolved
+                    backgroundColor: inquiry.solved
                       ? "primary.main"
                       : "primary",
-                    color: inquiry.isSolved ? "white" : "primary",
-                    mr: "1rem",
+                    color: inquiry.solved ? "white" : "primary",
                   }}
                 />
               </Grid>
+              <Grid container justifyContent={"center"} alignItems={"center"}>
+                  {
+                    inquiry.memberDTO.userNickname === memberInfo.userNickname 
+                    && !inquiry.solved
+                    && (
+                      <Chip
+                        size="medium"
+                        label={"질문이 모두 해결됐으면 클릭"}
+                        sx={{
+                          backgroundColor: "primary.main",
+                          color: "white",
+                          cursor: "pointer"
+                        }}
+                        onClick={handleSolve}
+                      />
+                    )
+                  }
+                </Grid>
             </Grid>
           </Grid>
 
@@ -130,23 +226,27 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                   flexGrow: 1,
                 }}
               >
-                <ButtonGroup
-                  variant="text"
-                  sx={{ paddingTop: "1rem ", paddingRight: "1rem" }}
-                >
-                  <Button style={{ border: "none" }}>
-                    <CoTypography size="TableContent">수정</CoTypography>
-                  </Button>
-                  <CoTypography
-                    size="TableContent"
-                    sx={{ display: "flex", alignItems: "center" }}
+                {
+                memberInfo.userNickname === inquiry.memberDTO.userNickname &&
+                (
+                  <ButtonGroup
+                    variant="text"
+                    sx={{ paddingTop: "1rem ", paddingRight: "1rem" }}
                   >
-                    |
-                  </CoTypography>
-                  <Button>
-                    <CoTypography size="TableContent">삭제</CoTypography>
-                  </Button>
-                </ButtonGroup>
+                    <Button onClick={handleModifyClick} style={{ border: "none" }}>
+                      <CoTypography size="TableContent">수정</CoTypography>
+                    </Button>
+                    <CoTypography
+                      size="TableContent"
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
+                      |
+                    </CoTypography>
+                    <Button onClick={handleDelete}>
+                      <CoTypography size="TableContent">삭제</CoTypography>
+                    </Button>
+                  </ButtonGroup>
+                )}
               </Grid>
               <Grid
                 item
@@ -162,7 +262,7 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                   style={{ color: "#868e96" }}
                   sx={{ width: "100%" }}
                 >
-                  {inquiry.inquiryContent}
+                  {HtmlParser(HtmlParser(inquiry.inquiryContent))}
                 </CoTypography>
               </Grid>
             </Grid>
@@ -174,13 +274,13 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
               padding="1rem 1.5rem 2rem 1rem"
             >
               <Grid item>
-                {[inquiry.tag1, inquiry.tag2, inquiry.tag3].map(
+                {inquiry.tagDTOList.map(
                   (tag, index) =>
                     tag && (
                       <Chip
                         key={index}
                         size="small"
-                        label={tag}
+                        label={tag.tagContent}
                         sx={{
                           backgroundColor: "primary.main",
                           color: "white",
@@ -207,20 +307,20 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                     신고하기
                   </CoTypography>
                 </Grid>
-                <Grid sx={{ display: "flex", alignItems: "center" }}>
-                {isFavorited ? (
+                <Grid sx={{ display: "flex", alignItems: "center" }}> 
+                {inquiry.like ? (
                   <FavoriteIcon
-                    sx={{ mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
-                    onClick={() => setFavorited(false)}
+                    sx={{cursor: "pointer", mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
+                    onClick={handleLikeClick}
                   />
                 ) : (
                   <FavoriteBorderOutlinedIcon
-                    sx={{ mr: "0.25rem", color: "#444444" }}
-                    onClick={() => setFavorited(true)}
+                    sx={{cursor: "pointer", mr: "0.25rem", color: "#444444" }}
+                    onClick={handleLikeClick}
                   />
                 )}
               <CoTypography size="TableContent" color="textSecondary">
-                {/* {likeCount} */}3
+                {inquiry.likeCount}
               </CoTypography>
             </Grid>
                 {/* <Grid sx={{ display: "flex", alignItems: "center" }}>
@@ -249,7 +349,7 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
             <Grid>
               <Grid sx={{ ml: "0.5rem" }}>
                 <CoTypography size="NoticeTitle" style={{ color: "#868e96" }}>
-                  답변 1
+                  답변 {inquiry.commentCount}
                 </CoTypography>
               </Grid>
             </Grid>
@@ -289,6 +389,8 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                 <Grid sx={{ width: "100%" }}>
                   <CKEditor
                     editor={ClassicEditor}
+                    data={commentContent}
+                    onChange={handleContentChange}   
                     config={{
                       toolbar: {
                         items: [
@@ -323,9 +425,7 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                           "tableRow",
                           "mergeTableCells",
                         ],
-                      },
-                      // data={content}
-                      // onChange={handleContentChange}            
+                      },         
                     }}
                   />
                 </Grid>
@@ -345,7 +445,7 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
                   >
                     취소
                   </Button>
-                  <Button color="primary" variant="contained">
+                  <Button onClick={handlePostComment} color="primary" variant="contained">
                     등록
                   </Button>
                 </Grid>
@@ -367,17 +467,17 @@ const InquiryDetail = ({ inquiry, onListClick, scrollToTop }) => {
               </CoHoverButton>
             )}
           </Grid>
-          {inquiry &&
-            inquiry.inquiryComments &&
-            inquiry.inquiryComments.length > 0 &&
-            inquiry.inquiryComments.map((comment, id) => (
+          {comments && comments.map((comment, id) => (
               <InquiryComment
                 key={id}
-                name={comment.commenterName}
-                regDate={comment.commentDate}
-                content={comment.commentContent}
-                likeCount={comment.commentLikeCount}
-                profileImage={comment.profileImage}
+                name={comment.memberDTO.userNickname}
+                regDate={comment.inquiryCommentCrtDT}
+                content={comment.inquiryCommentContent}
+                inquiryId={comment.inquiryId}
+                commentId={comment.inquiryCommentId}
+                likeCount={comment.inquiryCommentLikeCount}
+                profileImage={comment.memberDTO.profileFile}
+                commentLike={comment.commentLike}
               />
             ))}
 

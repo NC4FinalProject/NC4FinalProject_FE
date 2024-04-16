@@ -27,6 +27,10 @@ userPwChk: '',
   reason:'',
   point: 0,
   contents: [],
+  qnauser: [],
+  qnaUserCount: 0,
+  setQnaCount: (qnaUserCount) => set({qnaUserCount}),
+  setQnaUser: (qnauser) => set({qnauser}),
   setContents: (contents) => set({ contents }),
   setPoint: (point) => set({ point }),
   setReason: (reason) => set({ reason }),
@@ -56,15 +60,15 @@ userPwChk: '',
   
   userNotice: async () => {
     const { setNotices, setUsers, setNewUser,setMonthlytotalUserCount,setMonthlyCounts,setPreTeacherCount
-            ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount,setContents } = get();
+            ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount,setContents,setQnaUser,setQnaCount } = get();
     try {
         const response = await axios.get('http://localhost:9090/admin/main', {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
         });
-        const { notices, recentUsers, registrationCounts,contents,
-                monthlytotalUserCount,monthlyCounts,preTeacherCount,daliyOutUserCount, monthlyOutUserCount,preTeachers,todayUserCount } = response.data;
+        const { notices, recentUsers, registrationCounts,contents,QnaCount,
+                monthlytotalUserCount,monthlyCounts,preTeacherCount,daliyOutUserCount, monthlyOutUserCount,preTeachers,todayUserCount,qnauser,qnaUserCount } = response.data;
         console.log(response.data);
         setNotices(notices);
         setUsers(recentUsers);
@@ -77,6 +81,8 @@ userPwChk: '',
         setPreTeachers(preTeachers);
         setTodayUserCount(todayUserCount);
         setContents(contents);
+        setQnaUser(qnauser);
+        setQnaCount(qnaUserCount);
     } catch (error) {
         console.log('에러:', error);
     }
@@ -175,6 +181,61 @@ getContentsList: async () => {
         });
         setPage(response.data.pageable.pageNumber);
         setContents(response.data);
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+
+getQnaAnswer: async () => {
+    const { setQnaUser, searchCondition, searchKeyword,page,setPage } = get();
+    try {
+        const response = await axios.get('http://localhost:9090/admin/qna', {
+            params: {
+                searchCondition: searchCondition,
+                searchKeyword: searchKeyword,
+                page: page,
+              }, 
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        })
+        setPage(response.data.pageItems.pageable.pageNumber);
+        setQnaUser(response.data.pageItems.content);
+        console.log(response.data.pageItems);
+    } catch (error) {
+        console.log('에러:', error);
+    }
+},
+
+sendQnaAnswer: async (id, answerUser, content) => {
+    console.log(answerUser);
+    console.log(content);
+    try {
+    await axios.post('http://localhost:9090/admin/answerqna',{
+        id: id,
+        answerUser: answerUser,
+        content: content,
+        createdAt: new Date().toISOString()
+    });
+    console.log("잘되었나.")
+} catch(error) {
+    console.log(error);
+}
+},
+getUserQnaResult: async () => {
+    const { setQnaUser,page,setPage } = get();
+    try {
+        const response = await axios.get('http://localhost:9090/mypage/qna', {
+            params: {
+                page: page
+              }, 
+              headers: {
+                Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
+            },
+        })
+        console.log(response.data);
+        setPage(response.data.pageItems.pageable.pageNumber);
+        setQnaUser(response.data.pageItems.content);
     } catch (error) {
         console.log('에러:', error);
     }

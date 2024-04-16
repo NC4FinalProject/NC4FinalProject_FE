@@ -9,15 +9,17 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import Reportdialog from '../../components/organisms/review/Reportdialog';
 import CoSelect from '../../components/organisms/common/CoSelect';
+import MemberStore from "../../stores/MemberStore";
 
 const AdminUserDetail = () => {
 
-    const {point,handleSavePoint, reason, setPoint,setReason, userDetail,pointSum, userChangeRole, MemberInfo, Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw, userPwChk, setUserPw, setUserPwChk, setSelectedRole } = AdminStore();
+    const {point,handleSavePoint, reason,MemberInfo, setPoint,setReason, userDetail,pointSum, userChangeRole,  Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw, userPwChk, setUserPw, setUserPwChk, setSelectedRole } = AdminStore();
+    const { memberInfo } = MemberStore();
     const maxChars = 150;
     const {userId} = useParams();
     const [open, setOpen] = useState(false);
     const [openReport, setOpenReport] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("");
+    const [selectedValue, setSelectedValue] = useState(MemberInfo.role);
     const [openrole, setOpenRole] = useState(false);
     const [openPointDialog, setOpenPointDialog] = useState(false);
 
@@ -28,7 +30,6 @@ const AdminUserDetail = () => {
     userChangeRole(userId);
     setOpenRole(false);
   };
-
 
     const handlePointDialogOpen = () => {
       setOpenPointDialog(true);
@@ -215,7 +216,7 @@ const AdminUserDetail = () => {
                   <DialogTitle>권한 변경</DialogTitle>
                   <DialogContent sx={{ minWidth: '32.75rem' }}>
                       <Select
-                          value={MemberInfo.role}
+                          value={selectedValue}
                           onChange={handleRoleChange}
                           fullWidth
                       >
@@ -236,7 +237,7 @@ const AdminUserDetail = () => {
             <TableRow>
             <TableCell><CoTypography size="AdminUser">아이디</CoTypography></TableCell>
             <TableCell><CoTypography size="HoverText">{MemberInfo.username}</CoTypography></TableCell>
-            
+
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">비밀번호</CoTypography></TableCell>
@@ -316,12 +317,12 @@ const AdminUserDetail = () => {
               <Reportdialog open={openReport} handleClickClose={() => setOpenReport(false)}
                 author={MemberInfo.userNickname} date={new Date().toLocaleDateString()}
                 Title="블랙리스트 추가 / 변경"
-                onSubmit={(detailReason) => onSubmit(detailReason, selectedValue)}                
+                onSubmit={(detailReason) => onSubmit(detailReason, selectedValue)}
                 selectComponent={
                   <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
                   <CoSelect onChange={handleSelectChange} value={selectedValue} options={reportReasons} />
                   </Box>
-                }>  
+                }>
                 1. 정지 사유도 함께 적어주세요.
               </Reportdialog>
              </TableRow>

@@ -16,8 +16,7 @@ import MemberStore from '../../stores/MemberStore';
 
 const AdminReportList = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('all');
-    const { searchCondition, searchKeyword, setSearchCondition, setSearchKeyword } = AdminStore();
-    const [open, setOpen] = useState(false);
+    const {  searchKeyword, setSearchCondition, setSearchKeyword } = AdminStore();
     const [openReport, setOpenReport] = useState(false);
     const [selectedValue, setSelectedValue] = useState("");
     const { userInfo } = MemberStore();
@@ -30,14 +29,6 @@ const AdminReportList = () => {
         { key: 'RESIGNED', value: '기타' },
 
       ];
-
-    const handleDialogOpen = () => {
-        setOpen(true);
-    };
-    
-    const handleDialogClose = () => {
-        setOpen(false);
-    };
 
     const handleSelectChange = (event) => {
       setSelectedValue(event.target.value);
@@ -59,10 +50,6 @@ const AdminReportList = () => {
         console.log("detailReason: ", detailReason);
         console.log("selectedValue: ", selectedValue);
       };
-
-    const sendReport = (userId, selectedValue) => {
-      console.log(userId, selectedValue);
-    };
 
     const handleSearchConditionChange = (event) => {
         setSearchCondition(event.target.value);

@@ -38,7 +38,7 @@ const List = () => {
         <title>Products | MUI Dash</title>
       </Helmet>
 
-      <ContainerStyle maxWidth="lg">
+      <ContainerStyle maxWidth="1300px">
 
         <ContentsFilters />
 

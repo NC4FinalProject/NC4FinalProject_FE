@@ -56,7 +56,7 @@ const CartItem = ({ itemImg, itemName, teacherName, price, setCartItem, item, ch
         <Grid item xs={2.5} sx={{ marginLeft: "0.5rem" }}>
           {itemImg && (
             <img
-              src={itemImg}
+              src={`https://kr.object.ncloudstorage.com/envdev/${itemImg}`}
               alt="itemImg"
               style={{
                 width: "100%",

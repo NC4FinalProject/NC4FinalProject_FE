@@ -18,15 +18,14 @@ const AdminPage = ({children}) => {
     const [submenuOpen, setSubmenuOpen] = React.useState({});
     const [selectedSubmenu1, setSelectedSubmenu1] = useState(null);
     const [selectedSubmenu2, setSelectedSubmenu2] = useState(null);
-    const [selectedSubmenu3, setSelectedSubmenu3] = useState(null);
-    const {userRole} = MemberStore();
+    const {memberInfo} = MemberStore();
     const navi = useNavigate();
-    // useEffect(() => {
-    //   if (userRole !== 'ADMIN') {
-    //     alert('접근 권한이 없습니다.');
-    //     navi('/');
-    //   }
-    // }, [userRole, navi]);
+    useEffect(() => {
+      if (memberInfo.role !== 'ADMIN') {
+        alert('접근 권한이 없습니다.');
+        navi('/');
+      }
+    }, [memberInfo.role, navi]);
 
     const toggleSubmenu = (menuName) => {
         setSubmenuOpen({
@@ -55,6 +54,9 @@ const AdminPage = ({children}) => {
         }
         if (submenu === '신고 관리') {
             navi('/admin/report');
+        }
+        if (submenu === '1 대 1 문의') {
+            navi('/admin/qna');
         }
         setSelectedSubmenu1(submenu === selectedSubmenu1 ? null : submenu);
     };

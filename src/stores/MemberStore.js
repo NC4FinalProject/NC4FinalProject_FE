@@ -13,6 +13,8 @@ const MemberStore = create(persist((set, get) => ({
 }), {
     name: 'member-store',
     getStorage: () => sessionStorage,
-}));
+},
+
+));
 
 export default MemberStore;

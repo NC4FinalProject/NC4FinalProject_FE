@@ -11,6 +11,12 @@ const CartPayment = ({totalPrice, selectedItem, userNickname, userEmail}) => {
       alert("결제할 강의를 먼저 선택하세요.");
       return;
     }
+
+    if(totalPrice <= 0) {
+      navi("/payment/success");
+      return;
+    }
+
     navi("/paymentWidget", {state: {selectedItem: selectedItem, userNickname: userNickname, userEmail: userEmail}})
   }, [selectedItem]);
 

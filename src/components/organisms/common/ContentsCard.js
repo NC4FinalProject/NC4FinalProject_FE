@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Paper } from '@mui/material';
+import { Box, Hidden, Paper } from '@mui/material';
 import Rating from '@mui/material/Rating';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -26,12 +26,40 @@ function ContentsCard({
     const changeBooked = () => {
         setBooked(!Localbooked);
     };
-
-    useEffect(() => {
-        console.log(thumbnail);
-    }, [thumbnail]);
-
     return (
+        <>
+        <Hidden lgUp>
+        <Box sx={{width:'100%'}}>
+            <Paper elevation={1} style={{ width:'100%', height:'11.875rem', borderRadius:'0.5rem', marginTop:'1.5rem', marginRight:'1.5rem', position:'relative', ...paperstyle }}>
+                <Box onClick={goDetail(contentsId)} sx={{ cursor:'pointer' }}>
+                    <img src={`https://kr.object.ncloudstorage.com/envdev/${thumbnail}`} alt='thumbnail' style={{ width:'100%', height:'15rem', objectFit:'cover', borderRadius:'0.25rem' }} />
+                </Box>
+                {Localbooked ? (
+                    <Box onClick={changeBooked}>
+                        <BookmarkIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px', color:'#FFD400' }} />
+                    </Box>
+                ) : (
+                    <Box onClick={changeBooked}>
+                        <BookmarkBorderIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px' }} />
+                    </Box>
+                )}
+            </Paper>
+
+            <Box onClick={goDetail(contentsId)} sx={{paddingTop:'3rem'}}>
+                <CoTypography sx={{ cursor:'pointer' }} style={{ marginTop:'5px', width:'19.1875rem' }}>{contentsTitle}</CoTypography>
+            </Box>
+            <CoTypography size="Content" style={{ color:'#7d7d7d', width:'19.1875rem' }}>{category} | {memberId}</CoTypography>
+
+            <div style={{ display:'flex', alignItems:'center', justifyContent: 'space-between', width:'100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Rating name="read-only" value={rating !== undefined ? rating : null} readOnly style={{ fontSize:'1rem' }} />
+                    <CoTypography size="Tag">({reviews})</CoTypography>
+                </div>
+                <CoTypography size="Content">{price}</CoTypography>
+            </div>
+        </Box>
+        </Hidden>
+        <Hidden lgDown>
         <Box sx={sx}>
             <Paper elevation={1} style={{ width:'19.1875rem', height:'11.875rem', borderRadius:'0.5rem', marginTop:'1.5rem', marginRight:'1.5rem', position:'relative', ...paperstyle }}>
                 <Box onClick={goDetail(contentsId)} sx={{ cursor:'pointer' }}>
@@ -53,11 +81,16 @@ function ContentsCard({
             </Box>
             <CoTypography size="Content" style={{ color:'#7d7d7d', width:'19.1875rem' }}>{category} | {memberId}</CoTypography>
 
-            <div style={{ display:'flex', alignItems:'center', width:'19.1875rem' }}>
-                <Rating name="read-only" value={rating} readOnly style={{ fontSize:'1rem' }} />
-                <CoTypography size="Tag">({reviews})</CoTypography>
+            <div style={{ display:'flex', alignItems:'center', justifyContent: 'space-between', width:'19.1875rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Rating name="read-only" value={rating !== undefined ? rating : null} readOnly style={{ fontSize:'1rem' }} />
+                    <CoTypography size="Tag">({reviews})</CoTypography>
+                </div>
+                <CoTypography size="Content">{price}</CoTypography>
             </div>
         </Box>
+        </Hidden>
+        </>
     );
 }
 

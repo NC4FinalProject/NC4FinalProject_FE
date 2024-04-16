@@ -178,6 +178,14 @@ export const useChapterTwoStore = create((set) => ({
   },
 }));
 
+// 챕터 3에 대한 입력 정보 상태 및 액션//////////////////////////////
+export const useChapterThreeStore = create((set, get) => ({
+  contentsData: "",
+  contentsFileDTOList: [],
+  setContentsData: (contentsData) => set({contentsData}),
+  setContentsFileDTOList: (contentsFileDTOList) => set({contentsFileDTOList})
+}));
+
 // 폼데이터 보내야함 사진, 동영상을 함께 보내야 돼?
 // export const useFile
 

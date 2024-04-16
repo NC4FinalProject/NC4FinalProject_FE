@@ -8,7 +8,7 @@ import MemberStore from '../../stores/MemberStore';
 const Login = () => {
     const navi = useNavigate();
     const [showPw, setshowPw] = useState(false);
-    const {setMemberInfo, setUserRole} = MemberStore((state) => state);
+    const {setMemberInfo} = MemberStore((state) => state);
     const toggleShowPw = () => {
         setshowPw(!showPw);
     };
@@ -34,10 +34,8 @@ const Login = () => {
                     sessionStorage.getItem('ACCESS_TOKEN');
                     console.log(response.data.item.role);
                     if (response.data.item.role === 'ADMIN') {
-                        setUserRole(response.data.item.role);
                         navi('/admin/main');
                     } else {
-                        setUserRole(response.data.item.role);
                         navi('/');
                     }
                 }

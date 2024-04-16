@@ -9,8 +9,9 @@ import ChapterOne from './ChapterOne';
 import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
-import { useChapterOneStore, useChapterTwoStore } from '../../../../stores/ContentsStore';
+import { useChapterOneStore, useChapterTwoStore, useChapterThreeStore } from '../../../../stores/ContentsStore';
 import { insertApi } from '../../../../api/ContentsApi';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
@@ -19,9 +20,12 @@ export default function LinearStepper() {
   
   const { chapterOne, videoInfo, videoFile, thumbnail } = useChapterOneStore();
   const { chapterTwo } = useChapterTwoStore();
+  const { contentsData, contentsFileDTOList} = useChapterThreeStore();
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+
+  const navi = useNavigate();
 
   const isStepOptional = (step) => {
     console.log("상태값"+activeStep);
@@ -32,7 +36,15 @@ export default function LinearStepper() {
     return skipped.has(step);
   };
 
-  const handleNext = () => {
+  const handleNext = async (e) => {
+    // console.log(e.target.textContent);
+    if(e.target.textContent === 'Finish') {
+      await handleSave();
+      alert("강의가 등록됐습니다.");
+      navi("/list");
+      return;
+    }
+
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
@@ -68,7 +80,7 @@ export default function LinearStepper() {
   };
 
   const handleSave = () => {
-    insertApi(chapterOne, chapterTwo, videoInfo, videoFile, thumbnail);
+    insertApi(chapterOne, chapterTwo, videoInfo, videoFile, thumbnail, contentsData, contentsFileDTOList);
     console.log("=====버튼쪽========" + chapterOne +"11111"+ chapterTwo +"11111"+ videoInfo +"11111"+ videoFile +"11111"+ thumbnail);
   };
 

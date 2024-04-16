@@ -36,13 +36,20 @@ export const getContentsListApi = async()=>{
     throw error;
 }}
 
-export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail) => {
+export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail, contentsData, contentsFileDTOList) => {
   console.log("=======에이피아이쪽======" + chapterOne +"11111"+ chapterTwo +"11111"+ videoInfo +"11111"+ videoFile +"11111"+ thumbnail);
   
   const formData = new FormData();
 
+  const saveChapterOne = {
+    ...chapterOne,
+    introduce: contentsData
+              .replaceAll("<", "&lt;")
+              .replace(/>/g, "&gt;"),
+  };
+
   const insertRequestDTO = {
-    contentsDTO: chapterOne,
+    contentsDTO: saveChapterOne,
     sectionDTO: chapterTwo,
     videoDTO: videoInfo
   };
@@ -50,6 +57,11 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
   formData.append("insertRequestDTO", new Blob([JSON.stringify(insertRequestDTO)], { type: "application/json" }));
   formData.append("thumbnail", thumbnail);
   videoFile.forEach(videoFileData => formData.append("videoFile", videoFileData));
+  
+  const contentsFileDTOs = new Blob([JSON.stringify(contentsFileDTOList)], {
+    type: "application/json",
+  });
+  formData.append("contentsFileDTOList", contentsFileDTOs);
 
   try {
     const response = await axios.post('http://localhost:9090/contents/create', formData, {

@@ -14,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MemberStore from '../../stores/MemberStore';
+import Notice from '../../scss/Notice.scss'
 
 
 const NoticeDetail = () => {
@@ -40,8 +41,7 @@ const NoticeDetail = () => {
   const [putNoticeId, setPutNoticeId] = useState(null);
   const [liked, setliked] = useState(null);
   const [likeCnt, setlikeCnt] = useState(null);
-  const {userRole} = MemberStore();
-
+  const {memberInfo} = MemberStore();
   const navi = useNavigate();
   const tempFileDTOList = [];
 
@@ -163,6 +163,7 @@ const handleDelete = async () => {
     handleDialogOpen();
   };
 
+  
   const handleUpload = async (file) => {
     try {
         const formData = new FormData();
@@ -215,7 +216,7 @@ const handleDelete = async () => {
       </CoTypography>
 
       <Box sx={{ flex: 1}} />
-      {userRole === 'ADMIN' && (
+      {memberInfo.role === 'ADMIN' && (
       <Button
       size="Content"
         variant="contained"
@@ -257,7 +258,7 @@ const handleDelete = async () => {
         </Button>
       </DialogActions>
     </Dialog>
-    {userRole === 'ADMIN' && (
+    {memberInfo.role === 'ADMIN' && (
       <Button
       size="Content"
          variant="contained"
