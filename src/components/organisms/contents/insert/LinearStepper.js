@@ -9,7 +9,7 @@ import ChapterOne from './ChapterOne';
 import ChapterTwo from './ChapterTwo';
 import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
-import { useChapterOneStore, useChapterTwoStore } from '../../../../stores/ContentsStore';
+import { useChapterOneStore, useChapterTwoStore, useChapterThreeStore } from '../../../../stores/ContentsStore';
 import { insertApi } from '../../../../api/ContentsApi';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
@@ -19,6 +19,7 @@ export default function LinearStepper() {
   
   const { chapterOne, videoInfo, videoFile, thumbnail } = useChapterOneStore();
   const { chapterTwo } = useChapterTwoStore();
+  const { contentsData, contentsFileDTOList} = useChapterThreeStore();
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -68,7 +69,7 @@ export default function LinearStepper() {
   };
 
   const handleSave = () => {
-    insertApi(chapterOne, chapterTwo, videoInfo, videoFile, thumbnail);
+    insertApi(chapterOne, chapterTwo, videoInfo, videoFile, thumbnail, contentsData, contentsFileDTOList);
     console.log("=====버튼쪽========" + chapterOne +"11111"+ chapterTwo +"11111"+ videoInfo +"11111"+ videoFile +"11111"+ thumbnail);
   };
 

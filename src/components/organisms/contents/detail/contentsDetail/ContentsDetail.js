@@ -17,6 +17,7 @@ import { useCallback } from "react";
 import { useRef } from "react";
 import { useContentsStore } from "../../../../../stores/ContentsStore";
 import Section from "./Section";
+import HtmlParser from "react-html-parser";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,7 +66,7 @@ export default function ContentsDetail() {
   const contentDetailRef = useRef(null);
   const [previousPageUrl, setPreviousPageUrl] = useState("");
 
-  const { getSection } = useContentsStore();
+  const { getSection, getContents } = useContentsStore();
 
   const scrollToTop = useCallback(() => {
     if (contentDetailRef.current) {
@@ -207,7 +208,7 @@ export default function ContentsDetail() {
 
       {/* 소개 */}
       <CustomTabPanel value={value} index={0}>
-        Item One
+        {HtmlParser(HtmlParser(getContents.introduce))}
       </CustomTabPanel>
 
       {/* 코스 */}
