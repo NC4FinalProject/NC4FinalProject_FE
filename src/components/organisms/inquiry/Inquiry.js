@@ -72,6 +72,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     updateInquiryView,
     fetchMyInquiries,
     setInquiry,
+    setComments,
   } = useStore();
 
   const [sortBy, setSortBy] = useState("entire");
@@ -91,8 +92,6 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     fetchData();
   }, []);
 
-  console.log(contentsId);
-  console.log(inquiries);
   const handleChangeSort = (newValue) => {
     setSortBy(newValue);
     if(newValue === 'entire') {
@@ -121,6 +120,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
     );
     if(!selected.private) {
       setInquiry(selected);
+      setComments(selected.inquiryCommentDTOList);
       setSelectedInquiry(selected);
       onInquiryClick(selected);
       updateInquiryView(inquiryId);
@@ -130,6 +130,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
         selected.author === memberInfo.userNickname
       ) {
         setInquiry(selected);
+        setComments(selected.inquiryCommentDTOList);
         setSelectedInquiry(selected);
         onInquiryClick(selected);
         updateInquiryView(inquiryId);

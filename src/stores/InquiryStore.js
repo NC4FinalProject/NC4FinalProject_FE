@@ -18,6 +18,7 @@ const useStore = create((set, get) => ({
   contentsId: 0,
   isPrivate: false,
   inquiry: {},
+  comments: [],
   setLikeCheck: (liked) => set({ liked }),
   setLikeCnt: (likeCnt) => set({ likeCnt }),
   setInquiryFiles: (inquiryFiles) => set({ inquiryFiles }),
@@ -31,6 +32,7 @@ const useStore = create((set, get) => ({
   setContentsId: (contentsId) => set({ contentsId }),
   setIsPrivate: (isPrivate) => set({ isPrivate }),
   setInquiry: (inquiry) => set({inquiry}),
+  setComments: (comments) => set({comments}),
   fetchInquiries: async (contentsId) => {
     const { searchCondition, searchKeyword, setPage, page } = get();
     try {
@@ -230,6 +232,7 @@ const useStore = create((set, get) => ({
     }
   },
   updateInquiryView: async(inquiryId) => {
+    const {setInquiry} = get();
     try {
       const response = await axios.get(
         `http://localhost:9090/inquiry/updateInquiryView/${inquiryId}`,
@@ -238,7 +241,9 @@ const useStore = create((set, get) => ({
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
           }
         }
-      )
+      );
+
+      setInquiry(response.data.item);
     } catch(e) {
       console.log(e);
     }
@@ -288,6 +293,78 @@ const useStore = create((set, get) => ({
       alert("삭제되었습니다.");
       setInquiries(response.data.pageItems);
       setPage(response.data.pageItems.pageable.pageNumber);
+    } catch(e) {
+      console.log(e);
+    }
+  },
+  postComment: async (commentContent, inquiryId) => {
+    const {setComments} = get();
+    try {
+      const commentData = {
+        inquiryId: inquiryId,
+        inquiryCommentContent: commentContent
+                              .replaceAll("<", "&lt;")
+                              .replace(/>/g, "&gt;"),
+      }
+
+      const response = await axios.post(
+        `http://localhost:9090/inquiry/comment`,
+        commentData,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      );
+      alert("댓글이 등록됐습니다.");
+      console.log(response);
+      setComments(response.data.items);
+    } catch(e) {
+      console.log(e);
+    }
+  },
+  modifyComment: async(inquiryCommentContent, inquiryCommentId) => {
+    const {setComments} = get();
+    try {
+      const commentData = {
+        inquiryCommentId: inquiryCommentId,
+        inquiryCommentContent: inquiryCommentContent
+                              .replaceAll("<", "&lt;")
+                              .replace(/>/g, "&gt;"),
+      }
+
+      const respone = await axios.put(
+        `http://localhost:9090/inquiry/comment`,
+        commentData,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      );
+      alert("댓글이 수정됐습니다.");
+      setComments(respone.data.items);
+    } catch(e) {
+      console.log(e)
+    }
+  },
+  deleteComment: async (inquiryId, inquiryCommentId) => {
+    const {setComments} = get();
+    try {
+      const respone = await axios.delete(
+        `http://localhost:9090/inquiry/comment/${inquiryCommentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          },
+          params: {
+            inquiryId: inquiryId
+          }
+        }
+      );
+
+      alert("댓글이 삭제됐습니다.");
+      setComments(respone.data.items);
     } catch(e) {
       console.log(e);
     }

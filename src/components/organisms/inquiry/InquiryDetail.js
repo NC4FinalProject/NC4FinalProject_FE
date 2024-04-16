@@ -1,6 +1,6 @@
 import {  Visibility } from "@mui/icons-material";
 import { Button, ButtonGroup, Chip, Grid, Box } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import CoTypography from "../../atoms/common/CoTypography";
@@ -30,6 +30,10 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
     searchKeyword,
     setPage,
     inquiry,
+    setInquiry,
+    comments,
+    setComments,
+    postComment,
   } = useStore();
   const [commentContent, setCommentContent] = useState("");
 
@@ -82,23 +86,22 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
 
         alert("질문이 해결완료 상태로 변경되었습니다.");
 
-        setInquiries(response.data.pageItems);
-        setPage(response.data.pageItems.pageable.pageNumber);
+        setInquiry(response.data.item);
 
-        window.location.href=`/detail/${inquiry.contentsId}?tab=inquiry`
       } catch(e) {
         console.log(e);
       }
     }
   }
 
-  const handleContentChange = (editor) => {
+  const handleContentChange = (e, editor) => {
     const data = editor.getData();
     setCommentContent(data);
   }
 
   const handlePostComment = () => {
-
+    postComment(commentContent, inquiry.inquiryId);
+    setShowEditor(false);
   }
 
   return (
@@ -369,6 +372,8 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                 <Grid sx={{ width: "100%" }}>
                   <CKEditor
                     editor={ClassicEditor}
+                    data={commentContent}
+                    onChange={handleContentChange}   
                     config={{
                       toolbar: {
                         items: [
@@ -403,9 +408,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                           "tableRow",
                           "mergeTableCells",
                         ],
-                      },
-                      data: {commentContent},
-                      onChange: {handleContentChange}            
+                      },         
                     }}
                   />
                 </Grid>
@@ -447,17 +450,16 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
               </CoHoverButton>
             )}
           </Grid>
-          {inquiry &&
-            inquiry.inquiryComments &&
-            inquiry.inquiryComments.length > 0 &&
-            inquiry.inquiryComments.map((comment, id) => (
+          {comments && comments.map((comment, id) => (
               <InquiryComment
                 key={id}
-                name={comment.commenterName}
-                regDate={comment.commentDate}
-                content={comment.commentContent}
-                likeCount={comment.commentLikeCount}
-                profileImage={comment.profileImage}
+                name={comment.memberDTO.userNickname}
+                regDate={comment.inquiryCommentCrtDT}
+                content={comment.inquiryCommentContent}
+                inquiryId={comment.inquiryId}
+                commentId={comment.inquiryCommentId}
+                //likeCount={comment.commentLikeCount}
+                profileImage={comment.memberDTO.profileFile}
               />
             ))}
 
