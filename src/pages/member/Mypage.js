@@ -25,13 +25,12 @@ const Mypage = () => {
     const [value, setValue] = useState(0);
     const [role, setRole] = useState(null);
     const location = useLocation();
-    const tabIndex = location.state.tab;
 
     useEffect(() => {
-      if(tabIndex) {
-        handleChange(null, tabIndex);
+      if(location.state && location.state.tab) {
+        handleChange(null, location.state.tab);
       }
-    }, [tabIndex]);
+    }, [location]);
 
     const initialize = async e => {
       try { 

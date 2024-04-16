@@ -215,12 +215,15 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
           >
             |
           </CoTypography>
-          <Button
-            onClick={() => handleChangeSort("mine")}
-            color={sortBy === "mine" ? "primary" : "inherit"}
-          >
-            <CoTypography size="Content">내가 쓴 글 보기</CoTypography>
-          </Button>
+          {sessionStorage.getItem("ACCESS_TOKEN") && 
+          (
+            <Button
+              onClick={() => handleChangeSort("mine")}
+              color={sortBy === "mine" ? "primary" : "inherit"}
+            >
+              <CoTypography size="Content">내가 쓴 글 보기</CoTypography>
+            </Button>
+          )}
         </ButtonGroup>
         <Box
           sx={{

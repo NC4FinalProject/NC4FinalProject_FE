@@ -10,6 +10,9 @@ import HtmlParser from "react-html-parser";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import useStore from "../../../stores/InquiryStore";
+import MemberStore from "../../../stores/MemberStore";
+import axios from "axios";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const InquiryComment = ({
   name,
@@ -19,12 +22,14 @@ const InquiryComment = ({
   inquiryId,
   commentId,
   profileImage,
+  commentLike
 }) => {
   const [openCommentReportDialog, setOpenCommentReportDialog] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
   const [inquiryCommentContent, setInquiryCommentContent] = useState("");
 
-  const {modifyComment, deleteComment} = useStore();
+  const {modifyComment, deleteComment, setComments} = useStore();
+  const {memberInfo} = MemberStore();
 
   useEffect(() => {
     if(content) {
@@ -56,6 +61,24 @@ const InquiryComment = ({
     await modifyComment(inquiryCommentContent, commentId);
     setShowEditor(false);
   };
+
+  const handleLikeClick = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/inquiry/commentlike/${commentId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      );
+      setComments(response.data.items);
+
+    } catch(e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -103,20 +126,22 @@ const InquiryComment = ({
                 paddingBottom: "1.25rem",
               }}
             >
-              <ButtonGroup variant="text" sx={{ mr: "-0.5rem" }}>
-                <Button style={{ border: "none" }} onClick={() => setShowEditor(true)}>
-                  <CoTypography size="TableContent">수정</CoTypography>
-                </Button>
-                <CoTypography
-                  size="TableContent"
-                  sx={{ display: "flex", alignItems: "center" }}
-                >
-                  |
-                </CoTypography>
-                <Button onClick={() => deleteComment(inquiryId, commentId)}>
-                  <CoTypography size="TableContent">삭제</CoTypography>
-                </Button>
-              </ButtonGroup>
+              { name === memberInfo.userNickname && (
+                <ButtonGroup variant="text" sx={{ mr: "-0.5rem" }}>
+                  <Button style={{ border: "none" }} onClick={() => setShowEditor(true)}>
+                    <CoTypography size="TableContent">수정</CoTypography>
+                  </Button>
+                  <CoTypography
+                    size="TableContent"
+                    sx={{ display: "flex", alignItems: "center" }}
+                  >
+                    |
+                  </CoTypography>
+                  <Button onClick={() => deleteComment(inquiryId, commentId)}>
+                    <CoTypography size="TableContent">삭제</CoTypography>
+                  </Button>
+                </ButtonGroup>
+              )}
             </Grid>
           </Grid>
           <Grid item xs={12} pb="1.25rem">
@@ -208,9 +233,19 @@ const InquiryComment = ({
               </CoTypography>
             </Grid>
             <Grid sx={{ display: "flex", alignItems: "center" }}>
-              <FavoriteBorderOutlinedIcon
-                sx={{ mr: "0.25rem", color: "#444444" }}
-              />
+              {commentLike ?
+              (
+                <FavoriteIcon
+                    sx={{cursor: "pointer", mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
+                    onClick={handleLikeClick}
+                  />
+              ) : (
+                <FavoriteBorderOutlinedIcon
+                  sx={{cursor: "pointer", mr: "0.25rem", color: "#444444" }}
+                  onClick={handleLikeClick}
+                />
+              )
+              }
               <CoTypography size="TableContent" color="textSecondary">
                 {likeCount}
               </CoTypography>

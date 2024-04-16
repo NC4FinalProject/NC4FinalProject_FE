@@ -104,6 +104,23 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
     setShowEditor(false);
   }
 
+  const handleLikeClick = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:9090/inquiry/like/${inquiry.inquiryId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          }
+        }
+      ) 
+      setInquiry(response.data.item);
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
   return (
     <>
       {inquiry && (
@@ -290,16 +307,16 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                     신고하기
                   </CoTypography>
                 </Grid>
-                <Grid sx={{ display: "flex", alignItems: "center" }}>
-                {isFavorited ? (
+                <Grid sx={{ display: "flex", alignItems: "center" }}> 
+                {inquiry.like ? (
                   <FavoriteIcon
-                    sx={{ mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
-                    onClick={() => setFavorited(false)}
+                    sx={{cursor: "pointer", mr: "0.25rem", color: '#558BCF', '& > *': { fill: '#none' } }}
+                    onClick={handleLikeClick}
                   />
                 ) : (
                   <FavoriteBorderOutlinedIcon
-                    sx={{ mr: "0.25rem", color: "#444444" }}
-                    onClick={() => setFavorited(true)}
+                    sx={{cursor: "pointer", mr: "0.25rem", color: "#444444" }}
+                    onClick={handleLikeClick}
                   />
                 )}
               <CoTypography size="TableContent" color="textSecondary">
@@ -458,8 +475,9 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                 content={comment.inquiryCommentContent}
                 inquiryId={comment.inquiryId}
                 commentId={comment.inquiryCommentId}
-                //likeCount={comment.commentLikeCount}
+                likeCount={comment.inquiryCommentLikeCount}
                 profileImage={comment.memberDTO.profileFile}
+                commentLike={comment.commentLike}
               />
             ))}
 
