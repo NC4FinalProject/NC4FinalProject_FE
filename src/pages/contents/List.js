@@ -8,9 +8,10 @@ import { useContentsListStore } from '../../stores/ContentsStore';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
-  padding: 0,
+  [theme.breakpoints.up('sm')]: {
+    padding: 0,
+  },
   paddingTop: theme.spacing(2),
-
   // product header
   // h3
   "& .productHeader": {

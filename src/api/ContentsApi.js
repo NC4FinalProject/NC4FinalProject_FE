@@ -22,13 +22,18 @@ export const getContentsIdApi = async (contentsId) => {
 }
 
 // 전체 목록 가져오기
-export const getContentsListApi = async()=>{
+export const getContentsListApi = async(category, pricePattern, orderType, page)=>{
   try {
     const response = await axios.get(`http://localhost:9090/contents/list`, {
       // headers: {
       //   Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
       // },
-      // params: { contentsId } // 여기서 contentsId를 query parameter로 넘겨주고 있음
+      params: { 
+        category: category,
+        pricePattern: pricePattern,
+        orderType: orderType,
+        page: page
+      } // 여기서 contentsId를 query parameter로 넘겨주고 있음
     });
     console.log(response.data)
     return response.data;
