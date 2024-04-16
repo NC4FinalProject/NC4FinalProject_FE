@@ -26,10 +26,8 @@ const BoxStyle = styled(Box)(({ theme }) => ({
     "& .MuiInputBase-root": {
       paddingTop: 1,
       paddingBottom: 1,
-      paddingLeft: 10,
     },
     "& .MuiAutocomplete-hasPopupIcon": {
-      paddingRight: 30,
     },
     "& .MuiOutlinedInput-notchedOutline": {
       border: `1px solid ${theme.palette.text.secondary}`,
