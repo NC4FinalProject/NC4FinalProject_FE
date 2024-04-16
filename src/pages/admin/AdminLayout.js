@@ -13,7 +13,8 @@ import { MenuContext } from '../admin/MenuContext';
 
 const AdminLayout = ({ children }) => {
   const [hover, setHover] = useState(false);
-  const { userNotice, contents, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
+  const { userNotice, contents, Notices, Users, NewUser,preTeachers,qnauser,qnaUserCount,
+      MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
   const { toggleMenu } = useContext(MenuContext);
   const [disable, setDisable] = useState([]);
   const [graphMode, setGraphMode] = useState('daily'); 
@@ -94,7 +95,7 @@ const AdminLayout = ({ children }) => {
 }, [graphMode,NewUser,MonthlytotalUserCount,MonthlyCounts,daliyOutUserCount]);
 
   return (
-    console.log(contents),
+    console.log(qnauser),
     <>
       <Box sx={{display:'flex'}}>
         <Paper sx={{height:'4.25rem', display:'flex', width:'100%'}}>
@@ -108,7 +109,7 @@ const AdminLayout = ({ children }) => {
         <Box sx={{display:'flex', paddingTop:'0.3rem'}}>
         <CoTypography size="Admin" sx={{display:'flex'}} >신규 가입 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{todayUserCount}</CoTypography> </CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',  display:'flex'}}>강사 가입 승인 대기 :<CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{preTeacherCount}</CoTypography></CoTypography>
-        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>답변 대기 문의 : </CoTypography>
+        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem', display:'flex'}}>답변 대기 문의 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{qnaUserCount}</CoTypography></CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>신고 내역 : </CoTypography>
         </Box>
         </Box>
@@ -183,7 +184,7 @@ const AdminLayout = ({ children }) => {
               <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                 <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>문의 현황</CoTypography>
                 <Link
-                  to="/noticelist"
+                  to="/admin/qna"
                   style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
@@ -191,22 +192,12 @@ const AdminLayout = ({ children }) => {
                   <Typography sx={{ paddingTop: '0.5rem', paddingRight: '0.5rem', fontSize: '0.8125rem' }}>더보기+</Typography>
                 </Link>
               </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+              {qnauser && qnauser.map((qna, index) => (
+              <Box key={index} sx={{ width: '100%' }}>
+                <CoTypography size="AdminNotice">{qna.content}</CoTypography>
+                <CoTypography size="AdminTag">문의자 | {qna.askUser.userNickname}&nbsp;&nbsp; 문의 날짜 : {qna.createdAt}</CoTypography>
               </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
-              </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
-              </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
-              </Box>
+              ))}
             </Paper>
           </Box>
         </Grid>

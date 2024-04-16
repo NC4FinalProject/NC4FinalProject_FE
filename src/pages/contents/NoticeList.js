@@ -38,7 +38,8 @@ const NoticeList = () => {
     setFileDTOList,
   } = useStore();
 
-  const { userRole } = MemberStore();
+  const { memberInfo } = MemberStore();
+
 
   const tempFileDTOList = [];
 
@@ -179,7 +180,7 @@ const NoticeList = () => {
             ),
           }}
         />
-        {userRole === 'ADMIN' && (
+        {memberInfo.role === 'ADMIN' && (
           <Button
             variant="contained"
             color="primary"
