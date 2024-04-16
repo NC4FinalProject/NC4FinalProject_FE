@@ -116,7 +116,7 @@ const SelectFilterType = ({title, placeholder, isType}) => {
   // 가격 포맷
   useEffect(() => {
     const rawPrice = chapterOne.price;
-    const formattedValue = rawPrice ? new Intl.NumberFormat('de-DE').format(parseInt(rawPrice, 10)) : '';
+    const formattedValue = rawPrice ? rawPrice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : '';
     setFormattedPrice(formattedValue);
   }, [chapterOne.price]);
 

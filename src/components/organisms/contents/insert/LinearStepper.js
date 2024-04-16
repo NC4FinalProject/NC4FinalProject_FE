@@ -11,6 +11,7 @@ import ChapterThree from './ChapterThree';
 import { Grid } from '@mui/material';
 import { useChapterOneStore, useChapterTwoStore, useChapterThreeStore } from '../../../../stores/ContentsStore';
 import { insertApi } from '../../../../api/ContentsApi';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['기본등록', '강의코스', '강의소개'];
 
@@ -24,6 +25,8 @@ export default function LinearStepper() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
 
+  const navi = useNavigate();
+
   const isStepOptional = (step) => {
     console.log("상태값"+activeStep);
     return step === 1;
@@ -33,7 +36,15 @@ export default function LinearStepper() {
     return skipped.has(step);
   };
 
-  const handleNext = () => {
+  const handleNext = async (e) => {
+    // console.log(e.target.textContent);
+    if(e.target.textContent === 'Finish') {
+      await handleSave();
+      alert("강의가 등록됐습니다.");
+      navi("/list");
+      return;
+    }
+
     let newSkipped = skipped;
     if (isStepSkipped(activeStep)) {
       newSkipped = new Set(newSkipped.values());
