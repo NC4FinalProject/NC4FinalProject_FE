@@ -19,7 +19,7 @@ const formatDuration = (seconds) => {
 };
 
 
-const ContentsPrice = ({ contentsId }) => {
+const ContentsPrice = ({ contentsId, reviewRating, reviewCount }) => {
 
   /////////////////////////////////////////////////
   // 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
@@ -27,7 +27,7 @@ const ContentsPrice = ({ contentsId }) => {
   // 유료일 경우 컨텐츠로 부터 가격 데이터를 받아옴 가격 > 0
   const { fetchContents, getContents, getVideo, getSection } = useContentsStore();
 
-  const { videoBaceURL, videoTotalDuration, getVideoTotalDuration } = useVideoAddInfoStore();
+  const { videoBaceURL, videoTotalDuration, durationList } = useVideoAddInfoStore();
 
   const [totalDuration, setTotalDuration] = useState(0);
   
@@ -46,13 +46,6 @@ const ContentsPrice = ({ contentsId }) => {
   //   }
   //   console.log(totalDuration)
   // }, [videoTotalDuration, getVideo.videoPath]);
-
-  useEffect(() => {
-    if(videoTotalDuration !== 0){
-      setTotalDuration(videoTotalDuration)
-    }
-  }, [videoTotalDuration]);
-
 
   useEffect(() => {
     let price = getContents.price;
@@ -106,7 +99,7 @@ const ContentsPrice = ({ contentsId }) => {
       }
     }
   }, [contentsId]);
-
+  
   return (
 
     <Grid container direction="column">
@@ -123,7 +116,7 @@ const ContentsPrice = ({ contentsId }) => {
         <Grid item xs={5} sx={{ textAlign: 'right', alignContent: 'center'}}>
           <Box>
             <Rating
-              value={value}
+              value={reviewRating}
               size="small"
               name="read-only"
               precision={0.5}
@@ -139,7 +132,7 @@ const ContentsPrice = ({ contentsId }) => {
             />
           </Box>
           <Box sx={{ textAlign: 'right', marginTop: '-7%', color: '#6E6E6E'}}>
-            <Typography variant='caption' >(315)</Typography>
+            <Typography variant='caption' >{(reviewCount)}</Typography>
           </Box>
         </Grid>
 
@@ -155,7 +148,7 @@ const ContentsPrice = ({ contentsId }) => {
 
         <Grid container item xs={8} direction="column">
           <Typography>· {contentsType}</Typography>
-          <Typography>· 챕터 {getSection.length}개 · {formatDuration(totalDuration)}</Typography>
+          <Typography>· 챕터 {getSection.length}개 · {formatDuration(durationList.reduce((sum, cur) => sum + cur, 0))}</Typography>
           <Typography>· 난이도 : 입문</Typography>
         </Grid>
 
