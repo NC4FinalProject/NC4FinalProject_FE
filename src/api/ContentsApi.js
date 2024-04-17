@@ -42,12 +42,12 @@ export const getContentsListApi = async(category, pricePattern, orderType, page)
 }}
 
 // 전체 목록 가져오기
-export const getMyContentsListApi = async(page)=>{
+export const getMyContentsListApi = async (page)=>{
   try {
     const response = await axios.get(`http://localhost:9090/contents/mylist`, {
-      // headers: {
-      //   Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-      // },
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      },
       params: {
         page: page
       } // 여기서 contentsId를 query parameter로 넘겨주고 있음

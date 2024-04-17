@@ -1,5 +1,5 @@
 import { Button, Grid } from "@mui/material";
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect} from "react";
 import CoTypography from "../../atoms/common/CoTypography";
 import {useNavigate} from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const CartPayment = ({totalPrice, selectedItem, userNickname, userEmail}) => {
     }
 
     navi("/paymentWidget", {state: {selectedItem: selectedItem, userNickname: userNickname, userEmail: userEmail}})
-  }, [selectedItem]);
+  }, [selectedItem, totalPrice]);
 
   return (
     <>
