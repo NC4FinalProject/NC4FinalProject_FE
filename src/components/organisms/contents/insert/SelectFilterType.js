@@ -108,7 +108,7 @@ const SelectFilterType = ({title, placeholder, isType}) => {
     } else if (payType === '국비 지원') {
       // console.log("국비 지원 타입으로 눌림")
       setPay("-1")
-      chapterOneInput({ price: ""})
+      chapterOneInput({ price: "-1"})
     }  
     // console.log(payType)
   }, [payType]);

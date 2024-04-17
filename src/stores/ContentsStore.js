@@ -190,7 +190,7 @@ export const useChapterThreeStore = create((set, get) => ({
 // export const useFile
 
 // 상세 페이지 리스폰 데이터
-export const useContentsStore = create((set) => ({
+export const useContentsStore = create((set, get) => ({
   getContents: [],
   getVideo: [],
   getSection: [],
@@ -198,8 +198,9 @@ export const useContentsStore = create((set) => ({
   stateNum: 1,
   contentsTitle: "",
   getContentsOutput: async (contentId) => {
+    const {category, pricePattern, orderType} = get();
     try {
-      const data = await getContentsIdApi(contentId);
+      const data = await getContentsIdApi(contentId, category, pricePattern, orderType);
       set({
         getContents: data.item,
         contentsTitle: data.item.contentsTitle,
@@ -218,14 +219,23 @@ export const useContentsStore = create((set) => ({
 }));
 
 // 전체 페이지 리스폰 데이터
-export const useContentsListStore = create((set) => ({
+export const useContentsListStore = create((set, get) => ({
   getContentsList: [],
   selectPage: "",
-
+  category: "",
+  pricePattern: "",
+  orderType: "",
+  page: 0,
+  totalPages: 0,
+  setCategory: (category) => set({category}),
+  setPricePattern: (pricePattern) => set({pricePattern}),
+  setOrderType: (orderType) => set({orderType}),
+  setPage: (page) => set({page}),
   getContentsListOutput: async () => {
+    const {category, pricePattern, orderType, page} = get();
     try {
-      const data = await getContentsListApi();
-      set({ getContentsList: data.items });
+      const data = await getContentsListApi(category, pricePattern, orderType, page);
+      set({ getContentsList: data.pageItems, totalPages:  data.pageItems.totalPages});
     } catch (error) {
       console.error(error);
     }
