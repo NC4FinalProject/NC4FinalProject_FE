@@ -162,7 +162,7 @@ const Home = () => {
            category={item[3]}
             contentsId={item[0]}
             contentsTitle={item[1]}
-            memberId={item[6]}
+            userNickname={item[6]}
             price={item[5]}
             thumbnail={item[2]}
             index={index}
