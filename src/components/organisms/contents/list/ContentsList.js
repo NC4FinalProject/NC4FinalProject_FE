@@ -14,7 +14,7 @@ const ContentsList = () => {
   return (
     <Box sx={{display: 'flex', flexWrap: 'wrap', width:'1300px'}}>
       {getContentsList.content && getContentsList.content.map((contents, index) => (
-        <ContentsCard key={index} {...contents} index={index}paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} 
+        <ContentsCard key={index} {...contents} index={index} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} 
          />
       ))}
     </Box>
