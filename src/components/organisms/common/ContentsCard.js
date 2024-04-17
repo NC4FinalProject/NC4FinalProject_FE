@@ -31,7 +31,7 @@ function ContentsCard({
             } else if(price === -1) {
                 setFormatPrice("국가");
             } else {
-                setFormatPrice(price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+                setFormatPrice(price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원");
             }
         }
     }, [price]);
