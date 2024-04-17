@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   getContentsIdApi,
   getContentsListApi,
+  getMyContentsListApi,
   getVideoReplyApi,
   saveVideoReplyApi,
 } from "../api/ContentsApi";
@@ -190,7 +191,7 @@ export const useChapterThreeStore = create((set, get) => ({
 // export const useFile
 
 // 상세 페이지 리스폰 데이터
-export const useContentsStore = create((set) => ({
+export const useContentsStore = create((set, get) => ({
   getContents: [],
   getVideo: [],
   getSection: [],
@@ -218,14 +219,23 @@ export const useContentsStore = create((set) => ({
 }));
 
 // 전체 페이지 리스폰 데이터
-export const useContentsListStore = create((set) => ({
+export const useContentsListStore = create((set, get) => ({
   getContentsList: [],
   selectPage: "",
-
+  category: "",
+  pricePattern: "",
+  orderType: "",
+  page: 0,
+  totalPages: 0,
+  setCategory: (category) => set({category}),
+  setPricePattern: (pricePattern) => set({pricePattern}),
+  setOrderType: (orderType) => set({orderType}),
+  setPage: (page) => set({page}),
   getContentsListOutput: async () => {
+    const {category, pricePattern, orderType, page} = get();
     try {
-      const data = await getContentsListApi();
-      set({ getContentsList: data.items });
+      const data = await getContentsListApi(category, pricePattern, orderType, page);
+      set({ getContentsList: data.pageItems, totalPages:  data.pageItems.totalPages});
     } catch (error) {
       console.error(error);
     }
@@ -239,8 +249,11 @@ export const useContentsListStore = create((set) => ({
 export const useVideoAddInfoStore = create((set) => ({
   videoBaceURL: "https://kr.object.ncloudstorage.com/envdev/",
   videoURL: "",
-  videoTotalDuration: "",
+  videoTotalDuration: 0,
   videoDuration: "",
+  durationList: [],
+  setDurationList: (duration) => set(state => ({durationList: [...state.durationList, duration]})),
+  setVideoTotalDuration: (videoTotalDuration) => set({videoTotalDuration}),
   getVideoURL: (videoURL) =>
     set(() => ({
       videoURL: videoURL,
@@ -294,3 +307,19 @@ export const useVideoReplyStore = create((set) => ({
 }));
 
 export const useContentsCountStateStore = create((set) => ({}));
+
+export const useMyContentsListStore = create((set, get) => ({
+  getMyContentsList: [],
+  page: 0,
+  totalPages: 0,
+  setPage: (page) => set({page}),
+  getContentsListOutput: async () => {
+    const {page} = get();
+    try {
+      const data = await getContentsListApi(page);
+      set({ getMyContentsList: data.pageItems, totalPages: data.pageItems.totalPages});
+    } catch (error) {
+      console.error(error);
+    }
+  },
+})); 

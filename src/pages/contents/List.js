@@ -8,9 +8,10 @@ import { useContentsListStore } from '../../stores/ContentsStore';
 
 // style
 const ContainerStyle = styled(Container)(({ theme }) => ({
-  padding: 0,
+  [theme.breakpoints.up('sm')]: {
+    padding: 0,
+  },
   paddingTop: theme.spacing(2),
-
   // product header
   // h3
   "& .productHeader": {
@@ -22,14 +23,17 @@ const ContainerStyle = styled(Container)(({ theme }) => ({
 
 const List = () => {
 
-  const { getContentsList, getContentsListOutput } = useContentsListStore();
+  const { getContentsList, getContentsListOutput, totalPages, page, setPage } = useContentsListStore();
 
   // 마운트 시, 로그인
   useEffect(() => {
     getContentsListOutput();
   }, []);
 
-
+  const changePage =(e, v) => {
+    setPage(parseInt(v)  -1);
+    getContentsListOutput();
+  };
 
   return (
     <>
@@ -47,7 +51,7 @@ const List = () => {
 
         {/* Contents Paging */}
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3}}>
-          <Pagination count={10} />
+          <Pagination count={totalPages} page={page + 1} onChange={changePage}/>
         </Box>
         
       </ContainerStyle>
