@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
+import { Box, Rating, Paper, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CoTypography from '../../atoms/common/CoTypography';
 import Pagination from '@mui/material/Pagination';
@@ -29,7 +29,7 @@ const MyContents = () => {
             }
           }
         );
-
+        
         console.log(response);
         setTeacherContentsList(response.data.pageItems);
         setTotalPages(response.data.pageItems.totalPages);
@@ -48,21 +48,32 @@ const MyContents = () => {
         <Table>
           <TableHead>
             <TableRow  sx={{ textAlignLast: 'center' }}>
-              <TableCell><CoTypography size="AdminUser">구매일</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">강의번호</CoTypography></TableCell>
               <TableCell><CoTypography size="AdminUser">강의명</CoTypography></TableCell>
-              <TableCell><CoTypography size="AdminUser">강사</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">카테고리</CoTypography></TableCell>
               <TableCell><CoTypography size="AdminUser">금액</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">평점(리뷰개수)</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">구매</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">등록일</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">삭제</CoTypography></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          {/* {purchaseList.content && purchaseList.content.map((purchase, index) => (
+          {teacherContentsList.content && teacherContentsList.content.map((contents, index) => (
             <TableRow key={index}>              
-              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.paymentDate.substring(0, 10)}</CoTypography></TableCell>
-              <TableCell><CoTypography size="AdminUser">{purchase.contentsTitle}</CoTypography></TableCell>
-              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.teacherName}</CoTypography></TableCell>
-              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.price + "원"}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.contentsId}</CoTypography></TableCell>
+              <TableCell><CoTypography size="AdminUser">{contents.contentsTitle}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.category}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price === 0 ? '무료' : contents.price === -1 ? "국가" : contents.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원"}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}>
+              <Rating 
+                name="read-only" 
+                value={contents.reviewRating} 
+                readOnly style={{ fontSize:'1rem' }} />
+                </TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price + "원"}</CoTypography></TableCell>
           </TableRow>
-          ))} */}
+          ))}
           </TableBody>
         </Table>
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
