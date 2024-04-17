@@ -140,7 +140,7 @@ const Home = () => {
                         contentsId={item[0]}
                         contentsTitle={item[1]}
                         memberId={item[6]}
-                        price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+                        price={item[5] === -1 ? "국비지원" : (item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`)}
                         thumbnail={item[2]}
                         index={index}
                         rating={item[8]}
@@ -163,7 +163,7 @@ const Home = () => {
             contentsId={item[0]}
             contentsTitle={item[1]}
             memberId={item[6]}
-            price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+            price={item[5] === -1 ? "국비지원" : (item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`)}
             thumbnail={item[2]}
             index={index}
             rating={item[8]}
@@ -225,7 +225,7 @@ const Home = () => {
                         contentsId={item[0]}
                         contentsTitle={item[1]}
                         memberId={item[6]}
-                        price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+                        price={item[5] === -1 ? "국비지원" : (item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`)}
                         thumbnail={item[2]}
                         index={index}
                         rating={item[8]}
@@ -248,7 +248,7 @@ const Home = () => {
               contentsId={item[0]}
               contentsTitle={item[1]}
               memberId={item[6]}
-              price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+              price={item[5] === -1 ? "국비지원" : (item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`)}
               thumbnail={item[2]}
               index={index}
               rating={item[8]}
@@ -330,7 +330,7 @@ const Home = () => {
                         contentsId={item[0]}
                         contentsTitle={item[1]}
                         memberId={item[6]}
-                        price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+                        price={item[5] === -1 ? "국비지원" : (item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`)}
                         thumbnail={item[2]}
                         index={index}
                         rating={item[8]}
@@ -353,7 +353,7 @@ const Home = () => {
         contentsId={item[0]}
         contentsTitle={item[1]}
         memberId={item[6]}
-        price={item[5] === 0 ? "무료" :`${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+        price={item[5] === -1 ? "국비지원" : (item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`)}
         thumbnail={item[2]}
         index={index}
         rating={item[8]}
