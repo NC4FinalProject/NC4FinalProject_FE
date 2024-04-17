@@ -2,6 +2,7 @@ import { create } from "zustand";
 import {
   getContentsIdApi,
   getContentsListApi,
+  getMyContentsListApi,
   getVideoReplyApi,
   saveVideoReplyApi,
 } from "../api/ContentsApi";
@@ -198,9 +199,8 @@ export const useContentsStore = create((set, get) => ({
   stateNum: 1,
   contentsTitle: "",
   getContentsOutput: async (contentId) => {
-    const {category, pricePattern, orderType} = get();
     try {
-      const data = await getContentsIdApi(contentId, category, pricePattern, orderType);
+      const data = await getContentsIdApi(contentId);
       set({
         getContents: data.item,
         contentsTitle: data.item.contentsTitle,
@@ -249,8 +249,11 @@ export const useContentsListStore = create((set, get) => ({
 export const useVideoAddInfoStore = create((set) => ({
   videoBaceURL: "https://kr.object.ncloudstorage.com/envdev/",
   videoURL: "",
-  videoTotalDuration: "",
+  videoTotalDuration: 0,
   videoDuration: "",
+  durationList: [],
+  setDurationList: (duration) => set(state => ({durationList: [...state.durationList, duration]})),
+  setVideoTotalDuration: (videoTotalDuration) => set({videoTotalDuration}),
   getVideoURL: (videoURL) =>
     set(() => ({
       videoURL: videoURL,
@@ -304,3 +307,19 @@ export const useVideoReplyStore = create((set) => ({
 }));
 
 export const useContentsCountStateStore = create((set) => ({}));
+
+export const useMyContentsListStore = create((set, get) => ({
+  getMyContentsList: [],
+  page: 0,
+  totalPages: 0,
+  setPage: (page) => set({page}),
+  getContentsListOutput: async () => {
+    const {page} = get();
+    try {
+      const data = await getContentsListApi(page);
+      set({ getMyContentsList: data.pageItems, totalPages: data.pageItems.totalPages});
+    } catch (error) {
+      console.error(error);
+    }
+  },
+})); 

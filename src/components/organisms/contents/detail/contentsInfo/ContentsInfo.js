@@ -43,31 +43,30 @@ const ContentsInfo = ({ contents, countState, video } ) => {
 
       <Grid item>
       
-      <Typography component={"div"} variant="body2" style={{ color: "#A4A4A4" }}>
+      {/* <Typography component={"div"} variant="body2" style={{ color: "#A4A4A4" }}>
         <Grid component="span" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           <Grid sx={{ display: 'flex', alignItems: 'center', mr: '1em' }}>
             <FaEye style={{ marginRight: '0.1em', color: '#A4A4A4' }}/>
-              {/* {views} */}22
+              22
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center', mr: '1em' }}>
             <FaThumbsUp style={{ marginRight: '0.1em', color: '#A4A4A4' }}/>
-              {/* {comments} */}22
+              22
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center', mr: '1em' }}>
             <FaCommentDots style={{ marginRight: '0.1em', color: '#A4A4A4' }}/>
-              {/* {comments} */}22
+              22
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center', mr: '1em' }}>
             <FaShare style={{ marginRight: '0.1em', color: '#A4A4A4' }}/>
-              {/* {shares} */}22
+              22
           </Grid>
-          {/* 마지막 아이템에는 marginRight을 주지 않음 */}
           <Grid sx={{ display: 'flex', alignItems: 'center' }}>
             <FaFlag style={{ marginRight: '0.1em', color: '#A4A4A4' }} />
-              {/* {views} */}22
+              22
           </Grid>
         </Grid>
-        </Typography>
+        </Typography> */}
 
         <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
          <Typography variant="caption" style={{ color: "#A4A4A4" }}>

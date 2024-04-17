@@ -8,13 +8,14 @@ import CoTypography from '../../atoms/common/CoTypography';
 import { useContentsListStore } from '../../../stores/ContentsStore';
 
 function ContentsCard({
-                          category, contentsId, contentsTitle, memberId, price, thumbnail, index,
-                          rating, reviews, paperstyle, booked, sx
+                          category, contentsId, contentsTitle, memberId, userNickname, price, thumbnail, index,
+                          reviewRating, reviewCount, paperstyle, booked, sx
                       }) {
 
     const { selectPageChange } = useContentsListStore();
     const navi = useNavigate();
     const [Localbooked, setBooked] = useState(booked);
+    const [formatPrice, setFormatPrice] = useState("");
 
     const goDetail = (contentsId) => {
         return () => {
@@ -22,6 +23,18 @@ function ContentsCard({
             navi(`/detail/${contentsId}`);
         };
     };
+
+    useEffect(() => {
+        if(typeof price === "number") {
+            if(price === 0) {
+                setFormatPrice("무료");
+            } else if(price === -1) {
+                setFormatPrice("국가");
+            } else {
+                setFormatPrice(price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
+            }
+        }
+    }, [price]);
 
     const changeBooked = () => {
         setBooked(!Localbooked);
@@ -48,14 +61,14 @@ function ContentsCard({
             <Box onClick={goDetail(contentsId)} sx={{paddingTop:'3rem'}}>
                 <CoTypography sx={{ cursor:'pointer' }} style={{ marginTop:'5px', width:'19.1875rem' }}>{contentsTitle}</CoTypography>
             </Box>
-            <CoTypography size="Content" style={{ color:'#7d7d7d', width:'19.1875rem' }}>{category} | {memberId}</CoTypography>
+            <CoTypography size="Content" style={{ color:'#7d7d7d', width:'19.1875rem' }}>{category} | {userNickname}</CoTypography>
 
             <div style={{ display:'flex', alignItems:'center', justifyContent: 'space-between', width:'100%' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Rating name="read-only" value={rating !== undefined ? rating : null} readOnly style={{ fontSize:'1rem' }} />
-                    <CoTypography size="Tag">({reviews})</CoTypography>
+                    <Rating name="read-only" value={reviewRating !== undefined ? reviewRating : null} readOnly style={{ fontSize:'1rem' }} />
+                    <CoTypography size="Tag">({reviewCount})</CoTypography>
                 </div>
-                <CoTypography size="Content">{price}</CoTypography>
+                <CoTypography size="Content">{formatPrice}</CoTypography>
             </div>
         </Box>
         </Hidden>
@@ -79,14 +92,14 @@ function ContentsCard({
             <Box onClick={goDetail(contentsId)}>
                 <CoTypography sx={{ cursor:'pointer' }} style={{ marginTop:'5px', width:'19.1875rem' }}>{contentsTitle}</CoTypography>
             </Box>
-            <CoTypography size="Content" style={{ color:'#7d7d7d', width:'19.1875rem' }}>{category} | {memberId}</CoTypography>
+            <CoTypography size="Content" style={{ color:'#7d7d7d', width:'19.1875rem' }}>{category} | {userNickname}</CoTypography>
 
             <div style={{ display:'flex', alignItems:'center', justifyContent: 'space-between', width:'19.1875rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Rating name="read-only" value={rating !== undefined ? rating : null} readOnly style={{ fontSize:'1rem' }} />
-                    <CoTypography size="Tag">({reviews})</CoTypography>
+                    <Rating name="read-only" value={reviewRating !== undefined ? reviewRating : null} readOnly style={{ fontSize:'1rem' }} />
+                    <CoTypography size="Tag">({reviewCount})</CoTypography>
                 </div>
-                <CoTypography size="Content">{price}</CoTypography>
+                <CoTypography size="Content">{formatPrice}</CoTypography>
             </div>
         </Box>
         </Hidden>

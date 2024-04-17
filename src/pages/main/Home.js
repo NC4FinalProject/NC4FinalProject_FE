@@ -140,11 +140,11 @@ const Home = () => {
                         contentsId={item[0]}
                         contentsTitle={item[1]}
                         memberId={item[6]}
-                        price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+                        price={item[5]}
                         thumbnail={item[2]}
                         index={index}
-                        rating={item[8]}
-                        reviews={item[7]}
+                        reviewRating={item[8]}
+                        reviewCount={item[7]}
                         booked={true}
                     />
                 ) : (
@@ -163,11 +163,11 @@ const Home = () => {
             contentsId={item[0]}
             contentsTitle={item[1]}
             memberId={item[6]}
-            price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+            price={item[5]}
             thumbnail={item[2]}
             index={index}
-            rating={item[8]}
-            reviews={item[7]}
+            reviewRating={item[8]}
+            reviewCount={item[7]}
            booked={true} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
 
             :
@@ -225,11 +225,11 @@ const Home = () => {
                         contentsId={item[0]}
                         contentsTitle={item[1]}
                         memberId={item[6]}
-                        price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+                        price={item[5]}
                         thumbnail={item[2]}
                         index={index}
-                        rating={item[8]}
-                        reviews={item[7]}
+                        reviewRating={item[8]}
+                        reviewCount={item[7]}
                         booked={true}
                     />
                 ) : (
@@ -248,11 +248,11 @@ const Home = () => {
               contentsId={item[0]}
               contentsTitle={item[1]}
               memberId={item[6]}
-              price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+              price={item[5]}
               thumbnail={item[2]}
               index={index}
-              rating={item[8]}
-              reviews={item[7]}
+              reviewRating={item[8]}
+              reviewCount={item[7]}
               booked={true} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
                     :
 
@@ -330,11 +330,11 @@ const Home = () => {
                         contentsId={item[0]}
                         contentsTitle={item[1]}
                         memberId={item[6]}
-                        price={item[5] === 0 ? "무료" : `${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+                        price={item[5]}
                         thumbnail={item[2]}
                         index={index}
-                        rating={item[8]}
-                        reviews={item[7]}
+                        reviewRating={item[8]}
+                        reviewCount={item[7]}
                         booked={true}
                     />
                 ) : (
@@ -353,11 +353,11 @@ const Home = () => {
         contentsId={item[0]}
         contentsTitle={item[1]}
         memberId={item[6]}
-        price={item[5] === 0 ? "무료" :`${item[5].toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}원`}
+        price={item[5]}
         thumbnail={item[2]}
         index={index}
-        rating={item[8]}
-        reviews={item[7]}
+        reviewreviewRating={item[8]}
+        reviewCount={item[7]}
         booked={true} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
               :
 
