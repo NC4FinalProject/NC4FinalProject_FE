@@ -9,6 +9,9 @@ const CartPayment = ({totalPrice, selectedItem, userNickname, userEmail, myPoint
   const [payPrice, setPayPrice] = useState(0);
 
   const openPaymentWidget = useCallback(async () => {
+    sessionStorage.setItem("totalPrice", payPrice);
+    sessionStorage.setItem("usePoint", usePoint);
+
     if(selectedItem.length <= 0) {
       alert("결제할 강의를 먼저 선택하세요.");
       return;
@@ -18,9 +21,6 @@ const CartPayment = ({totalPrice, selectedItem, userNickname, userEmail, myPoint
       navi("/payment/success");
       return;
     }
-
-    sessionStorage.setItem("totalPrice", payPrice);
-    sessionStorage.setItem("usePoint", usePoint);
 
     navi("/paymentWidget", {state: {selectedItem: selectedItem, userNickname: userNickname, userEmail: userEmail, totalPrice: payPrice}})
   }, [selectedItem, payPrice, usePoint]);
