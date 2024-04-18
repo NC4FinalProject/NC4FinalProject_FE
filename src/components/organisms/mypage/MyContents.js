@@ -46,6 +46,24 @@ const MyContents = () => {
       navi(`/detail/${contentsId}`);
     }
 
+    const handleDelete = async (contentsId) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:9090/contents/delete/${contentsId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+            }
+          }
+        );
+
+        setTeacherContentsList(response.data.pageItems);
+        setTotalPages(response.data.pageItems.totalPages);
+      } catch(e) {
+        console.log(e);
+      }
+    }
+
     
   return (
     <div>
@@ -68,7 +86,7 @@ const MyContents = () => {
           {teacherContentsList.content && teacherContentsList.content.map((contents, index) => (
             <TableRow key={index}>              
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.contentsId}</CoTypography></TableCell>
-              <TableCell style={{cursor: "pointer"}}><Button onClick={goDetail(contents.contentsId)}>{contents.contentsTitle}</Button></TableCell>
+              <TableCell style={{cursor: "pointer"}}><Button onClick={() => goDetail(contents.contentsId)}>{contents.contentsTitle}</Button></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.category}</CoTypography></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price === 0 ? '무료' : contents.price === -1 ? "국가" : contents.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원"}</CoTypography></TableCell>
               <TableCell>
@@ -82,7 +100,7 @@ const MyContents = () => {
               </TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.paymentCount}</CoTypography></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.regDate.substring(0, 10)}</CoTypography></TableCell>
-              <TableCell sx={{ textAlignLast: 'center' }}><Button>삭제</Button></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><Button onClick={() => handleDelete(contents.contentId)}>삭제</Button></TableCell>
           </TableRow>
           ))}
           </TableBody>
