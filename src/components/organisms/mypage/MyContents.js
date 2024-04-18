@@ -65,12 +65,15 @@ const MyContents = () => {
               <TableCell><CoTypography size="AdminUser">{contents.contentsTitle}</CoTypography></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.category}</CoTypography></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price === 0 ? '무료' : contents.price === -1 ? "국가" : contents.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원"}</CoTypography></TableCell>
-              <TableCell sx={{ textAlignLast: 'center' }}>
-              <Rating 
-                name="read-only" 
-                value={contents.reviewRating} 
-                readOnly style={{ fontSize:'1rem' }} />
-                </TableCell>
+              <TableCell>
+                <Box sx={{display: "flex"}}>
+                  <Rating 
+                    name="read-only" 
+                    value={contents.reviewRating} 
+                    readOnly style={{ fontSize:'1rem' }} />
+                  <CoTypography size="Tag">({contents.reviewCount})</CoTypography>
+                </Box>
+              </TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price + "원"}</CoTypography></TableCell>
           </TableRow>
           ))}
