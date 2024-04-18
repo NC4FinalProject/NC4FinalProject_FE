@@ -64,6 +64,10 @@ const MyContents = () => {
       }
     }
 
+    const changePage = (e, v) => {
+      setPage(parseInt(v) - 1);
+    }
+
     
   return (
     <div>
@@ -100,13 +104,13 @@ const MyContents = () => {
               </TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.paymentCount}</CoTypography></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.regDate.substring(0, 10)}</CoTypography></TableCell>
-              <TableCell sx={{ textAlignLast: 'center' }}><Button onClick={() => handleDelete(contents.contentId)}>삭제</Button></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><Button onClick={() => handleDelete(contents.contentsId)}>삭제</Button></TableCell>
           </TableRow>
           ))}
           </TableBody>
         </Table>
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-            <Pagination count={10} color='primary' />
+            <Pagination count={totalPages} page={page + 1} onChange={changePage} color='primary' />
         </Box>
       </Paper>
     </div>

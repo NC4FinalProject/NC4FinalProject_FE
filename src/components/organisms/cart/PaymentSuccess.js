@@ -11,6 +11,8 @@ export default function PaymentSuccess() {
   const orderId = searchParams.get("orderId");
   const amount = searchParams.get("amount");
   const selectedItem = JSON.parse(sessionStorage.getItem("selectedItem"));
+  const totalPrice = sessionStorage.getItem("totalPrice");
+  const usePoint = sessionStorage.getItem("usePoint");
   const navi = useNavigate();
 
   async function confirmPayment() {
@@ -21,9 +23,15 @@ export default function PaymentSuccess() {
         const formData = new FormData();
 
         formData.append("paymentDTO", new Blob([JSON.stringify({
-            totalPrice: selectedItem.reduce((sum, item) => sum + parseInt(item.price), 0),
+            totalPrice: totalPrice,
             paymentUniqueNo: paymentKey,
             cartId: selectedItem[0].cartId
+        })], {
+            type: 'application/json'
+        }));
+
+        formData.append("pointDTO", new Blob([JSON.stringify({
+            value: usePoint
         })], {
             type: 'application/json'
         }));
@@ -52,6 +60,8 @@ export default function PaymentSuccess() {
 
         if(response.data.item.paymentId) {
             sessionStorage.removeItem("selectedItem");
+            sessionStorage.removeItem("totalPrice");
+            sessionStorage.removeItem("usePoint");
             navi('/mypage', {state: {tab: 1}});
         }
     } catch(e) {
