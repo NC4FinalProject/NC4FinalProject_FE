@@ -34,8 +34,10 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
     comments,
     setComments,
     postComment,
+    getComment,
   } = useStore();
   const [commentContent, setCommentContent] = useState("");
+  const [commentOrder, setCommentOrder] = useState("");
 
   const handleEditorClick = () => {
     setShowEditor(true);
@@ -121,6 +123,12 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
     }
   }
 
+  useEffect(() => {
+    if(commentOrder) {
+      getComment(inquiry.inquiryId, commentOrder);
+    }
+  }, [commentOrder]);
+
   return (
     <>
       {inquiry && (
@@ -155,7 +163,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
               </Grid>
               <Grid container ml="0.5rem" alignItems={"center"}>
                 <CoTypography size="TableContent">
-                  {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT} | {inquiry.contentsTitle} |
+                  {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT.substring(0, 10)} | {inquiry.contentsTitle} |
                 </CoTypography>
                 <Visibility
                   sx={{ 
@@ -367,7 +375,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                   variant="text"
                   sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
                 >
-                  <Button style={{ border: "none" }}>
+                  <Button style={{ border: "none" }} onClick={() => setCommentOrder("최신순")}>
                     <CoTypography size="TableContent">최신순</CoTypography>
                   </Button>
                   <CoTypography
@@ -376,7 +384,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                   >
                     |
                   </CoTypography>
-                  <Button style={{ border: "none" }}>
+                  <Button style={{ border: "none" }} onClick={() => setCommentOrder("좋아요순")}>
                     <CoTypography size="TableContent">좋아요순</CoTypography>
                   </Button>
                 </ButtonGroup>

@@ -368,6 +368,26 @@ const useStore = create((set, get) => ({
     } catch(e) {
       console.log(e);
     }
+  },
+  getComment: async (inquiryId, order) => {
+    const {setComments} = get();
+    try {
+      const response = await axios.get(
+        `http://localhost:9090/inquiry/comments/${inquiryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+          },
+          params: {
+            order: order
+          }
+        }
+      );
+
+      setComments(response.data.items);
+    } catch(e) {
+      console.log(e);
+    }
   }
 }));
 
