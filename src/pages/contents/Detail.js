@@ -119,7 +119,7 @@ const Detail = () => {
             {/* ContentsPrice */}
             <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
                 <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
-                    <ContentsPrice contentsId={contentsId} reviewRating={getContents.reviewRating} reviewCount={getContents.reviewCount}/>
+                    <ContentsPrice contentsId={contentsId} bookmarkCount={getContents.bookmarkCount} reviewRating={getContents.reviewRating} reviewCount={getContents.reviewCount}/>
                 </Grid>
             </Grid>
 

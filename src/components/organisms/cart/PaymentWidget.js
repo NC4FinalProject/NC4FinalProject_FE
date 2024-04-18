@@ -10,8 +10,8 @@ export default function PaymentWidget() {
   const paymentMethodsWidgetRef = useRef(null);
   const agreementWidgetRef = useRef(null);
   const location = useLocation();
-  const {selectedItem, userNickname, userEmail} = location.state;
-  const [price, setPrice] = useState(selectedItem ? selectedItem.reduce((sum, item) => sum + parseInt(item.price), 0) : 0);
+  const {selectedItem, userNickname, userEmail, totalPrice} = location.state;
+  const [price, setPrice] = useState(totalPrice ? totalPrice : 0);
 
   useEffect(() => {
     (async () => {

@@ -41,6 +41,34 @@ const MyContents = () => {
     useEffect(() => {
       getTeacherContentsList(page);
     }, [page]);
+
+    const goDetail = (contentsId) => {
+      navi(`/detail/${contentsId}`);
+    }
+
+    const handleDelete = async (contentsId) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:9090/contents/delete/${contentsId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+            }
+          }
+        );
+
+        setTeacherContentsList(response.data.pageItems);
+        setTotalPages(response.data.pageItems.totalPages);
+      } catch(e) {
+        console.log(e);
+      }
+    }
+
+    const changePage = (e, v) => {
+      setPage(parseInt(v) - 1);
+    }
+
+    
   return (
     <div>
         <Button onClick={handleInsert}>컨텐츠 등록</Button>
@@ -62,7 +90,7 @@ const MyContents = () => {
           {teacherContentsList.content && teacherContentsList.content.map((contents, index) => (
             <TableRow key={index}>              
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.contentsId}</CoTypography></TableCell>
-              <TableCell><CoTypography size="AdminUser">{contents.contentsTitle}</CoTypography></TableCell>
+              <TableCell style={{cursor: "pointer"}}><Button onClick={() => goDetail(contents.contentsId)}>{contents.contentsTitle}</Button></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.category}</CoTypography></TableCell>
               <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price === 0 ? '무료' : contents.price === -1 ? "국가" : contents.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원"}</CoTypography></TableCell>
               <TableCell>
@@ -74,13 +102,15 @@ const MyContents = () => {
                   <CoTypography size="Tag">({contents.reviewCount})</CoTypography>
                 </Box>
               </TableCell>
-              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.price + "원"}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.paymentCount}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{contents.regDate.substring(0, 10)}</CoTypography></TableCell>
+              <TableCell sx={{ textAlignLast: 'center' }}><Button onClick={() => handleDelete(contents.contentsId)}>삭제</Button></TableCell>
           </TableRow>
           ))}
           </TableBody>
         </Table>
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-            <Pagination count={10} color='primary' />
+            <Pagination count={totalPages} page={page + 1} onChange={changePage} color='primary' />
         </Box>
       </Paper>
     </div>
