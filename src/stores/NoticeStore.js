@@ -90,7 +90,7 @@ const useStore = create((set, get) => ({
 
         formData.append('fileDTOList', fileDTOs);
   
-        await axios.post('http://${process.env.REACT_APP_BACK_URL}/notice/notice', formData);
+        await axios.post(`http://${process.env.REACT_APP_BACK_URL}/notice/notice`, formData);
   
         fetchNotices();
   
@@ -133,7 +133,7 @@ const useStore = create((set, get) => ({
 
         formData.append('fileDTOList', fileDTOs);
   
-       const response = await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/update', formData);
+       const response = await axios.put(`http://${process.env.REACT_APP_BACK_URL}/notice/update`, formData);
         
         setModifyFileList(response.data.item);
         noticeModifyProc(putNoticeId);
@@ -171,7 +171,7 @@ const useStore = create((set, get) => ({
 
         formData.append('fileDTOList', fileDTOs);
   
-       const response = await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/updateProc', formData);
+       const response = await axios.put(`http://${process.env.REACT_APP_BACK_URL}/notice/updateProc`, formData);
 
         setOpenDialog(false);
         alert('공지사항이 수정되었습니다.');

@@ -30,7 +30,7 @@ const InsertCKEditor = ({onChange}) => {
     //     try {
     //         const formData = new FormData();
     //         formData.append('upload', file);
-    //         const response = await axios.post('http://localhost:9090/notice/upload', formData, {
+    //         const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/notice/upload', formData, {
     //           headers: {
     //             'Content-Type': 'multipart/form-data'
     //           }

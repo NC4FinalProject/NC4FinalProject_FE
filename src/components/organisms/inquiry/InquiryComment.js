@@ -65,7 +65,7 @@ const InquiryComment = ({
   const handleLikeClick = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:9090/inquiry/commentlike/${commentId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/commentlike/${commentId}`,
         null,
         {
           headers: {

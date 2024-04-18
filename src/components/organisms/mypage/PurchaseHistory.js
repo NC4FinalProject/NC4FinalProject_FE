@@ -12,7 +12,7 @@ const PurchaseHistory = () => {
   const getPurchaseList = async (page) => {
     try {
       const response = await axios.get(
-        `http://localhost:9090/mypage/purchaselist`,
+        `http://${process.env.REACT_APP_BACK_URL}/mypage/purchaselist`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`

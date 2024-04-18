@@ -13,7 +13,7 @@ const GoogleLogin = () => {
         const REST_API_KEY = process.env.REACT_APP_GOOGLE_REST_API;
         const CLIENT_SECRET_KEY = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
         const GRANT_TYPE = "authorization_code";
-        const REDIRECT_URL ='http://${process.env.REACT_APP_FRONT_URL}/google-login';
+        const REDIRECT_URL =`http://${process.env.REACT_APP_FRONT_URL}/google-login`;
         console.log("code" + code);
         console.log("REST_API_KEY" + REST_API_KEY);
         console.log("CLIENT_SECRET_KEY" + CLIENT_SECRET_KEY);
@@ -35,12 +35,12 @@ const GoogleLogin = () => {
             }
         )
         .then((res) => {
-            axios.post('http://${process.env.REACT_APP_BACK_URL}/member/join', {
+            axios.post(`http://${process.env.REACT_APP_BACK_URL}/member/join`, {
                 username: res.data.email,
                 password: res.data.id
             })
             .then(() => {
-                axios.post('http://${process.env.REACT_APP_BACK_URL}/member/login', {
+                axios.post(`http://${process.env.REACT_APP_BACK_URL}/member/login`, {
                     username: res.data.email,
                     password: res.data.id
                 })
@@ -53,7 +53,7 @@ const GoogleLogin = () => {
                 })
             })
             .catch((e) => {
-                axios.post('http://${process.env.REACT_APP_BACK_URL}/member/login', {
+                axios.post(`http://${process.env.REACT_APP_BACK_URL}/member/login`, {
                     username: res.data.email,
                     password: res.data.id
                 })

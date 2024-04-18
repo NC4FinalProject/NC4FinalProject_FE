@@ -24,7 +24,7 @@ const EmailVerification = () => {
     const join = useCallback(
 async (username, password, userNickname) => {
         try {
-            const response = await axios.post('http://localhost:9090/member/join', {
+            const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/member/join`, {
                 username: username,
                 password: password,
                 userNickname: userNickname
@@ -49,7 +49,7 @@ async (username, password, userNickname) => {
 
     const initialize = async e => {
         try {
-            const response = await axios.post(`http://localhost:9090/member/email-verification`,
+            const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/member/email-verification`,
             {
               username: location.state.username,
               password: location.state.password,
@@ -87,7 +87,7 @@ async (username, password, userNickname) => {
     const sendCode = useCallback(
         async (code) => {
             try {
-                const response = await axios.post('http://localhost:9090/member/code-check', {
+                const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/member/code-check`, {
                     code: code
                 },
                 {

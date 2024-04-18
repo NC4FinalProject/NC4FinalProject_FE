@@ -19,7 +19,7 @@ setBestContents: (bestContents) => set({ bestContents }),
 getMainContents: async () => {
         const { setRecentComments, setRandomContents , setRecentContents, setBestContents} = get();
         try {
-            const response = await axios.get('http://localhost:9090/');
+            const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/`);
             const { bestContents, recentContents, randomContents, recentComment } = response.data;
             console.log(response.data);
             setRecentComments(recentComment);
@@ -33,7 +33,7 @@ getMainContents: async () => {
 
 sendQna: async (askUser, category, content) => {
     try {
-    await axios.post('http://localhost:9090/sendqna',{
+    await axios.post(`http://${process.env.REACT_APP_BACK_URL}/sendqna`,{
         askUser: askUser,
         category: category,
         content: content,

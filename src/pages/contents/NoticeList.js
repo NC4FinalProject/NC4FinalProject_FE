@@ -58,7 +58,7 @@ const NoticeList = () => {
 
   const handleDialogClose = async () => {
     try {
-      await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/remove');
+      await axios.put(`http://${process.env.REACT_APP_BACK_URL}/notice/remove`);
       console.log("이미지가 삭제되었습니다.");
       setOpenDialog(false);
     } catch (error) {
@@ -99,7 +99,7 @@ const NoticeList = () => {
     try {
         const formData = new FormData();
         formData.append('upload', file);
-        const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/notice/upload', formData, {
+        const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/notice/upload`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

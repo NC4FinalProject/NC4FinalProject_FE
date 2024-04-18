@@ -37,7 +37,7 @@ const useStore = create((set, get) => ({
     const { searchCondition, searchKeyword, setPage, page } = get();
     try {
       const response = await axios.get(
-        "http://localhost:9090/inquiry/inquiry",
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/inquiry`,
         {
           params: {
             searchCondition: searchCondition,
@@ -115,7 +115,7 @@ const useStore = create((set, get) => ({
         console.log(key + ": " + value);
       });
 
-      const response = await axios.post(`http://localhost:9090/inquiry/inquiry/${contentsId}`, formData, {
+      const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/inquiry/inquiry/${contentsId}`, formData, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
           "Content-Type": "multipart/form-data"
@@ -173,7 +173,7 @@ const useStore = create((set, get) => ({
       }));
 
       const response = await axios.put(
-        `http://localhost:9090/inquiry/update/${contentsId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/update/${contentsId}`,
         formData,
         {
           headers: {
@@ -222,7 +222,7 @@ const useStore = create((set, get) => ({
       formData.append("inquiryFileDTOs", inquiryFileDTOs);
 
       const response = await axios.put(
-        "http://localhost:9090/inquiry/updateProc",
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/updateProc`,
         formData
       );
 
@@ -235,7 +235,7 @@ const useStore = create((set, get) => ({
     const {setInquiry} = get();
     try {
       const response = await axios.get(
-        `http://localhost:9090/inquiry/updateInquiryView/${inquiryId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/updateInquiryView/${inquiryId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -253,7 +253,7 @@ const useStore = create((set, get) => ({
 
     try {
       const response = await axios.get(
-        `http://localhost:9090/inquiry/myInquiries/${contentsId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/myInquiries/${contentsId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -278,7 +278,7 @@ const useStore = create((set, get) => ({
 
     try {
       const response = await axios.delete(
-        `http://localhost:9090/inquiry/delete/${inquiryId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/delete/${inquiryId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -308,7 +308,7 @@ const useStore = create((set, get) => ({
       }
 
       const response = await axios.post(
-        `http://localhost:9090/inquiry/comment`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/comment`,
         commentData,
         {
           headers: {
@@ -334,7 +334,7 @@ const useStore = create((set, get) => ({
       }
 
       const respone = await axios.put(
-        `http://localhost:9090/inquiry/comment`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/comment`,
         commentData,
         {
           headers: {
@@ -352,7 +352,7 @@ const useStore = create((set, get) => ({
     const {setComments} = get();
     try {
       const respone = await axios.delete(
-        `http://localhost:9090/inquiry/comment/${inquiryCommentId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/comment/${inquiryCommentId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -373,7 +373,7 @@ const useStore = create((set, get) => ({
     const {setComments} = get();
     try {
       const response = await axios.get(
-        `http://localhost:9090/inquiry/comments/${inquiryId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/comments/${inquiryId}`,
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`

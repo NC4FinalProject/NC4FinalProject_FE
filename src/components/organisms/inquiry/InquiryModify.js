@@ -79,7 +79,7 @@ const InquiryPost = ({onCancelClick, onListClick}) => {
       const formData = new FormData();
       formData.append("upload", inquiryFile);
       const response = await axios.post(
-        "http://localhost:9090/inquiry/upload",
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/upload`,
         formData,
         {
           headers: {

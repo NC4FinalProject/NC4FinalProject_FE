@@ -28,7 +28,7 @@ const ChapterThree = () => {
           formData.append("upload", inquiryFile);
 
           const response = await axios.post(
-            "http://localhost:9090/contents/upload",
+            `http://${process.env.REACT_APP_BACK_URL}/contents/upload`,
             formData,
             {
               headers: {

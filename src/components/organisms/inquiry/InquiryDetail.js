@@ -72,7 +72,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
     if(window.confirm("질문이 모두 해결되셨나요?")) {
       try {
         const response = await axios.put(
-          `http://localhost:9090/inquiry/updateSolve/${inquiry.inquiryId}`,
+          `http://${process.env.REACT_APP_BACK_URL}/inquiry/updateSolve/${inquiry.inquiryId}`,
           null,
           {
             headers: {
@@ -109,7 +109,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
   const handleLikeClick = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:9090/inquiry/like/${inquiry.inquiryId}`,
+        `http://${process.env.REACT_APP_BACK_URL}/inquiry/like/${inquiry.inquiryId}`,
         null,
         {
           headers: {

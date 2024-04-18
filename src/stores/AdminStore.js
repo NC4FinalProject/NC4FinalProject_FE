@@ -70,7 +70,7 @@ userPwChk: '',
     const { setNotices, setUsers, setNewUser,setMonthlytotalUserCount,setMonthlyCounts,setPreTeacherCount
             ,setDailyOutUserCount,setMonthlyOutUserCount,setPreTeachers,setTodayUserCount,setContents,setQnaUser,setQnaCount } = get();
     try {
-        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/admin/main', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/admin/main`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
@@ -99,7 +99,7 @@ userPwChk: '',
  userInfo: async () => {
     const { setMemberInfo, searchCondition, searchKeyword,page,setPage } = get();
     try {
-        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/admin/user', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/admin/user`, {
             params: {
                 searchCondition: searchCondition,
                 searchKeyword: searchKeyword,
@@ -182,7 +182,7 @@ handleSavePoint: async (userId) => {
 getContentsList: async () => {
     const { setContents, searchCondition, searchKeyword,page,setPage } = get();
     try {
-        const response = await axios.get('http://localhost:9090/admin/contents', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/admin/contents`, {
             params: {
                 searchCondition: searchCondition,
                 searchKeyword: searchKeyword,
@@ -202,7 +202,7 @@ getContentsList: async () => {
 getQnaAnswer: async () => {
     const { setQnaUser, searchCondition, searchKeyword,page,setPage } = get();
     try {
-        const response = await axios.get('http://localhost:9090/admin/qna', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/admin/qna`, {
             params: {
                 searchCondition: searchCondition,
                 searchKeyword: searchKeyword,
@@ -224,7 +224,7 @@ sendQnaAnswer: async (id, answerUser, content) => {
     console.log(answerUser);
     console.log(content);
     try {
-    await axios.post('http://localhost:9090/admin/answerqna',{
+    await axios.post(`http://${process.env.REACT_APP_BACK_URL}/admin/answerqna`,{
         id: id,
         answerUser: answerUser,
         content: content,
@@ -238,7 +238,7 @@ sendQnaAnswer: async (id, answerUser, content) => {
 getUserQnaResult: async () => {
     const { setQnaUser,page,setPage } = get();
     try {
-        const response = await axios.get('http://localhost:9090/mypage/qna', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/mypage/qna`, {
             params: {
                 page: page
               }, 

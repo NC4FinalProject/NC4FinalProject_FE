@@ -19,7 +19,7 @@ const MyContents = () => {
     const getTeacherContentsList = async (page) => {
       try {
         const response = await axios.get(
-          `http://localhost:9090/contents/teachercontentslist`,
+          `http://${process.env.REACT_APP_BACK_URL}/contents/teachercontentslist`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
@@ -49,7 +49,7 @@ const MyContents = () => {
     const handleDelete = async (contentsId) => {
       try {
         const response = await axios.delete(
-          `http://localhost:9090/contents/delete/${contentsId}`,
+          `http://${process.env.REACT_APP_BACK_URL}/contents/delete/${contentsId}`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
