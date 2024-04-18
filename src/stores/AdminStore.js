@@ -28,8 +28,16 @@ userPwChk: '',
   point: 0,
   contents: [],
   qnauser: [],
+
   qnaUserCount: 0,
+    contentsCount:0,
+    inqueryCount:0,
+    reviewCount: 0,
+    setReviewCount: (reviewCount) => set({reviewCount}),
+    setInqueryCount: (inqueryCount) => set({inqueryCount}),
+  setContentCount: (contentsCount) => set({contentsCount}),
   setQnaCount: (qnaUserCount) => set({qnaUserCount}),
+
   setQnaUser: (qnauser) => set({qnauser}),
   setContents: (contents) => set({ contents }),
   setPoint: (point) => set({ point }),
@@ -110,17 +118,22 @@ userPwChk: '',
 },
 
 userDetail: async (userId) => {
-    const { setMemberInfo, setMemo, setPointSum } = get();
+    const { setMemberInfo, setMemo, setPointSum,setReviewCount, setInqueryCount, setContentCount, setQnaCount} = get();
     try {
         const response = await axios.get(`http://localhost:9090/admin/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
             },
         });
+        const { contentCount,  inqueryCount, qnaCount, reviewCount} = response.data;
         console.log(response.data);
-        setMemberInfo(response.data);
+        setReviewCount(reviewCount);
+        setInqueryCount(inqueryCount);
+        setContentCount(contentCount);
+        setQnaCount(qnaCount);
+        setMemberInfo(response.data.member);
         setMemo(response.data.memo || '');
-        const points = response.data.pointDTOList;
+        const points = response.data.member.pointDTOList;
         let sum = 0;
             for (const point of points) {
                 sum += point.value;

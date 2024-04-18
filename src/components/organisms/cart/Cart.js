@@ -158,15 +158,15 @@ const Cart = () => {
           }}
         >
           <CartUserInformation
-            key={memberInfo.memberId}
+            key={memberInfo && memberInfo.memberId}
             userNickname={memberInfo && memberInfo.userNickname}
-            userEmail={memberInfo.username}
+            userEmail={memberInfo && memberInfo.username}
           />
           <CartPayment 
             totalPrice={totalPrice}
             selectedItem={selectedItem}
             userNickname={memberInfo.userNickname}
-            userEmail={memberInfo.username}
+            userEmail={memberInfo && memberInfo.username}
             myPoint={myPoint}
           />
         </Grid>

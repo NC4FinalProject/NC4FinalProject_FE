@@ -61,7 +61,6 @@ const Header = () => {
     }
 
     return (
-      console.log(memberInfo),
     <Box display="flex" sx={{ marginTop: "1rem", width:'100%'  }}>
       <Hidden lgDown>
       <img

@@ -97,10 +97,9 @@ const Home = () => {
   
 
   const images = [
-    '/images/slider1.png',
-    '/images/slider2.png',
-    '/images/slider1.png',
-    '/images/slider2.png',
+    '/images/Banner1.png',
+    '/images/Banner2.png',
+    '/images/Banner3.png',
   ];
 
   return (
@@ -112,7 +111,7 @@ const Home = () => {
           <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', marginTop:'2rem'}}>
           <ArrowBackIosNewIcon style={bestIconStyle} onClick={handleBestPrevsmall} onMouseOver={handleBestMouseOver} onMouseOut={handleBestMouseOut}/>
           <ArrowForwardIosIcon style={{height:'1rem', marginTop: 0, color: bestSlideIndex === totalSlides - slidesToShow ? 'gray' : 'black', cursor: 'pointer'}} onClick={handleBestNextsmall} onMouseOver={handleBestMouseOver2} onMouseOut={handleBestMouseOut2}/>            
-          <Link to="/BestList" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to="/list" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box component="span" sx={{'&:hover': {color: '#558BCF'}}}>더보기+</Box>
             </Link>          
           </CoTypography>
@@ -124,7 +123,7 @@ const Home = () => {
           <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', marginTop:'2rem'}}>
           <ArrowBackIosNewIcon style={bestIconStyle} onClick={handleBestPrev} onMouseOver={handleBestMouseOver} onMouseOut={handleBestMouseOut}/>
           <ArrowForwardIosIcon style={{height:'1rem', marginTop: 0, color: bestSlideIndex === totalSlides - slidesToShow ? 'gray' : 'black', cursor: 'pointer'}} onClick={handleBestNext} onMouseOver={handleBestMouseOver2} onMouseOut={handleBestMouseOut2}/>            
-          <Link to="/BestList" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to="/list" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box component="span" sx={{'&:hover': {color: '#558BCF'}}}>더보기+</Box>
             </Link>          
           </CoTypography>
@@ -145,7 +144,7 @@ const Home = () => {
                         index={index}
                         reviewRating={item[8]}
                         reviewCount={item[7]}
-                        booked={true}
+                        booked={false}
                     />
                 ) : (
                     <div key={index} style={{ display: 'none' }} />
@@ -168,7 +167,7 @@ const Home = () => {
             index={index}
             reviewRating={item[8]}
             reviewCount={item[7]}
-           booked={true} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
+           booked={false} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
 
             :
             <ContentsCard key={index} {...item} sx={{display:'none'}} />
@@ -197,7 +196,7 @@ const Home = () => {
           <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
           <ArrowBackIosNewIcon style={recentIconStyle} onClick={handleRecentPrevsmall} onMouseOver={handleRecentMouseOver} onMouseOut={handleRecentMouseOut}/>
           <ArrowForwardIosIcon style={{height:'1rem', marginTop: 0, color: recentSlideIndex === totalSlides - slidesToShow ? 'gray' : 'black', cursor: 'pointer'}} onClick={handleRecentNextsmall} onMouseOver={handleRecentMouseOver2} onMouseOut={handleRecentMouseOut2}/> 
-            <Link to="/recentlist" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/list" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box component="span" sx={{'&:hover': {color: '#558BCF'}}}>더보기+</Box>
             </Link>
           </CoTypography>
@@ -209,7 +208,7 @@ const Home = () => {
           <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
           <ArrowBackIosNewIcon style={recentIconStyle} onClick={handleRecentPrev} onMouseOver={handleRecentMouseOver} onMouseOut={handleRecentMouseOut}/>
           <ArrowForwardIosIcon style={{height:'1rem', marginTop: 0, color: recentSlideIndex === totalSlides - slidesToShow ? 'gray' : 'black', cursor: 'pointer'}} onClick={handleRecentNext} onMouseOver={handleRecentMouseOver2} onMouseOut={handleRecentMouseOut2}/> 
-            <Link to="/recentlist" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/list" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box component="span" sx={{'&:hover': {color: '#558BCF'}}}>더보기+</Box>
             </Link>
           </CoTypography>
@@ -230,7 +229,7 @@ const Home = () => {
                         index={index}
                         reviewRating={item[8]}
                         reviewCount={item[7]}
-                        booked={true}
+                        booked={false}
                     />
                 ) : (
                     <div key={index} style={{ display: 'none' }} />
@@ -253,7 +252,7 @@ const Home = () => {
               index={index}
               reviewRating={item[8]}
               reviewCount={item[7]}
-              booked={true} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
+              booked={false} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
                     :
 
               <ContentsCard key={index} {...item} sx={{display:'none'}} />
@@ -302,7 +301,7 @@ const Home = () => {
               <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
           <ArrowBackIosNewIcon style={randomIconStyle} onClick={handleRandomPrevsmall} onMouseOver={handleRandomMouseOver} onMouseOut={handleRandomMouseOut}/>
           <ArrowForwardIosIcon style={{height:'1rem', marginTop: 0, color: randomSlideIndex === totalSlides - slidesToShow ? 'gray' : 'black', cursor: 'pointer'}} onClick={handleRandomNextsmall} onMouseOver={handleRandomMouseOver2} onMouseOut={handleRandomMouseOut2}/> 
-            <Link to="/randomlist" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/list" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box component="span" sx={{'&:hover': {color: '#558BCF'}}}>더보기+</Box>
             </Link>
           </CoTypography>
@@ -314,7 +313,7 @@ const Home = () => {
               <CoTypography size="Title" style={{ display:'flex', alignItems:'center', marginBottom:'5px', margintop:'2rem'}}>
           <ArrowBackIosNewIcon style={randomIconStyle} onClick={handleRandomPrev} onMouseOver={handleRandomMouseOver} onMouseOut={handleRandomMouseOut}/>
           <ArrowForwardIosIcon style={{height:'1rem', marginTop: 0, color: randomSlideIndex === totalSlides - slidesToShow ? 'gray' : 'black', cursor: 'pointer'}} onClick={handleRandomNext} onMouseOver={handleRandomMouseOver2} onMouseOut={handleRandomMouseOut2}/> 
-            <Link to="/randomlist" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/list" style={{ textDecoration: 'none', color: 'inherit' }}>
               <Box component="span" sx={{'&:hover': {color: '#558BCF'}}}>더보기+</Box>
             </Link>
           </CoTypography>
@@ -335,7 +334,7 @@ const Home = () => {
                         index={index}
                         reviewRating={item[8]}
                         reviewCount={item[7]}
-                        booked={true}
+                        booked={false}
                     />
                 ) : (
                     <div key={index} style={{ display: 'none' }} />
@@ -358,7 +357,7 @@ const Home = () => {
         index={index}
         reviewreviewRating={item[8]}
         reviewCount={item[7]}
-        booked={true} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
+        booked={false} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
               :
 
         <ContentsCard key={index} {...item} sx={{display:'none'}} />
