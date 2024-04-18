@@ -59,6 +59,23 @@ export const getMyContentsListApi = async (page)=>{
     throw error;
 }}
 
+export const getBookmarkContentsListApi = async (page)=>{
+  try {
+    const response = await axios.get(`http://localhost:9090/contents/bookmarklist`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      },
+      params: {
+        page: page
+      } // 여기서 contentsId를 query parameter로 넘겨주고 있음
+    });
+    console.log("111111111111111");
+    console.log(response.data)
+    return response.data;
+} catch (error) {
+    throw error;
+}}
+
 export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail, contentsData, contentsFileDTOList) => {
   console.log("=======에이피아이쪽======" + chapterOne +"11111"+ chapterTwo +"11111"+ videoInfo +"11111"+ videoFile +"11111"+ thumbnail);
   

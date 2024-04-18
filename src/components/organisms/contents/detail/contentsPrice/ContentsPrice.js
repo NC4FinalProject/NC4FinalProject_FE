@@ -5,6 +5,7 @@ import ContentsPriceCal from '../../../../atoms/common/ContentsPriceCal';
 import { useNavigate } from 'react-router-dom';
 import {useContentsStore, useVideoAddInfoStore} from '../../../../../stores/ContentsStore';
 import axios from 'axios';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const formatDuration = (seconds) => {
   // 분과 초를 계산
@@ -19,13 +20,13 @@ const formatDuration = (seconds) => {
 };
 
 
-const ContentsPrice = ({ contentsId, reviewRating, reviewCount }) => {
+const ContentsPrice = ({ contentsId, bookmarkCount, reviewRating, reviewCount }) => {
 
   /////////////////////////////////////////////////
   // 무료일 경우 0 을 받고 FREE 라는 텍스트를 반환 -> 결국 값이 0일 경우에만 FREE 아닐 경우 가격 표시 0
   // 실시간 일 경우 음수를 받아와 국비지원 인 것을 알아야 할듯? -1 
   // 유료일 경우 컨텐츠로 부터 가격 데이터를 받아옴 가격 > 0
-  const { fetchContents, getContents, getVideo, getSection } = useContentsStore();
+  const { fetchContents, getContents, getVideo, getSection, getContentsOutput} = useContentsStore();
 
   const { videoBaceURL, videoTotalDuration, durationList } = useVideoAddInfoStore();
 
@@ -99,6 +100,29 @@ const ContentsPrice = ({ contentsId, reviewRating, reviewCount }) => {
       }
     }
   }, [contentsId]);
+
+  const changeBookmark = async () => {
+    if(sessionStorage.getItem("ACCESS_TOKEN")) {
+      try {
+        const response = await axios.post(
+          `http://localhost:9090/contents/bookmark/${getContents.contentsId}`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+            }
+          }
+        );
+        
+        if(response.data.statusCode === 200) {
+          getContentsOutput(contentsId);
+        }
+
+      } catch(e) {
+        console.log(e);
+      }
+    }
+  };
   
   return (
 
@@ -153,6 +177,32 @@ const ContentsPrice = ({ contentsId, reviewRating, reviewCount }) => {
         </Grid>
 
         <Grid container item xs={4} justifyContent={"flex-end"}>
+          <Box onClick={changeBookmark}>
+              {bookmarkCount == 1 ? (
+              <BookmarkIcon sx={{ cursor:'pointer' }} style={{
+                marginRight: "0.3em",
+                color: "#6E6E6E",
+                cursor: "pointer",
+                fontSize: "20px",
+                color:'#FFD400'
+              }} />) :(
+                <BookmarkIcon sx={{ cursor:'pointer' }} style={{
+                  marginRight: "0.3em",
+                  color: "#6E6E6E",
+                  cursor: "pointer",
+                  fontSize: "20px",
+                }} />
+              )}
+          </Box>
+                {/* {Localbooked ? (
+                    <Box onClick={changeBooked}>
+                        <BookmarkIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px', color:'#FFD400' }} />
+                    </Box>
+                ) : (
+                    <Box onClick={changeBooked}>
+                        <BookmarkBorderIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px' }} />
+                    </Box>
+                )} */}
           <FaCartPlus
             onClick={() => {
               navigate("/cart");
