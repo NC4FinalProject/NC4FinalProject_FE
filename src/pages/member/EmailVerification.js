@@ -1,9 +1,21 @@
-import React, { useEffect, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useCallback, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Grid, Container, Typography, TextField, Button, Link } from '@mui/material';
 import axios from 'axios';
 
 const EmailVerification = () => {
+    const location = useLocation();
+    const [form, setForm] = useState({});
+
+    useEffect(() => {
+        if(location.state) {
+            setForm({
+                username: location.state.username,
+                password: location.state.password,
+                userNickname: location.state.userNickname
+            })
+        }
+    }, [location]);
 
     const navi = useNavigate();
 

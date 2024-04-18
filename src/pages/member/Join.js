@@ -53,7 +53,11 @@ const Join = () => {
                 });
 
                 if (response.data.item && response.data.statusCode === 200) {
-                    navi('/member/email-verification');
+                    navi('/member/email-verification', {state: {
+                        username: username,
+                        password: password,
+                        userNickname: userNickname
+                    }});
                 }
             } catch (e) {
                 if (e.response.data.errorCode === 100) {
