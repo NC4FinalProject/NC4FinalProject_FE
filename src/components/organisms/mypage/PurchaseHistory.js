@@ -54,7 +54,7 @@ const PurchaseHistory = () => {
             <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.paymentDate.substring(0, 10)}</CoTypography></TableCell>
             <TableCell><CoTypography size="AdminUser">{purchase.contentsTitle}</CoTypography></TableCell>
             <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.teacherName}</CoTypography></TableCell>
-            <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.price + "원"}</CoTypography></TableCell>
+            <TableCell sx={{ textAlignLast: 'center' }}><CoTypography size="AdminUser">{purchase.price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + "원"}</CoTypography></TableCell>
          </TableRow>
         ))}
         </TableBody>
