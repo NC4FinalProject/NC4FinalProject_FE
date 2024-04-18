@@ -313,10 +313,10 @@ export const useMyContentsListStore = create((set, get) => ({
   page: 0,
   totalPages: 0,
   setPage: (page) => set({page}),
-  getContentsListOutput: async () => {
+  getMyContentsListOutput: async () => {
     const {page} = get();
     try {
-      const data = await getContentsListApi(page);
+      const data = await getMyContentsListApi(page);
       set({ getMyContentsList: data.pageItems, totalPages: data.pageItems.totalPages});
     } catch (error) {
       console.error(error);
