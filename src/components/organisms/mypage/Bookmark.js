@@ -1,13 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Box, Pagination } from '@mui/material'
-import ContentsList from '../contents/list/ContentsList'
+import BookmarkContentsList from '../contents/list/BookmarkContentsList'
+import { useBookmarkContentsListStore } from "../../../stores/ContentsStore";
 
 const Bookmark = () => {
+  const { totalPages, getBookmarkContentsListOutput, page, setPage } = useBookmarkContentsListStore();
+
+  useEffect(() => {
+    getBookmarkContentsListOutput();
+  }, [page]);
+
+  const changePage = (e, v) => {
+    setPage(parseInt(v) - 1);
+  }
+
   return (
     <div>
-        <ContentsList />
+        <BookmarkContentsList />
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3}}>
-          <Pagination count={10} color="primary"/>
+          <Pagination count={totalPages} page={page + 1} onChange={changePage} color="primary"/>
         </Box>
     </div>
   )

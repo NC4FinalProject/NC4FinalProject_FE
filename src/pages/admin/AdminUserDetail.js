@@ -13,13 +13,15 @@ import MemberStore from "../../stores/MemberStore";
 
 const AdminUserDetail = () => {
 
-    const {point,handleSavePoint, reason,MemberInfo, setPoint,setReason, userDetail,pointSum, userChangeRole,  Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw, userPwChk, setUserPw, setUserPwChk, setSelectedRole } = AdminStore();
+    const {point,handleSavePoint, reason,MemberInfo, setPoint,setReason, userDetail,pointSum,
+        userChangeRole,  Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw,
+        userPwChk, setUserPw, setUserPwChk, setSelectedRole,qnaUserCount,contentsCount,inqueryCount, reviewCount} = AdminStore();
     const { memberInfo } = MemberStore();
     const maxChars = 150;
     const {userId} = useParams();
     const [open, setOpen] = useState(false);
     const [openReport, setOpenReport] = useState(false);
-    const [selectedValue, setSelectedValue] = useState(MemberInfo.role);
+    const [selectedValue, setSelectedValue] = useState('');
     const [openrole, setOpenRole] = useState(false);
     const [openPointDialog, setOpenPointDialog] = useState(false);
 
@@ -60,8 +62,14 @@ const AdminUserDetail = () => {
     ];
 
     useEffect(() => {
-      userDetail(userId);
-    }, [userDetail, userId]);
+        const fetchUserDetail = async () => {
+            await userDetail(userId);
+            setSelectedValue(MemberInfo.role);
+            console.log(selectedValue);
+        };
+
+        fetchUserDetail();
+    }, [userDetail, userId, MemberInfo.role]);
 
 
     const OpenBlacklist = () => {
@@ -305,7 +313,7 @@ const AdminUserDetail = () => {
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">게시글</CoTypography></TableCell>
-            <TableCell><CoTypography size="HoverText">게시글 1 / 댓글 1 / 강의 평가 1 / 문의 3</CoTypography></TableCell>
+            <TableCell><CoTypography size="HoverText">게시글 {contentsCount} / 질의응답 {inqueryCount} / 강의 평가 {reviewCount} / 문의 {qnaUserCount}</CoTypography></TableCell>
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">블랙리스트</CoTypography></TableCell>

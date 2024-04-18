@@ -241,7 +241,7 @@ const handleDelete = async () => {
         />
         <CKEditor
           editor={ClassicEditor}
-          data={content}
+          data={content.replaceAll("&lt;", "<").replaceAll("&gt;", ">")}
           onChange={handleContentChange}
           config={{
             extraPlugins: [UploadAdapterPlugin],

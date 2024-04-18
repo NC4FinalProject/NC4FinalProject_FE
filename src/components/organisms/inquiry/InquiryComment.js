@@ -28,7 +28,7 @@ const InquiryComment = ({
   const [showEditor, setShowEditor] = useState(false);
   const [inquiryCommentContent, setInquiryCommentContent] = useState("");
 
-  const {modifyComment, deleteComment, setComments} = useStore();
+  const {modifyComment, deleteComment, setComments, comments} = useStore();
   const {memberInfo} = MemberStore();
 
   useEffect(() => {
@@ -73,13 +73,14 @@ const InquiryComment = ({
           }
         }
       );
+      
       setComments(response.data.items);
 
     } catch(e) {
       console.log(e);
     }
   }
-
+  
   return (
     <>
       <Grid
@@ -114,7 +115,7 @@ const InquiryComment = ({
                 sx={{ width: 20.2, height: 20.2, marginRight: "0.5rem" }}
               />
               <CoTypography size="TableContent" style={{ color: "#868e96" }}>
-                | {name} | {regDate}
+                | {name} | {regDate.substring(0, 10)}
               </CoTypography>
             </Grid>
             <Grid

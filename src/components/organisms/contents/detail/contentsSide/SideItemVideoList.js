@@ -78,23 +78,23 @@ const SideItemVideoList = (props) => {
         <Typography sx={{color:"#585858"}}variant='caption' paddingX={0.5}>{props.count +1}</Typography>
       </Grid>
 
-      <Grid item >
-        <Link to="/" component={Link} underline="hover" color="inherit">
-          <CardMedia
-            component="img"
-            image="" 
-            alt={props.title}
-            sx={{
-              // width: '100%', 
-              // height: '100%',
-              width: theme => theme.spacing(5.5),
-              height: theme => theme.spacing(5.5),
-              borderRadius: '0.4rem', 
-            }} />
-            {/* url을 받아와야 하는데..? 전역상태관리로 가야하나? 섬네일 하나때문에? */}
-            {/* <VideoThumbnail videoUrl={videoSrc} captureTime={1} />       */}
-        </Link>
-      </Grid>
+      {/*<Grid item >*/}
+      {/*  <Link to="/" component={Link} underline="hover" color="inherit">*/}
+      {/*    <CardMedia*/}
+      {/*      component="img"*/}
+      {/*      image="" */}
+      {/*      alt={props.title}*/}
+      {/*      sx={{*/}
+      {/*        // width: '100%', */}
+      {/*        // height: '100%',*/}
+      {/*        width: theme => theme.spacing(5.5),*/}
+      {/*        height: theme => theme.spacing(5.5),*/}
+      {/*        borderRadius: '0.4rem', */}
+      {/*      }} />*/}
+      {/*      /!* url을 받아와야 하는데..? 전역상태관리로 가야하나? 섬네일 하나때문에? *!/*/}
+      {/*      /!* <VideoThumbnail videoUrl={videoSrc} captureTime={1} />       *!/*/}
+      {/*  </Link>*/}
+      {/*</Grid>*/}
       
       
       

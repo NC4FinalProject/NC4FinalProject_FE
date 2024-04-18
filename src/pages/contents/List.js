@@ -43,6 +43,7 @@ const List = () => {
       </Helmet>
 
       <ContainerStyle maxWidth="1300px">
+        
 
         <ContentsFilters />
 
@@ -51,7 +52,7 @@ const List = () => {
 
         {/* Contents Paging */}
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3}}>
-          <Pagination count={totalPages} page={page + 1} onChange={changePage}/>
+          <Pagination count={totalPages} page={page + 1} onChange={changePage} color='primary'/>
         </Box>
         
       </ContainerStyle>

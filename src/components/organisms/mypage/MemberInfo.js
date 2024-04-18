@@ -221,27 +221,6 @@ const MemberInfo = () => {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
-                        { isEmailVerification === "verified" ? ("이메일 인증을 완료하였습니다."
-                            ) : ( 
-                                "이메일 인증을 완료해주시기 바랍니다.") }
-                    </Typography>
-                </Grid>
-                { isEmailVerification === "verified" ? (
-                <Grid item xs={12}>
-                <Button type="button" disabled fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
-                    이메일 인증 완료
-                </Button>
-                </Grid>
-                ) : (
-                <Grid item xs={12}>
-                    <Button type="button" onClick={emailVerification} fullWidth variant="contained" color="primary" style={{height:'55px', fontSize:'18px', marginBottom: '5%'}}>
-                        이메일 인증하러 가기
-                    </Button>
-                </Grid>
-                ) }
-
-                <Grid item xs={12}>
                     <Typography component="h2" variant='string' style={{textAlign: 'left'}}>
                         { role === "TEACHER"|| role === "PRETEACHER" ? (
                             "이미 강사 계정이거나 신청되었습니다."

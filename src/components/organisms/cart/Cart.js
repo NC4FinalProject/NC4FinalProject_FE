@@ -15,6 +15,7 @@ const Cart = () => {
   const [selectedItem, setSelectedItem] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedCnt, setCheckedCnt] = useState(0);
+  const [myPoint, setMyPoint] = useState(0);
 
   const getCart = useCallback(async () => {
     try {
@@ -23,9 +24,10 @@ const Cart = () => {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         },
       });
-
+      console.log(response);
       console.log(response.data.item.cartContentsList);
       setCartItem(response.data.item.cartContentsList);
+      setMyPoint(response.data.item.myPoint);
     } catch (e) {
       console.log(e);
     }
@@ -156,15 +158,16 @@ const Cart = () => {
           }}
         >
           <CartUserInformation
-            key={memberInfo.memberId}
+            key={memberInfo && memberInfo.memberId}
             userNickname={memberInfo && memberInfo.userNickname}
-            userEmail={memberInfo.username}
+            userEmail={memberInfo && memberInfo.username}
           />
           <CartPayment 
             totalPrice={totalPrice}
             selectedItem={selectedItem}
             userNickname={memberInfo.userNickname}
-            userEmail={memberInfo.username}
+            userEmail={memberInfo && memberInfo.username}
+            myPoint={myPoint}
           />
         </Grid>
       </Grid>

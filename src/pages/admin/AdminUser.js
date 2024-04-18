@@ -172,7 +172,6 @@ const AdminUser = () => {
             <TableCell><CoTypography variant="AdminUser">아이디</CoTypography></TableCell>
             <TableCell><CoTypography variant="AdminUser">권한</CoTypography></TableCell>
               <TableCell><CoTypography variant="AdminUser">계정 생성일</CoTypography></TableCell>
-              <TableCell><CoTypography variant="AdminUser">댓글 / 문의</CoTypography></TableCell>
             </Hidden>
             <TableCell><CoTypography variant="AdminUser" sx={{paddingLeft:'0'}}>메모</CoTypography></TableCell>
           </TableRow>
@@ -208,9 +207,6 @@ const AdminUser = () => {
               </TableCell>
                 <TableCell onClick={() => handleUser(member.memberId)}>
                   <CoTypography variant="AdminUser">{formtDate(member.createdAt)}</CoTypography>
-                </TableCell>
-                <TableCell onClick={() => handleUser(member.memberId)}>
-                  <CoTypography variant="AdminUser">댓글 / 문의</CoTypography>
                 </TableCell>
               </Hidden>
               <TableCell>

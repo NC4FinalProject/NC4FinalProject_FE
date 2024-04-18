@@ -8,10 +8,19 @@ import { set } from 'immutable';
 const Join = () => {
     const navi = useNavigate();
 
-    let emailCheckVal = false;
-    let nicknameCheckVal = false;
-    let passwordCheckVal = false;
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState(false);
+    const [nicknameError, setNicknameError] = useState(false);
+    const [passwordCheckError, setPasswordCheckError] = useState(false);
+
+
+    const [emailCheckVal, setEmailCheckVal] = useState(false);
+    const [nicknameCheckVal, setNicknameCheckVal] = useState(false);
+    const [passwordCheck, setPasswordCheck] = useState("");
+    const [password, setPassword] = useState("");
     let agreementCheckVal = false;
+
+    const [emailVal, setEmailVal] = useState(false);
 
     const [showPw, setshowPw] = useState(false);
 
@@ -41,32 +50,99 @@ const Join = () => {
     
     const handleGoogleLogin = () => {
             window.location.href = googleURL
-        };
+    };
 
-    const join = useCallback(
-        async (username, password, userNickname) => {
-            try {
-                const response = await axios.post('http://localhost:9090/member/join', {
-                    username: username,
-                    password: password,
-                    userNickname: userNickname
-                });
+    // const join = useCallback(
+    //     async (username, password, userNickname) => {
+    //         try {
+    //             const response = await axios.post('http://localhost:9090/member/join', {
+    //                 username: username,
+    //                 password: password,
+    //                 userNickname: userNickname
+    //             });
+    //
+    //             if (response.data.item && response.data.statusCode === 200) {
+    //                 navi('/member/email-verification', {state: {
+    //                     username: username,
+    //                     password: password,
+    //                     userNickname: userNickname
+    //                 }});
+    //             }
+    //         } catch (e) {
+    //             if (e.response.data.errorCode === 100) {
+    //                 alert('입력 값을 모두 입력해주세요.');
+    //             } else if (e.response.data.errorCode === 101) {
+    //                 alert('이미 존재하는 아이디입니다.');
+    //             } else if (e.response.data.errorCode === 102) {
+    //                 alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
+    //             }
+    //         }
+    //     },
+    //     [navi]
+    // );
 
-                if (response.data.item && response.data.statusCode === 200) {
-                    navi('/member/email-verification');
-                }
-            } catch (e) {
-                if (e.response.data.errorCode === 100) {
-                    alert('입력 값을 모두 입력해주세요.');
-                } else if (e.response.data.errorCode === 101) {
-                    alert('이미 존재하는 아이디입니다.');
-                } else if (e.response.data.errorCode === 102) {
-                    alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
-                }
-            }
-        },
-        [navi]
+    const emailVerification = useCallback(
+        (username, password, userNickname) => {
+            console.log("emailVerification start");
+            navi('/member/email-verification', {state: {
+                username: username,
+                password: password,
+                userNickname: userNickname
+            }});
+        }
     );
+
+    const validatePassword = (password) => {
+        if (password.length < 8) {
+            return false;
+        }
+
+        // 대문자, 소문자, 숫자, 특수 문자 포함 검사
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasSpecialChar = /[!@#$%^&*]/.test(password);
+
+        if (!(hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // const handlePasswordChange = (event) => {
+    //     setPasswordCheck(event.target.value);
+    //
+    //     if (password !== event.target.value) {
+    //         setPasswordCheckError(true);
+    //     } else {
+    //         setPasswordCheckError(false);
+    //     }
+    // };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+
+        if (passwordCheck !== event.target.value) {
+            setPasswordCheckError(true);
+        } else {
+            setPasswordCheckError(false);
+        }
+    };
+
+    const handlePasswordCheckChange = (event) => {
+        setPasswordCheck(event.target.value);
+
+        if (password !== event.target.value) {
+            setPasswordCheckError(true);
+        } else {
+            setPasswordCheckError(false);
+        }
+    };
+
+    const isPasswordMatch = () => {
+        return password === passwordCheck;
+    };
 
     const handleSubmit = useCallback(
         (e) => {
@@ -77,7 +153,10 @@ const Join = () => {
             } else if (!nicknameCheckVal) {
                 alert('닉네임 중복 체크를 해주세요.');
                 return;
-            } else if (!passwordCheckVal) {
+            } else if (!validatePassword(passwordCheck)) {
+                alert('비밀번호가 유효하지 않습니다. 비밀번호는 8자 이상, 대문자, 소문자, 숫자, 특수문자를 포함해야 합니다.');
+                return;
+            } else if (!isPasswordMatch()) {
                 alert('비밀번호가 일치하지 않습니다.');
                 return;
             } else if (!agreementCheckVal) {
@@ -85,9 +164,9 @@ const Join = () => {
                 return;
             }
             const formData = new FormData(e.target);
-            join(formData.get('username'), formData.get('password'), formData.get('userNickname'));
+            emailVerification(formData.get('username'), formData.get('password'), formData.get('userNickname'));
         },
-        [join]
+        [emailVerification, emailCheckVal, nicknameCheckVal, passwordCheck, agreementCheckVal]
     );
 
     const emailCheck = useCallback(
@@ -99,7 +178,7 @@ const Join = () => {
 
                 if (response.data.item && response.data.statusCode === 200) {
                     alert('사용 가능한 이메일입니다.');
-                    emailCheckVal = true;
+                    setEmailCheckVal(true);
                 }
             } catch (e) {
                 if (e.response.data.errorCode === 200) {
@@ -117,10 +196,20 @@ const Join = () => {
     const handleEmailCheck = useCallback(
         (e) => {
             e.preventDefault();
-            const formData = document.getElementById('username').value;
-            emailCheck(formData);
+            // const formData = document.getElementById('username').value;
+            // emailCheck(formData);
+
+            // emailCheck(email);
+
+            if (!validateEmail(email)) {
+                alert("이메일 형식이 올바르지 않습니다.");
+                setEmailError(true);
+            } else {
+                setEmailError(false);
+                emailCheck(email);
+            }
         },
-        [emailCheck]
+        [emailCheck, email]
     );
 
     const nicknameCheck = useCallback(
@@ -132,7 +221,7 @@ const Join = () => {
 
                 if (response.data.item && response.data.statusCode === 200) {
                     alert('사용 가능한 닉네임입니다.');
-                    nicknameCheckVal = true
+                    setNicknameCheckVal(true);
                 }
             } catch (e) {
                 if (e.response.data.errorCode === 200) {
@@ -147,11 +236,53 @@ const Join = () => {
         []
     );
 
+    //////////
+
+    const validateEmail = (email) => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+        //////////
+        setEmailCheckVal(false);
+        //////////
+
+        if (!validateEmail(event.target.value)) {
+            setEmailError(true);
+        } else {
+            setEmailError(false);
+        }
+    }
+
+    const handleBlur = () => {
+        if (!validateEmail(email)) {
+            setEmailError(true);
+        }
+    }
+    //////////
+
+
+    // const handleNicknameCheck = useCallback(
+    //     (e) => {
+    //         e.preventDefault();
+    //         const formData = document.getElementById('userNickname').value;
+    //         nicknameCheck(formData);
+    //     },
+    //     [nicknameCheck]
+    // );
+
     const handleNicknameCheck = useCallback(
         (e) => {
             e.preventDefault();
             const formData = document.getElementById('userNickname').value;
-            nicknameCheck(formData);
+            if (!formData) {
+                setNicknameError(true);
+            } else {
+                setNicknameError(false);
+                nicknameCheck(formData);
+            }
         },
         [nicknameCheck]
     );
@@ -180,7 +311,12 @@ const Join = () => {
                             id="username"
                             label="이메일"
                             autoFocus
-                            onChange={(e) => {emailCheckVal = false}}
+                            error={emailError}
+                            helperText={emailError ? "이메일 형식이 올바르지 않습니다." : ""}
+                            value={email}
+                            // onChange={(e) => {emailCheckVal = false}}
+                            onChange={handleEmailChange}
+                            onBlur={handleBlur}
                         ></TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -197,7 +333,11 @@ const Join = () => {
                             id="userNickname"
                             label="닉네임"
                             autoFocus
-                            onChange={(e) => {nicknameCheckVal = false}}
+                            // onChange={(e) => {nicknameCheckVal = false}}
+                            error={nicknameError}
+                            helperText={nicknameError ? "닉네임을 입력해주세요." : ""}
+                            // onChange={(e) => {nicknameCheckVal = false; setNicknameError(false);}}
+                            onChange={(e) => {setNicknameCheckVal(false); setNicknameError(false);}}
                         ></TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -214,7 +354,8 @@ const Join = () => {
                             fullWidth
                             id="password"
                             label="비밀번호"
-                            onChange={(e) => {document.getElementById('password').value === document.getElementById('password-check').value ? passwordCheckVal = true : passwordCheckVal = false}}
+                            // onChange={(e) => {document.getElementById('password').value === document.getElementById('password-check').value ? passwordCheckVal = true : passwordCheckVal = false}}
+                            onChange={handlePasswordChange}
                             InputProps={{
                                 endAdornment: <RemoveRedEyeIcon onClick={toggleShowPw} sx={{cursor: 'pointer'}}/>,
                                 disableUnderline: true
@@ -230,7 +371,10 @@ const Join = () => {
                             fullWidth
                             id="password-check"
                             label="비밀번호 확인"
-                            onChange={(e) => {document.getElementById('password').value === document.getElementById('password-check').value ? passwordCheckVal = true : passwordCheckVal = false}}
+                            // onChange={(e) => {document.getElementById('password').value === document.getElementById('password-check').value ? passwordCheckVal = true : passwordCheckVal = false}}
+                            onChange={handlePasswordCheckChange}
+                            error={passwordCheckError}
+                            helperText={passwordCheckError ? "비밀번호가 일치하지 않습니다." : ""}
                             InputProps={{
                                 endAdornment: <RemoveRedEyeIcon onClick={toggleShowPwCheck} sx={{cursor: 'pointer'}}/>,
                                 disableUnderline: true

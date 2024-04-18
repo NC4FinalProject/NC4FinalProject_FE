@@ -1,15 +1,16 @@
-import { useState, React } from 'react';
+import { useState, React, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import '../../../scss/Header.scss';
 import {TextField} from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import CoHoverButton from '../../atoms/common/CoHoverButton';
 import MemberStore from "../../../stores/MemberStore";
 import Hidden from '@mui/material/Hidden';
 import Avatar from '@mui/material/Avatar';
+import { useContentsListStore } from "../../../stores/ContentsStore";
 
 const Header = () => {
     const navi = useNavigate();
@@ -19,6 +20,10 @@ const Header = () => {
     const handleProfileClick = () => {
       setProfileMenuOpen(!isProfileMenuOpen);
   };
+
+  const location = useLocation();
+
+  const {serachKeyword, setSearchKeyword, getContentsListOutput} = useContentsListStore();
 
     const handleLogout = () => {
         const response = axios
@@ -39,8 +44,23 @@ const Header = () => {
             });
     };
 
+    const handleSearch = useCallback(() => {
+      if(location) {
+        if(location.pathname != '/list') {
+          navi("/list");
+        } else {
+          getContentsListOutput();
+        }
+      }
+    }, [location]);
+
+    const handleKeydown = (e) => {
+      if(e.keyCode === 13) {
+        handleSearch();
+      }
+    }
+
     return (
-      console.log(memberInfo),
     <Box display="flex" sx={{ marginTop: "1rem", width:'100%'  }}>
       <Hidden lgDown>
       <img
@@ -84,10 +104,13 @@ const Header = () => {
             },
           },
         }}
+        value={serachKeyword}
+        onChange={(e) => setSearchKeyword(e.target.value)}
+        onKeyDown={handleKeydown}
         placeholder="검색어를 입력해주세요."
         InputProps={{
           endAdornment: (
-            <InputAdornment position="end">
+            <InputAdornment position="end" sx={{cursor: "pointer"}} onclick={handleSearch}>
               <SearchIcon />
             </InputAdornment>
           ),

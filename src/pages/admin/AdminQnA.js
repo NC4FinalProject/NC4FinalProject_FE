@@ -127,22 +127,25 @@ const AdminQnA = () => {
                 <Table>
                     <TableHead >
                         <TableRow>
+                        <Hidden smDown>
                             <TableCell sx={{ display: 'flex', alignItems: 'center', paddingRight: '0' }}>
                                 <CoTypography variant="AdminUser" sx={{ paddingLeft: '0' }}>처리 여부</CoTypography>
                                 <Check sx={{ color: '#558BCF', paddingBottom: '0.2rem', paddingLeft: '0.2rem' }} />
                             </TableCell>
+                        </Hidden>
                             <TableCell><CoTypography variant="AdminUser">문의자</CoTypography></TableCell>
-                            <Hidden smDown>
                                 <TableCell><CoTypography variant="AdminUser">문의 카테고리</CoTypography></TableCell>
+                            <Hidden smDown>
                                 <TableCell><CoTypography variant="AdminUser">문의 내용</CoTypography></TableCell>
                                 <TableCell><CoTypography variant="AdminUser">문의 날짜</CoTypography></TableCell>
-                                <TableCell><CoTypography variant="AdminUser">처리 상태</CoTypography></TableCell>
                             </Hidden>
+                                <TableCell><CoTypography variant="AdminUser">처리 상태</CoTypography></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {qnauser && qnauser.map((qna, index) => (
                             <TableRow key={index}>
+                                <Hidden smDown>
                                 <TableCell>
                                     {qna.answered ? (
                                         <CheckBoxIcon
@@ -150,13 +153,14 @@ const AdminQnA = () => {
                                     ) : (<CheckBoxOutlineBlankIcon sx={{ color: '#558BCF', paddingLeft: '1.825rem' }} />
                                         )}
                                 </TableCell>
+                                </Hidden>
                                 <TableCell>
                                     <CoTypography variant="AdminUser">{qna.askUser.userNickname}</CoTypography>
                                 </TableCell>
-                                <Hidden smDown>
                                     <TableCell>
                                         <CoTypography variant="AdminUser">{qna.category}</CoTypography>
                                     </TableCell>
+                                <Hidden smDown>
                                     <TableCell sx={{maxWidth:'35rem'}}>
                                         <CoTypography>{qna.content}
                                         </CoTypography>
@@ -164,6 +168,7 @@ const AdminQnA = () => {
                                     <TableCell>
                                         <CoTypography variant="AdminUser">{qna.createdAt}</CoTypography>
                                     </TableCell>
+                                    </Hidden>
                                     <TableCell>
                                         {qna.answered ? (
                                           <Button sx={{ padding: '0', minWidth: '0', color: 'black' }} onClick={() => OpenDialog(qna)}>
@@ -175,7 +180,7 @@ const AdminQnA = () => {
                                             </Button>
                                             )}
                                     </TableCell>
-                                </Hidden>
+                                
                             </TableRow>
                         ))}
                     </TableBody>

@@ -44,7 +44,7 @@ const SideTypeMulti = ({bodyCkeck, videoCheck}) => {
             key={index}
             videoReplyContent={vrl.videoReplyContent}
             userNickname={vrl.userNickname}
-            userprofile={vrl.userProfile}
+            userprofile={vrl.profileFile}
           />
         ))}
       </Box>

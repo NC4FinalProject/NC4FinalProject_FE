@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import QnaDialog from '../../organisms/mypage/Qna';
 import MemberStore from '../../../stores/MemberStore';
-import CoSelect from './CoSelect';
+import QnaSelect from './QnaSelect';
 import MainStore from '../../../stores/MainStore';
 
 const Footer = () => {
@@ -13,12 +13,16 @@ const Footer = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const navi = useNavigate();
   const {sendQna} = MainStore();
+  const [userQna, setUserQna] = useState('');
 
   const handleQnaSubmit = (detailReason) => {
     onSubmit(detailReason, selectedValue);
-    sendQna(memberInfo,selectedValue, detailReason);
+    sendQna(memberInfo,selectedValue, userQna);
     alert('문의가 정상적으로 완료되었습니다.')
   }
+  const handleReasonChange = (event) => {
+    setUserQna(event.target.value);
+  };
 
   const OpenDialog = () => {
     if(memberInfo.userNickname === "") {
@@ -58,10 +62,12 @@ const reportReasons = [
                 author={memberInfo && memberInfo.userNickname ? memberInfo.userNickname : null}
                 sx={{width:'100%'}}
                 Title="1 대 1 문의"
-                onSubmit={handleQnaSubmit}     
+                onSubmit={handleQnaSubmit}
+                detailReason={userQna}
+                handleReasonChange={handleReasonChange}
                 selectComponent={
                   <Box sx={{ margin: "0.5rem auto 0"}}>
-                  <CoSelect onChange={handleSelectChange} value={selectedValue} options={reportReasons} sx={{width:'100%'}} />
+                  <QnaSelect onChange={handleSelectChange} value={selectedValue} options={reportReasons} sx={{width:'100%'}} />
                   </Box>  
                 }       
                 /> 
