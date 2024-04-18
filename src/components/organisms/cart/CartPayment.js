@@ -26,6 +26,11 @@ const CartPayment = ({totalPrice, selectedItem, userNickname, userEmail, myPoint
   }, [selectedItem, payPrice, usePoint]);
 
   const changeUsePoint = (e) => {
+    if(Number(e.target.value) > myPoint) {
+      alert("보유포인트보다 더 큰 포인트를 입력하셨습니다.");
+      setUsePoint("");
+      return;
+    }
     setUsePoint(e.target.value);
   };
 

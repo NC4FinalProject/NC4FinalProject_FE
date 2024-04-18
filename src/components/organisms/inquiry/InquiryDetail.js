@@ -34,8 +34,10 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
     comments,
     setComments,
     postComment,
+    getComment,
   } = useStore();
   const [commentContent, setCommentContent] = useState("");
+  const [commentOrder, setCommentOrder] = useState("");
 
   const handleEditorClick = () => {
     setShowEditor(true);
@@ -120,6 +122,12 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
       console.log(e);
     }
   }
+
+  useEffect(() => {
+    if(commentOrder) {
+      getComment(inquiry.inquiryId, commentOrder);
+    }
+  }, [commentOrder]);
 
   return (
     <>
@@ -367,7 +375,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                   variant="text"
                   sx={{ mt: "-0.5rem", mr: "-0.5rem" }}
                 >
-                  <Button style={{ border: "none" }}>
+                  <Button style={{ border: "none" }} onClick={() => setCommentOrder("최신순")}>
                     <CoTypography size="TableContent">최신순</CoTypography>
                   </Button>
                   <CoTypography
@@ -376,7 +384,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                   >
                     |
                   </CoTypography>
-                  <Button style={{ border: "none" }}>
+                  <Button style={{ border: "none" }} onClick={() => setCommentOrder("좋아요순")}>
                     <CoTypography size="TableContent">좋아요순</CoTypography>
                   </Button>
                 </ButtonGroup>
