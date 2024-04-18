@@ -67,7 +67,7 @@ const Detail = () => {
         const pathSegments = url.pathname.split('/');
         const contentsId = pathSegments.pop() || '기본값';
         ////////////////////////////////////////////////////
-        getContentsOutput(contentsId)
+        getContentsOutput(contentsId);
         ////////////////////////////////////////////////////
         window.addEventListener('resize', adjustHeight);
         adjustHeight(); // 초기 설정을 위해 한 번 호출
@@ -119,7 +119,7 @@ const Detail = () => {
             {/* ContentsPrice */}
             <Grid item xs={3} lg={3} sx={{paddingLeft: 3.75, paddingTop: 3.75}}>
                 <Grid position='sticky' top='10%' sx={{borderLeft: `1px solid ${theme.palette.divider}`}}>
-                    <ContentsPrice contentsId={contentsId} />
+                    <ContentsPrice contentsId={contentsId} bookmarkCount={getContents.bookmarkCount} reviewRating={getContents.reviewRating} reviewCount={getContents.reviewCount}/>
                 </Grid>
             </Grid>
 

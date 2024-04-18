@@ -22,9 +22,11 @@ import AdminLayout from "./pages/admin/AdminLayout";
 import EmailVerification from "./pages/member/EmailVerification";
 import AdminUserDetail from "./pages/admin/AdminUserDetail";
 import AdminReportList from "./pages/admin/AdminReportList";
+import AdminContent from "./pages/admin/AdminContent";
 import PaymentWidget from './components/organisms/cart/PaymentWidget';
 import PaymentSuccess from "./components/organisms/cart/PaymentSuccess";
 import PaymentFail from "./components/organisms/cart/PaymentFail";
+import AdminQnA from "./pages/admin/AdminQnA";
 
 function App() {
     return (
@@ -36,6 +38,8 @@ function App() {
                         <Route path="/admin/user" element={<AdminUser></AdminUser>}></Route>
                         <Route path="/admin/user/:userId" element={<AdminUserDetail></AdminUserDetail>}></Route>
                         <Route path="/admin/report" element={<AdminReportList></AdminReportList>}></Route>
+                        <Route path="/admin/contents" element={<AdminContent></AdminContent>}></Route>
+                        <Route path="/admin/qna" element={<AdminQnA></AdminQnA>}></Route>
                     </Route>
                     <Route element={<MainLayout/>}>
                         <Route path="/" element={<Home></Home>}></Route>

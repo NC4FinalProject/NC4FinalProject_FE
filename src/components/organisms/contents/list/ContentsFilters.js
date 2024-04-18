@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { Autocomplete, Box, InputAdornment, MenuItem, TextField } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
+import {useContentsListStore} from "../../../../stores/ContentsStore";
 
 
 // blogs
@@ -26,10 +27,8 @@ const BoxStyle = styled(Box)(({ theme }) => ({
     "& .MuiInputBase-root": {
       paddingTop: 1,
       paddingBottom: 1,
-      paddingLeft: 10,
     },
     "& .MuiAutocomplete-hasPopupIcon": {
-      paddingRight: 30,
     },
     "& .MuiOutlinedInput-notchedOutline": {
       border: `1px solid ${theme.palette.text.secondary}`,
@@ -42,7 +41,6 @@ const BoxStyle = styled(Box)(({ theme }) => ({
     "& .MuiOutlinedInput-input": {
       paddingTop: 10,
       paddingBottom: 10,
-      paddingLeft: 12,
     },
     "& .MuiMenu-paper": {
       marginTop: "50px !important",
@@ -69,10 +67,8 @@ const categoryItems = [
   { id: "el4", type: "인공지능" },
   { id: "el5", type: "보안 · 네트워크" },
   { id: "el6", type: "비즈니스 · 마케팅" },
-  { id: "el7", type: "인공지능" },
-  { id: "el8", type: "보안 · 네트워크" },
-  { id: "el9", type: "하드웨어" },
-  { id: "el10", type: "웹 디자인" },
+  { id: "el7", type: "하드웨어" },
+  { id: "el8", type: "웹 디자인" },
 ];
 
 const filterItems = [
@@ -92,10 +88,43 @@ const ContentsFilters = () => {
   const [filterType, setFilterType] = useState("인기순");
   const [priceType, setPriceType] = useState("가격");
   const [categoryType, setCategoryType] = useState("카테고리");
-  const handleFilterTypeChange = (e) => setFilterType(e.target.value);
-  const handleCategoryFilterTypeChange = (e) => setCategoryType(e.target.value);
-  const handlePriceTypeChange = (e) => setPriceType(e.target.value);
 
+  const {
+    category,
+    setCategory,
+    pricePattern,
+    setPricePattern,
+    orderType,
+    setOrderType,
+    getContentsListOutput,
+  } = useContentsListStore();
+
+  const handleFilterTypeChange = (e) => {
+    setFilterType(e.target.value);
+    setOrderType(e.target.value);
+    getContentsListOutput();
+  }
+
+  const handleCategoryFilterTypeChange = (e) => {
+    setCategoryType(e.target.value);
+    if(e.target.value === "카테고리") {
+      setCategory("");
+    } else {
+      setCategory(e.target.value);
+    }
+    getContentsListOutput();
+  }
+
+  const handlePriceTypeChange = (e) => {
+    setPriceType(e.target.value);
+    if(e.target.value === "가격") {
+      setPricePattern("");
+    } else {
+      setPricePattern(e.target.value);
+    }
+    getContentsListOutput();
+  }
+  
   return (
     <BoxStyle>
       {/* auto complete */}
@@ -132,7 +161,7 @@ const ContentsFilters = () => {
         onChange={handleCategoryFilterTypeChange}
       >
         {categoryItems.map((el) => (
-          <MenuItem key={el.id} value={el.type}>
+          <MenuItem key={el.id} value={el.type} selected={el.type === category}>
             {el.type}
           </MenuItem>
         ))}
@@ -149,7 +178,7 @@ const ContentsFilters = () => {
           onChange={handlePriceTypeChange}
         >
           {priceItems.map((el) => (
-            <MenuItem key={el.id} value={el.type}>
+            <MenuItem key={el.id} value={el.type} selected={el.type === pricePattern}>
               {el.type}
             </MenuItem>
           ))}
@@ -164,7 +193,7 @@ const ContentsFilters = () => {
           onChange={handleFilterTypeChange}
         >
           {filterItems.map((el) => (
-            <MenuItem key={el.id} value={el.type}>
+            <MenuItem key={el.id} value={el.type} selected={el.type === orderType}>
               {el.type}
             </MenuItem>
           ))}

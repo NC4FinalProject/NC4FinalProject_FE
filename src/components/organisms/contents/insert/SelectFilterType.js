@@ -108,7 +108,7 @@ const SelectFilterType = ({title, placeholder, isType}) => {
     } else if (payType === '국비 지원') {
       // console.log("국비 지원 타입으로 눌림")
       setPay("-1")
-      chapterOneInput({ price: ""})
+      chapterOneInput({ price: "-1"})
     }  
     // console.log(payType)
   }, [payType]);
@@ -116,7 +116,7 @@ const SelectFilterType = ({title, placeholder, isType}) => {
   // 가격 포맷
   useEffect(() => {
     const rawPrice = chapterOne.price;
-    const formattedValue = rawPrice ? new Intl.NumberFormat('de-DE').format(parseInt(rawPrice, 10)) : '';
+    const formattedValue = rawPrice ? rawPrice.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") : '';
     setFormattedPrice(formattedValue);
   }, [chapterOne.price]);
 

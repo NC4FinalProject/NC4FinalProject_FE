@@ -15,6 +15,7 @@ const useStore = create((set, get) => ({
     modifyFileList: [],
     likeCnt: 0,
     liked: 0,
+    notice: {},
     setLikeCheck: (liked) => set({ liked }),
     setLikeCnt: (likeCnt) => set({ likeCnt }),
     setFiles: (files) => set({ files }),
@@ -29,6 +30,7 @@ const useStore = create((set, get) => ({
     setPorfileImage: (profileImage) => set({ profileImage }),
     setFileDTOList: (fileDTOList) => set({ fileDTOList }),
     setModifyFileList: (modifyFileList) => set({ modifyFileList }),
+    setNotice: (notice) => set({notice}),
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
@@ -109,7 +111,7 @@ const useStore = create((set, get) => ({
         const noticeData = {
           id: putNoticeId,
           noticeTitle: title,
-          noticeContent: content,
+          noticeContent: content.replaceAll('<', '&lt;').replace(/>/g, '&gt;'),
           noticeWriter: userNickname
         };
 
@@ -140,7 +142,7 @@ const useStore = create((set, get) => ({
       }
     },
     noticeModifyProc: async (putNoticeId) => {
-      const { title, content, userNickname, setOpenDialog, fileDTOList,setUserNickname, modifyFileList } = get();
+      const { title, content, userNickname, setOpenDialog, fileDTOList,setUserNickname, modifyFileList,setNotice } = get();
       try {
         const noticeData = {
           id: putNoticeId,
@@ -174,14 +176,16 @@ const useStore = create((set, get) => ({
         setOpenDialog(false);
         alert('공지사항이 수정되었습니다.');
         window.location.reload();
+        setNotice(response.data.item);
         setUserNickname(response.data.item.noticeWriter);
+
       } catch (error) {
         console.error('Error adding notice:', error);
       }
     },
     
     getNotice: async (noticeId) => {
-      const { setNotices, userNickname ,setUserNickname} = get();
+      const { setNotice, userNickname ,setUserNickname, fetchNotices} = get();
       try {
         const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/notice/${noticeId}`,{
         withCredentials: true,
@@ -189,9 +193,9 @@ const useStore = create((set, get) => ({
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },
         });
-      
-        setNotices(response.data.item);
+        setNotice(response.data.item);
         setUserNickname(userNickname);
+          fetchNotices();
         } catch (error) {
           console.log("id 못찾음")
         }

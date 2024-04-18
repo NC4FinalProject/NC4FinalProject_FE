@@ -9,13 +9,15 @@ import Inquiry from "../../../inquiry/Inquiry";
 import { useState } from "react";
 import InquiryDetail from "../../../inquiry/InquiryDetail";
 import InquiryPost from "../../../inquiry/InquiryPost";
+import InquiryModify from "../../../inquiry/InquiryModify";
 import { useEffect } from "react";
 import useReviewStore from "../../../../../stores/ReviewStore";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useCallback } from "react";
 import { useRef } from "react";
 import { useContentsStore } from "../../../../../stores/ContentsStore";
 import Section from "./Section";
+import HtmlParser from "react-html-parser";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,13 +58,15 @@ export default function ContentsDetail() {
   const [view, setView] = useState("list");
   const [selectedInquiry, setSelectedInquiry] = useState(null);
   const { contentsId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tab = searchParams.get("tab");
 
   const reviews = useReviewStore((state) => state.reviews);
   const getReviews = useReviewStore((state) => state.getReviews);
   const contentDetailRef = useRef(null);
   const [previousPageUrl, setPreviousPageUrl] = useState("");
 
-  const { getSection } = useContentsStore();
+  const { getSection, getContents } = useContentsStore();
 
   const scrollToTop = useCallback(() => {
     if (contentDetailRef.current) {
@@ -75,6 +79,14 @@ export default function ContentsDetail() {
       contentDetailRef.current.scrollIntoView();
     }
   }, [contentDetailRef]);
+
+  useEffect(() => {
+    console.log(tab);
+    if(tab && tab === "inquiry") {
+      handleChange(null, getSection.length > 1 ? 3 : 2);
+      a11yProps(getSection.length > 1 ? 3 : 2); 
+    }
+  }, [tab]);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -126,7 +138,14 @@ export default function ContentsDetail() {
     setView("write");
   }, []);
 
+  const handleModifyClick = useCallback(() => {
+    setPreviousPageUrl(window.location.href);
+    setView("modify");
+  }, []);
+
+
   const handleInquiryClick = useCallback((inquiry) => {
+    console.log(inquiry);
     setSelectedInquiry(inquiry);
     setView("detail");
   }, []);
@@ -137,6 +156,10 @@ export default function ContentsDetail() {
 
   const handleCancelClick = useCallback(() => {
     setView("list");
+  }, []);
+
+  const handleModifyCancelClick = useCallback(() => {
+    setView("detail");
   }, []);
 
   // props로 변수값(state 함수아님) 보내주기, 부모 컴포넌트에서 스테이트 만들어서 보내주기
@@ -185,7 +208,7 @@ export default function ContentsDetail() {
 
       {/* 소개 */}
       <CustomTabPanel value={value} index={0}>
-        Item One
+        {HtmlParser(HtmlParser(getContents.introduce))}
       </CustomTabPanel>
 
       {/* 코스 */}
@@ -210,7 +233,7 @@ export default function ContentsDetail() {
         )}
         {view === "detail" && (
           <InquiryDetail
-            inquiry={selectedInquiry}
+            handleModifyClick={handleModifyClick}
             onListClick={handleListClick}
             scrollToTop={scrollToTop}
           />
@@ -220,6 +243,13 @@ export default function ContentsDetail() {
             onCancelClick={handleCancelClick}
             scrollToTop={scrollToTop}
             contentsId={parseInt(contentsId)}
+          />
+        )}
+
+        {view === "modify" && (
+          <InquiryModify
+            onCancelClick={handleModifyCancelClick}
+            onListClick={handleListClick}
           />
         )}
       </CustomTabPanel>

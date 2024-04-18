@@ -9,15 +9,19 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import Reportdialog from '../../components/organisms/review/Reportdialog';
 import CoSelect from '../../components/organisms/common/CoSelect';
+import MemberStore from "../../stores/MemberStore";
 
 const AdminUserDetail = () => {
 
-    const {point,handleSavePoint, reason, setPoint,setReason, userDetail,pointSum, userChangeRole, MemberInfo, Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw, userPwChk, setUserPw, setUserPwChk, setSelectedRole } = AdminStore();
+    const {point,handleSavePoint, reason,MemberInfo, setPoint,setReason, userDetail,pointSum,
+        userChangeRole,  Memo,setMemo, pwValidation, pwChk, setPwValidation, setPwChk, userPw,
+        userPwChk, setUserPw, setUserPwChk, setSelectedRole,qnaUserCount,contentsCount,inqueryCount, reviewCount} = AdminStore();
+    const { memberInfo } = MemberStore();
     const maxChars = 150;
     const {userId} = useParams();
     const [open, setOpen] = useState(false);
     const [openReport, setOpenReport] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("");
+    const [selectedValue, setSelectedValue] = useState('');
     const [openrole, setOpenRole] = useState(false);
     const [openPointDialog, setOpenPointDialog] = useState(false);
 
@@ -28,7 +32,6 @@ const AdminUserDetail = () => {
     userChangeRole(userId);
     setOpenRole(false);
   };
-
 
     const handlePointDialogOpen = () => {
       setOpenPointDialog(true);
@@ -59,8 +62,14 @@ const AdminUserDetail = () => {
     ];
 
     useEffect(() => {
-      userDetail(userId);
-    }, [userDetail, userId]);
+        const fetchUserDetail = async () => {
+            await userDetail(userId);
+            setSelectedValue(MemberInfo.role);
+            console.log(selectedValue);
+        };
+
+        fetchUserDetail();
+    }, [userDetail, userId, MemberInfo.role]);
 
 
     const OpenBlacklist = () => {
@@ -215,7 +224,7 @@ const AdminUserDetail = () => {
                   <DialogTitle>권한 변경</DialogTitle>
                   <DialogContent sx={{ minWidth: '32.75rem' }}>
                       <Select
-                          value={MemberInfo.role}
+                          value={selectedValue}
                           onChange={handleRoleChange}
                           fullWidth
                       >
@@ -236,7 +245,7 @@ const AdminUserDetail = () => {
             <TableRow>
             <TableCell><CoTypography size="AdminUser">아이디</CoTypography></TableCell>
             <TableCell><CoTypography size="HoverText">{MemberInfo.username}</CoTypography></TableCell>
-            
+
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">비밀번호</CoTypography></TableCell>
@@ -304,7 +313,7 @@ const AdminUserDetail = () => {
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">게시글</CoTypography></TableCell>
-            <TableCell><CoTypography size="HoverText">게시글 1 / 댓글 1 / 강의 평가 1 / 문의 3</CoTypography></TableCell>
+            <TableCell><CoTypography size="HoverText">게시글 {contentsCount} / 질의응답 {inqueryCount} / 강의 평가 {reviewCount} / 문의 {qnaUserCount}</CoTypography></TableCell>
             </TableRow>
             <TableRow>
             <TableCell><CoTypography size="AdminUser">블랙리스트</CoTypography></TableCell>
@@ -316,12 +325,12 @@ const AdminUserDetail = () => {
               <Reportdialog open={openReport} handleClickClose={() => setOpenReport(false)}
                 author={MemberInfo.userNickname} date={new Date().toLocaleDateString()}
                 Title="블랙리스트 추가 / 변경"
-                onSubmit={(detailReason) => onSubmit(detailReason, selectedValue)}                
+                onSubmit={(detailReason) => onSubmit(detailReason, selectedValue)}
                 selectComponent={
                   <Box sx={{ margin: "0.5rem auto 0", maxWidth: "27rem" }}>
                   <CoSelect onChange={handleSelectChange} value={selectedValue} options={reportReasons} />
                   </Box>
-                }>  
+                }>
                 1. 정지 사유도 함께 적어주세요.
               </Reportdialog>
              </TableRow>
@@ -455,39 +464,18 @@ const AdminUserDetail = () => {
         <Table>
             <TableBody>
                 <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/04/07</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">지에스</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">미래개발</CoTypography></TableCell>
+                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">게시물 도배</CoTypography></TableCell>
                 <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser">미처리</CoTypography></TableCell>
                 </TableRow>
                 <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/04/06</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">동그라미</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">미래개발</CoTypography></TableCell>
+                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">블로그 홍보</CoTypography></TableCell>
                 <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser">미처리</CoTypography></TableCell>
-                </TableRow>
-                <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser" sx={{color:'#558BCF'}}>처리 완료</CoTypography></TableCell>
-                </TableRow>
-                <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser" sx={{color:'#558BCF'}}>처리 완료</CoTypography></TableCell>
-                </TableRow>
-                <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser" sx={{color:'#558BCF'}}>처리 완료</CoTypography></TableCell>
                 </TableRow>
             </TableBody>
         </Table>

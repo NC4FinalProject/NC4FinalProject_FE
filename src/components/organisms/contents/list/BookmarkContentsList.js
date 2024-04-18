@@ -1,19 +1,19 @@
 import { Box } from "@mui/material";
 import ContentsCard from "../../common/ContentsCard";
-import { useContentsListStore } from "../../../../stores/ContentsStore";
+import { useBookmarkContentsListStore } from "../../../../stores/ContentsStore";
 import { useEffect } from "react";
 
-const ContentsList = () => {
+const BookmarkContentsList = () => {
 
-  const { getContentsList, getContentsListOutput } = useContentsListStore();
+  const { getBookmarkContentsList, getBookmarkContentsListOutput } = useBookmarkContentsListStore();
 
   useEffect(() => {
-    getContentsListOutput();
+    getBookmarkContentsListOutput();
   }, []);
 
   return (
     <Box sx={{display: 'flex', flexWrap: 'wrap', width:'1300px'}}>
-      {getContentsList.content && getContentsList.content.map((contents, index) => (
+      {getBookmarkContentsList.content && getBookmarkContentsList.content.map((contents, index) => (
         <ContentsCard key={index} {...contents} index={index} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} 
          />
       ))}
@@ -21,7 +21,7 @@ const ContentsList = () => {
   );
 };
 
-export default ContentsList;
+export default BookmarkContentsList;
 
 
 

@@ -18,15 +18,14 @@ const AdminPage = ({children}) => {
     const [submenuOpen, setSubmenuOpen] = React.useState({});
     const [selectedSubmenu1, setSelectedSubmenu1] = useState(null);
     const [selectedSubmenu2, setSelectedSubmenu2] = useState(null);
-    const [selectedSubmenu3, setSelectedSubmenu3] = useState(null);
-    const {userRole} = MemberStore();
+    const {memberInfo} = MemberStore();
     const navi = useNavigate();
-    // useEffect(() => {
-    //   if (userRole !== 'ADMIN') {
-    //     alert('접근 권한이 없습니다.');
-    //     navi('/');
-    //   }
-    // }, [userRole, navi]);
+    useEffect(() => {
+      if (memberInfo.role !== 'ADMIN') {
+        alert('접근 권한이 없습니다.');
+        navi('/');
+      }
+    }, [memberInfo.role, navi]);
 
     const toggleSubmenu = (menuName) => {
         setSubmenuOpen({
@@ -35,13 +34,18 @@ const AdminPage = ({children}) => {
         });
         setSelectedSubmenu1(null);
         setSelectedSubmenu2(null);
-        setSelectedSubmenu3(null);
     };
 
     const handleImgClick = () => {
         setSelectedSubmenu1(null);
         setSelectedSubmenu2(null);
-        setSelectedSubmenu3(null);
+        };
+
+   const ContentPage = (value) => {
+            if (value === '게시물 관리') {
+                navi('/admin/contents');
+      }
+        setSelectedSubmenu2(value);
     };
 
     const changePage = (submenu) => {
@@ -50,6 +54,9 @@ const AdminPage = ({children}) => {
         }
         if (submenu === '신고 관리') {
             navi('/admin/report');
+        }
+        if (submenu === '1 대 1 문의') {
+            navi('/admin/qna');
         }
         setSelectedSubmenu1(submenu === selectedSubmenu1 ? null : submenu);
     };
@@ -165,37 +172,15 @@ const AdminPage = ({children}) => {
                     </ListItem>
                     {submenuOpen["메뉴 2"] && (
                         <List>
-                            {['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'].map((submenu, index) => (
                                 <ListItem
                                     button
-                                    key={index}
-                                    onClick={() => setSelectedSubmenu2(submenu === selectedSubmenu2 ? null : submenu)}
-                                    sx={{color: selectedSubmenu2 === submenu ? '#558BCF' : ''}}
+                                    onClick={() => ContentPage(selectedSubmenu2 === '게시물 관리' ? '' : '게시물 관리')}
+                                    sx={{
+                                        textAlign: '-webkit-center',
+                                        color: selectedSubmenu2 === '게시물 관리' ? '#558BCF' : ''}}
                                 >
-                                    <ListItemText primary={submenu}/>
+                                    <ListItemText primary='게시물 관리'/>
                                 </ListItem>
-                            ))}
-                        </List>
-                    )}
-                    <ListItem
-                        button
-                        onClick={() => toggleSubmenu("메뉴 3")}
-                        sx={{textAlign: '-webkit-center', color: submenuOpen["메뉴 3"] ? '#558BCF' : ''}}
-                    >
-                        <ListItemText primary="메뉴 3"/>
-                    </ListItem>
-                    {submenuOpen["메뉴 3"] && (
-                        <List>
-                            {['하위 메뉴 1', '하위 메뉴 2', '하위 메뉴 3'].map((submenu, index) => (
-                                <ListItem
-                                    button
-                                    key={index}
-                                    onClick={() => setSelectedSubmenu3(submenu === selectedSubmenu3 ? null : submenu)}
-                                    sx={{color: selectedSubmenu3 === submenu ? '#558BCF' : ''}}
-                                >
-                                    <ListItemText primary={submenu}/>
-                                </ListItem>
-                            ))}
                         </List>
                     )}
                 </List>

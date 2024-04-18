@@ -1,7 +1,7 @@
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Avatar, Box, Divider, Grid, Typography } from '@mui/material';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from "react-router-dom";
 
 
@@ -14,13 +14,17 @@ const SideItemReply = (props) => {
   
   const theme = useTheme();
 
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
+
   return (
     <BoxContainerStyle container sx={{ paddingLeft: 0.1, paddingY: 0.9 }}>
       
       <Grid item xs={1.7} sx={{paddingX: 0.5}}>
         <Link to="/" component={Link} underline="hover" color="inherit">
           <Avatar 
-            src={props.userprofile} 
+            src={`https://kr.object.ncloudstorage.com/envdev/${props.userprofile}`} 
             alt={props.videoReplyContent} 
             sx={{
               width: theme => theme.spacing(3.5),

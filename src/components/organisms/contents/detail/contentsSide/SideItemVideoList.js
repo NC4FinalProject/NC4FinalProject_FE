@@ -31,7 +31,7 @@ const SideItemVideoList = (props) => {
   const theme = useTheme();
   const videoRef = useRef(null);
 
-  const { videoBaceURL, videoTotalDuration, videoDuration, getVideoTotalDuration } = useVideoAddInfoStore();
+  const { videoBaceURL, durationList, setDurationList, videoTotalDuration, videoDuration, getVideoTotalDuration, setVideoTotalDuration } = useVideoAddInfoStore();
 
   const [videoSrc, setVideoSrc] = useState();
   const [duration, setDuration] = useState();
@@ -49,14 +49,20 @@ const SideItemVideoList = (props) => {
   
       video.addEventListener('loadedmetadata', () => {
         setDuration(video.duration); // 재생 시간 설정;
+        // setVideoTotalDuration(videoTotalDuration + Number(video.duration));
       });  
       // 메타데이터 로드를 위해 비디오 요소를 문서에 추가할 필요는 없음
       // 하지만 필요하다면 video.play() 같은 작업을 수행하기 전에 할 수 있음
-      getVideoTotalDuration(videoDuration+videoTotalDuration)
-      console.log(videoTotalDuration)
+      // getVideoTotalDuration(videoDuration+videoTotalDuration)
+      // console.log("111111111111111111")
+      // console.log(videoTotalDuration)
     }
-  }, [props.videoPath, videoSrc, videoTotalDuration, duration]); // 의존성 배열에 videoBaceURL 추가
+  }, [props.videoPath, videoSrc, duration]); // 의존성 배열에 videoBaceURL 추가
 
+  useEffect(() => {
+    if(duration)
+      setDurationList(duration);
+  }, [duration]);
 
   return (
     <GridContainerStyle
@@ -72,23 +78,23 @@ const SideItemVideoList = (props) => {
         <Typography sx={{color:"#585858"}}variant='caption' paddingX={0.5}>{props.count +1}</Typography>
       </Grid>
 
-      <Grid item >
-        <Link to="/" component={Link} underline="hover" color="inherit">
-          <CardMedia
-            component="img"
-            image="" 
-            alt={props.title}
-            sx={{
-              // width: '100%', 
-              // height: '100%',
-              width: theme => theme.spacing(5.5),
-              height: theme => theme.spacing(5.5),
-              borderRadius: '0.4rem', 
-            }} />
-            {/* url을 받아와야 하는데..? 전역상태관리로 가야하나? 섬네일 하나때문에? */}
-            {/* <VideoThumbnail videoUrl={videoSrc} captureTime={1} />       */}
-        </Link>
-      </Grid>
+      {/*<Grid item >*/}
+      {/*  <Link to="/" component={Link} underline="hover" color="inherit">*/}
+      {/*    <CardMedia*/}
+      {/*      component="img"*/}
+      {/*      image="" */}
+      {/*      alt={props.title}*/}
+      {/*      sx={{*/}
+      {/*        // width: '100%', */}
+      {/*        // height: '100%',*/}
+      {/*        width: theme => theme.spacing(5.5),*/}
+      {/*        height: theme => theme.spacing(5.5),*/}
+      {/*        borderRadius: '0.4rem', */}
+      {/*      }} />*/}
+      {/*      /!* url을 받아와야 하는데..? 전역상태관리로 가야하나? 섬네일 하나때문에? *!/*/}
+      {/*      /!* <VideoThumbnail videoUrl={videoSrc} captureTime={1} />       *!/*/}
+      {/*  </Link>*/}
+      {/*</Grid>*/}
       
       
       

@@ -16,8 +16,7 @@ import MemberStore from '../../stores/MemberStore';
 
 const AdminReportList = () => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('all');
-    const { searchCondition, searchKeyword, setSearchCondition, setSearchKeyword } = AdminStore();
-    const [open, setOpen] = useState(false);
+    const {  searchKeyword, setSearchCondition, setSearchKeyword } = AdminStore();
     const [openReport, setOpenReport] = useState(false);
     const [selectedValue, setSelectedValue] = useState("");
     const { userInfo } = MemberStore();
@@ -30,14 +29,6 @@ const AdminReportList = () => {
         { key: 'RESIGNED', value: '기타' },
 
       ];
-
-    const handleDialogOpen = () => {
-        setOpen(true);
-    };
-    
-    const handleDialogClose = () => {
-        setOpen(false);
-    };
 
     const handleSelectChange = (event) => {
       setSelectedValue(event.target.value);
@@ -60,10 +51,6 @@ const AdminReportList = () => {
         console.log("selectedValue: ", selectedValue);
       };
 
-    const sendReport = (userId, selectedValue) => {
-      console.log(userId, selectedValue);
-    };
-
     const handleSearchConditionChange = (event) => {
         setSearchCondition(event.target.value);
         setSelectedMenuItem(event.target.value);
@@ -76,7 +63,6 @@ const AdminReportList = () => {
     const { toggleMenu } = useContext(MenuContext);
 
   return (
-    console.log(userInfo),  
     <>
     <Box sx={{display:'flex', alignItems:'center', marginTop:'1.625rem',marginBottom:'1rem'}}>
       <IconButton onClick={toggleMenu}>
@@ -193,9 +179,8 @@ const AdminReportList = () => {
             </TableRow>
             <TableRow>
               <TableCell>
-              <CheckBoxIcon
-                  sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}
-                />
+              <CheckBoxOutlineBlankIcon
+                  sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}/>
               </TableCell>
               <TableCell>
                 <CoTypography variant="AdminUser">손우성</CoTypography>
@@ -212,8 +197,9 @@ const AdminReportList = () => {
                   <CoTypography variant="AdminUser">지속적인 욕설 및 폭언 사용. 그리고 스팸</CoTypography>
                 </TableCell>
                 <TableCell>
-                  <CoTypography variant="AdminUser" sx={{color:'red'}}>3일 정지</CoTypography>
-                </TableCell>
+                <Button sx={{padding:'0', minWidth:'0'}} onClick={OpenBlacklist}>
+                    <CoTypography size="HoverText">처리하기</CoTypography>
+                </Button>                 </TableCell>
               </Hidden>
             </TableRow>
         </TableBody>

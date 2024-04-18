@@ -5,22 +5,16 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const CoSelect = ({ onChange,value, options, sx }) => {
-  const [reportReasons, setReportReasons] = useState([
-    "욕설 및 혐오 발언",
-    "스팸 및 불법 홍보",
-    "도배 및 중복 콘텐츠",
-    "기타",
-  ]);
+const QnaSelect = ({ onChange,value, options, sx }) => {
 
   return (
     <Box sx={{ width:'100%'}}>
       <FormControl fullWidth>
-        <InputLabel id="report-reasons">신고 사유</InputLabel>
+        <InputLabel id="qna-reasons">문의 카테고리</InputLabel>
         <Select
-          labelId="report-reasons"
+          labelId="qna-reasons"
           value={value}
-          label="신고 사유"
+          label="문의 카테고리"
           onChange={onChange}
           sx={{sx}}
         >
@@ -35,4 +29,4 @@ const CoSelect = ({ onChange,value, options, sx }) => {
   );
 };
 
-export default CoSelect;
+export default QnaSelect;

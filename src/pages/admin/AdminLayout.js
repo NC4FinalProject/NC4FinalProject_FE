@@ -13,7 +13,8 @@ import { MenuContext } from '../admin/MenuContext';
 
 const AdminLayout = ({ children }) => {
   const [hover, setHover] = useState(false);
-  const { userNotice, contents, Notices, Users, NewUser,preTeachers, MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
+  const { userNotice, contents, Notices, Users, NewUser,preTeachers,qnauser,qnaUserCount,
+      MonthlytotalUserCount,MonthlyCounts,preTeacherCount,daliyOutUserCount,monthlyOutUserCount,todayUserCount } = AdminStore();
   const { toggleMenu } = useContext(MenuContext);
   const [disable, setDisable] = useState([]);
   const [graphMode, setGraphMode] = useState('daily'); 
@@ -57,8 +58,8 @@ const AdminLayout = ({ children }) => {
         
         cumulativeCreate += createUserCount;
         cumulativeDelete += deleteUserCount;
-
-        const clientTotal = cumulativeCreate - deleteUserCount;
+    
+        const clientTotal = cumulativeCreate - cumulativeDelete;
         
         return {
           date: grapghformatDate(total.registration_date),
@@ -66,7 +67,7 @@ const AdminLayout = ({ children }) => {
           delete: deleteUserCount,
           clientTotal: clientTotal,
         };
-      });
+    });
     } else {
         newData = MonthlyCounts.map(total => {
           const totalUser = MonthlyCounts.find(user => grapghformatDate(user.registration_date) === grapghformatDate(total.registration_date));
@@ -94,7 +95,7 @@ const AdminLayout = ({ children }) => {
 }, [graphMode,NewUser,MonthlytotalUserCount,MonthlyCounts,daliyOutUserCount]);
 
   return (
-    console.log(contents),
+    console.log(qnauser),
     <>
       <Box sx={{display:'flex'}}>
         <Paper sx={{height:'4.25rem', display:'flex', width:'100%'}}>
@@ -108,8 +109,8 @@ const AdminLayout = ({ children }) => {
         <Box sx={{display:'flex', paddingTop:'0.3rem'}}>
         <CoTypography size="Admin" sx={{display:'flex'}} >신규 가입 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{todayUserCount}</CoTypography> </CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',  display:'flex'}}>강사 가입 승인 대기 :<CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{preTeacherCount}</CoTypography></CoTypography>
-        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>답변 대기 문의 : </CoTypography>
-        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>신고 내역 : </CoTypography>
+        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem', display:'flex'}}>답변 대기 문의 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{qnaUserCount}</CoTypography></CoTypography>
+        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',display:'flex'}}>신고 내역 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>4</CoTypography></CoTypography>
         </Box>
         </Box>
       </Paper>
@@ -158,7 +159,7 @@ const AdminLayout = ({ children }) => {
             <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
               <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>게시판 현황</CoTypography>
               <Link
-                to="/noticelist"
+                to="/admin/contents"
                 style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                 onMouseEnter={() => setHover(true)}
                 onMouseLeave={() => setHover(false)}
@@ -183,7 +184,7 @@ const AdminLayout = ({ children }) => {
               <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                 <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>문의 현황</CoTypography>
                 <Link
-                  to="/noticelist"
+                  to="/admin/qna"
                   style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
@@ -191,22 +192,12 @@ const AdminLayout = ({ children }) => {
                   <Typography sx={{ paddingTop: '0.5rem', paddingRight: '0.5rem', fontSize: '0.8125rem' }}>더보기+</Typography>
                 </Link>
               </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+              {qnauser && qnauser.map((qna, index) => (
+              <Box key={index} sx={{ width: '100%' }}>
+                <CoTypography size="AdminNotice">{qna.content}</CoTypography>
+                <CoTypography size="AdminTag">문의자 | {qna.askUser.userNickname}&nbsp;&nbsp; 문의 날짜 : {qna.createdAt}</CoTypography>
               </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
-              </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
-              </Box>
-              <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">아니 결제했는데 안되잖아요.</CoTypography>
-                <CoTypography size="AdminTag">작성자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
-              </Box>
+              ))}
             </Paper>
           </Box>
         </Grid>
@@ -226,19 +217,19 @@ const AdminLayout = ({ children }) => {
               </Box>
               <Box sx={{ width: '100%' }}>
                 <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 오일남&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminNotice">자꾸 자기 블로그 홍보해요.</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 손오공&nbsp;&nbsp; 작성일 : 2024-04-12</CoTypography>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminNotice">강의를 구매했는데 강의 커리큘럼이랑 달라요.</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 무천도사&nbsp;&nbsp; 작성일 : 2024-04-15</CoTypography>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminNotice">이 사람 다른 사이트에서 사기치는 사람이에요.</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 개발꿈나무&nbsp;&nbsp; 작성일 : 2024-04-17</CoTypography>
               </Box>
             </Paper>
           </Box>
@@ -249,7 +240,7 @@ const AdminLayout = ({ children }) => {
               <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                 <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>최근 가입자 현황</CoTypography>
                 <Link
-                  to="/noticelist"
+                  to="/admin/user"
                   style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
@@ -263,7 +254,7 @@ const AdminLayout = ({ children }) => {
               {user.profileFile === null ? (
                 <Avatar src="/broken-mage.jpg" style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem'}}/> 
                   ) : (
-                      <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + user.profileFile} alt='thumbnail' style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem', borderRadius:'70%'}}/> 
+                      <img src={`https://kr.object.ncloudstorage.com/envdev/` + user.profileFile} alt='thumbnail' style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem', borderRadius:'70%'}}/> 
                     )}
                 <Box sx={{ width: '100%' }}>
                   <CoTypography size="AdminNotice">{user.userNickname}&nbsp;</CoTypography>
@@ -284,7 +275,7 @@ const AdminLayout = ({ children }) => {
               <Box sx={{ width: '100%', height: '3rem', borderBottom: '1px solid #7d7d7d7d', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                 <CoTypography size="Title" sx={{ paddingLeft: '1rem', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>강사 등록 신청 현황</CoTypography>
                 <Link
-                  to="/noticelist"
+                  to="/admin/user"
                   style={{ textDecoration: 'none', color: hover ? '#558BCF' : 'inherit' }}
                   onMouseEnter={() => setHover(true)}
                   onMouseLeave={() => setHover(false)}
@@ -299,7 +290,7 @@ const AdminLayout = ({ children }) => {
                     {user.profileFile === null ? (
                       <Avatar src="/broken-mage.jpg" style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem' }} />
                     ) : (
-                      <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + user.profileFile} alt='thumbnail' style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem', borderRadius: '70%' }} />
+                      <img src={`https://kr.object.ncloudstorage.com/envdev/` + user.profileFile} alt='thumbnail' style={{ width: '2.25rem', height: '2.25rem', marginTop: '0.825rem', marginLeft: '1rem', borderRadius: '70%' }} />
                     )}
                     <Box sx={{ width: '100%' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -318,7 +309,7 @@ const AdminLayout = ({ children }) => {
                           <Button
                             size="small"
                             component={Link}
-                            to={`/admin/user/${user.id}`}
+                            to={`/admin/user/${user.memberId}`}
                             variant="outlined"
                             color="primary"
                             sx={{marginTop:'0.625rem', marginRight:'1rem'}}

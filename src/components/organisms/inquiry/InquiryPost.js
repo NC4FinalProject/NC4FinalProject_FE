@@ -8,6 +8,7 @@ import {
   FormGroup,
   TextField,
   Chip,
+  Grid
 } from "@mui/material";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -176,8 +177,8 @@ const InquiryPost = ({ onCancelClick, scrollToTop, contentsId }) => {
                 inquiryTitle,
                 inquiryContent,
                 tagContent,
-                isPrivate,
-                contentsId
+                contentsId,
+                inquiryFileDTOList
               )
             }
           >
@@ -185,48 +186,51 @@ const InquiryPost = ({ onCancelClick, scrollToTop, contentsId }) => {
           </Button>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "1px solid #adb5bd",
-          width: "95%",
-          margin: "auto",
-        }}
-      >
-        <TextField
-          variant="standard"
-          placeholder={contentsTitle}
-          disabled
-          sx={{
-            "& .MuiInputBase-input::placeholder": {
-              fontSize: "1.25rem",
-            },
-            "& .MuiInputBase-input.Mui-disabled": {
-              WebkitTextFillColor: "#212529",
-            },
-            padding: "2rem 2rem 2rem 1rem",
-          }}
-          InputProps={{ disableUnderline: true }}
-        />
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox checked={isPrivate} onChange={handleCheckboxChange} />
-            }
-            label={
-              <CoTypography size="NoticeTitle" sx={{ ml: "-0.25rem" }}>
-                비밀글여부
-              </CoTypography>
-            }
+      <Grid container>
+        <Grid item xs={9}>
+          <TextField
+            fullWidth
+            variant="standard"
+            placeholder={contentsTitle}
+            disabled
             sx={{
-              width: "max-content",
-              "& .MuiSvgIcon-root": { fontSize: 28 },
+              "& .MuiInputBase-input::placeholder": {
+                fontSize: "1.25rem",
+              },
+              "& .MuiInputBase-input.Mui-disabled": {
+                WebkitTextFillColor: "#212529",
+              },
+              padding: "2rem 2rem 2rem 1rem",
             }}
+            InputProps={{ disableUnderline: true }}
           />
-        </FormGroup>
-      </Box>
+        </Grid>
+        <Grid item 
+              xs={3} 
+              sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center"
+              }}
+        >
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox checked={isPrivate} onChange={handleCheckboxChange} />
+              }
+              label={
+                <CoTypography size="NoticeTitle" sx={{ ml: "-0.25rem" }}>
+                  비밀글여부
+                </CoTypography>
+              }
+              sx={{
+                width: "max-content",
+                "& .MuiSvgIcon-root": { fontSize: 28 },
+              }}
+            />
+          </FormGroup>
+        </Grid>
+      </Grid>
       <Box
         sx={{
           display: "flex",

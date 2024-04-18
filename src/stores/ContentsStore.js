@@ -2,8 +2,10 @@ import { create } from "zustand";
 import {
   getContentsIdApi,
   getContentsListApi,
+  getMyContentsListApi,
   getVideoReplyApi,
   saveVideoReplyApi,
+  getBookmarkContentsListApi,
 } from "../api/ContentsApi";
 import { insertApi } from "../api/ContentsApi";
 
@@ -22,10 +24,8 @@ export const contentsCategoryItems = [
   { id: "el4", type: "인공지능" },
   { id: "el5", type: "보안 · 네트워크" },
   { id: "el6", type: "비즈니스 · 마케팅" },
-  { id: "el7", type: "인공지능" },
-  { id: "el8", type: "보안 · 네트워크" },
-  { id: "el9", type: "하드웨어" },
-  { id: "el10", type: "웹 디자인" },
+  { id: "el7", type: "하드웨어" },
+  { id: "el8", type: "웹 디자인" },
 ];
 
 // 챕터 1에 대한 입력 정보 상태 및 액션//////////////////////////////
@@ -180,17 +180,30 @@ export const useChapterTwoStore = create((set) => ({
   },
 }));
 
+// 챕터 3에 대한 입력 정보 상태 및 액션//////////////////////////////
+export const useChapterThreeStore = create((set, get) => ({
+  contentsData: "",
+  contentsFileDTOList: [],
+  setContentsData: (contentsData) => set({contentsData}),
+  setContentsFileDTOList: (contentsFileDTOList) => set({contentsFileDTOList})
+}));
+
 // 폼데이터 보내야함 사진, 동영상을 함께 보내야 돼?
 // export const useFile
 
 // 상세 페이지 리스폰 데이터
-export const useContentsStore = create((set) => ({
+export const useContentsStore = create((set, get) => ({
   getContents: [],
   getVideo: [],
   getSection: [],
   getVideoReplyList: [],
   stateNum: 1,
   contentsTitle: "",
+  setGetContents: (getContents) => set({getContents}),
+  setContentsTtitle: (contentsTitle) => set({contentsTitle}),
+  setGetVideo: (getVideo) => set({getVideo}),
+  setGetSection: (getSection) => set({getSection}),
+  setGetVideoReplyList: (getVideoReplyList) => set({getVideoReplyList}),
   getContentsOutput: async (contentId) => {
     try {
       const data = await getContentsIdApi(contentId);
@@ -212,14 +225,25 @@ export const useContentsStore = create((set) => ({
 }));
 
 // 전체 페이지 리스폰 데이터
-export const useContentsListStore = create((set) => ({
+export const useContentsListStore = create((set, get) => ({
   getContentsList: [],
   selectPage: "",
-
+  category: "",
+  pricePattern: "",
+  orderType: "",
+  page: 0,
+  totalPages: 0,
+  searchKeyword: "",
+  setCategory: (category) => set({category}),
+  setPricePattern: (pricePattern) => set({pricePattern}),
+  setOrderType: (orderType) => set({orderType}),
+  setPage: (page) => set({page}),
+  setSearchKeyword: (searchKeyword) => set({searchKeyword}),
   getContentsListOutput: async () => {
+    const {category, pricePattern, orderType, page, searchKeyword} = get();
     try {
-      const data = await getContentsListApi();
-      set({ getContentsList: data.items });
+      const data = await getContentsListApi(category, pricePattern, orderType, page, searchKeyword);
+      set({ getContentsList: data.pageItems, totalPages:  data.pageItems.totalPages});
     } catch (error) {
       console.error(error);
     }
@@ -231,10 +255,13 @@ export const useContentsListStore = create((set) => ({
 }));
 
 export const useVideoAddInfoStore = create((set) => ({
-  videoBaceURL: "https://kr.object.ncloudstorage.com/bitcamp-bucket-121/",
+  videoBaceURL: "https://kr.object.ncloudstorage.com/envdev/",
   videoURL: "",
-  videoTotalDuration: "",
+  videoTotalDuration: 0,
   videoDuration: "",
+  durationList: [],
+  setDurationList: (duration) => set(state => ({durationList: [...state.durationList, duration]})),
+  setVideoTotalDuration: (videoTotalDuration) => set({videoTotalDuration}),
   getVideoURL: (videoURL) =>
     set(() => ({
       videoURL: videoURL,
@@ -288,3 +315,36 @@ export const useVideoReplyStore = create((set) => ({
 }));
 
 export const useContentsCountStateStore = create((set) => ({}));
+
+export const useMyContentsListStore = create((set, get) => ({
+  getMyContentsList: [],
+  page: 0,
+  totalPages: 0,
+  setPage: (page) => set({page}),
+  getMyContentsListOutput: async () => {
+    const {page} = get();
+    try {
+      const data = await getMyContentsListApi(page);
+      set({ getMyContentsList: data.pageItems, totalPages: data.pageItems.totalPages});
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+})); 
+
+export const useBookmarkContentsListStore = create((set, get) => ({
+  getBookmarkContentsList: [],
+  page: 0,
+  totalPages: 0,
+  setPage: (page) => set({page}),
+  getBookmarkContentsListOutput: async () => {
+    const {page} = get();
+    try {
+      const data = await getBookmarkContentsListApi(page);
+      set({ getBookmarkContentsList: data.pageItems, totalPages: data.pageItems.totalPages});
+    } catch (error) {
+      console.error(error);
+    }
+  },
+})); 

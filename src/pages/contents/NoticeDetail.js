@@ -14,11 +14,26 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import MemberStore from '../../stores/MemberStore';
+import Notice from '../../scss/Notice.scss'
 
 
 const NoticeDetail = () => {
   const { noticeId } = useParams();
-  const { notices, getNotice,setFiles,handleNoticeModifySubmit,userNickname,fileDTOList,setFileDTOList,openDialog,setOpenDialog,title,setTitle,content,setContent } = useStore();
+  const { 
+    notices, 
+    notice,
+    getNotice,
+    setFiles,
+    handleNoticeModifySubmit,
+    userNickname,
+    fileDTOList,
+    setFileDTOList,
+    openDialog,
+    setOpenDialog,
+    title,
+    setTitle,
+    content,
+    setContent } = useStore();
   const [nextNotice, setNextNotice] = useState(null);
   const [nextNoticeData, setNextNoticeData] = useState(null);
   const [backNotice, setBackNotice] = useState(null);
@@ -26,17 +41,12 @@ const NoticeDetail = () => {
   const [putNoticeId, setPutNoticeId] = useState(null);
   const [liked, setliked] = useState(null);
   const [likeCnt, setlikeCnt] = useState(null);
-  const {userRole} = MemberStore();
-
+  const {memberInfo} = MemberStore();
   const navi = useNavigate();
   const tempFileDTOList = [];
 
   useEffect(() => {
-    if (notices && noticeId !== null) {
-      const nextNoticeNumber = parseInt(noticeId, 10) + 1;
-      const backNoticeNumber = parseInt(noticeId, 10) - 1;
-      setNextNotice(nextNoticeNumber);
-      setBackNotice(backNoticeNumber);
+    if (notice && noticeId !== null) {
       setPutNoticeId(noticeId, 10);
       const fetchData = async () => {
         await getNotice(noticeId);
@@ -46,46 +56,35 @@ const NoticeDetail = () => {
   }, [noticeId]);
 
   useEffect(() => {
-  const getNextNotice = async () => {
-    try {
-      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/${nextNotice}`);
-      
-      if (response.data.item.noticeTitle === null) {
-        console.log('다음글이 없습니다.');
-        return;
+    if(notices.content && notice) {
+      if(notices.content[0].id === notice.id) {
+        setBackNotice(null);
+        setBackNoticeData(null);
+        setNextNotice(notices.content[1].id);
+        setNextNoticeData(notices.content[1]);
+      } else if(notices.content[notices.content.length - 1].id === notice.id) {
+        setBackNotice(notices.content[notices.content.length - 2].id);
+        setBackNoticeData(notices.content[notices.content.length - 2]);
+        setNextNotice(null);
+        setNextNoticeData(null);
+      } else {
+        for(let i = 0; i < notices.content.length; i++) {
+          if(notices.content[i].id === notice.id) {
+            console.log(notices.content[i - 1].id);
+            setBackNotice(notices.content[i - 1].id);
+            setBackNoticeData(notices.content[i - 1]);
+            setNextNotice(notices.content[i + 1].id);
+            setNextNoticeData(notices.content[i + 1]);
+          }
+        }
       }
-      setNextNoticeData(response.data.item);
-    } catch (error) {
-      console.log('다음글이 없습니다.');
     }
-  };
-  
-  if (nextNotice  !== null) {
-    getNextNotice();
-  }
-  }, [noticeId, nextNotice]); 
-
-  useEffect(() => {
-    const getBackNotice = async () => {
-      try {
-        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/${backNotice}`);
-        
-        setBackNoticeData(response.data.item);
-      } catch (error) {
-        console.log('이전글이 없습니다.');
-      }
-    };
-    
-    if (noticeId !== null) {
-      getBackNotice();
-    }
-    }, [noticeId, backNotice]); 
-
+  }, [notices, notice]);
 
 const handleDelete = async () => {
    try {
 
-    const response = await axios.delete(`http://${process.env.REACT_APP_BACK_URL}/notice/delete/${noticeId}`);
+    const response = await axios.delete(`http://localhost:9090/notice/delete/${noticeId}`);
     console.log(response);
         alert('게시글이 삭제되었습니다.');
         navi("/noticelist");
@@ -97,7 +96,7 @@ const handleDelete = async () => {
   useEffect(() => {
     const getlikedata = async () => {
     try {
-      const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/likeget/${noticeId}`, {
+      const response = await axios.get(`http://localhost:9090/notice/likeget/${noticeId}`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
         }
@@ -114,7 +113,7 @@ const handleDelete = async () => {
 
     const getLikeNotice = async () => {
       try {
-        const response = await axios.post(`http://${process.env.REACT_APP_BACK_URL}/notice/like/${noticeId}`,null, {
+        const response = await axios.post(`http://localhost:9090/notice/like/${noticeId}`,null, {
           headers: {
               Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`,
           }
@@ -141,7 +140,7 @@ const handleDelete = async () => {
 
   const handleDialogClose = async () => {
     try {
-      await axios.put('http://${process.env.REACT_APP_BACK_URL}/notice/remove');
+      await axios.put('http://localhost:9090/notice/remove');
       console.log("이미지가 삭제되었습니다.");
       setOpenDialog(false);
     } catch (error) {
@@ -159,16 +158,17 @@ const handleDelete = async () => {
   };
 
   const handleEditButtonClick = () => {
-    setTitle(notices.noticeTitle); 
-    setContent(notices.noticeContent); 
+    setTitle(notice.noticeTitle); 
+    setContent(notice.noticeContent); 
     handleDialogOpen();
   };
 
+  
   const handleUpload = async (file) => {
     try {
         const formData = new FormData();
         formData.append('upload', file);
-        const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/notice/upload', formData, {
+        const response = await axios.post('http://localhost:9090/notice/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -201,7 +201,7 @@ const handleDelete = async () => {
 
   return (
     <div>
-      {(notices && (
+      {(notice && (
         <div> 
     <Grid
       sx={{
@@ -212,11 +212,11 @@ const handleDelete = async () => {
       }}
     >
       <CoTypography size="MainTitle" style={{ marginTop: '1rem', marginBottom: '0.5rem' }}>
-        {notices.noticeTitle}
+        {notice.noticeTitle}
       </CoTypography>
 
       <Box sx={{ flex: 1}} />
-      {userRole === 'ADMIN' && (
+      {memberInfo.role === 'ADMIN' && (
       <Button
       size="Content"
         variant="contained"
@@ -241,7 +241,7 @@ const handleDelete = async () => {
         />
         <CKEditor
           editor={ClassicEditor}
-          data={content}
+          data={content.replaceAll("&lt;", "<").replaceAll("&gt;", ">")}
           onChange={handleContentChange}
           config={{
             extraPlugins: [UploadAdapterPlugin],
@@ -258,7 +258,7 @@ const handleDelete = async () => {
         </Button>
       </DialogActions>
     </Dialog>
-    {userRole === 'ADMIN' && (
+    {memberInfo.role === 'ADMIN' && (
       <Button
       size="Content"
          variant="contained"
@@ -284,16 +284,16 @@ const handleDelete = async () => {
       </Link>
     </Grid>
     <Box item xs={10} sx={{display:'flex', alignItems:'center', marginTop: '1rem'}}>
-       {notices.profileImageUrl == null ? (
+       {notice.profileImageUrl == null ? (
         <Avatar src="/broken-mage.jpg" style={{width: '2rem', height: '2rem',marginLeft: '0'}}/> 
            ) : (
-              <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-36/` + notices.profileImageUrl} alt='thumbnail' style={{width: '3rem', height: '3rem', borderRadius: '70%'}}/> 
+              <img src={`https://kr.object.ncloudstorage.com/envdev/` + notice.profileImageUrl} alt='thumbnail' style={{width: '3rem', height: '3rem', borderRadius: '70%'}}/>
             )}
-            <CoTypography size='Content' sx={{marginLeft:'0.725rem'}}>작성자: {notices.noticeWriter}</CoTypography>
+            <CoTypography size='Content' sx={{marginLeft:'0.725rem'}}>작성자: {notice.noticeWriter}</CoTypography>
      </Box>
-          <CoTypography  className='Notice'>{HtmlParser(HtmlParser(notices.noticeContent))}</CoTypography>
+          <CoTypography  className='Notice'>{HtmlParser(HtmlParser(notice.noticeContent))}</CoTypography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <CoTypography size="Tag">작성일: {formatDate(notices.noticeDate)}</CoTypography>
+          <CoTypography size="Tag">작성일: {formatDate(notice.noticeDate)}</CoTypography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CoTypography size="Tag">이 글이 도움이 되었나요? ({likeCnt})</CoTypography>
             <IconButton  onClick={() => getLikeNotice()} color="inherit" sx={{padding: '0'}}>

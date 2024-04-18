@@ -2,9 +2,8 @@ import create from 'zustand';
 import {persist} from 'zustand/middleware';
 
 const MemberStore = create(persist((set, get) => ({
-    userRole: 'null',
-    setUserRole: (userRole) => set({userRole}),
     memberInfo: {
+        role: "",
         memberId: "",
         username: "",
         userNickname: "",
@@ -14,6 +13,8 @@ const MemberStore = create(persist((set, get) => ({
 }), {
     name: 'member-store',
     getStorage: () => sessionStorage,
-}));
+},
+
+));
 
 export default MemberStore;

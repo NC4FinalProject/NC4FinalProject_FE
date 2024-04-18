@@ -14,7 +14,8 @@ export const getContentsIdApi = async (contentsId) => {
         },
         // params: { contentsId } // 여기서 contentsId를 query parameter로 넘겨주고 있음
       });
-      console.log(response.data)
+      console.log("111111")
+      console.log(response.data);
       return response.data;
   } catch (error) {
       throw error;
@@ -22,13 +23,19 @@ export const getContentsIdApi = async (contentsId) => {
 }
 
 // 전체 목록 가져오기
-export const getContentsListApi = async()=>{
+export const getContentsListApi = async(category, pricePattern, orderType, page, searchKeyword)=>{
   try {
     const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/contents/list`, {
       // headers: {
       //   Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
       // },
-      // params: { contentsId } // 여기서 contentsId를 query parameter로 넘겨주고 있음
+      params: { 
+        category: category,
+        pricePattern: pricePattern,
+        orderType: orderType,
+        page: page,
+        searchKeyword: searchKeyword
+      } // 여기서 contentsId를 query parameter로 넘겨주고 있음
     });
     console.log(response.data)
     return response.data;
@@ -36,13 +43,54 @@ export const getContentsListApi = async()=>{
     throw error;
 }}
 
-export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail) => {
+// 전체 목록 가져오기
+export const getMyContentsListApi = async (page)=>{
+  try {
+    const response = await axios.get(`http://localhost:9090/contents/mylist`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      },
+      params: {
+        page: page
+      } // 여기서 contentsId를 query parameter로 넘겨주고 있음
+    });
+    console.log(response.data)
+    return response.data;
+} catch (error) {
+    throw error;
+}}
+
+export const getBookmarkContentsListApi = async (page)=>{
+  try {
+    const response = await axios.get(`http://localhost:9090/contents/bookmarklist`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
+      },
+      params: {
+        page: page
+      } // 여기서 contentsId를 query parameter로 넘겨주고 있음
+    });
+    console.log("111111111111111");
+    console.log(response.data)
+    return response.data;
+} catch (error) {
+    throw error;
+}}
+
+export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, thumbnail, contentsData, contentsFileDTOList) => {
   console.log("=======에이피아이쪽======" + chapterOne +"11111"+ chapterTwo +"11111"+ videoInfo +"11111"+ videoFile +"11111"+ thumbnail);
   
   const formData = new FormData();
 
+  const saveChapterOne = {
+    ...chapterOne,
+    introduce: contentsData
+              .replaceAll("<", "&lt;")
+              .replace(/>/g, "&gt;"),
+  };
+
   const insertRequestDTO = {
-    contentsDTO: chapterOne,
+    contentsDTO: saveChapterOne,
     sectionDTO: chapterTwo,
     videoDTO: videoInfo
   };
@@ -50,6 +98,11 @@ export const insertApi = async (chapterOne, chapterTwo, videoInfo, videoFile, th
   formData.append("insertRequestDTO", new Blob([JSON.stringify(insertRequestDTO)], { type: "application/json" }));
   formData.append("thumbnail", thumbnail);
   videoFile.forEach(videoFileData => formData.append("videoFile", videoFileData));
+  
+  const contentsFileDTOs = new Blob([JSON.stringify(contentsFileDTOList)], {
+    type: "application/json",
+  });
+  formData.append("contentsFileDTOList", contentsFileDTOs);
 
   try {
     const response = await axios.post('http://${process.env.REACT_APP_BACK_URL}/contents/create', formData, {
