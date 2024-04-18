@@ -355,7 +355,7 @@ const Home = () => {
         price={item[5]}
         thumbnail={item[2]}
         index={index}
-        reviewreviewRating={item[8]}
+        reviewRating={item[8]}
         reviewCount={item[7]}
         booked={false} paperstyle={index >= 3 && (index % 4 === 3) ? {marginRight: 0} : {}} />
               :

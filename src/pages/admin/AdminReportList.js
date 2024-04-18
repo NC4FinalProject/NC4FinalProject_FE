@@ -179,9 +179,8 @@ const AdminReportList = () => {
             </TableRow>
             <TableRow>
               <TableCell>
-              <CheckBoxIcon
-                  sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}
-                />
+              <CheckBoxOutlineBlankIcon
+                  sx={{ color: '#558BCF', paddingLeft: '1.825rem' }}/>
               </TableCell>
               <TableCell>
                 <CoTypography variant="AdminUser">손우성</CoTypography>
@@ -198,8 +197,9 @@ const AdminReportList = () => {
                   <CoTypography variant="AdminUser">지속적인 욕설 및 폭언 사용. 그리고 스팸</CoTypography>
                 </TableCell>
                 <TableCell>
-                  <CoTypography variant="AdminUser" sx={{color:'red'}}>3일 정지</CoTypography>
-                </TableCell>
+                <Button sx={{padding:'0', minWidth:'0'}} onClick={OpenBlacklist}>
+                    <CoTypography size="HoverText">처리하기</CoTypography>
+                </Button>                 </TableCell>
               </Hidden>
             </TableRow>
         </TableBody>

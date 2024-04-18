@@ -110,7 +110,7 @@ const AdminLayout = ({ children }) => {
         <CoTypography size="Admin" sx={{display:'flex'}} >신규 가입 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{todayUserCount}</CoTypography> </CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',  display:'flex'}}>강사 가입 승인 대기 :<CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{preTeacherCount}</CoTypography></CoTypography>
         <CoTypography size="Admin"  sx={{ paddingLeft:'1rem', display:'flex'}}>답변 대기 문의 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>{qnaUserCount}</CoTypography></CoTypography>
-        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem'}}>신고 내역 : </CoTypography>
+        <CoTypography size="Admin"  sx={{ paddingLeft:'1rem',display:'flex'}}>신고 내역 : <CoTypography size="Admin" sx={{color:'red',paddingLeft:'0.125rem'}}>4</CoTypography></CoTypography>
         </Box>
         </Box>
       </Paper>
@@ -217,19 +217,19 @@ const AdminLayout = ({ children }) => {
               </Box>
               <Box sx={{ width: '100%' }}>
                 <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 오일남&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminNotice">자꾸 자기 블로그 홍보해요.</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 손오공&nbsp;&nbsp; 작성일 : 2024-04-12</CoTypography>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminNotice">강의를 구매했는데 강의 커리큘럼이랑 달라요.</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 무천도사&nbsp;&nbsp; 작성일 : 2024-04-15</CoTypography>
               </Box>
               <Box sx={{ width: '100%' }}>
-                <CoTypography size="AdminNotice">이 분 욕설을 사용했어요. 정지 부탁요.</CoTypography>
-                <CoTypography size="AdminTag">신고자 | 손우성&nbsp;&nbsp; 작성일 : 2024-03-11</CoTypography>
+                <CoTypography size="AdminNotice">이 사람 다른 사이트에서 사기치는 사람이에요.</CoTypography>
+                <CoTypography size="AdminTag">신고자 | 개발꿈나무&nbsp;&nbsp; 작성일 : 2024-04-17</CoTypography>
               </Box>
             </Paper>
           </Box>

@@ -38,15 +38,16 @@ const QnaList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-            {qnauser && qnauser.map((qna, index) => (
-            <TableRow key={index} onClick={() => OpenDialog(qna)} sx={{cursor:'pointer'}}>
-            <TableCell align="left" sx={{fontSize:'0.925rem'}}>{qnauser.length - index}</TableCell>
-            <TableCell sx={{fontSize:'0.925rem'}}>{qna.category}</TableCell>
-            <TableCell>{qna.content}</TableCell>
-            <TableCell sx={{fontSize:'0.925rem'}}>{qna.createdAt}</TableCell>
-            <TableCell align="right" sx={{ color: qna.answered ? '#558BCF' : 'inherit', fontFamily: "Pretendard SemiBold"  }}>{qna.answered ? '답변 완료' : '처리중' }</TableCell>
-            </TableRow>
-        ))}
+        {qnauser && qnauser.map((qna, index) => (
+    <TableRow key={index} onClick={() => OpenDialog(qna)} sx={{ cursor: 'pointer' }}>
+        <TableCell align="left" sx={{ fontSize: '0.925rem' }}>{qnauser.length - index}</TableCell>
+        <TableCell sx={{ fontSize: '0.925rem' }}>{qna.category}</TableCell>
+        <TableCell style={{ maxWidth: '35rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{qna.content}</TableCell>
+        <TableCell sx={{ fontSize: '0.925rem' }}>{qna.createdAt}</TableCell>
+        <TableCell align="right" sx={{ color: qna.answered ? '#558BCF' : 'inherit', fontFamily: "Pretendard SemiBold" }}>{qna.answered ? '답변 완료' : '처리중'}</TableCell>
+    </TableRow>
+))}
+
         </TableBody>
       </Table>
       <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
