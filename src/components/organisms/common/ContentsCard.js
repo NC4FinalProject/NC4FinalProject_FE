@@ -14,7 +14,6 @@ function ContentsCard({
 
     const { selectPageChange } = useContentsListStore();
     const navi = useNavigate();
-    const [Localbooked, setBooked] = useState(booked);
     const [formatPrice, setFormatPrice] = useState("");
 
     const goDetail = (contentsId) => {
@@ -36,9 +35,6 @@ function ContentsCard({
         }
     }, [price]);
 
-    const changeBooked = () => {
-        setBooked(!Localbooked);
-    };
     return (
         <>
         <Hidden lgUp>
@@ -47,15 +43,7 @@ function ContentsCard({
                 <Box onClick={goDetail(contentsId)} sx={{ cursor:'pointer' }}>
                     <img src={`https://kr.object.ncloudstorage.com/envdev/${thumbnail}`} alt='thumbnail' style={{ width:'100%', height:'15rem', objectFit:'cover', borderRadius:'0.25rem' }} />
                 </Box>
-                {Localbooked ? (
-                    <Box onClick={changeBooked}>
-                        <BookmarkIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px', color:'#FFD400' }} />
-                    </Box>
-                ) : (
-                    <Box onClick={changeBooked}>
-                        <BookmarkBorderIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px' }} />
-                    </Box>
-                )}
+                
             </Paper>
 
             <Box onClick={goDetail(contentsId)} sx={{paddingTop:'3rem'}}>
@@ -78,7 +66,7 @@ function ContentsCard({
                 <Box onClick={goDetail(contentsId)} sx={{ cursor:'pointer' }}>
                     <img src={`https://kr.object.ncloudstorage.com/envdev/${thumbnail}`} alt='thumbnail' style={{ width:'19.1875rem', height:'11.875rem', objectFit:'cover', borderRadius:'0.25rem' }} />
                 </Box>
-                {Localbooked ? (
+                {/* {Localbooked ? (
                     <Box onClick={changeBooked}>
                         <BookmarkIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px', color:'#FFD400' }} />
                     </Box>
@@ -86,7 +74,7 @@ function ContentsCard({
                     <Box onClick={changeBooked}>
                         <BookmarkBorderIcon sx={{ cursor:'pointer' }} style={{ position:'absolute', top:'5px', right:'5px' }} />
                     </Box>
-                )}
+                )} */}
             </Paper>
 
             <Box onClick={goDetail(contentsId)}>
