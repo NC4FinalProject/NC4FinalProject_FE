@@ -227,14 +227,16 @@ export const useContentsListStore = create((set, get) => ({
   orderType: "",
   page: 0,
   totalPages: 0,
+  searchKeyword: "",
   setCategory: (category) => set({category}),
   setPricePattern: (pricePattern) => set({pricePattern}),
   setOrderType: (orderType) => set({orderType}),
   setPage: (page) => set({page}),
+  setSearchKeyword: (searchKeyword) => set({searchKeyword}),
   getContentsListOutput: async () => {
-    const {category, pricePattern, orderType, page} = get();
+    const {category, pricePattern, orderType, page, searchKeyword} = get();
     try {
-      const data = await getContentsListApi(category, pricePattern, orderType, page);
+      const data = await getContentsListApi(category, pricePattern, orderType, page, searchKeyword);
       set({ getContentsList: data.pageItems, totalPages:  data.pageItems.totalPages});
     } catch (error) {
       console.error(error);
