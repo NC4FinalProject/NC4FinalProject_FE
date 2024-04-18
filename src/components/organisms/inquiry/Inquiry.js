@@ -336,7 +336,7 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
                     sx={{ display: "flex", alignItems: "center" }}
                   >
                     <CoTypography size="Tag">
-                      {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT}
+                      {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT.substring(0, 10)}
                     </CoTypography>
                   </Grid>
 

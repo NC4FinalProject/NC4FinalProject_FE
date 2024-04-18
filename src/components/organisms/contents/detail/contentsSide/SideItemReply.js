@@ -20,7 +20,7 @@ const SideItemReply = (props) => {
       <Grid item xs={1.7} sx={{paddingX: 0.5}}>
         <Link to="/" component={Link} underline="hover" color="inherit">
           <Avatar 
-            src={props.userprofile} 
+            src={`https://kr.object.ncloudstorage.com/envdev/${props.profileFile}`} 
             alt={props.videoReplyContent} 
             sx={{
               width: theme => theme.spacing(3.5),

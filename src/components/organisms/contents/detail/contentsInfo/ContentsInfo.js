@@ -83,7 +83,7 @@ const ContentsInfo = ({ contents, countState, video } ) => {
 
 
       <Grid sx={{mx:0.7}}>
-        <Avatar src={profileImage} 
+        <Avatar src={`https://kr.object.ncloudstorage.com/envdev/${getContents.profileFile}`} 
               // alt="profile-image"
               sx={{
                 width: theme => theme.spacing(5),

@@ -163,7 +163,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
               </Grid>
               <Grid container ml="0.5rem" alignItems={"center"}>
                 <CoTypography size="TableContent">
-                  {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT} | {inquiry.contentsTitle} |
+                  {inquiry.memberDTO.userNickname} | {inquiry.inquiryUdtDT.substring(0, 10)} | {inquiry.contentsTitle} |
                 </CoTypography>
                 <Visibility
                   sx={{ 
