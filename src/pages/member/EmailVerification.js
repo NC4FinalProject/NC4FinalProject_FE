@@ -5,39 +5,73 @@ import axios from 'axios';
 
 const EmailVerification = () => {
     const location = useLocation();
-    const [form, setForm] = useState({});
 
-    useEffect(() => {
-        if(location.state) {
-            setForm({
-                username: location.state.username,
-                password: location.state.password,
-                userNickname: location.state.userNickname
-            })
-        }
-    }, [location]);
+    // const [form, setForm] = useState({});
+
+    // useEffect(() => {
+    //     if(location.state) {
+    //         setForm({
+    //             username: location.state.username,
+    //             password: location.state.password,
+    //             userNickname: location.state.userNickname
+    //         });
+    //     }
+    //     console.log("==========form값", form);
+    // }, [location]);
 
     const navi = useNavigate();
 
+    const join = useCallback(
+async (username, password, userNickname) => {
+        try {
+            const response = await axios.post('http://localhost:9090/member/join', {
+                username: username,
+                password: password,
+                userNickname: userNickname
+            });
+
+            if (response.data.statusCode === 200) {
+                alert('회원가입이 완료되었습니다.');
+                navi('/login');
+            }
+        } catch (e) {
+            // if (e.response.data.errorCode === 100) {
+            //     alert('입력 값을 모두 입력해주세요.');
+            // } else if (e.response.data.errorCode === 101) {
+            //     alert('이미 존재하는 아이디입니다.');
+            // } else if (e.response.data.errorCode === 102) {
+            //     alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
+            // }
+            console.log(e);
+            alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
+        }
+    },[navi]);
+
     const initialize = async e => {
-        try { 
-            const response = await axios.get(`http://localhost:9090/member/email-verification`, 
-                    {
-                        headers: {
-                            Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
-                        }
-                    });
-                    
-                } catch (e) {
-                    if (e.response.data.errorCode === 201) {
-                        alert('이미 인증된 이메일입니다.');
-                        navi('/');
-                    } else if (e.response.data.errorCode === 200) {
-                        alert('알 수 없는 에러발생. 관리자에게 문의하세요.');
-                        navi('/');
-                    }
+        try {
+            const response = await axios.post(`http://localhost:9090/member/email-verification`,
+            {
+              username: location.state.username,
+              password: location.state.password,
+              userNickname: location.state.userNickname
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem("ACCESS_TOKEN")}`
                 }
-    }
+            });
+
+            alert("인증번호가 발송되었습니다.");
+        } catch (e) {
+            if (e.response.data.errorCode === 201) {
+                alert('이미 인증된 이메일입니다.');
+                navi('/');
+            } else if (e.response.data.errorCode === 200) {
+                alert('알 수 없는 에러발생. 관리자에게 문의하세요.');
+                navi('/');
+            }
+        }
+    };
 
     useEffect( () => {
         initialize();
@@ -48,10 +82,7 @@ const EmailVerification = () => {
             e.preventDefault();
             const formData = new FormData(e.target);
             sendCode(formData.get('code'));
-        },
-        []
-    );
-    
+        },[]);
 
     const sendCode = useCallback(
         async (code) => {
@@ -66,10 +97,10 @@ const EmailVerification = () => {
                 }
             );
 
-                if (response.data.item && response.data.statusCode === 200) {
+                if (response.data.statusCode === 200) {
                     alert('인증되었습니다. 환영합니다!');
-                    navi('/');
-                    }
+                    join(location.state.username, location.state.password, location.state.userNickname);
+                }
             } catch (e) {
                 if (e.response.data.errorCode === 200) {
                     alert('잘못된 코드입니다.');
@@ -115,7 +146,8 @@ const EmailVerification = () => {
             </Grid>
             <Grid container justifyContent="flex-end">
                 <Grid item onClick={initialize}>
-                    <Link disabled href="/login" variant="body2">
+                    {/*<Link disabled href="/login" variant="body2">*/}
+                    <Link variant="body2">
                         다시 보내기
                     </Link>
                 </Grid>

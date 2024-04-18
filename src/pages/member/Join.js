@@ -43,34 +43,45 @@ const Join = () => {
             window.location.href = googleURL
         };
 
-    const join = useCallback(
-        async (username, password, userNickname) => {
-            try {
-                const response = await axios.post('http://localhost:9090/member/join', {
-                    username: username,
-                    password: password,
-                    userNickname: userNickname
-                });
+    // const join = useCallback(
+    //     async (username, password, userNickname) => {
+    //         try {
+    //             const response = await axios.post('http://localhost:9090/member/join', {
+    //                 username: username,
+    //                 password: password,
+    //                 userNickname: userNickname
+    //             });
+    //
+    //             if (response.data.item && response.data.statusCode === 200) {
+    //                 navi('/member/email-verification', {state: {
+    //                     username: username,
+    //                     password: password,
+    //                     userNickname: userNickname
+    //                 }});
+    //             }
+    //         } catch (e) {
+    //             if (e.response.data.errorCode === 100) {
+    //                 alert('입력 값을 모두 입력해주세요.');
+    //             } else if (e.response.data.errorCode === 101) {
+    //                 alert('이미 존재하는 아이디입니다.');
+    //             } else if (e.response.data.errorCode === 102) {
+    //                 alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
+    //             }
+    //         }
+    //     },
+    //     [navi]
+    // );
 
-                if (response.data.item && response.data.statusCode === 200) {
-                    navi('/member/email-verification', {state: {
-                        username: username,
-                        password: password,
-                        userNickname: userNickname
-                    }});
-                }
-            } catch (e) {
-                if (e.response.data.errorCode === 100) {
-                    alert('입력 값을 모두 입력해주세요.');
-                } else if (e.response.data.errorCode === 101) {
-                    alert('이미 존재하는 아이디입니다.');
-                } else if (e.response.data.errorCode === 102) {
-                    alert('알 수 없는 에러 발생. 관리자에게 문의하세요.');
-                }
-            }
-        },
-        [navi]
-    );
+    const emailVerification = useCallback(
+        (username, password, userNickname) => {
+            console.log("emailVerification start");
+            navi('/member/email-verification', {state: {
+                username: username,
+                password: password,
+                userNickname: userNickname
+            }});
+        }
+    )
 
     const handleSubmit = useCallback(
         (e) => {
@@ -89,9 +100,10 @@ const Join = () => {
                 return;
             }
             const formData = new FormData(e.target);
-            join(formData.get('username'), formData.get('password'), formData.get('userNickname'));
+            // join(formData.get('username'), formData.get('password'), formData.get('userNickname'));
+            emailVerification(formData.get('username'), formData.get('password'), formData.get('userNickname'));
         },
-        [join]
+        [emailVerification]
     );
 
     const emailCheck = useCallback(
