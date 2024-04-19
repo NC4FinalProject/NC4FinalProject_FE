@@ -71,7 +71,6 @@ const MyContents = () => {
     
   return (
     <div>
-        <Button onClick={handleInsert}>컨텐츠 등록</Button>
         <Paper sx={{ width: '100%', height: 'auto', marginTop:'1rem' }}>
         <Table>
           <TableHead>
@@ -109,6 +108,9 @@ const MyContents = () => {
           ))}
           </TableBody>
         </Table>
+        <Box sx={{ display: 'flex', justifyContent: 'right', pt: 2, pr: 2}}>
+          <Button variant='outlined' onClick={handleInsert}>컨텐츠 등록</Button>
+        </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
             <Pagination count={totalPages} page={page + 1} onChange={changePage} color='primary' />
         </Box>
