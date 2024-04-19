@@ -135,7 +135,7 @@ const Header = () => {
         </Hidden>
         <Hidden lgUp>
           <div onClick={handleProfileClick}>
-                {memberInfo.profileFile === null ? (
+                {memberInfo && memberInfo.profileFile === null ? (
                 <Avatar src="/broken-mage.jpg" style={{width: '2.25rem', height: '2.25rem', marginLeft:'1.5rem'}}/> 
                   ) : (
                       <img src={`https://kr.object.ncloudstorage.com/envdev/` + memberInfo.profileFile} alt='thumbnail' style={{width: '2.25rem', height: '2.25rem', marginTop:'0.825rem', marginLeft:'1rem', borderRadius:'70%'}}/>

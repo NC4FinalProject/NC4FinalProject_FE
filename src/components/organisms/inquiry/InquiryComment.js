@@ -127,7 +127,7 @@ const InquiryComment = ({
                 paddingBottom: "1.25rem",
               }}
             >
-              { name === memberInfo.userNickname && (
+              { name === memberInfo && memberInfo.userNickname && (
                 <ButtonGroup variant="text" sx={{ mr: "-0.5rem" }}>
                   <Button style={{ border: "none" }} onClick={() => setShowEditor(true)}>
                     <CoTypography size="TableContent">수정</CoTypography>

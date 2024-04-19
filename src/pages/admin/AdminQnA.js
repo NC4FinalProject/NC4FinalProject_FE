@@ -48,7 +48,7 @@ const AdminQnA = () => {
       if(qna.answered) {
         setAdminAnswer(`${qna.content}`);
       } else{
-      setAdminAnswer(`${qna.content} \n[RE :]\n안녕하세요${qna.askUser.userNickname}님! ${memberInfo.userNickname}입니다.\n`);
+      setAdminAnswer(`${qna.content} \n[RE :]\n안녕하세요${qna.askUser.userNickname}님! ${memberInfo && memberInfo.userNickname}입니다.\n`);
     }
       setOpenQna(true);
       setqnaData(qna);

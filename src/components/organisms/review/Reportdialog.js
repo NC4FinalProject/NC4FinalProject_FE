@@ -95,7 +95,7 @@ const Reportdialog = ({open, handleClickClose, children, selectComponent, author
                         <TableRow>
                             <TableCell>
                                 <CoTypography size="Content">
-                                    작성자 : {memberInfo.userNickname} <br/>
+                                    작성자 : {memberInfo && memberInfo.userNickname} <br/>
                                     작성일 : {new Date().toLocaleDateString()}
                                 </CoTypography>
                             </TableCell>

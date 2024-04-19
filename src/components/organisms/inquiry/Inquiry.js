@@ -125,9 +125,9 @@ const Inquiry = ({ onInquiryClick, inquiryPostClick }) => {
       onInquiryClick(selected);
       updateInquiryView(inquiryId);
     } else {
-      if(selected.memberDTO.userNickname === memberInfo.userNickname ||
-        memberInfo.role === "ADMIN" ||
-        selected.author === memberInfo.userNickname
+      if(selected.memberDTO.userNickname === memberInfo && memberInfo.userNickname ||
+        memberInfo && memberInfo.role === "ADMIN" ||
+        selected.author === memberInfo && memberInfo.userNickname
       ) {
         setInquiry(selected);
         setComments(selected.inquiryCommentDTOList);

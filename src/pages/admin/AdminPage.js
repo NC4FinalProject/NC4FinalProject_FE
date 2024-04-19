@@ -21,11 +21,11 @@ const AdminPage = ({children}) => {
     const {memberInfo} = MemberStore();
     const navi = useNavigate();
     useEffect(() => {
-      if (memberInfo.role !== 'ADMIN') {
+      if (memberInfo && memberInfo.role !== 'ADMIN') {
         alert('접근 권한이 없습니다.');
         navi('/');
       }
-    }, [memberInfo.role, navi]);
+    }, [memberInfo, navi]);
 
     const toggleSubmenu = (menuName) => {
         setSubmenuOpen({

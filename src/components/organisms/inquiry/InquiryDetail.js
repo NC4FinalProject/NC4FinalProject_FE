@@ -198,7 +198,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
               </Grid>
               <Grid container justifyContent={"center"} alignItems={"center"}>
                   {
-                    inquiry.memberDTO.userNickname === memberInfo.userNickname 
+                    inquiry.memberDTO.userNickname === memberInfo && memberInfo.userNickname 
                     && !inquiry.solved
                     && (
                       <Chip
@@ -235,7 +235,7 @@ const InquiryDetail = ({ handleModifyClick, onListClick, scrollToTop }) => {
                 }}
               >
                 {
-                memberInfo.userNickname === inquiry.memberDTO.userNickname &&
+                memberInfo && memberInfo.userNickname === inquiry.memberDTO.userNickname &&
                 (
                   <ButtonGroup
                     variant="text"

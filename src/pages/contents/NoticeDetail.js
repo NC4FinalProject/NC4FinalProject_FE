@@ -216,7 +216,7 @@ const handleDelete = async () => {
       </CoTypography>
 
       <Box sx={{ flex: 1}} />
-      {memberInfo.role === 'ADMIN' && (
+      {memberInfo && memberInfo.role === 'ADMIN' && (
       <Button
       size="Content"
         variant="contained"
@@ -258,7 +258,7 @@ const handleDelete = async () => {
         </Button>
       </DialogActions>
     </Dialog>
-    {memberInfo.role === 'ADMIN' && (
+    {memberInfo && memberInfo.role === 'ADMIN' && (
       <Button
       size="Content"
          variant="contained"

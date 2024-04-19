@@ -180,7 +180,7 @@ const NoticeList = () => {
             ),
           }}
         />
-        {memberInfo.role === 'ADMIN' && (
+        {memberInfo && memberInfo.role === 'ADMIN' && (
           <Button
             variant="contained"
             color="primary"

@@ -25,7 +25,7 @@ const Footer = () => {
     };
 
     const OpenDialog = () => {
-        if(memberInfo.userNickname === "") {
+        if(memberInfo && memberInfo.userNickname === "") {
             alert("로그인 후 이용해주세요.")
             navi('/login')
             setOpenQna(false);
