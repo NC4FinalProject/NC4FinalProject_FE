@@ -26,6 +26,7 @@ const AdminUserDetail = () => {
     const [openPointDialog, setOpenPointDialog] = useState(false);
 
     const handleRoleChange = (event) => {
+      setSelectedValue(event.target.value);
       setSelectedRole(event.target.value);
   };
   const handleSaveRole = (userId ) => {
