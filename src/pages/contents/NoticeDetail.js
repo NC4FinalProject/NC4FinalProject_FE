@@ -291,7 +291,7 @@ const handleDelete = async () => {
             )}
             <CoTypography size='Content' sx={{marginLeft:'0.725rem'}}>작성자: {notice.noticeWriter}</CoTypography>
      </Box>
-          <CoTypography  className='Notice'>{HtmlParser(HtmlParser(notice.noticeContent))}</CoTypography>
+          <CoTypography  className='Notice'>{HtmlParser(notice.noticeContent)}</CoTypography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <CoTypography size="Tag">작성일: {formatDate(notice.noticeDate)}</CoTypography>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>

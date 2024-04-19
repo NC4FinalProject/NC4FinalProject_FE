@@ -132,7 +132,7 @@ userDetail: async (userId) => {
         setContentCount(contentCount);
         setQnaCount(qnaCount);
         setMemberInfo(response.data.member);
-        setMemo(response.data.memo || '');
+        setMemo(response.data.member.memo || '');
         const points = response.data.member.pointDTOList;
         let sum = 0;
             for (const point of points) {

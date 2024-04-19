@@ -34,7 +34,7 @@ const useStore = create((set, get) => ({
     fetchNotices: async () => {
       const { searchCondition, searchKeyword, setPage,page, setNotices } = get();
       try {
-        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/notice/notice-list', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/notice/notice-list`, {
           params: {
             searchCondition: searchCondition,
             searchKeyword: searchKeyword,
@@ -52,7 +52,7 @@ const useStore = create((set, get) => ({
     fetchUserNickname: async () => {
       const { setUserNickname } = get();
       try {
-        const response = await axios.get('http://${process.env.REACT_APP_BACK_URL}/mypage', {
+        const response = await axios.get(`http://${process.env.REACT_APP_BACK_URL}/mypage`, {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem('ACCESS_TOKEN')}`,
           },

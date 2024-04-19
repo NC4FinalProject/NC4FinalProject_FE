@@ -38,7 +38,7 @@ const AdminUser = () => {
     try {
       const memoData = {
         memo: memo, 
-        id: selectedMemberId
+        memberId: selectedMemberId
       };
       await axios.post(`http://${process.env.REACT_APP_BACK_URL}/admin/user/memo`,
         memoData, 
@@ -213,12 +213,12 @@ const AdminUser = () => {
               {member.memo ? (
                 <NoteAltIcon
                   sx={{ marginLeft: '0.175rem', cursor: 'pointer', color: '#558BCF' }}
-                  onClick={() => handleOpen(member.id, member.memo)}
+                  onClick={() => handleOpen(member.memberId, member.memo)}
                 />
               ) : (
                 <NoteAltIcon
                   sx={{ marginLeft: '0.175rem', cursor: 'pointer' }}
-                  onClick={() => handleOpen(member.id, member.memo)}
+                  onClick={() => handleOpen(member.memberId, member.memo)}
                 />
               )}
               </TableCell>
