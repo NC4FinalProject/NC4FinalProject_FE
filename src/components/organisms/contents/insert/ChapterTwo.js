@@ -76,7 +76,7 @@ const ChapterTwo = () => {
         <Grid item xs={2}/>
 
         {/* 테스트여 */}
-        <Button onClick={() => {console.log(chapterTwo);}}>test</Button>
+        {/* <Button onClick={() => {console.log(chapterTwo);}}>test</Button> */}
 
       </Grid>
     </>

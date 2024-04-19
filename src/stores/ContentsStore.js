@@ -326,6 +326,7 @@ export const useMyContentsListStore = create((set, get) => ({
     try {
       const data = await getMyContentsListApi(page);
       set({ getMyContentsList: data.pageItems, totalPages: data.pageItems.totalPages});
+      console.log(data);
     } catch (error) {
       console.error(error);
     }

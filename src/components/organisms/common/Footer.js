@@ -66,7 +66,7 @@ const reportReasons = [
                 detailReason={userQna}
                 handleReasonChange={handleReasonChange}
                 selectComponent={
-                  <Box sx={{ margin: "0.5rem auto 0"}}>
+                  <Box sx={{ margin: "0.5rem auto"}}>
                   <QnaSelect onChange={handleSelectChange} value={selectedValue} options={reportReasons} sx={{width:'100%'}} />
                   </Box>  
                 }       

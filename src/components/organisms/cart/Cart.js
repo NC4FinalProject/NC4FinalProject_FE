@@ -165,7 +165,7 @@ const Cart = () => {
           <CartPayment 
             totalPrice={totalPrice}
             selectedItem={selectedItem}
-            userNickname={memberInfo.userNickname}
+            userNickname={memberInfo && memberInfo.userNickname}
             userEmail={memberInfo && memberInfo.username}
             myPoint={myPoint}
           />

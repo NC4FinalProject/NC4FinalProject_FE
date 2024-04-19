@@ -464,39 +464,18 @@ const AdminUserDetail = () => {
         <Table>
             <TableBody>
                 <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/04/07</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">지에스</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">미래개발</CoTypography></TableCell>
+                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">게시물 도배</CoTypography></TableCell>
                 <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser">미처리</CoTypography></TableCell>
                 </TableRow>
                 <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/04/06</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">동그라미</CoTypography></TableCell>
+                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">미래개발</CoTypography></TableCell>
+                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">블로그 홍보</CoTypography></TableCell>
                 <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser">미처리</CoTypography></TableCell>
-                </TableRow>
-                <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser" sx={{color:'#558BCF'}}>처리 완료</CoTypography></TableCell>
-                </TableRow>
-                <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser" sx={{color:'#558BCF'}}>처리 완료</CoTypography></TableCell>
-                </TableRow>
-                <TableRow>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">2024/03/15</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">손우성</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}}><CoTypography size="AdminUser">김의현</CoTypography></TableCell>
-                <TableCell sx={{width:'40%'}}><CoTypography size="AdminUser">프로젝트 참여 안함</CoTypography></TableCell>
-                <TableCell sx={{width:'15%'}} align='right'><CoTypography size="AdminUser" sx={{color:'#558BCF'}}>처리 완료</CoTypography></TableCell>
                 </TableRow>
             </TableBody>
         </Table>
